@@ -55,28 +55,43 @@ body {
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.8);
-  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  padding: 8px 18px;
   border-radius: 9999px;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 13.5px;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  border: 1px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link i, .nav-link svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .nav-link:hover {
+  background: rgba(0, 0, 0, 0.75);
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
 }
 
 .nav-link.active {
-  color: #0052fe;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: #000000 !important;
+  color: #ffffff !important;
+  border: 1.5px solid #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4) !important;
+}
+
+.nav-link.active i, .nav-link.active svg {
+  color: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 /* Page Section Headers */
