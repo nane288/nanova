@@ -244,25 +244,58 @@
         <p class="section-subtitle">Connect, interact and share experiences with fellow students.</p>
       </div>
 
-      <!-- Create Post Composer Card -->
-      <div class="white-card mb-6">
-        <div class="flex items-start space-x-4 mb-4">
-          <div class="user-avatar-circle" id="composerAvatar">
-            <span>A</span>
+      <!-- Create Post Composer Card (Admin Only) -->
+      <div class="white-card mb-6" id="composerCard">
+        <!-- If Admin is Unlocked -->
+        <div id="adminComposerView" class="hidden">
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold flex items-center gap-1">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                <span>Admin Post Mode</span>
+              </span>
+              <span class="text-xs text-slate-400 font-medium">Official announcements & updates</span>
+            </div>
+            <button onclick="NanovaApp.adminLogout()" class="text-xs text-slate-400 hover:text-rose-500 font-bold transition">
+              Log out Admin
+            </button>
           </div>
-          <div class="flex-grow">
-            <textarea id="postInputContent" class="post-textarea" placeholder="What experiences or advice would you like to share?" rows="3"></textarea>
+
+          <div class="flex items-start space-x-4 mb-4">
+            <div class="user-avatar-circle bg-emerald-700 text-white" id="composerAvatar">
+              <span>A</span>
+            </div>
+            <div class="flex-grow">
+              <textarea id="postInputContent" class="post-textarea" placeholder="What official campus updates or freshman exam advice would you like to broadcast?" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+            <button type="button" class="btn-attach" onclick="NanovaApp.promptImageAttachment()">
+              <i data-lucide="image" class="w-4 h-4"></i>
+              <span>Attach Image</span>
+            </button>
+            <button type="button" class="btn-publish" onclick="NanovaApp.publishCommunityPost()">
+              <span>Publish Post</span>
+              <i data-lucide="send" class="w-4 h-4"></i>
+            </button>
           </div>
         </div>
 
-        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-          <button type="button" class="btn-attach" onclick="NanovaApp.promptImageAttachment()">
-            <i data-lucide="image" class="w-4 h-4"></i>
-            <span>Attach Image</span>
-          </button>
-          <button type="button" class="btn-publish" onclick="NanovaApp.publishCommunityPost()">
-            <span>Publish Post</span>
-            <i data-lucide="send" class="w-4 h-4"></i>
+        <!-- If Student (Non-Admin Notice & Quick Unlock) -->
+        <div id="studentComposerView" class="flex flex-col sm:flex-row items-center justify-between gap-4 py-2">
+          <div class="flex items-center space-x-3 text-left">
+            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-[#0052fe] flex items-center justify-center flex-shrink-0">
+              <i data-lucide="shield-alert" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-900 text-sm">Official Community & Announcement Feed</h4>
+              <p class="text-xs text-slate-500">Only verified campus administrators can publish official announcements.</p>
+            </div>
+          </div>
+          <button onclick="NanovaApp.promptAdminLogin()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold flex items-center space-x-2 shadow-sm transition whitespace-nowrap">
+            <i data-lucide="key-round" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span>Admin Login to Post</span>
           </button>
         </div>
       </div>

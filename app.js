@@ -1,5 +1,6 @@
 /* ===================================================
    NANOVA - Freshman Exam Board & Community Feed Engine
+   Enforced Admin-Only Posting & Interactive Practice
    =================================================== */
 (() => {
   'use strict';
@@ -24,8 +25,7 @@
       publish_post: 'Publish Post',
       like: 'Like',
       comment: 'Comment',
-      share: 'Share',
-      solution_title: 'Detailed Solution & Explanation'
+      share: 'Share'
     },
     om: {
       board_title: 'Giddugala Qormaata Yunibarsitii',
@@ -45,8 +45,7 @@
       publish_post: 'Maxxansi',
       like: 'Jaalladhu',
       comment: 'Yaada',
-      share: 'Qoodi',
-      solution_title: 'Ibsa fi Furmaata Bal\x27aa'
+      share: 'Qoodi'
     },
     am: {
       board_title: 'የመጀመሪያ ዓመት ፈተና ቦርድ',
@@ -66,8 +65,7 @@
       publish_post: 'አሳትም',
       like: 'ውደድ',
       comment: 'አስተያየት',
-      share: 'አጋራ',
-      solution_title: 'ዝርዝር ማብራሪያ እና መፍትሄ'
+      share: 'አጋራ'
     }
   };
 
@@ -110,7 +108,7 @@
     }
   };
 
-  /* ── DEFAULT SAMPLE DATA ───────────────────────────── */
+  /* ── DEFAULT DATA ──────────────────────────────────── */
   const DEFAULT_QUESTIONS = [
     {
       id: 'q1',
@@ -140,7 +138,7 @@
         '200 meters'
       ],
       answer: 0,
-      explanation: 'Using the kinematic formula: d = ((v_i + v_f) / 2) * t = ((0 + 20) / 2) * 5 = 10 * 5 = 50 meters.'
+      explanation: 'Using kinematic formula: d = ((v_i + v_f) / 2) * t = ((0 + 20) / 2) * 5 = 10 * 5 = 50 meters.'
     },
     {
       id: 'q3',
@@ -155,7 +153,7 @@
         'Undefined'
       ],
       answer: 2,
-      explanation: 'Using the standard trigonometric limit lim(x->0) [sin(kx)/x] = k, here k = 3, therefore the limit equals 3.'
+      explanation: 'Using the standard trigonometric limit lim(x->0) [sin(kx)/x] = k, here k = 3, therefore the limit is 3.'
     },
     {
       id: 'q4',
@@ -170,7 +168,7 @@
         'False Dilemma'
       ],
       answer: 1,
-      explanation: 'Argumentum Ad Hominem (attack against the person) directly attacks the person presenting the argument instead of evaluating the evidence.'
+      explanation: 'Argumentum Ad Hominem directly attacks the person rather than addressing the merits of the actual argument.'
     },
     {
       id: 'q5',
@@ -192,19 +190,21 @@
   const DEFAULT_POSTS = [
     {
       id: 'post_1',
-      author: 'curiovana',
+      author: 'Campus Dean / Admin',
       initial: 'A',
+      isAdminPost: true,
       date: '05 Jul 2026, 14:59',
-      content: 'hell everyone',
-      likes: 1,
+      content: 'Welcome to the Freshman Exam Board! Midterm and final past papers for AAU, Haramaya, Jimma, and ASTU are now cached offline for all streams.',
+      likes: 12,
       isLiked: true
     },
     {
       id: 'post_2',
-      author: 'Abebe_AAU',
-      initial: 'A',
+      author: 'Academic Registrar',
+      initial: 'R',
+      isAdminPost: true,
       date: '04 Jul 2026, 10:15',
-      content: 'Freshman Math mid exams were released! Make sure to practice derivatives and limits from ASTU 2023 model.',
+      content: 'Freshman Math mid exams schedule has been posted. Make sure to practice derivatives and limits from ASTU 2023 model questions.',
       likes: 8,
       isLiked: false
     }
@@ -214,6 +214,8 @@
   const State = {
     lang: 'en',
     profile: { name: 'Adnan', university: 'Haramaya University', stream: 'Natural Science' },
+    isAdmin: false,
+    adminPasskey: 'nanova2026',
     exams: [],
     questions: [],
     filteredQuestions: [],
@@ -238,9 +240,10 @@
     renderBoardQuestion();
     renderExamPackages();
     renderCommunityPosts();
+    updateAdminComposerUI();
     updateCounterBadges();
     if (window.lucide) window.lucide.createIcons();
-    console.log('[Nanova] Ready with custom UI');
+    console.log('[Nanova] Initialized - Admin Only Posting Active');
   }
 
   function loadSavedState() {
@@ -250,6 +253,7 @@
       const ans = localStorage.getItem('nanova_board_answers');
       if (ans) State.userAnswers = JSON.parse(ans);
       State.isPremium = localStorage.getItem('nanova_is_premium') === 'true';
+      State.isAdmin = localStorage.getItem('nanova_is_admin') === 'true';
       const l = localStorage.getItem('nanova_lang');
       if (l && TRANSLATIONS[l]) State.lang = l;
     } catch {}
@@ -289,6 +293,61 @@
     const pUniv = document.getElementById('profileLargeUniv');
     if (pName) pName.textContent = State.profile.name;
     if (pUniv) pUniv.textContent = State.profile.university;
+  }
+
+  /* ── ADMIN ACCESS CONTROLS ─────────────────────────── */
+  function updateAdminComposerUI() {
+    const adminView = document.getElementById('adminComposerView');
+    const studentView = document.getElementById('studentComposerView');
+    const adminLockedBox = document.getElementById('adminLockedBox');
+    const adminUnlockedBox = document.getElementById('adminUnlockedBox');
+
+    if (State.isAdmin) {
+      if (adminView) adminView.classList.remove('hidden');
+      if (studentView) studentView.classList.add('hidden');
+      if (adminLockedBox) adminLockedBox.classList.add('hidden');
+      if (adminUnlockedBox) adminUnlockedBox.classList.remove('hidden');
+    } else {
+      if (adminView) adminView.classList.add('hidden');
+      if (studentView) studentView.classList.remove('hidden');
+      if (adminLockedBox) adminLockedBox.classList.remove('hidden');
+      if (adminUnlockedBox) adminUnlockedBox.classList.add('hidden');
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function promptAdminLogin() {
+    const pass = prompt('Enter Administrator Passkey to unlock post broadcast (Default: nanova2026):');
+    if (!pass) return;
+
+    if (pass === State.adminPasskey) {
+      State.isAdmin = true;
+      localStorage.setItem('nanova_is_admin', 'true');
+      updateAdminComposerUI();
+      alert('🛡️ Admin verified! You can now publish official campus announcements.');
+    } else {
+      alert('❌ Invalid admin passkey.');
+    }
+  }
+
+  function handleAdminLogin(e) {
+    e.preventDefault();
+    const pass = document.getElementById('adminPasskeyInput')?.value;
+    if (pass === State.adminPasskey) {
+      State.isAdmin = true;
+      localStorage.setItem('nanova_is_admin', 'true');
+      updateAdminComposerUI();
+      alert('🛡️ Admin Panel Unlocked!');
+    } else {
+      alert('❌ Invalid admin passkey.');
+    }
+  }
+
+  function adminLogout() {
+    State.isAdmin = false;
+    localStorage.removeItem('nanova_is_admin');
+    updateAdminComposerUI();
+    alert('Logged out of Admin mode.');
   }
 
   /* ── DATA FETCHING ─────────────────────────────────── */
@@ -520,7 +579,6 @@
     const ex = State.exams.find((e) => e.id === examId);
     if (!ex) return;
 
-    // Filter questions to this exam
     const examQs = State.questions.filter((q) => q.examId === examId);
     if (examQs.length) {
       State.filteredQuestions = examQs;
@@ -531,13 +589,13 @@
     }
   }
 
-  /* ── COMMUNITY FEED ────────────────────────────────── */
+  /* ── COMMUNITY FEED (ADMIN ONLY PUBLISH) ────────────── */
   function renderCommunityPosts() {
     const container = document.getElementById('communityPostsContainer');
     if (!container) return;
 
     if (!State.posts.length) {
-      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No posts yet. Be the first to share!</div>';
+      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No announcements yet.</div>';
       return;
     }
 
@@ -545,15 +603,16 @@
       return '<div class="white-card" id="' + post.id + '">' +
         '<div class="flex items-center justify-between mb-3">' +
           '<div class="flex items-center space-x-3">' +
-            '<div class="user-avatar-circle">' + (post.initial || (post.author ? post.author[0].toUpperCase() : 'A')) + '</div>' +
+            '<div class="user-avatar-circle bg-emerald-800 text-white font-bold">' + (post.initial || (post.author ? post.author[0].toUpperCase() : 'A')) + '</div>' +
             '<div>' +
-              '<h4 class="font-extrabold text-slate-900 text-sm">' + post.author + '</h4>' +
+              '<div class="flex items-center space-x-2">' +
+                '<h4 class="font-extrabold text-slate-900 text-sm">' + post.author + '</h4>' +
+                (post.isAdminPost ? '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold tracking-wide">ADMIN</span>' : '') +
+              '</div>' +
               '<span class="text-xs text-slate-400 font-medium">' + post.date + '</span>' +
             '</div>' +
           '</div>' +
-          '<button onclick="NanovaApp.deletePost(\'' + post.id + '\')" class="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg transition" title="Delete">' +
-            '<i data-lucide="trash-2" class="w-4 h-4"></i>' +
-          '</button>' +
+          (State.isAdmin ? '<button onclick="NanovaApp.deletePost(\'' + post.id + '\')" class="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg transition" title="Delete Post"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' : '') +
         '</div>' +
 
         '<p class="text-slate-800 text-sm leading-relaxed mb-4">' + post.content + '</p>' +
@@ -579,6 +638,11 @@
   }
 
   function publishCommunityPost() {
+    if (!State.isAdmin) {
+      promptAdminLogin();
+      return;
+    }
+
     const input = document.getElementById('postInputContent');
     const content = (input?.value || '').trim();
     if (!content) return;
@@ -589,8 +653,9 @@
 
     const newPost = {
       id: 'post_' + Date.now(),
-      author: State.profile.name || 'curiovana',
-      initial: (State.profile.name || 'A')[0].toUpperCase(),
+      author: 'Campus Admin (' + (State.profile.name || 'Adnan') + ')',
+      initial: 'A',
+      isAdminPost: true,
       date: dateStr,
       content: content,
       likes: 0,
@@ -602,6 +667,7 @@
     if (input) input.value = '';
 
     renderCommunityPosts();
+    alert('✅ Admin announcement published to feed!');
   }
 
   function toggleLikePost(postId) {
@@ -617,23 +683,27 @@
   }
 
   function deletePost(postId) {
+    if (!State.isAdmin) {
+      alert('Only administrators can delete posts.');
+      return;
+    }
     State.posts = State.posts.filter((p) => p.id !== postId);
     NanovaDB.saveAll('posts', State.posts).catch(console.warn);
     renderCommunityPosts();
   }
 
   function promptImageAttachment() {
-    alert('Image attachment enabled. Select an image from your device.');
+    alert('Image attachment enabled for admin post.');
   }
 
   function commentOnPost(postId) {
-    const msg = prompt('Write your response to this post:');
-    if (msg) alert('Comment posted successfully!');
+    const msg = prompt('Write your comment on this official announcement:');
+    if (msg) alert('Comment recorded!');
   }
 
   function sharePost(postId) {
     if (navigator.share) {
-      navigator.share({ title: 'Nanova Freshman Community', url: window.location.href });
+      navigator.share({ title: 'Nanova Freshman Announcement', url: window.location.href });
     } else {
       alert('Post link copied to clipboard!');
     }
@@ -653,7 +723,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  /* ── PAYWALL & ADMIN ───────────────────────────────── */
+  /* ── PAYWALL ───────────────────────────────────────── */
   function showPaywallModal() {
     document.getElementById('paywallModal')?.classList.remove('hidden');
   }
@@ -673,17 +743,6 @@
       alert('✅ Payment verified! Unlimited Freshman Exam Access unlocked.');
       if (btn) { btn.textContent = 'Pay 50 ETB'; btn.disabled = false; }
     }, 1500);
-  }
-
-  function handleAdminLogin(e) {
-    e.preventDefault();
-    const pass = document.getElementById('adminPasskeyInput')?.value;
-    if (pass === 'nanova2026') {
-      document.getElementById('adminLockedBox')?.classList.add('hidden');
-      document.getElementById('adminUnlockedBox')?.classList.remove('hidden');
-    } else {
-      alert('Invalid admin passkey.');
-    }
   }
 
   function saveSupabaseConfig() {
@@ -707,6 +766,9 @@
     shuffleQuestions,
     selectExamPackage,
     publishCommunityPost,
+    promptAdminLogin,
+    handleAdminLogin,
+    adminLogout,
     toggleLikePost,
     deletePost,
     promptImageAttachment,
@@ -715,7 +777,6 @@
     showPaywallModal,
     hidePaywallModal,
     processPayment,
-    handleAdminLogin,
     saveSupabaseConfig,
     clearCacheAndReset
   };
