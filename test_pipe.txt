@@ -1,0 +1,2 @@
+Hello world through pipe
+Line 2 with "quotes" and 'single' and $variables!

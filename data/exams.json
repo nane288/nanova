@@ -1,0 +1,287 @@
+﻿[
+  {
+    "id": "phys-aau-2024-mid-01",
+    "university": "Addis Ababa University",
+    "universityShort": "AAU",
+    "year": 2024,
+    "examType": "Mid Exam",
+    "course": "General Physics",
+    "courseCode": "Phys 1011",
+    "department": "Natural Science",
+    "question": "A stone is thrown vertically upward with an initial velocity of 20 m/s from the ground. Taking g = 10 m/s², what is the maximum height reached by the stone?",
+    "options": [
+      { "id": "A", "text": "10 m" },
+      { "id": "B", "text": "20 m" },
+      { "id": "C", "text": "40 m" },
+      { "id": "D", "text": "80 m" }
+    ],
+    "correctOption": "B",
+    "explanation": "Using kinematic equation v² = u² - 2gh at maximum height (v = 0): 0 = (20)² - 2(10)h => 20h = 400 => h = 20 m."
+  },
+  {
+    "id": "phys-aau-2024-mid-02",
+    "university": "Addis Ababa University",
+    "universityShort": "AAU",
+    "year": 2024,
+    "examType": "Mid Exam",
+    "course": "General Physics",
+    "courseCode": "Phys 1011",
+    "department": "Natural Science",
+    "question": "A 5 kg block rests on a horizontal frictionless surface. A horizontal force of 15 N is applied to it. What is the acceleration of the block?",
+    "options": [
+      { "id": "A", "text": "0.33 m/s²" },
+      { "id": "B", "text": "3.0 m/s²" },
+      { "id": "C", "text": "5.0 m/s²" },
+      { "id": "D", "text": "75 m/s²" }
+    ],
+    "correctOption": "B",
+    "explanation": "According to Newton's Second Law: F = ma => a = F/m = 15 N / 5 kg = 3.0 m/s²."
+  },
+  {
+    "id": "math-hu-2024-mid-01",
+    "university": "Haramaya University",
+    "universityShort": "HU",
+    "year": 2024,
+    "examType": "Mid Exam",
+    "course": "Mathematics for Natural Science",
+    "courseCode": "Math 1011",
+    "department": "Natural Science",
+    "question": "What is the limit of (sin 3x) / x as x approaches 0?",
+    "options": [
+      { "id": "A", "text": "0" },
+      { "id": "B", "text": "1" },
+      { "id": "C", "text": "3" },
+      { "id": "D", "text": "Undefined" }
+    ],
+    "correctOption": "C",
+    "explanation": "Using the standard limit rule lim(x->0) [sin(kx)/x] = k. Here k = 3, so lim(x->0) [sin(3x)/x] = 3."
+  },
+  {
+    "id": "math-hu-2024-mid-02",
+    "university": "Haramaya University",
+    "universityShort": "HU",
+    "year": 2024,
+    "examType": "Mid Exam",
+    "course": "Mathematics for Natural Science",
+    "courseCode": "Math 1011",
+    "department": "Natural Science",
+    "question": "If f(x) = ln(x² + 1), what is the first derivative f'(x)?",
+    "options": [
+      { "id": "A", "text": "1 / (x² + 1)" },
+      { "id": "B", "text": "2x / (x² + 1)" },
+      { "id": "C", "text": "2x(x² + 1)" },
+      { "id": "D", "text": "x / (x² + 1)" }
+    ],
+    "correctOption": "B",
+    "explanation": "By applying the chain rule d/dx[ln(u)] = u'/u: f'(x) = (d/dx(x² + 1)) / (x² + 1) = 2x / (x² + 1)."
+  },
+  {
+    "id": "logic-ju-2025-final-01",
+    "university": "Jimma University",
+    "universityShort": "JU",
+    "year": 2025,
+    "examType": "Final Exam",
+    "course": "Critical Thinking & Logic",
+    "courseCode": "LoCT 1011",
+    "department": "Common Course",
+    "question": "Which fallacy occurs when an arguer attacks the character or personal traits of their opponent instead of addressing their argument?",
+    "options": [
+      { "id": "A", "text": "Straw Man Fallacy" },
+      { "id": "B", "text": "Argumentum Ad Hominem" },
+      { "id": "C", "text": "Appeal to Ignorance" },
+      { "id": "D", "text": "False Dilemma" }
+    ],
+    "correctOption": "B",
+    "explanation": "Argumentum Ad Hominem (against the person) is a fallacy where someone rejects an argument by attacking the opponent's background, character, or circumstances rather than the validity of their claims."
+  },
+  {
+    "id": "logic-ju-2025-final-02",
+    "university": "Jimma University",
+    "universityShort": "JU",
+    "year": 2025,
+    "examType": "Final Exam",
+    "course": "Critical Thinking & Logic",
+    "courseCode": "LoCT 1011",
+    "department": "Common Course",
+    "question": "In categorical propositions, which proposition form represents 'Universal Negative' (No S is P)?",
+    "options": [
+      { "id": "A", "text": "A Proposition" },
+      { "id": "B", "text": "E Proposition" },
+      { "id": "C", "text": "I Proposition" },
+      { "id": "D", "text": "O Proposition" }
+    ],
+    "correctOption": "B",
+    "explanation": "In standard traditional logic: A = Universal Affirmative (All S is P), E = Universal Negative (No S is P), I = Particular Affirmative (Some S is P), O = Particular Negative (Some S is not P)."
+  },
+  {
+    "id": "eng-astu-2024-mid-01",
+    "university": "Adama Science and Technology University",
+    "universityShort": "ASTU",
+    "year": 2024,
+    "examType": "Mid Exam",
+    "course": "Communicative English",
+    "courseCode": "EnLa 1011",
+    "department": "Common Course",
+    "question": "Identify the sentence that correctly uses the Present Perfect Continuous tense:",
+    "options": [
+      { "id": "A", "text": "She is studying in the library since 8:00 AM." },
+      { "id": "B", "text": "She has been studying in the library since 8:00 AM." },
+      { "id": "C", "text": "She had studied in the library since 8:00 AM." },
+      { "id": "D", "text": "She was studying in the library since 8:00 AM." }
+    ],
+    "correctOption": "B",
+    "explanation": "Actions that started in the past and continue into the present require Present Perfect Continuous (has/have + been + verb-ing) alongside time indicators like 'since'."
+  },
+  {
+    "id": "emtech-haw-2025-final-01",
+    "university": "Hawassa University",
+    "universityShort": "HU-Haw",
+    "year": 2025,
+    "examType": "Final Exam",
+    "course": "Emerging Technologies",
+    "courseCode": "EmTe 1012",
+    "department": "Common Course",
+    "question": "Which of the following is considered the core foundational pillar of the Fourth Industrial Revolution (Industry 4.0)?",
+    "options": [
+      { "id": "A", "text": "Steam Power & Mechanization" },
+      { "id": "B", "text": "Assembly lines & Electrical Power" },
+      { "id": "C", "text": "Cyber-Physical Systems, AI & IoT" },
+      { "id": "D", "text": "Analog Telecommunication Networks" }
+    ],
+    "correctOption": "C",
+    "explanation": "Industry 4.0 merges physical, digital, and biological worlds through Cyber-Physical Systems, Artificial Intelligence, IoT, Cloud Computing, and Big Data."
+  },
+  {
+    "id": "emtech-bdu-2025-mid-01",
+    "university": "Bahir Dar University",
+    "universityShort": "BDU",
+    "year": 2025,
+    "examType": "Mid Exam",
+    "course": "Emerging Technologies",
+    "courseCode": "EmTe 1012",
+    "department": "Common Course",
+    "question": "In Cloud Computing architectures, what service model provides users with ready-to-use software applications hosted on the cloud (e.g., Google Workspace, Microsoft 365)?",
+    "options": [
+      { "id": "A", "text": "IaaS (Infrastructure as a Service)" },
+      { "id": "B", "text": "PaaS (Platform as a Service)" },
+      { "id": "C", "text": "SaaS (Software as a Service)" },
+      { "id": "D", "text": "BaaS (Backend as a Service)" }
+    ],
+    "correctOption": "C",
+    "explanation": "SaaS delivers fully functional software over the internet directly to end users without requiring infrastructure or runtime management."
+  },
+  {
+    "id": "psych-aastu-2024-final-01",
+    "university": "Addis Ababa Science and Technology University",
+    "universityShort": "AASTU",
+    "year": 2024,
+    "examType": "Final Exam",
+    "course": "General Psychology",
+    "courseCode": "Psyc 1011",
+    "department": "Common Course",
+    "question": "In Pavlov's classical conditioning experiment, the salivation of dogs upon hearing the bell after conditioning is classified as the:",
+    "options": [
+      { "id": "A", "text": "Unconditioned Stimulus (UCS)" },
+      { "id": "B", "text": "Conditioned Stimulus (CS)" },
+      { "id": "C", "text": "Conditioned Response (CR)" },
+      { "id": "D", "text": "Unconditioned Response (UCR)" }
+    ],
+    "correctOption": "C",
+    "explanation": "The salivation in response to the bell (a learned stimulus) is a Conditioned Response (CR). The bell is the Conditioned Stimulus (CS)."
+  },
+  {
+    "id": "phys-ju-2025-final-01",
+    "university": "Jimma University",
+    "universityShort": "JU",
+    "year": 2025,
+    "examType": "Final Exam",
+    "course": "General Physics",
+    "courseCode": "Phys 1011",
+    "department": "Natural Science",
+    "question": "Two charges +4 µC and +9 µC are placed in vacuum separated by a distance of 0.3 m. What is the electrostatic force between them? (k = 9 × 10⁹ N·m²/C²)",
+    "options": [
+      { "id": "A", "text": "3.6 N" },
+      { "id": "B", "text": "36 N" },
+      { "id": "C", "text": "360 N" },
+      { "id": "D", "text": "0.36 N" }
+    ],
+    "correctOption": "A",
+    "explanation": "Coulomb's law: F = k·|q1·q2| / r² = (9 × 10⁹ × 4 × 10⁻⁶ × 9 × 10⁻⁶) / (0.3)² = (324 × 10⁻³) / 0.09 = 3.6 N."
+  },
+  {
+    "id": "math-aau-2026-model-01",
+    "university": "Addis Ababa University",
+    "universityShort": "AAU",
+    "year": 2026,
+    "examType": "Model Exam",
+    "course": "Mathematics for Natural Science",
+    "courseCode": "Math 1011",
+    "department": "Natural Science",
+    "question": "Evaluate the definite integral ∫ (from 0 to 2) (3x² + 2x) dx:",
+    "options": [
+      { "id": "A", "text": "10" },
+      { "id": "B", "text": "12" },
+      { "id": "C", "text": "14" },
+      { "id": "D", "text": "16" }
+    ],
+    "correctOption": "B",
+    "explanation": "Antiderivative: [x³ + x²] from 0 to 2 = (2³ + 2²) - (0 + 0) = 8 + 4 = 12."
+  },
+  {
+    "id": "geo-hu-2025-mid-01",
+    "university": "Haramaya University",
+    "universityShort": "HU",
+    "year": 2025,
+    "examType": "Mid Exam",
+    "course": "Geography of Ethiopia & the Horn",
+    "courseCode": "GeES 1011",
+    "department": "Common Course",
+    "question": "Which of the following physiographic regions covers the largest portion of Ethiopia's total land area?",
+    "options": [
+      { "id": "A", "text": "The Western Highlands and Lowlands" },
+      { "id": "B", "text": "The South-Eastern Highlands and Lowlands" },
+      { "id": "C", "text": "The Main Ethiopian Rift Valley" },
+      { "id": "D", "text": "The Afar Depression" }
+    ],
+    "correctOption": "A",
+    "explanation": "The Western Highlands and Lowlands constitute approximately 43-44% of the country's total landmass, forming the largest physiographic unit."
+  },
+  {
+    "id": "logic-astu-2026-mid-01",
+    "university": "Adama Science and Technology University",
+    "universityShort": "ASTU",
+    "year": 2026,
+    "examType": "Mid Exam",
+    "course": "Critical Thinking & Logic",
+    "courseCode": "LoCT 1011",
+    "department": "Common Course",
+    "question": "If an argument is valid and all its premises are factually true, the argument is classified as:",
+    "options": [
+      { "id": "A", "text": "Strong" },
+      { "id": "B", "text": "Sound" },
+      { "id": "C", "text": "Cogent" },
+      { "id": "D", "text": "Unsound" }
+    ],
+    "correctOption": "B",
+    "explanation": "In deductive logic, a Sound argument is a valid deductive argument whose premises are all actually true."
+  },
+  {
+    "id": "phys-bdu-2024-final-01",
+    "university": "Bahir Dar University",
+    "universityShort": "BDU",
+    "year": 2024,
+    "examType": "Final Exam",
+    "course": "General Physics",
+    "courseCode": "Phys 1011",
+    "department": "Natural Science",
+    "question": "A simple pendulum of length 1 meter oscillates under gravity (g = 9.8 m/s²). What is its period of oscillation T?",
+    "options": [
+      { "id": "A", "text": "1.01 s" },
+      { "id": "B", "text": "2.01 s" },
+      { "id": "C", "text": "3.14 s" },
+      { "id": "D", "text": "4.02 s" }
+    ],
+    "correctOption": "B",
+    "explanation": "Formula: T = 2π√(L/g) = 2π√(1 / 9.8) ≈ 2 × 3.1416 × 0.3194 ≈ 2.007 ≈ 2.01 s."
+  }
+]

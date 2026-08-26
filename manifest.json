@@ -1,0 +1,45 @@
+﻿{
+  "name": "Nanova - Ethiopian University Exam Hub",
+  "short_name": "Nanova",
+  "description": "Mobile-First PWA for Ethiopian university students. Past freshman mid/final exams, announcements & offline study engine.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090D16",
+  "theme_color": "#059669",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icons/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Freshman Exams",
+      "short_name": "Exams",
+      "description": "Practice university past exams",
+      "url": "./index.html#exams"
+    },
+    {
+      "name": "Campus Announcements",
+      "short_name": "News",
+      "description": "Read university updates and schedules",
+      "url": "./index.html#announcements"
+    }
+  ]
+}

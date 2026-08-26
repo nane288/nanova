@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Nanova - Ethiopian University Freshman Exam Hub</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#059669" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Nanova" />
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
+  <link rel="apple-touch-icon" href="icons/icon-192.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              emerald: '#10B981',
+              darkgreen: '#064E3B',
+              gold: '#F59E0B',
+              darkgold: '#B45309',
+              dark: '#090D16',
+              card: '#0F172A',
+              cardHover: '#1E293B',
+              surface: '#131E32',
+              red: '#EF4444'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-brand-dark text-slate-100 flex flex-col min-h-screen">
+  <div id="offlineBanner" class="hidden bg-gradient-to-r from-amber-600 to-amber-700 text-white text-xs font-semibold px-4 py-1.5 flex items-center justify-between">
+    <div class="flex items-center space-x-2">
+      <i data-lucide="wifi-off" class="w-4 h-4"></i>
+      <span id="offlineBannerText">Offline Mode Active: Using IndexedDB cached exams</span>
+    </div>
+    <span class="bg-amber-900/60 px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider">Zero-Data</span>
+  </div>
+  <div id="installBanner" class="hidden bg-slate-900/95 border-b border-emerald-500/30 px-4 py-2.5 flex items-center justify-between text-xs z-30">
+    <div class="flex items-center space-x-3">
+      <img src="icons/favicon.svg" alt="Nanova" class="w-6 h-6 rounded-md" />
+      <div>
+        <p class="font-bold text-emerald-400" data-i18n="install_title">Install Nanova PWA</p>
+        <p class="text-slate-400 text-[11px]" data-i18n="install_subtitle">Fast offline exam access on your home screen</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-2">
+      <button id="dismissInstallBtn" class="text-slate-400 hover:text-slate-200 px-2 py-1">Later</button>
+      <button id="installAppBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg shadow-sm">Install</button>
+    </div>
+  </div>
+  <header class="sticky top-0 z-40 glass-panel border-b border-slate-800/80 px-4 py-3">
+    <div class="max-w-4ll mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="NanovaApp.switchTab('exams')">
+        <div class="relative w-10 h-10 rounded-x1 bg-gradient-to-br from-emerald-600 to-emerald-900 flex items-center justify-center shadow-lg border border-emerald-400/30">
+          <i data-lucide="graduation-cap" class="w-6 h-6 text-amber-300"></i>
+          <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-slate-900 flex items-center justify-center">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+          </span>
+        </div>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <h1 class="text-lg font-black tracking-tight eth-gradient-text">NANOVA</h1>
+            <span id="headerPremiumBadge" class="hidden px-1.5 py-0.2 text-[9px] font-black uppercase tracking-wider rounded bg-amber-400 text-slate-950">PRO</span>
+          </div>
+          <p class="text-[11px] text-slate-400 font-medium leading-none" data-i18n="tagline">Ethiopian Freshman Hub</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <div id="netStatusIndicator" class="hidden sm:flex items-center space-x-1.5 bg-slate-800/80 border border-slate-700 px-2.5 py-1 rounded-full text-xs font-medium text-slate-300">
+          <span id="netStatusDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span id="netStatusText">Online</span>
+        </div>
+        <div class="relative">
+          <select id="langSelect" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg px-2 py-1.5 text-xs font-medium focus:outline-none focus:ring-1 focus:ring-emerald-500 transition cursor-pointer">
+            <option value="en">English (EN)</option>
+            <option value="om">Afaan Oromoo (OM)</option>
+            <option value="am">áŠ áˆ›áˆ­áˆŸ (AM)</option>
+          </select>
+        </div>
+        <button id="profileAvatarBtn" class="flex items-center space-x-1.5 bg-slate-800/90 hover:bg-slate-700 border border-slate-700/80 rounded-lg p-1.5 text-xs transition" title="Edit Profile">
+          <div class="w-6 h-6 rounded-full bg-emerald-700 flex items-center justify-center text-[11px] font-bold text-white uppercase" id="userAvatarInitial">HU</div>
+        </button>
+      </div>
+    </div>
+  </header>
+  <main class="flex-1 max-w-4ll w-full mx-auto px-4 py-4 mb-20">
+    <div class="mb-5 rounded-2xl bg-gradient-to-r from-slate-900 via-emerald-950/40 to-slate-900 border border-emerald-500/20 p-4 sm:p-5 shadow-xl relative overflow-hidden">
+      <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-10">
+        <div>
+          <div class="flex items-center space-x-2 mb-1">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5"></span>
+              <span id="userUniversityBadge">Haramaya University</span>
+            </span>
+            <span class="text-[10px] text-slate-400" id="userStreamBadge">Natural Science â€¢ 2026</span>
+          </div>
+          <h2 class="text-base sm:text-lg font-bold text-white">
+            <span data-i18n="greeting">Welcome back,</span> <span id="userNameDisplay" class="text-emerald-400">Freshman Scholar</span> ðŸ‘‹
+          </h2>
+          <p class="text-xs text-slate-400 mt-0.5" data-i18n="hero_subtitle">
+            Zero-data cached past mid & final exams with instant grading & step explanations.
+          </p>
+        </div>
+        <div class="flex items-center space-x-3 bg-slate-950/60 border border-slate-800 rounded-xl p-2.5 sm:px-4">
+          <div class="text-center">
+            <span class="text-[10px] font-semibold text-slate-400 block" data-i18n="questions_practiced">Questions</span>
+            <div class="flex items-baseline space-x-1 justify-center">
+              <span id="answeredCountText" class="text-base font-black text-emerald-400">0</span>
+              <span id="answeredLimitText" class="text-[11px] text-slate-500 font-bold">/ 10 Free</span>
+            </div>
+          </div>
+          <div class="h-7 w[-1px] bg-slate-800"></div>
+          <button id="upgradeBtn" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs px-3 py-2 rounded-lg shadow-md flex items-center space-x-1.5 transition">
+            <i data-lucide="zap" class="w-3.5 h-3.5 fill-current"></i>
+            <span id="upgradeBtnText">50 ETB Pro</span>
+          </button>
+        </div>
+      </div>
+      <div id="freemiumProgressBarContainer" class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+        <div class="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden mr-3">
+          <div id="freemiumProgressFill" class="bg-gradient-to-r from-emerald-500 to-amber-500 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <span id="freeRemainingLabel" class="whitespace-nowrap font-medium text-[10px]">10 left</span>
+      </div>
+    </div>
+    <div id="tab-exams" class="tab-content active space-y-4">
+      <div class="glass-panel rounded-2xl p-4 border border-slate-800 space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="sliders-horizontal" class="w-4 h-4 text-emerald-400"></i>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300" data-i18n="filter_title">Multi-Row Exam Filters</h3>
+          </div>
+          <button id="resetFiltersBtn" class="text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold" data-i18n="reset_filters">Reset All</button>
+        </div>
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-3 text-slate-400"></i>
+          <input type="text" id="examSearchInput" placeholder="Search by topic, formula, or question keyword..." class="w-full bg-slate-900/90 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-emerald-500" />
+        </div>
+        <div>
+          <label class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5 block" data-i18n="filter_university">1. University Campus</label>
+          <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 mobile-hide-scrollbar" id="universityFilterRow">
+            <button class="filter-chip active px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="ALL" data-i18n="all_campuses">All Campuses</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="Addis Ababa University">AAU</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="Haramaya University">Haramaya</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="Jimma University">Jimma</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="Hawassa University">Hawassa</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="Bahir Dar University">Bahir Dar</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="Adama Science and Technology University">ASTU</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-univ="Addis Ababa Science and Technology University">AASTU</button>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-slate-800">
+          <div>
+            <label class="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1.5 block" data-i18n="filter_year">2. Academic Year</label>
+            <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 mobile-hide-scrollbar" id="yearFilterRow">
+              <button class="filter-chip active px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-year="ALL">All</button>
+              <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-year="2026">2026 (New)</button>
+              <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-year="2025">2025</button>
+              <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-year="2024">2024</button>
+            </div>
+          </div>
+          <div>
+            <label class="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1.5 block" data-i18n="filter_exam_type">3. Exam Type</label>
+            <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 mobile-hide-scrollbar" id="typeFilterRow">
+              <button class="filter-chip active px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-type="ALL">All Types</button>
+              <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-type="Mid Exam">Mid Exam</button>
+              <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-type="Final Exam">Final Exam</button>
+              <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-type="Model Exam">Model</button>
+            </div>
+          </div>
+        </div>
+        <div class="pt-1 border-t border-slate-800">
+          <label class="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1.5 block" data-i18n="filter_course">4. Freshman Course Subject</label>
+          <div class="flex items-center space-x-1.5 overflow-x-auto pb-1 mobile-hide-scrollbar" id="courseFilterRow">
+            <button class="filter-chip active px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="ALL" data-i18n="all_courses">All Courses</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="General Physics">General Physics</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="Mathematics for Natural Science">Applied Maths</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="Critical Thinking & Logic">Logic</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="Communicative English">English</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="Emerging Technologies">Emerging Tech</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="General Psychology">Psychology</button>
+            <button class="filter-chip px-3 py-1 rounded-full text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700" data-course="Geography of Ethiopia & the Horn">Geography</button>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between px-1">
+        <div class="flex items-center space-x-2">
+          <span class="text-xs font-bold text-slate-300" id="examCountDisplay">Showing 15 Questions</span>
+          <span class="px-2 py-0.5 rounded bg-slate-800 text-[10px] text-emerald-400 font-bold border border-slate-700">IndexedDB Cached</span>
+        </div>
+        <button id="startAllQuizBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-1.5 rounded-lg shadow flex items-center space-x-1.5 transition">
+          <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+          <span data-i18n="start_session">Start Practice Session</span>
+        </button>
+      </div>
+      <div id="examCardsContainer" class="space-y-3"></div>
+    </div>
+    <div id="tab-announcements" class="tab-content space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center space-x-2">
+            <i data-lucide="megaphone" class="w-5  h-5 text-amber-400"></i>
+            <span data-i18n="announcements_title">Campus Feed & Ministry News</span>
+          </h3>
+          <p class="text-xs text-slate-400" data-i18n="announcements_subtitle">Supabase live sync with offline IndexedDB storage</p>
+        </div>
+        <button id="syncAnnouncementsBtn" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1.5">
+          <i data-lucide="refresh-cw" class="w-3.5 h-3.5" id="syncIcon"></i>
+          <span data-i18n="sync_feed">Sync</span>
+        </button>
+      </div>
+      <div id="announcementsList" class="space-y-3"></div>
+    </div>
+    <div id="tab-profile" class="tab-content space-y-4">
+      <div class="glass-panel rounded-2xl p-5 border border-slate-800 space-y-4">
+        <h3 class="text-base font-bold text-white flex items-center space-x-2">
+          <i data-lucide="user-check" class="w-5 h-5 text-emerald-400"></i>
+          <span data-i18n="student_profile">Freshman Student Profile</span>
+        </h3>
+        <form id="profileForm" class="space-y-4">
+          <div>
+            <label class="text-xs font-bold text-slate-300 block mb-1" data-i18n="full_name">Full Name</label>
+            <input type="text" id="profileFullNameInput" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:ring-1 focus:ring-emerald-500" required />
+          </div>
+          <div>
+            <label class="text-xs font-bold text-slate-300 block mb-1" data-i18n="select_university">University</label>
+            <select id="profileUniversitySelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+              <option value="Haramaya University">Haramaya University (HU)</option>
+              <option value="Addis Ababa University">Addis Ababa University (AAU)</option>
+              <option value="Jimma University">Jimma University (JU)</option>
+              <option value="Hawassa University">Hawassa University (HU)</option>
+              <option value="Bahir Dar University">Bahir Dar University (BDU)</option>
+              <option value="Adama Science and Technology University">Adama Science & Tech (ASTU)</option>
+              <option value="Addis Ababa Science and Technology University">AASTU</option>
+            </select>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="text-xs font-bold text-slate-300 block mb-1" data-i18n="stream">Stream</label>
+              <select id="profileStreamSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                <option value="Natural Science">Natural Science</option>
+                <option value="Social Science">Social Science</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-xs font-bold text-slate-300 block mb-1" data-i18n="academic_year">Year</label>
+              <select id="profileYearSelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl text-xs shadow-md" data-i18n="save_profile">Save Profile</button>
+        </form>
+      </div>
+      <div class="glass-panel rounded-2xl p-4 border border-slate-800 space-y-3">
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+          <i data-lucide="hard-drive" class="w-4 h-4 text-emerald-400"></i>
+          <span data-i18n="offline_storage">IndexedDB Offline Storage</span>
+        </h4>
+        <p class="text-xs text-slate-400" data-i18n="storage_desc">Exams and announcements are automatically saved for zero-data offline studying.</p>
+        <div class="flex items-center justify-between pt-2 border-t border-slate-800">
+          <button id="clearCacheBtn" class="text-xs font-bold text-red-400" data-i18n="reset_cache">Reset Cache</button>
+          <button id="forceReloadDataBtn" class="text-xs font-bold text-emerald-400" data-i18n="reseed_data">Re-fetch Data</button>
+        </div>
+      </div>
+    </div>
+    <div id="tab-admin" class="tab-content space-y-4">
+      <div id="adminLockedState" class="glass-panel rounded-2xl p-6 border border-slate-800 text-center space-y-4">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400">
+          <i data-lucide="shield-alert" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-white" data-i18n="admin_restricted">Admin Portal Access</h3>
+          <p class="text-xs text-slate-400 mt-1" data-i18n="admin_hint">Enter passkey to publish campus announcements & manage API endpoints.</p>
+        </div>
+        <form id="adminLoginForm" class="max-w-xs mx-auto space-y-3">
+          <input type="password" id="adminPasskeyInput" placeholder="Enter passkey (e.g. nanova2026)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white text-center" required />
+          <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black py-2 rounded-xl text-xs shadow">Unlock Admin Panel</button>
+        </form>
+      </div>
+      <div id="adminUnlockedState" class="hidden space-y-4">
+        <div class="flex items-center justify-between bg-slate-900/90 border border-emerald-500/30 p-4 rounded-2xl">
+          <div class="flex items-center space-x-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <div>
+              <h3 class="text-sm font-bold text-white" data-i18n="admin_authenticated">Admin Mode: Active</h3>
+              <p class="text-[11px] text-slate-400">Supabase Live Publisher & Exam Auditor</p>
+            </div>
+          </div>
+          <button id="adminLogoutBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs px-3 py-1 rounded-lg border border-slate-700">Lock</button>
+        </div>
+        <div class="glass-panel rounded-2xl p-4 border border-slate-800 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+            <i data-lucide="database" class="w-4 h-4 text-emerald-400"></i>
+            <span>Supabase API Configuration</span>
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div>
+              <label class="text-[10px] text-slate-400 font-bold block mb-1">Supabase REST Endpoint</label>
+              <input type="text" id="supabaseUrlInput" placeholder="https://xyz.supabase.co/rest/v1" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white" />
+            </div>
+            <div>
+              <label class="text-[10px] text-slate-400 font-bold block mb-1">Anon / Service Key</label>
+              <input type="password" id="supabaseKeyInput" placeholder="eyJhbGciOi..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white" />
+            </div>
+          </div>
+          <button id="saveSupabaseConfigBtn" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded text-xs font-semibold">Save Endpoint Keys</button>
+        </div>
+        <div class="glass-panel rounded-2xl p-4 border border-slate-800 space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center space-x-2">
+            <i data-lucide="send" class="w-4 h-4 text-amber-400"></i>
+            <span>Publish New Campus Update</span>
+          </h4>
+          <form id="publishAnnouncementForm" class="space-y-3">
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 block mb-1">Headline / Title</label>
+              <input type="text" id="annTitleInput" placeholder="e.g., Sidist Kilo Calculus Mid-Term Rescheduled" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" required />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div>
+                <label class="text-[10px] font-bold text-slate-400 block mb-1">Target Campus</label>
+                <select id="annUniversitySelect" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-2 text-xs text-white">
+                  <option value="All Universities">All Universities (MoE)</option>
+                  <option value="Haramaya University">Haramaya University</option>
+                  <option value="Addis Ababa University">Addis Ababa University</option>
+                  <option value="Jimma University">Jimma University</option>
+                  <option value="Hawassa University">Hawassa University</option>
+                  <option value="Bahir Dar University">Bahir Dar University</option>
+                  <option value="ASTU">ASTU</option>
+                  <option value="AASTU">AASTU</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-[10px] font-bold text-slate-400 block mb-1">Category</label>
+                <select id="annCategorySelect" class=(Èµ™Õ±°‰œµÍ±…Ñ”´äÀÀ‰½É‘•È‰½É‘•ÈµÍ±…Ñ”´ÜÀÀÉ½Õ¹‘•µá°Áà´È¸ÔÁä´ÈÑ•áÐµáÌÑ•áÐµÝ¡¥Ñ”ˆø(€€€€€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰…‘•µ¥Œˆù…‘•µ¥Œá…´ð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰QÕÑ½É¥…°ˆùQÕÑ½É¥…°€¼MÑÕ‘äð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰…µÁÕÌ1¥™”ˆù…µÁÕÌ1¥™”ð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰M•ÉÙ¥•ÌˆùMÑÕ‘•¹ÐM•ÉÙ¥•Ìð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰µ•É•¹äˆùUÉ•¹Ð9½Ñ¥”ð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€€€ð½Í•±•Ðø(€€€€€€€€€€€€€€ð½‘¥Øø(€€€€€€€€€€€€€€ñ‘¥Øø(€€€€€€€€€€€€€€€€ñ±…‰•°±…ÍÌô‰Ñ•áÐµlÄÁÁát™½¹Ðµ‰½±Ñ•áÐµÍ±…Ñ”´ÐÀÀ‰±½¬µˆ´ÄˆùÕÑ¡½ÈQ¥Ñ±”ð½±…‰•°ø(€€€€€€€€€€€€€€€€ñ¥¹ÁÕÐÑåÁ”ô‰Ñ•áÐˆ¥ô‰…¹¹ÕÑ¡½É%¹ÁÕÐˆÙ…±Õ”ô‰É•Í¡µ…¸¥É•Ñ½É…Ñ”ˆ±…ÍÌô¢w"ÖgVÆÂ&r×6ÆFRÓ“&÷&FW"&÷&FW"×6ÆFRÓs&÷VæFVB×†Â‚Ó"ãR’Ó"FW‡B×‡2FW‡B×v†—FR"óà¢ÂöF—cà¢ÂöF—cà¢ÆF—cà¢ÆÆ&VÂ6Æ73Ò'FW‡BÕ³…ÒföçBÖ&Æ6²FW‡B×6ÆFRÓC&Æö6²Ö"Ó#äææ÷Væ6VÖVçB&öG“ÂöÆ&VÃà¢ÇFW‡F&V–CÒ&æä6öçFVçD–çWB"&÷w3Ò#2"Æ6V†öÆFW#Ò%&÷f–FRgVÆÂFWF–Ç2f÷"g&W6†Öâ7GVFVçG2âââ"6Æ73Ò'rÖgVÆÂ&r×6ÆFRÓ“&÷&FW"&÷&FW"×6ÆFRÓs&÷VæFVB×†Â‚Ó2’Ó"FW‡B×‡2FW‡B×v†—FR"&WV—&VCãÂ÷FW‡F&Và¢ÂöF—cà¢ÆF—b6Æ73Ò&fÆW‚—FV×2Ö6VçFW"76R×‚Ó"#à¢Æ–çWBG—SÒ&6†V6¶&÷‚"–CÒ&æå–ææVD6†V6¶&÷‚"6Æ73Ò'&÷VæFVB&r×6ÆFRÓ“&÷&FW"×6ÆFRÓsFW‡BÖVÖW&ÆBÓS"óà¢ÆÆ&VÂf÷#Ò&æå–ææVD6†V6¶&÷‚"6Æ73Ò'FW‡B×‡2FW‡B×6ÆFRÓ3#å–âFòF÷öbfVVB„†–v‚&–÷&—G’“ÂöÆ&VÃà¢ÂöF—cà¢Æ'WGFöâG—SÒ'7V&Ö—B"6Æ73Ò'rÖgVÆÂ&rÖw&F–VçB×Fò×"g&öÒÖVÖW&ÆBÓcFòÖVÖW&ÆBÓsFW‡B×v†—FRföçBÖ&öÆB’Ó"ãR&÷VæFVB×†ÂFW‡B×‡26†F÷rfÆW‚—FV×2Ö6VçFW"§W7F–g’Ö6VçFW"76R×‚Ó"#à¢Æ’FFÖÇV6–FSÒ'WÆöBÖ6Æ÷VB"6Æ73Ò'rÓB‚ÓB#ãÂö“à¢Ç7ãä'&öF67Bb7F÷&R–âFF&6SÂ÷7ãà¢Âö'WGFöãà¢Âöf÷&Óà¢ÂöF—cà¢ÂöF—cà¢ÂöF—cà¢ÂöÖ–ãà     <div id="quizModal" class="fixed inset-0 z-50 glass-modal hidden flex flex-col justify-between p-4 sm:p-6 overflow-y-auto">
+      <div class="max-w-2xl"w-full mx-auto flex-1 flex flex-col justify-between">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400" id="quizCourseBadge">General Physics (Phys 1011)</span>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-semibold text-slate-300" id="quizUnivBadge">Addis Ababa University â€¢ 2024</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-1.5 bg-slate-900/90 border border-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold text-amber-300">
+              <i data-lucide="timer" class="w-4 h-4 animate-pulse"></i>
+              <span id="quizTimerDisplay">01:30</span>
+            </div>
+            <button id="exitQuizBtn" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+        <div class="my-3">
+          <div class="flex justify-between text-[11px] font-semibold text-slate-400 mb-1">
+            <span>Question <span id="currentQIndexDisplay" class="text-emerald-400">1</span> of <span id="totalQCountDisplay">15</span></span>
+            <span id="quizScoreTracker">Score: 0</span>
+          </div>
+          <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+            <div id="quizModalProgressFill" class="bg-gradient-to-r from-emerald-500 to-amber-500 h-full" style="width: 10%"></div>
+          </div>
+        </div>
+        <div class="glass-panel rounded-2xl p-5 border border-slate-800/80 my-auto shadow-2xl space-y-4">
+          <div class="flex items-start space-x-3">
+            <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 font-black text-xs flex items-center justify-center shrink-0 border border-emerald-500/30" id="qBadgeNum">Q1</span>
+            <p class="text-sm sm:text-base font-semibold text-white leading-relaxed" id="quizQuestionText">Loading question...</p>
+          </div>
+          <div class="space-y-2.5 pt-2" id="quizOptionsContainer"></div>
+          <div id="quizExplanationBox" class="hidden rounded-xl bg-slate-900/95 border border-emerald-500/40 p-4 space-y-1.5">
+            <div class="flex items-center space-x-2 text-xs font-bold text-emerald-400">
+              <i data-lucide="lightbulb" class="w-4 h-4"></i>
+              <span data-i18n="step_explanation">Step-by-Step Solution & Concept</span>
+            </div>
+            <p class="text-xs text-slate-300" id="quizUxplanationText"></p>
+          </div>
+        </div>
+        <div class="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+          <button id="quizPrevBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-2.5 rounded-xl text-xs flex items-center space-x-1.5">
+            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+            <span data-i18n="prev_q">Previous</span>
+          </button>
+          <button id="quizNextBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow-lg flex items-center space-x-1.5">
+            <span id="quizNextBtnText" data-i18n="next_q">Next Question</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="paywallModal" class="fixed inset-0 z-50 glass-modal hidden flex items-center justify-center p-4">
+      <div class="max-w-md w-full glass-panel rounded-3xl p-6 border border-amber-500/40 shadow-2xl relative space-y-4">
+        <button id="closePaywallBtn" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div class="text-center space-y-2 pt-2">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center mx-auto shadow-xl border border-amber-300">
+            <i data-lucide="crown" class="w-8 h-8 text-slate-950"></i>
+          </div>
+          <span class="inline-block px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/30">
+            Freemium Limit Reached (10/10)
+          </span>
+          <h3 class="text-lw font-black text-white" data-i18n="paywall_title">Unlock Unlimited Freshman Exams</h3>
+          <p class="text-xs text-slate-300" data-i18n="paywall_subtitle">
+            You've completed your 10 free trial questions. Unlock all past exams across AAU, Haramaya, Jimma, and ASTU with 100% offline access.
+          </p>
+        </div>
+        <div class="bg-gradient-to-r from-slate-900 to-emerald-950/60 border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-emerald-400">One-Time Lifetime Access</span>
+            <h4 class="text-2xl font-black text-white">50 ETB <span class="text-xs text-slate-400 font-medium">/ forever</span></h4>
+          </div>
+          <span class="bg-emerald-500/20 text-emerald-300 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/30">
+            Instant Activation
+          </span>
+        </div>
+        <div class="space-y-2">
+          <label class="text-xs font-bold text-slate-300 block" data-i18n="select_payment_method">Select Payment Method</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center space-x-2 bg-slate-900/90 border border-slate-700 p-3 rounded-xl cursor-pointer">
+              <input type="radio" name="paymentGateway" value="telebirr" checked class="text-emerald-500" />
+              <div>
+                <p class="text-xs font-bold text-white">Telebirr</p>
+                <p class="text-[10px] text-slate-400">Ethio Telecom</p>
+              </div>
+            </label>
+            <label class="flex items-center space-x-2 bg-slate-900/90 border border-slate-700 p-3 rounded-xl cursor-pointer">
+              <input type="radio" name="paymentGateway" value="chapa" class="text-emerald-500" />
+              <div>
+                <p class="text-xs font-bold text-white">Chapa</p>
+                <p class="text-[10px] text-slate-400">CBE Birr / Cards</p>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div>
+          <label class="text-xs font-bold text-slate-300 block mb-1">Ethiopian Mobile Number (09... / 07...)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2.5 text-xs text-slate-500 font-bold">+251</span>
+            <input type="tel" id="payPhoneInput" value="0911234567" class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-14 pr-3 py-2 text-xs text-white font-mono" />
+          </div>
+        </div>
+        <button id="payNowBtn" class="w-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 text-white font-black py-3 rounded-xl text-xs shadow-lg flex items-center justify-center space-x-2">
+          <i data-lucide="credit-card" class="w-4 h-4"></i>
+          <span id="payBtnLabel">Pay 50 ETB & Unlock All Exams</span>
+        </button>
+        <p class="text-[10px] text-center text-slate-500">100% secure simulated Ethiopian gateway</p>
+      </div>
+    </div>
+    <div id="profileModal" class="fixed inset-0 z-50 glass-modal hidden flex items-center justify-center p-4">
+      <div class="max-w-sm w-full glass-panel rounded-3xl p-5 border border-slate-700 shadow-2xl relative space-y-3">
+        <button id="closeProfileModalBtn" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+          <i data-lucide="user" class="w-4 h-4 text-emerald-400"></i>
+          <span>Edit Student Profile</span>
+        </h3>
+        <div class="space-y-3 pt-1">
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 block mb-1">Student Name</label>
+            <input type="text" id="quickNameInput" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" />
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 block mb-1">Your University</label>
+            <select id="quickUnivSelect" class=(Èµ™Õ±°‰œµÍ±…Ñ”´äÀÀ‰½É‘•È‰½É‘•ÈµÍ±…Ñ”´ÜÀÀÉ½Õ¹‘•µá°Áà´È¸ÔÁä´ÈÑ•áÐµáÌÑ•áÐµÝ¡¥Ñ”ˆø(€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰!…É…µ…å„U¹¥Ù•ÉÍ¥Ñäˆù!…É…µ…å„U¹¥Ù•ÉÍ¥Ñäð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰‘‘¥Ì‰…‰„U¹¥Ù•ÉÍ¥Ñäˆù‘‘¥Ì‰…‰„U¹¥Ù•ÉÍ¥Ñäð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰)¥µµ„U¹¥Ù•ÉÍ¥Ñäˆù)¥µµ„U¹¥Ù•ÉÍ¥Ñäð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰!…Ý…ÍÍ„U¹¥Ù•ÉÍ¥Ñäˆù!…Ý…ÍÍ„U¹¥Ù•ÉÍ¥Ñäð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰	…¡¥È…ÈU¹¥Ù•ÉÍ¥Ñäˆù	…¡¥È…ÈU¹¥Ù•ÉÍ¥Ñäð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰‘…µ„M¥•¹”…¹Q•¡¹½±½äU¹¥Ù•ÉÍ¥ÑäˆùMQTð½½ÁÑ¥½¸ø(€€€€€€€€€€€€€€ñ½ÁÑ¥½¸Ù…±Õ”ô‰‘‘¥Ì‰…‰„M¥•¹”…¹Q•¡¹½±½äU¹¥Ù•ÉÍ¥ÑäˆùMQTð½½ÁÑ¥½¸ø(€€€€€€€€€€€€ð½Í•±•Ðø(€€€€€€€€€€ð½‘¥Øø(€€€€€€€€€€ñ‰ÕÑÑ½¸¥ô‰ÅÕ¥­M…Ù•AÉ½™¥±•	Ñ¸ˆ±…ÍÌô¢w"ÖgVÆÂ&rÖVÖW&ÆBÓc†÷fW#¦&rÖVÖW&ÆBÓSFW‡B×v†—FRföçBÖ&öÆB’Ó"&÷VæFVB×†ÂFW‡B×‡2#åWFFR&öf–ÆSÂö'WGFöãà¢ÂöF—cà¢ÂöF—cà¢ÂöF—cà¢Ææb6Æ73Ò&f—†VB&÷GFöÒÓÆVgBÓ&–v‡BÓ¢ÓCvÆ72×æVÂ&÷&FW"×B&÷&FW"×6ÆFRÓƒóƒ&÷GFöÒÖæb#à¢ÆF—b6Æ73Ò&Ö‚×rÖÖB×‚ÖWFòw&–Bw&–BÖ6öÇ2ÓB‚Ó"BÓ"#à¢Æ'WGFöâ6Æ73Ò&æb×F"Ö'Fâ7F—fRfÆW‚fÆW‚Ö6öÂ—FV×2Ö6VçFW"§W7F–g’Ö6VçFW"’ÓFW‡BÖVÖW&ÆBÓC"FF×F#Ò&W†×2#à¢Æ’FFÖÇV6–FSÒ&&öö²Ö÷Vâ"6Æ73Ò'rÓR‚ÓRÖ"ÓãR#ãÂö“à¢Ç7â6Æ73Ò'FW‡BÕ³…ÒföçBÖ&öÆB"FFÖ“†ãÒ&æeöW†×2#äW†×3Â÷7ãà¢Âö'WGFöãà¢Æ'WGFöâ6Æ73Ò&æb×F"Ö'FâfÆW‚fÆW‚Ö6öÂ—FV×2Ö6VçFW"§W7F–g’Ö6VçFW"’ÓFW‡B×6ÆFRÓC"FF×F#Ò&ææ÷Væ6VÖVçG2#à¢Æ’FFÖÇV6–FSÒ&&VÆÂ"6Æ73Ò'rÓR‚ÓRÖ"ÓãR#ãÂö“à¢Ç7â6Æ73Ò'FW‡BÕ³…ÒföçBÖ&öÆB"FFÖ“†ãÒ&æeöæWw2#äæWw3Â÷7ãà¢Âö'WGFöãà¢Æ'WGFöâ6Æ73Ò&æb×F"Ö'FâfÆW‚fÆW‚Ö6öÂ—FV×2Ö6VçFW"§W7F–g’Ö6VçFW"’ÓFW‡B×6ÆFRÓC"FF×F#Ò'&öf–ÆR#à¢Æ’FFÖÇV6–FSÒ'W6W""6Æ73Ò'rÓR‚ÓRÖ"ÓãR#ãÂö“à¢Ç7â6Æ73Ò'FW‡BÕ³…ÒföçBÖ&öÆB"FFÖ“†ãÒ&æe÷&öf–ÆR#å&öf–ÆSÂ÷7ãà¢Âö'WGFöãà¢Æ'WGFöâ6Æ73Ò&æb×F"Ö'FâfÆW‚fÆW‚Ö6öÂ—FV×2Ö6VçFW"§W7F–g’Ö6VçFW"’ÓFW‡B×6ÆFRÓC"FF×F#Ò&FÖ–â#à¢Æ’FFÖÇV6–FSÒ'6†–VÆB"6Æ73Ò'rÓR‚ÓRÖ"ÓãR#ãÂö“à¢Ç7â6Æ73Ò'FW‡BÕ³…ÒföçBÖ&öÆB"FFÖ“†ãÒ&æeöFÖ–â#äFÖ–ãÂ÷7ãà¢Âö'WGFöãà¢ÂöF—cà¢Âöæcà¢Ç67&—B7&3Ò&æ§2#ãÂ÷67&—Cà¢Ç67&—CæFö7VÖVçBæFDWfVçDÆ—7FVæW"‚tDôÔ6öçFVçDÆöFVBrÂ‚’Óâ²–b‡v–æF÷ræÇV6–FR’ÇV6–FRæ7&VFT–6öç2‚“²Ò“³Â÷67&—Cà£Âö&öG“à£Âö‡FÖÃà 
