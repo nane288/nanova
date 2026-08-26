@@ -150,7 +150,9 @@
   const State = {
     profile: { name: 'Adnan', university: 'Haramaya University', stream: 'Natural Science' },
     isAdmin: false,
+    adminEmails: ['adnanabduletif010@gmail.com', 'adnanabduletif010.agmail.com', 'adnanabduletif010', 'adnan'],
     adminPasskey: 'nanova2026',
+    adminProfile: { name: 'Adnan Abduletif', email: 'adnanabduletif010@gmail.com', title: 'Lead Campus Admin' },
     exams: [],
     questions: [],
     filteredQuestions: [],
@@ -229,30 +231,37 @@
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function promptAdminLogin() {
-    const pass = prompt('Enter Administrator Passkey to unlock post broadcast (Default: nanova2026):');
-    if (!pass) return;
+  function verifyAdminCredential(input) {
+    if (!input) return false;
+    const clean = input.trim().toLowerCase();
+    return clean === State.adminPasskey.toLowerCase() ||
+           State.adminEmails.some((email) => clean === email.toLowerCase() || clean.includes('adnanabduletif010'));
+  }
 
-    if (pass === State.adminPasskey) {
+  function promptAdminLogin() {
+    const input = prompt('Enter Admin Email (adnanabduletif010@gmail.com) or Passkey:');
+    if (!input) return;
+
+    if (verifyAdminCredential(input)) {
       State.isAdmin = true;
       localStorage.setItem('nanova_is_admin', 'true');
       updateAdminComposerUI();
-      alert('🛡️ Admin verified! You can now publish official campus announcements.');
+      alert('🛡️ Welcome Admin Adnan Abduletif (adnanabduletif010@gmail.com)! Admin mode unlocked.');
     } else {
-      alert('❌ Invalid admin passkey.');
+      alert('❌ Invalid admin credential.');
     }
   }
 
   function handleAdminLogin(e) {
     e.preventDefault();
-    const pass = document.getElementById('adminPasskeyInput')?.value;
-    if (pass === State.adminPasskey) {
+    const input = document.getElementById('adminPasskeyInput')?.value;
+    if (verifyAdminCredential(input)) {
       State.isAdmin = true;
       localStorage.setItem('nanova_is_admin', 'true');
       updateAdminComposerUI();
-      alert('🛡️ Admin Panel Unlocked!');
+      alert('🛡️ Admin Access Verified for adnanabduletif010@gmail.com!');
     } else {
-      alert('❌ Invalid admin passkey.');
+      alert('❌ Invalid admin credential.');
     }
   }
 
