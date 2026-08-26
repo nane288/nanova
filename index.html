@@ -58,12 +58,9 @@
           <i data-lucide="message-square" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Community</span>
         </button>
-        <button class="nav-link" data-tab="profile" onclick="NanovaApp.switchTab('profile')">
-          <i data-lucide="user" class="w-4 h-4"></i>
-          <span class="hidden sm:inline">Profile</span>
-        </button>
-        <button class="nav-link" data-tab="admin" onclick="NanovaApp.switchTab('admin')">
-          <i data-lucide="shield" class="w-4 h-4"></i>
+        <!-- Dynamic Admin-Only Tab (Hidden for students, shown only when admin logs in) -->
+        <button id="adminNavBtn" class="nav-link hidden" data-tab="admin" onclick="NanovaApp.switchTab('admin')">
+          <i data-lucide="shield-check" class="w-4 h-4 text-amber-400"></i>
           <span class="hidden sm:inline">Admin</span>
         </button>
       </nav>
@@ -543,7 +540,7 @@
           <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
             <i data-lucide="user-check" class="w-4 h-4"></i>
           </div>
-          <h3 id="authModalTitle" class="text-lg font-extrabold text-slate-900">Sign In to Nanova</h3>
+          <h3 id="authModalTitle" class="text-lg font-extrabold text-slate-900">Student & Admin Account</h3>
         </div>
         <button onclick="NanovaApp.closeAuthModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">
           <i data-lucide="x" class="w-5 h-5"></i>

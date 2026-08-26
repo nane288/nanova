@@ -338,7 +338,17 @@
   }
 
   function openAuthModal() {
-    document.getElementById('authModal')?.classList.remove('hidden');
+    if (State.currentUser || State.isAdmin) {
+      // If user is already logged in, switch to profile or show details
+      const email = State.currentUser?.email || State.profile.email || (State.isAdmin ? 'adnanabduletif010@gmail.com' : 'Student');
+      const role = State.isAdmin ? 'Lead Administrator' : 'Student';
+      const prompt = confirm('Logged in as: ' + email + ' (' + role + ')\n\nWould you like to Sign Out?');
+      if (prompt) {
+        firebaseSignOut();
+      }
+    } else {
+      document.getElementById('authModal')?.classList.remove('hidden');
+    }
   }
 
   function closeAuthModal() {
@@ -432,14 +442,17 @@
     const adminLockedBox = document.getElementById('adminLockedBox');
     const adminUnlockedBox = document.getElementById('adminUnlockedBox');
     const addUnivBtn = document.getElementById('addUnivBtn');
+    const adminNavBtn = document.getElementById('adminNavBtn');
 
     if (State.isAdmin) {
+      if (adminNavBtn) adminNavBtn.classList.remove('hidden');
       if (adminView) adminView.classList.remove('hidden');
       if (studentView) studentView.classList.add('hidden');
       if (adminLockedBox) adminLockedBox.classList.add('hidden');
       if (adminUnlockedBox) adminUnlockedBox.classList.remove('hidden');
       if (addUnivBtn) addUnivBtn.classList.remove('hidden');
     } else {
+      if (adminNavBtn) adminNavBtn.classList.add('hidden');
       if (adminView) adminView.classList.add('hidden');
       if (studentView) studentView.classList.remove('hidden');
       if (adminLockedBox) adminLockedBox.classList.remove('hidden');
