@@ -1,9 +1,37 @@
 /* ===================================================
-   NANOVA - Freshman Exam Board, Universities & Community
-   100% English Language - Storage-Friendly Embeds
+   NANOVA - Firebase Authentication & Offline App Engine
+   Firebase Project: nanova-st (nanova-st.firebaseapp.com)
    =================================================== */
 (() => {
   'use strict';
+
+  /* ── FIREBASE CONFIGURATION & INITIALIZATION ───────── */
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUKyTmsymb7T-ai2eYhcxcXSDSD4Tom58",
+    authDomain: "nanova-st.firebaseapp.com",
+    projectId: "nanova-st",
+    storageBucket: "nanova-st.firebasestorage.app",
+    messagingSenderId: "127653158506",
+    appId: "1:127653158506:web:921515de52ae2e380b3413",
+    measurementId: "G-YDF5Z7Y2SJ"
+  };
+
+  let firebaseAuth = null;
+  let googleProvider = null;
+
+  try {
+    if (window.firebase) {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+        try { firebase.analytics(); } catch {}
+      }
+      firebaseAuth = firebase.auth();
+      googleProvider = new firebase.auth.GoogleAuthProvider();
+      console.log('[Firebase] Initialized for project: nanova-st');
+    }
+  } catch (err) {
+    console.warn('[Firebase] Init notice:', err.message);
+  }
 
   /* ── INDEXEDDB PERSISTENCE ─────────────────────────── */
   const NanovaDB = {
@@ -213,6 +241,7 @@
   /* ── APPLICATION STATE ─────────────────────────────── */
   const State = {
     profile: { name: 'Adnan', university: 'Haramaya University', stream: 'Natural Science' },
+    currentUser: null,
     isAdmin: false,
     adminEmails: ['adnanabduletif010@gmail.com', 'adnanabduletif010.agmail.com', 'adnanabduletif010', 'adnan'],
     adminPasskey: 'nanova2026',
@@ -244,8 +273,9 @@
     renderCommunityPosts();
     updateAdminUI();
     updateCounterBadges();
+    initFirebaseAuthListener();
     if (window.lucide) window.lucide.createIcons();
-    console.log('[Nanova] 100% English Engine with Universities & YouTube Embeds');
+    console.log('[Nanova] 100% English Engine with Firebase Auth & Universities');
   }
 
   function loadSavedState() {
@@ -274,6 +304,125 @@
     const pUniv = document.getElementById('profileLargeUniv');
     if (pName) pName.textContent = State.profile.name;
     if (pUniv) pUniv.textContent = State.profile.university;
+  }
+
+  /* ── FIREBASE AUTHENTICATION FLOWS ─────────────────── */
+  let authMode = 'signin';
+
+  function initFirebaseAuthListener() {
+    if (!firebaseAuth) return;
+
+    firebaseAuth.onAuthStateChanged((user) => {
+      if (user) {
+        State.currentUser = user;
+        const email = (user.email || '').toLowerCase();
+        State.profile.name = user.displayName || email.split('@')[0] || 'Student';
+        State.profile.email = email;
+
+        if (email === 'adnanabduletif010@gmail.com' || email.includes('adnanabduletif010')) {
+          State.isAdmin = true;
+          localStorage.setItem('nanova_is_admin', 'true');
+        }
+
+        localStorage.setItem('nanova_profile', JSON.stringify(State.profile));
+        updateProfileUI();
+        updateAdminUI();
+        renderUniversities();
+        renderCommunityPosts();
+        console.log('[Firebase Auth] Logged in:', email, '| Admin:', State.isAdmin);
+      } else {
+        State.currentUser = null;
+        console.log('[Firebase Auth] Signed out state');
+      }
+    });
+  }
+
+  function openAuthModal() {
+    document.getElementById('authModal')?.classList.remove('hidden');
+  }
+
+  function closeAuthModal() {
+    document.getElementById('authModal')?.classList.add('hidden');
+  }
+
+  function toggleAuthMode() {
+    authMode = authMode === 'signin' ? 'signup' : 'signin';
+    const title = document.getElementById('authModalTitle');
+    const submitBtn = document.getElementById('authSubmitBtn');
+    const togglePrompt = document.getElementById('authTogglePrompt');
+    const toggleBtn = document.getElementById('authToggleBtn');
+
+    if (authMode === 'signup') {
+      if (title) title.textContent = 'Create Nanova Account';
+      if (submitBtn) submitBtn.textContent = 'Register Account';
+      if (togglePrompt) togglePrompt.textContent = 'Already have an account?';
+      if (toggleBtn) toggleBtn.textContent = 'Sign In';
+    } else {
+      if (title) title.textContent = 'Sign In to Nanova';
+      if (submitBtn) submitBtn.textContent = 'Sign In';
+      if (togglePrompt) togglePrompt.textContent = "Don't have an account?";
+      if (toggleBtn) toggleBtn.textContent = 'Create Account';
+    }
+  }
+
+  async function handleEmailAuth(e) {
+    e.preventDefault();
+    if (!firebaseAuth) {
+      alert('Firebase is initializing, please try again.');
+      return;
+    }
+
+    const email = document.getElementById('authEmailInput')?.value.trim();
+    const pass = document.getElementById('authPasswordInput')?.value;
+    const submitBtn = document.getElementById('authSubmitBtn');
+
+    if (!email || !pass) return;
+
+    if (submitBtn) { submitBtn.textContent = 'Authenticating...'; submitBtn.disabled = true; }
+
+    try {
+      if (authMode === 'signup') {
+        await firebaseAuth.createUserWithEmailAndPassword(email, pass);
+        alert('✅ Account registered successfully in Firebase!');
+      } else {
+        await firebaseAuth.signInWithEmailAndPassword(email, pass);
+        alert('✅ Signed in successfully via Firebase!');
+      }
+      closeAuthModal();
+    } catch (err) {
+      alert('❌ Firebase Auth: ' + err.message);
+    } finally {
+      if (submitBtn) {
+        submitBtn.textContent = authMode === 'signup' ? 'Register Account' : 'Sign In';
+        submitBtn.disabled = false;
+      }
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    if (!firebaseAuth || !googleProvider) {
+      alert('Google Auth initializing...');
+      return;
+    }
+    try {
+      await firebaseAuth.signInWithPopup(googleProvider);
+      alert('✅ Signed in with Google successfully!');
+      closeAuthModal();
+    } catch (err) {
+      alert('Google Sign-In notice: ' + err.message);
+    }
+  }
+
+  async function firebaseSignOut() {
+    if (firebaseAuth) {
+      await firebaseAuth.signOut();
+    }
+    State.isAdmin = false;
+    localStorage.removeItem('nanova_is_admin');
+    updateAdminUI();
+    renderUniversities();
+    renderCommunityPosts();
+    alert('Logged out of Firebase.');
   }
 
   /* ── ADMIN ACCESS CONTROLS ─────────────────────────── */
@@ -695,7 +844,7 @@
     return null;
   }
 
-  /* ── COMMUNITY FEED (ADMIN ONLY PUBLISH + YOUTUBE/IMAGE) ── */
+  /* ── COMMUNITY FEED ────────────────────────────────── */
   function renderCommunityPosts() {
     const container = document.getElementById('communityPostsContainer');
     if (!container) return;
@@ -726,12 +875,10 @@
 
         '<p class="text-slate-800 text-sm leading-relaxed mb-3">' + post.content + '</p>' +
 
-        /* Embedded YouTube Video */
         (embedVideoUrl ? '<div class="video-responsive-container">' +
           '<iframe src="' + embedVideoUrl + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>' +
         '</div>' : '') +
 
-        /* Embedded Image from URL */
         (hasImage ? '<img src="' + post.imageUrl + '" alt="Announcement Visual" class="post-embedded-image" onerror="this.style.display=\'none\'" />' : '') +
 
         '<div class="flex items-center space-x-4 pt-3 border-t border-slate-100">' +
@@ -876,10 +1023,6 @@
     }, 1500);
   }
 
-  function saveSupabaseConfig() {
-    alert('Supabase credentials saved locally.');
-  }
-
   function clearCacheAndReset() {
     if (confirm('Reset all cached exams and question progress?')) {
       localStorage.clear();
@@ -913,7 +1056,12 @@
     showPaywallModal,
     hidePaywallModal,
     processPayment,
-    saveSupabaseConfig,
+    openAuthModal,
+    closeAuthModal,
+    toggleAuthMode,
+    handleEmailAuth,
+    handleGoogleSignIn,
+    firebaseSignOut,
     clearCacheAndReset
   };
 
