@@ -1,6 +1,6 @@
 /* ===================================================
-   NANOVA - Freshman Exam Board & Community Feed Engine
-   100% English Language - Ethiopian University Freshman App
+   NANOVA - Freshman Exam Board, Universities & Community
+   100% English Language - Storage-Friendly Embeds
    =================================================== */
 (() => {
   'use strict';
@@ -8,7 +8,7 @@
   /* ── INDEXEDDB PERSISTENCE ─────────────────────────── */
   const NanovaDB = {
     dbName: 'NanovaBoardDB',
-    version: 2,
+    version: 3,
     db: null,
 
     async init() {
@@ -18,6 +18,7 @@
           const db = e.target.result;
           if (!db.objectStoreNames.contains('exams')) db.createObjectStore('exams', { keyPath: 'id' });
           if (!db.objectStoreNames.contains('posts')) db.createObjectStore('posts', { keyPath: 'id' });
+          if (!db.objectStoreNames.contains('universities')) db.createObjectStore('universities', { keyPath: 'id' });
         };
         req.onsuccess = (e) => { this.db = e.target.result; resolve(this.db); };
         req.onerror = (e) => reject(e.target.error);
@@ -44,7 +45,7 @@
     }
   };
 
-  /* ── DEFAULT DATA (ENGLISH ONLY) ───────────────────── */
+  /* ── DEFAULT DATA ──────────────────────────────────── */
   const DEFAULT_QUESTIONS = [
     {
       id: 'q1',
@@ -123,25 +124,88 @@
     }
   ];
 
+  const DEFAULT_UNIVERSITIES = [
+    {
+      id: 'univ_haramaya',
+      name: 'Haramaya University',
+      website: 'https://www.haramaya.edu.et',
+      telegram: 'https://t.me/HaramayaUniversityOfficial',
+      image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=80',
+      location: 'Dire Dawa / Harar, Ethiopia',
+      description: 'One of the oldest and most prestigious pioneer agricultural & science universities in Ethiopia.'
+    },
+    {
+      id: 'univ_aau',
+      name: 'Addis Ababa University',
+      website: 'http://www.aau.edu.et',
+      telegram: 'https://t.me/AddisAbabaUniversityOfficial',
+      image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80',
+      location: 'Addis Ababa, Ethiopia',
+      description: 'The flagship national higher education institution of Ethiopia, founded in 1950.'
+    },
+    {
+      id: 'univ_astu',
+      name: 'Adama Science & Technology University (ASTU)',
+      website: 'http://www.astu.edu.et',
+      telegram: 'https://t.me/ASTU_Official',
+      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&auto=format&fit=crop&q=80',
+      location: 'Adama (Nazret), Oromia, Ethiopia',
+      description: 'A center of excellence in applied science, technology, and engineering education.'
+    },
+    {
+      id: 'univ_jimma',
+      name: 'Jimma University',
+      website: 'https://www.ju.edu.et',
+      telegram: 'https://t.me/JimmaUniversityOfficial',
+      image: 'https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=600&auto=format&fit=crop&q=80',
+      location: 'Jimma, Oromia, Ethiopia',
+      description: 'Renowned for community-based education and leading medical & public health training.'
+    },
+    {
+      id: 'univ_hawassa',
+      name: 'Hawassa University',
+      website: 'https://www.hu.edu.et',
+      telegram: 'https://t.me/HawassaUniversityOfficial',
+      image: 'https://images.unsplash.com/photo-1592280771190-3e2e4d571952?w=600&auto=format&fit=crop&q=80',
+      location: 'Hawassa, Sidama, Ethiopia',
+      description: 'Prominent comprehensive university situated alongside beautiful Lake Hawassa.'
+    },
+    {
+      id: 'univ_bdu',
+      name: 'Bahir Dar University',
+      website: 'https://www.bdu.edu.et',
+      telegram: 'https://t.me/BahirDarUniversityOfficial',
+      image: 'https://images.unsplash.com/photo-1564981797816-1043664bf78d?w=600&auto=format&fit=crop&q=80',
+      location: 'Bahir Dar, Amhara, Ethiopia',
+      description: 'Leading university known for maritime education, engineering, and pedagogical research.'
+    }
+  ];
+
   const DEFAULT_POSTS = [
     {
       id: 'post_1',
-      author: 'Campus Dean / Admin',
+      author: 'Adnan Abduletif (Campus Admin)',
+      email: 'adnanabduletif010@gmail.com',
       initial: 'A',
       isAdminPost: true,
       date: '05 Jul 2026, 14:59',
-      content: 'Welcome to the Freshman Exam Board! Midterm and final past papers for AAU, Haramaya, Jimma, and ASTU are now cached offline for all streams.',
-      likes: 12,
+      content: 'Freshman Math Lecture Video: Master limits, derivatives, and continuous functions for midterm preparation with this step-by-step video solution!',
+      youtubeUrl: 'https://www.youtube.com/watch?v=WUvTyaaNkzM',
+      imageUrl: '',
+      likes: 18,
       isLiked: true
     },
     {
       id: 'post_2',
-      author: 'Academic Registrar',
-      initial: 'R',
+      author: 'Adnan Abduletif (Campus Admin)',
+      email: 'adnanabduletif010@gmail.com',
+      initial: 'A',
       isAdminPost: true,
       date: '04 Jul 2026, 10:15',
-      content: 'Freshman Math mid exams schedule has been posted. Make sure to practice derivatives and limits from ASTU 2023 model questions.',
-      likes: 8,
+      content: 'General Physics formulas cheat sheet & university past questions guide. Make sure to check the Universities tab for official portals and Telegram study groups.',
+      youtubeUrl: '',
+      imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop&q=80',
+      likes: 12,
       isLiked: false
     }
   ];
@@ -159,6 +223,7 @@
     currentQuestionIndex: 0,
     userAnswers: {},
     isPremium: false,
+    universities: [],
     posts: [],
     filters: {
       course: 'ALL',
@@ -172,13 +237,15 @@
     loadSavedState();
     await NanovaDB.init().catch(console.warn);
     await loadExamsData();
+    await loadUniversities();
     await loadPosts();
     renderBoardQuestion();
-        renderCommunityPosts();
-    updateAdminComposerUI();
+    renderUniversities();
+    renderCommunityPosts();
+    updateAdminUI();
     updateCounterBadges();
     if (window.lucide) window.lucide.createIcons();
-    console.log('[Nanova] 100% English UI initialized');
+    console.log('[Nanova] 100% English Engine with Universities & YouTube Embeds');
   }
 
   function loadSavedState() {
@@ -189,7 +256,6 @@
       if (ans) State.userAnswers = JSON.parse(ans);
       State.isPremium = localStorage.getItem('nanova_is_premium') === 'true';
       State.isAdmin = localStorage.getItem('nanova_is_admin') === 'true';
-      // Clean any legacy language key
       localStorage.removeItem('nanova_lang');
     } catch {}
     updateProfileUI();
@@ -211,22 +277,25 @@
   }
 
   /* ── ADMIN ACCESS CONTROLS ─────────────────────────── */
-  function updateAdminComposerUI() {
+  function updateAdminUI() {
     const adminView = document.getElementById('adminComposerView');
     const studentView = document.getElementById('studentComposerView');
     const adminLockedBox = document.getElementById('adminLockedBox');
     const adminUnlockedBox = document.getElementById('adminUnlockedBox');
+    const addUnivBtn = document.getElementById('addUnivBtn');
 
     if (State.isAdmin) {
       if (adminView) adminView.classList.remove('hidden');
       if (studentView) studentView.classList.add('hidden');
       if (adminLockedBox) adminLockedBox.classList.add('hidden');
       if (adminUnlockedBox) adminUnlockedBox.classList.remove('hidden');
+      if (addUnivBtn) addUnivBtn.classList.remove('hidden');
     } else {
       if (adminView) adminView.classList.add('hidden');
       if (studentView) studentView.classList.remove('hidden');
       if (adminLockedBox) adminLockedBox.classList.remove('hidden');
       if (adminUnlockedBox) adminUnlockedBox.classList.add('hidden');
+      if (addUnivBtn) addUnivBtn.classList.add('hidden');
     }
     if (window.lucide) window.lucide.createIcons();
   }
@@ -245,7 +314,8 @@
     if (verifyAdminCredential(input)) {
       State.isAdmin = true;
       localStorage.setItem('nanova_is_admin', 'true');
-      updateAdminComposerUI();
+      updateAdminUI();
+      renderUniversities();
       alert('🛡️ Welcome Admin Adnan Abduletif (adnanabduletif010@gmail.com)! Admin mode unlocked.');
     } else {
       alert('❌ Invalid admin credential.');
@@ -258,7 +328,8 @@
     if (verifyAdminCredential(input)) {
       State.isAdmin = true;
       localStorage.setItem('nanova_is_admin', 'true');
-      updateAdminComposerUI();
+      updateAdminUI();
+      renderUniversities();
       alert('🛡️ Admin Access Verified for adnanabduletif010@gmail.com!');
     } else {
       alert('❌ Invalid admin credential.');
@@ -268,7 +339,8 @@
   function adminLogout() {
     State.isAdmin = false;
     localStorage.removeItem('nanova_is_admin');
-    updateAdminComposerUI();
+    updateAdminUI();
+    renderUniversities();
     alert('Logged out of Admin mode.');
   }
 
@@ -313,6 +385,19 @@
     applyFilters();
   }
 
+  async function loadUniversities() {
+    try {
+      const cached = await NanovaDB.getAll('universities');
+      if (cached && cached.length) State.universities = cached;
+      else {
+        State.universities = DEFAULT_UNIVERSITIES;
+        NanovaDB.saveAll('universities', DEFAULT_UNIVERSITIES).catch(console.warn);
+      }
+    } catch {
+      State.universities = DEFAULT_UNIVERSITIES;
+    }
+  }
+
   async function loadPosts() {
     try {
       const cached = await NanovaDB.getAll('posts');
@@ -351,7 +436,7 @@
 
     State.currentQuestionIndex = 0;
     renderBoardQuestion();
-        updateCounterBadges();
+    updateCounterBadges();
   }
 
   /* ── QUESTION BOARD RENDERING ──────────────────────── */
@@ -462,7 +547,360 @@
     if (badgeTotal) badgeTotal.textContent = State.filteredQuestions.length || 15;
   }
 
+  /* ── UNIVERSITIES DIRECTORY (ADMIN CRUD) ───────────── */
+  function renderUniversities() {
+    const grid = document.getElementById('universitiesGrid');
+    if (!grid) return;
+
+    if (!State.universities.length) {
+      grid.innerHTML = '<div class="white-card col-span-full text-center text-slate-400 py-10">No universities listed yet.</div>';
+      return;
+    }
+
+    grid.innerHTML = State.universities.map((u) => {
+      const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80';
+      const imgSrc = u.image || fallbackImg;
+
+      return '<div class="univ-card">' +
+        '<div class="relative">' +
+          '<img src="' + imgSrc + '" alt="' + u.name + '" class="univ-card-image" onerror="this.src=\'' + fallbackImg + '\'" />' +
+          (u.location ? '<span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">' + u.location + '</span>' : '') +
+          (State.isAdmin ? '<div class="absolute top-2 right-2 flex space-x-1">' +
+            '<button onclick="NanovaApp.editUniversity(\'' + u.id + '\')" class="p-1.5 rounded-lg bg-white/90 text-slate-700 hover:bg-white shadow transition" title="Edit"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>' +
+            '<button onclick="NanovaApp.deleteUniversity(\'' + u.id + '\')" class="p-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 shadow transition" title="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
+          '</div>' : '') +
+        '</div>' +
+        '<div class="univ-card-body">' +
+          '<div>' +
+            '<h3 class="font-extrabold text-slate-900 text-base mb-1.5">' + u.name + '</h3>' +
+            '<p class="text-xs text-slate-500 font-medium leading-relaxed mb-4">' + (u.description || 'Official Ethiopian higher education campus details.') + '</p>' +
+          '</div>' +
+          '<div class="flex items-center justify-between pt-3 border-t border-slate-100 gap-2">' +
+            '<a href="' + (u.website || '#') + '" target="_blank" rel="noopener noreferrer" class="btn-portal flex-1 justify-center">' +
+              '<i data-lucide="globe" class="w-3.5 h-3.5"></i>' +
+              '<span>Portal</span>' +
+            '</a>' +
+            '<a href="' + (u.telegram || '#') + '" target="_blank" rel="noopener noreferrer" class="btn-telegram flex-1 justify-center">' +
+              '<i data-lucide="send" class="w-3.5 h-3.5"></i>' +
+              '<span>Telegram</span>' +
+            '</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function openAddUnivModal() {
+    if (!State.isAdmin) {
+      promptAdminLogin();
+      return;
+    }
+    const form = document.getElementById('univForm');
+    if (form) form.reset();
+    document.getElementById('univFormId').value = '';
+    document.getElementById('univModalTitle').textContent = 'Add University';
+    document.getElementById('univModal')?.classList.remove('hidden');
+  }
+
+  function closeUnivModal() {
+    document.getElementById('univModal')?.classList.add('hidden');
+  }
+
+  function editUniversity(univId) {
+    if (!State.isAdmin) return;
+    const u = State.universities.find((item) => item.id === univId);
+    if (!u) return;
+
+    document.getElementById('univFormId').value = u.id;
+    document.getElementById('univNameInput').value = u.name || '';
+    document.getElementById('univWebsiteInput').value = u.website || '';
+    document.getElementById('univTelegramInput').value = u.telegram || '';
+    document.getElementById('univImageInput').value = u.image || '';
+    document.getElementById('univLocationInput').value = u.location || '';
+    document.getElementById('univModalTitle').textContent = 'Edit University';
+
+    document.getElementById('univModal')?.classList.remove('hidden');
+  }
+
+  function saveUniversity(e) {
+    e.preventDefault();
+    if (!State.isAdmin) {
+      alert('Only administrators can manage universities.');
+      return;
+    }
+
+    const id = document.getElementById('univFormId')?.value || ('univ_' + Date.now());
+    const name = document.getElementById('univNameInput')?.value.trim();
+    const website = document.getElementById('univWebsiteInput')?.value.trim();
+    const telegram = document.getElementById('univTelegramInput')?.value.trim();
+    const image = document.getElementById('univImageInput')?.value.trim();
+    const location = document.getElementById('univLocationInput')?.value.trim();
+
+    const univData = {
+      id,
+      name,
+      website,
+      telegram,
+      image,
+      location,
+      description: 'Campus portal and Telegram student community.'
+    };
+
+    const existingIdx = State.universities.findIndex((u) => u.id === id);
+    if (existingIdx >= 0) {
+      State.universities[existingIdx] = univData;
+    } else {
+      State.universities.unshift(univData);
+    }
+
+    NanovaDB.saveAll('universities', State.universities).catch(console.warn);
+    renderUniversities();
+    closeUnivModal();
+    alert('✅ University details saved successfully!');
+  }
+
+  function deleteUniversity(univId) {
+    if (!State.isAdmin) return;
+    if (confirm('Are you sure you want to remove this university?')) {
+      State.universities = State.universities.filter((u) => u.id !== univId);
+      NanovaDB.saveAll('universities', State.universities).catch(console.warn);
+      renderUniversities();
+    }
+  }
+
+  /* ── YOUTUBE EMBED HELPER ──────────────────────────── */
+  function extractYouTubeEmbedUrl(url) {
+    if (!url) return null;
+    try {
+      const u = url.trim();
+      let videoId = null;
+
+      if (u.includes('youtu.be/')) {
+        videoId = u.split('youtu.be/')[1]?.split('?')[0];
+      } else if (u.includes('youtube.com/watch')) {
+        const urlParams = new URLSearchParams(u.split('?')[1]);
+        videoId = urlParams.get('v');
+      } else if (u.includes('youtube.com/embed/')) {
+        videoId = u.split('youtube.com/embed/')[1]?.split('?')[0];
+      } else if (u.includes('youtube.com/shorts/')) {
+        videoId = u.split('youtube.com/shorts/')[1]?.split('?')[0];
+      }
+
+      if (videoId) {
+        return 'https://www.youtube.com/embed/' + videoId + '?rel=0';
+      }
+    } catch {}
+    return null;
+  }
+
+  /* ── COMMUNITY FEED (ADMIN ONLY PUBLISH + YOUTUBE/IMAGE) ── */
+  function renderCommunityPosts() {
+    const container = document.getElementById('communityPostsContainer');
+    if (!container) return;
+
+    if (!State.posts.length) {
+      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No announcements yet.</div>';
+      return;
+    }
+
+    container.innerHTML = State.posts.map((post) => {
+      const embedVideoUrl = extractYouTubeEmbedUrl(post.youtubeUrl);
+      const hasImage = post.imageUrl && post.imageUrl.startsWith('http');
+
+      return '<div class="white-card" id="' + post.id + '">' +
+        '<div class="flex items-center justify-between mb-3">' +
+          '<div class="flex items-center space-x-3">' +
+            '<div class="user-avatar-circle bg-emerald-800 text-white font-bold">' + (post.initial || (post.author ? post.author[0].toUpperCase() : 'A')) + '</div>' +
+            '<div>' +
+              '<div class="flex items-center space-x-2">' +
+                '<h4 class="font-extrabold text-slate-900 text-sm">' + post.author + '</h4>' +
+                (post.isAdminPost ? '<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold tracking-wide">ADMIN</span>' : '') +
+              '</div>' +
+              '<span class="text-xs text-slate-400 font-medium">' + post.date + '</span>' +
+            '</div>' +
+          '</div>' +
+          (State.isAdmin ? '<button onclick="NanovaApp.deletePost(\'' + post.id + '\')" class="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg transition" title="Delete Post"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' : '') +
+        '</div>' +
+
+        '<p class="text-slate-800 text-sm leading-relaxed mb-3">' + post.content + '</p>' +
+
+        /* Embedded YouTube Video */
+        (embedVideoUrl ? '<div class="video-responsive-container">' +
+          '<iframe src="' + embedVideoUrl + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>' +
+        '</div>' : '') +
+
+        /* Embedded Image from URL */
+        (hasImage ? '<img src="' + post.imageUrl + '" alt="Announcement Visual" class="post-embedded-image" onerror="this.style.display=\'none\'" />' : '') +
+
+        '<div class="flex items-center space-x-4 pt-3 border-t border-slate-100">' +
+          '<button onclick="NanovaApp.toggleLikePost(\'' + post.id + '\')" class="post-action-btn ' + (post.isLiked ? 'liked' : '') + '">' +
+            '<i data-lucide="thumbs-up" class="w-4 h-4"></i>' +
+            '<span>' + (post.isLiked ? '1 Like' : (post.likes || 0) + ' Likes') + '</span>' +
+          '</button>' +
+          '<button onclick="NanovaApp.commentOnPost(\'' + post.id + '\')" class="post-action-btn">' +
+            '<i data-lucide="message-circle" class="w-4 h-4"></i>' +
+            '<span>Comment</span>' +
+          '</button>' +
+          '<button onclick="NanovaApp.sharePost(\'' + post.id + '\')" class="post-action-btn">' +
+            '<i data-lucide="share-2" class="w-4 h-4"></i>' +
+            '<span>Share</span>' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function publishCommunityPost() {
+    if (!State.isAdmin) {
+      promptAdminLogin();
+      return;
+    }
+
+    const input = document.getElementById('postInputContent');
+    const ytInput = document.getElementById('postYoutubeUrl');
+    const imgInput = document.getElementById('postImageUrl');
+
+    const content = (input?.value || '').trim();
+    const youtubeUrl = (ytInput?.value || '').trim();
+    const imageUrl = (imgInput?.value || '').trim();
+
+    if (!content && !youtubeUrl && !imageUrl) return;
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' +
+                    now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const newPost = {
+      id: 'post_' + Date.now(),
+      author: 'Adnan Abduletif (Campus Admin)',
+      email: 'adnanabduletif010@gmail.com',
+      initial: 'A',
+      isAdminPost: true,
+      date: dateStr,
+      content: content || 'Campus Announcement',
+      youtubeUrl: youtubeUrl,
+      imageUrl: imageUrl,
+      likes: 0,
+      isLiked: false
+    };
+
+    State.posts.unshift(newPost);
+    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+
+    if (input) input.value = '';
+    if (ytInput) ytInput.value = '';
+    if (imgInput) imgInput.value = '';
+
+    renderCommunityPosts();
+    alert('✅ Admin announcement published with embedded media!');
+  }
+
+  function toggleLikePost(postId) {
+    const p = State.posts.find((item) => item.id === postId);
+    if (!p) return;
+
+    p.isLiked = !p.isLiked;
+    p.likes = (p.likes || 0) + (p.isLiked ? 1 : -1);
+    if (p.likes < 0) p.likes = 0;
+
+    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+    renderCommunityPosts();
+  }
+
+  function deletePost(postId) {
+    if (!State.isAdmin) {
+      alert('Only administrators can delete posts.');
+      return;
+    }
+    State.posts = State.posts.filter((p) => p.id !== postId);
+    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+    renderCommunityPosts();
+  }
+
+  function promptImageAttachment() {
+    const url = prompt('Enter Image URL (e.g. https://...):');
+    const input = document.getElementById('postImageUrl');
+    if (url && input) input.value = url;
+  }
+
+  function commentOnPost(postId) {
+    const msg = prompt('Write your comment on this official announcement:');
+    if (msg) alert('Comment recorded!');
+  }
+
+  function sharePost(postId) {
+    if (navigator.share) {
+      navigator.share({ title: 'Nanova Freshman Announcement', url: window.location.href });
+    } else {
+      alert('Post link copied to clipboard!');
+    }
+  }
+
+  /* ── TAB SWITCHING ─────────────────────────────────── */
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach((el) => el.classList.add('hidden'));
+    const target = document.getElementById('tab-' + tabId);
+    if (target) target.classList.remove('hidden');
+
+    document.querySelectorAll('.nav-link').forEach((btn) => {
+      if (btn.getAttribute('data-tab') === tabId) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── PAYWALL ───────────────────────────────────────── */
+  function showPaywallModal() {
+    document.getElementById('paywallModal')?.classList.remove('hidden');
+  }
+
+  function hidePaywallModal() {
+    document.getElementById('paywallModal')?.classList.add('hidden');
+  }
+
+  function processPayment() {
+    const btn = document.getElementById('payNowBtn');
+    if (btn) { btn.textContent = 'Processing...'; btn.disabled = true; }
+
+    setTimeout(() => {
+      State.isPremium = true;
+      localStorage.setItem('nanova_is_premium', 'true');
+      hidePaywallModal();
+      alert('✅ Payment verified! Unlimited Freshman Exam Access unlocked.');
+      if (btn) { btn.textContent = 'Pay 50 ETB'; btn.disabled = false; }
+    }, 1500);
+  }
+
+  function saveSupabaseConfig() {
+    alert('Supabase credentials saved locally.');
+  }
+
+  function clearCacheAndReset() {
+    if (confirm('Reset all cached exams and question progress?')) {
+      localStorage.clear();
+      location.reload();
+    }
+  }
+
+  /* ── GLOBAL API EXPORT ─────────────────────────────── */
   window.NanovaApp = {
+    switchTab,
+    onFilterChange,
+    handleBoardOptionClick,
+    boardNextQuestion,
+    boardPrevQuestion,
+    shuffleQuestions,
+    renderUniversities,
+    openAddUnivModal,
+    closeUnivModal,
+    editUniversity,
+    saveUniversity,
+    deleteUniversity,
     publishCommunityPost,
     promptAdminLogin,
     handleAdminLogin,

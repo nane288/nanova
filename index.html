@@ -45,6 +45,10 @@
           <i data-lucide="layout-grid" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Exam Board</span>
         </button>
+        <button class="nav-link" data-tab="universities" onclick="NanovaApp.switchTab('universities')">
+          <i data-lucide="building-2" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Universities</span>
+        </button>
         <button class="nav-link" data-tab="feed" onclick="NanovaApp.switchTab('feed')">
           <i data-lucide="message-square" class="w-4 h-4"></i>
           <span class="hidden sm:inline">Community</span>
@@ -222,6 +226,30 @@
     <!-- ============================================== -->
     <!-- TAB 2: COMMUNITY FEED                          -->
     <!-- ============================================== -->
+        <!-- ============================================== -->
+    <!-- TAB: UNIVERSITIES DIRECTORY                    -->
+    <!-- ============================================== -->
+    <div id="tab-universities" class="tab-content hidden">
+      
+      <!-- Universities Header & Admin Add Action -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 class="section-title">Ethiopian Universities</h1>
+          <p class="section-subtitle">Official portals, Telegram student communities, and campus info.</p>
+        </div>
+        <button id="addUnivBtn" onclick="NanovaApp.openAddUnivModal()" class="hidden px-5 py-2.5 rounded-xl bg-black hover:bg-slate-900 text-white font-extrabold text-xs shadow-lg transition flex items-center space-x-2 self-start sm:self-auto border border-white/20">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i>
+          <span>Add University</span>
+        </button>
+      </div>
+
+      <!-- Universities Cards Grid -->
+      <div id="universitiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Dynamically Rendered -->
+      </div>
+
+    </div>
+
     <div id="tab-feed" class="tab-content hidden">
       
       <!-- Feed Header -->
@@ -247,22 +275,38 @@
             </button>
           </div>
 
-          <div class="flex items-start space-x-4 mb-4">
+          <div class="flex items-start space-x-4 mb-3">
             <div class="user-avatar-circle bg-emerald-700 text-white" id="composerAvatar">
               <span>A</span>
             </div>
-            <div class="flex-grow">
-              <textarea id="postInputContent" class="post-textarea" placeholder="What official campus updates or freshman exam advice would you like to broadcast?" rows="3"></textarea>
+            <div class="flex-grow space-y-3">
+              <textarea id="postInputContent" class="post-textarea" placeholder="Broadcast official announcements, study guides, or freshman exam tips..." rows="3"></textarea>
+              
+              <!-- URL inputs to save storage -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-rose-500">
+                    <i data-lucide="youtube" class="w-4 h-4"></i>
+                  </span>
+                  <input type="url" id="postYoutubeUrl" class="custom-select text-xs pl-9" placeholder="YouTube Video URL (e.g. https://youtu.be/...)" />
+                </div>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-blue-500">
+                    <i data-lucide="image" class="w-4 h-4"></i>
+                  </span>
+                  <input type="url" id="postImageUrl" class="custom-select text-xs pl-9" placeholder="Image URL (https://...)" />
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-            <button type="button" class="btn-attach" onclick="NanovaApp.promptImageAttachment()">
-              <i data-lucide="image" class="w-4 h-4"></i>
-              <span>Attach Image</span>
-            </button>
+            <span class="text-[11px] text-slate-400 font-semibold flex items-center gap-1">
+              <i data-lucide="cloud" class="w-3.5 h-3.5 text-blue-500"></i>
+              <span>Zero-Storage: Embedded via URLs</span>
+            </span>
             <button type="button" class="btn-publish" onclick="NanovaApp.publishCommunityPost()">
-              <span>Publish Post</span>
+              <span>Publish Announcement</span>
               <i data-lucide="send" class="w-4 h-4"></i>
             </button>
           </div>
@@ -438,5 +482,52 @@
   </div>
 
   <script src="app.js"></script>
+  <!-- Add / Edit University Modal (Admin Only) -->
+  <div id="univModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl animate-fade-in border border-slate-100">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+          <i data-lucide="building-2" class="w-5 h-5 text-[#0052fe]"></i>
+          <span id="univModalTitle">Add University</span>
+        </h3>
+        <button onclick="NanovaApp.closeUnivModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="univForm" onsubmit="NanovaApp.saveUniversity(event)" class="space-y-3.5">
+        <input type="hidden" id="univFormId" value="" />
+        <div>
+          <label class="filter-label">UNIVERSITY NAME</label>
+          <input type="text" id="univNameInput" class="custom-select text-sm font-bold" placeholder="e.g. Haramaya University" required />
+        </div>
+        <div>
+          <label class="filter-label">OFFICIAL WEBSITE URL</label>
+          <input type="url" id="univWebsiteInput" class="custom-select text-sm" placeholder="https://www.haramaya.edu.et" required />
+        </div>
+        <div>
+          <label class="filter-label">TELEGRAM CHANNEL / COMMUNITY URL</label>
+          <input type="url" id="univTelegramInput" class="custom-select text-sm" placeholder="https://t.me/HaramayaUniversityOfficial" required />
+        </div>
+        <div>
+          <label class="filter-label">CAMPUS IMAGE URL (Zero-Storage)</label>
+          <input type="url" id="univImageInput" class="custom-select text-sm" placeholder="https://images.unsplash.com/..." />
+        </div>
+        <div>
+          <label class="filter-label">LOCATION / REGION</label>
+          <input type="text" id="univLocationInput" class="custom-select text-sm" placeholder="e.g. Dire Dawa / Harar, Ethiopia" />
+        </div>
+
+        <div class="flex space-x-3 pt-3">
+          <button type="button" onclick="NanovaApp.closeUnivModal()" class="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl text-sm">
+            Cancel
+          </button>
+          <button type="submit" class="flex-1 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-bold rounded-xl text-sm shadow-md">
+            Save University
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
