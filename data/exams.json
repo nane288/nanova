@@ -2,466 +2,511 @@
   {
     "id": "phys-aau-2024-mid-01",
     "university": "Addis Ababa University",
-    "universityShort": "AAU",
-    "year": 2024,
-    "examType": "Mid Exam",
+    "year": "2024 Exam",
     "course": "General Physics",
-    "courseCode": "Phys 1011",
-    "department": "Natural Science",
     "question": "A stone is thrown vertically upward with an initial velocity of 20 m/s from the ground. Taking g = 10 m/s², what is the maximum height reached by the stone?",
     "options": [
-      {
-        "id": "A",
-        "text": "10 m"
-      },
-      {
-        "id": "B",
-        "text": "20 m"
-      },
-      {
-        "id": "C",
-        "text": "40 m"
-      },
-      {
-        "id": "D",
-        "text": "80 m"
-      }
+      "10 m",
+      "20 m",
+      "40 m",
+      "80 m"
     ],
-    "correctOption": "B",
-    "explanation": "Using kinematic equation v² = u² - 2gh at maximum height (v = 0): 0 = (20)² - 2(10)h => 20h = 400 => h = 20 m."
+    "answer": 1,
+    "explanation": "At maximum height, final velocity v = 0. Using kinematic equation v² = u² - 2gh => 0 = (20)² - 2(10)h => 20h = 400 => h = 20 meters."
   },
   {
     "id": "phys-aau-2024-mid-02",
     "university": "Addis Ababa University",
-    "universityShort": "AAU",
-    "year": 2024,
-    "examType": "Mid Exam",
+    "year": "2024 Exam",
     "course": "General Physics",
-    "courseCode": "Phys 1011",
-    "department": "Natural Science",
     "question": "A 5 kg block rests on a horizontal frictionless surface. A horizontal force of 15 N is applied to it. What is the acceleration of the block?",
     "options": [
-      {
-        "id": "A",
-        "text": "0.33 m/s²"
-      },
-      {
-        "id": "B",
-        "text": "3.0 m/s²"
-      },
-      {
-        "id": "C",
-        "text": "5.0 m/s²"
-      },
-      {
-        "id": "D",
-        "text": "75 m/s²"
-      }
+      "0.33 m/s²",
+      "3.0 m/s²",
+      "5.0 m/s²",
+      "75.0 m/s²"
     ],
-    "correctOption": "B",
-    "explanation": "According to Newton's Second Law: F = ma => a = F/m = 15 N / 5 kg = 3.0 m/s²."
+    "answer": 1,
+    "explanation": "According to Newton's Second Law: F = ma => a = F / m = 15 N / 5 kg = 3.0 m/s²."
   },
   {
-    "id": "math-hu-2024-mid-01",
+    "id": "phys-hu-2023-final-01",
     "university": "Haramaya University",
-    "universityShort": "HU",
-    "year": 2024,
-    "examType": "Mid Exam",
-    "course": "Mathematics for Natural Science",
-    "courseCode": "Math 1011",
-    "department": "Natural Science",
-    "question": "What is the limit of (sin 3x) / x as x approaches 0?",
-    "options": [
-      {
-        "id": "A",
-        "text": "0"
-      },
-      {
-        "id": "B",
-        "text": "1"
-      },
-      {
-        "id": "C",
-        "text": "3"
-      },
-      {
-        "id": "D",
-        "text": "Undefined"
-      }
-    ],
-    "correctOption": "C",
-    "explanation": "Using the standard limit rule lim(x->0) [sin(kx)/x] = k. Here k = 3, so lim(x->0) [sin(3x)/x] = 3."
-  },
-  {
-    "id": "math-hu-2024-mid-02",
-    "university": "Haramaya University",
-    "universityShort": "HU",
-    "year": 2024,
-    "examType": "Mid Exam",
-    "course": "Mathematics for Natural Science",
-    "courseCode": "Math 1011",
-    "department": "Natural Science",
-    "question": "If f(x) = ln(x² + 1), what is the first derivative f'(x)?",
-    "options": [
-      {
-        "id": "A",
-        "text": "1 / (x² + 1)"
-      },
-      {
-        "id": "B",
-        "text": "2x / (x² + 1)"
-      },
-      {
-        "id": "C",
-        "text": "2x(x² + 1)"
-      },
-      {
-        "id": "D",
-        "text": "x / (x² + 1)"
-      }
-    ],
-    "correctOption": "B",
-    "explanation": "By applying the chain rule d/dx[ln(u)] = u'/u: f'(x) = (d/dx(x² + 1)) / (x² + 1) = 2x / (x² + 1)."
-  },
-  {
-    "id": "logic-ju-2025-final-01",
-    "university": "Jimma University",
-    "universityShort": "JU",
-    "year": 2025,
-    "examType": "Final Exam",
-    "course": "Critical Thinking & Logic",
-    "courseCode": "LoCT 1011",
-    "department": "Common Course",
-    "question": "Which fallacy occurs when an arguer attacks the character or personal traits of their opponent instead of addressing their argument?",
-    "options": [
-      {
-        "id": "A",
-        "text": "Straw Man Fallacy"
-      },
-      {
-        "id": "B",
-        "text": "Argumentum Ad Hominem"
-      },
-      {
-        "id": "C",
-        "text": "Appeal to Ignorance"
-      },
-      {
-        "id": "D",
-        "text": "False Dilemma"
-      }
-    ],
-    "correctOption": "B",
-    "explanation": "Argumentum Ad Hominem (against the person) is a fallacy where someone rejects an argument by attacking the opponent's background, character, or circumstances rather than the validity of their claims."
-  },
-  {
-    "id": "logic-ju-2025-final-02",
-    "university": "Jimma University",
-    "universityShort": "JU",
-    "year": 2025,
-    "examType": "Final Exam",
-    "course": "Critical Thinking & Logic",
-    "courseCode": "LoCT 1011",
-    "department": "Common Course",
-    "question": "In categorical propositions, which proposition form represents 'Universal Negative' (No S is P)?",
-    "options": [
-      {
-        "id": "A",
-        "text": "A Proposition"
-      },
-      {
-        "id": "B",
-        "text": "E Proposition"
-      },
-      {
-        "id": "C",
-        "text": "I Proposition"
-      },
-      {
-        "id": "D",
-        "text": "O Proposition"
-      }
-    ],
-    "correctOption": "B",
-    "explanation": "In standard traditional logic: A = Universal Affirmative (All S is P), E = Universal Negative (No S is P), I = Particular Affirmative (Some S is P), O = Particular Negative (Some S is not P)."
-  },
-  {
-    "id": "eng-astu-2024-mid-01",
-    "university": "Adama Science and Technology University",
-    "universityShort": "ASTU",
-    "year": 2024,
-    "examType": "Mid Exam",
-    "course": "Communicative English",
-    "courseCode": "EnLa 1011",
-    "department": "Common Course",
-    "question": "Identify the sentence that correctly uses the Present Perfect Continuous tense:",
-    "options": [
-      {
-        "id": "A",
-        "text": "She is studying in the library since 8:00 AM."
-      },
-      {
-        "id": "B",
-        "text": "She has been studying in the library since 8:00 AM."
-      },
-      {
-        "id": "C",
-        "text": "She had studied in the library since 8:00 AM."
-      },
-      {
-        "id": "D",
-        "text": "She was studying in the library since 8:00 AM."
-      }
-    ],
-    "correctOption": "B",
-    "explanation": "Actions that started in the past and continue into the present require Present Perfect Continuous (has/have + been + verb-ing) alongside time indicators like 'since'."
-  },
-  {
-    "id": "emtech-haw-2025-final-01",
-    "university": "Hawassa University",
-    "universityShort": "HU-Haw",
-    "year": 2025,
-    "examType": "Final Exam",
-    "course": "Emerging Technologies",
-    "courseCode": "EmTe 1012",
-    "department": "Common Course",
-    "question": "Which of the following is considered the core foundational pillar of the Fourth Industrial Revolution (Industry 4.0)?",
-    "options": [
-      {
-        "id": "A",
-        "text": "Steam Power & Mechanization"
-      },
-      {
-        "id": "B",
-        "text": "Assembly lines & Electrical Power"
-      },
-      {
-        "id": "C",
-        "text": "Cyber-Physical Systems, AI & IoT"
-      },
-      {
-        "id": "D",
-        "text": "Analog Telecommunication Networks"
-      }
-    ],
-    "correctOption": "C",
-    "explanation": "Industry 4.0 merges physical, digital, and biological worlds through Cyber-Physical Systems, Artificial Intelligence, IoT, Cloud Computing, and Big Data."
-  },
-  {
-    "id": "emtech-bdu-2025-mid-01",
-    "university": "Bahir Dar University",
-    "universityShort": "BDU",
-    "year": 2025,
-    "examType": "Mid Exam",
-    "course": "Emerging Technologies",
-    "courseCode": "EmTe 1012",
-    "department": "Common Course",
-    "question": "In Cloud Computing architectures, what service model provides users with ready-to-use software applications hosted on the cloud (e.g., Google Workspace, Microsoft 365)?",
-    "options": [
-      {
-        "id": "A",
-        "text": "IaaS (Infrastructure as a Service)"
-      },
-      {
-        "id": "B",
-        "text": "PaaS (Platform as a Service)"
-      },
-      {
-        "id": "C",
-        "text": "SaaS (Software as a Service)"
-      },
-      {
-        "id": "D",
-        "text": "BaaS (Backend as a Service)"
-      }
-    ],
-    "correctOption": "C",
-    "explanation": "SaaS delivers fully functional software over the internet directly to end users without requiring infrastructure or runtime management."
-  },
-  {
-    "id": "psych-aastu-2024-final-01",
-    "university": "Addis Ababa Science and Technology University",
-    "universityShort": "AASTU",
-    "year": 2024,
-    "examType": "Final Exam",
-    "course": "General Psychology",
-    "courseCode": "Psyc 1011",
-    "department": "Common Course",
-    "question": "In Pavlov's classical conditioning experiment, the salivation of dogs upon hearing the bell after conditioning is classified as the:",
-    "options": [
-      {
-        "id": "A",
-        "text": "Unconditioned Stimulus (UCS)"
-      },
-      {
-        "id": "B",
-        "text": "Conditioned Stimulus (CS)"
-      },
-      {
-        "id": "C",
-        "text": "Conditioned Response (CR)"
-      },
-      {
-        "id": "D",
-        "text": "Unconditioned Response (UCR)"
-      }
-    ],
-    "correctOption": "C",
-    "explanation": "The salivation in response to the bell (a learned stimulus) is a Conditioned Response (CR). The bell is the Conditioned Stimulus (CS)."
-  },
-  {
-    "id": "phys-ju-2025-final-01",
-    "university": "Jimma University",
-    "universityShort": "JU",
-    "year": 2025,
-    "examType": "Final Exam",
+    "year": "2023 Exam",
     "course": "General Physics",
-    "courseCode": "Phys 1011",
-    "department": "Natural Science",
-    "question": "Two charges +4 µC and +9 µC are placed in vacuum separated by a distance of 0.3 m. What is the electrostatic force between them? (k = 9 × 10⁹ N·m²/C²)",
+    "question": "An object moving in a circle of radius r with constant speed v undergoes uniform circular acceleration directed toward:",
     "options": [
-      {
-        "id": "A",
-        "text": "3.6 N"
-      },
-      {
-        "id": "B",
-        "text": "36 N"
-      },
-      {
-        "id": "C",
-        "text": "360 N"
-      },
-      {
-        "id": "D",
-        "text": "0.36 N"
-      }
+      "The tangent to the circle",
+      "The center of the circular path",
+      "Opposite to the velocity vector",
+      "Away from the center (centrifugal)"
     ],
-    "correctOption": "A",
-    "explanation": "Coulomb's law: F = k·|q1·q2| / r² = (9 × 10⁹ × 4 × 10⁻⁶ × 9 × 10⁻⁶) / (0.3)² = (324 × 10⁻³) / 0.09 = 3.6 N."
+    "answer": 1,
+    "explanation": "In uniform circular motion, the centripetal acceleration is always directed radially inward toward the center of the circular path, given by a_c = v² / r."
   },
   {
-    "id": "math-aau-2026-model-01",
+    "id": "phys-astu-2023-mid-01",
+    "university": "ASTU",
+    "year": "2023 Exam",
+    "course": "General Physics",
+    "question": "A 2 kg ball moving at 4 m/s collides head-on with a stationary 2 kg ball and sticks to it. What is the final velocity of the combined mass?",
+    "options": [
+      "1 m/s",
+      "2 m/s",
+      "4 m/s",
+      "8 m/s"
+    ],
+    "answer": 1,
+    "explanation": "By conservation of linear momentum in an inelastic collision: m1*v1 + m2*v2 = (m1 + m2)*V => (2)(4) + (2)(0) = (4)*V => 8 = 4V => V = 2 m/s."
+  },
+  {
+    "id": "phys-ju-2022-final-01",
+    "university": "Jimma University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "According to the First Law of Thermodynamics, the change in internal energy ΔU of a system is given by:",
+    "options": [
+      "ΔU = Q + W (where W is work done by system)",
+      "ΔU = Q - W (where W is work done by system)",
+      "ΔU = Q * W",
+      "ΔU = W - Q"
+    ],
+    "answer": 1,
+    "explanation": "The first law expresses energy conservation: ΔU = Q - W, where Q is heat added to the system and W is work done by the system on its surroundings."
+  },
+  {
+    "id": "phys-bdu-2022-mid-01",
+    "university": "Bahir Dar University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Two point charges of +3 μC and -3 μC are separated by a distance of 0.1 m in vacuum. What is the nature and magnitude of the electrostatic force between them? (k = 9×10⁹ N·m²/C²)",
+    "options": [
+      "8.1 N (Repulsive)",
+      "8.1 N (Attractive)",
+      "0.81 N (Attractive)",
+      "81 N (Repulsive)"
+    ],
+    "answer": 1,
+    "explanation": "Using Coulomb's law: F = k|q1*q2|/r² = (9×10⁹ * 3×10⁻⁶ * 3×10⁻⁶) / (0.1)² = 0.081 / 0.01 = 8.1 N. Because charges have opposite signs, the force is attractive."
+  },
+  {
+    "id": "math-astu-2024-mid-01",
+    "university": "ASTU",
+    "year": "2024 Exam",
+    "course": "Applied Mathematics I",
+    "question": "What is the limit of (sin(3x) / x) as x approaches 0?",
+    "options": [
+      "0",
+      "1",
+      "3",
+      "Undefined"
+    ],
+    "answer": 2,
+    "explanation": "Using the fundamental trigonometric limit lim(x->0) [sin(kx)/x] = k. Here k = 3, hence lim(x->0) [sin(3x)/x] = 3."
+  },
+  {
+    "id": "math-aau-2023-final-01",
     "university": "Addis Ababa University",
-    "universityShort": "AAU",
-    "year": 2026,
-    "examType": "Model Exam",
-    "course": "Mathematics for Natural Science",
-    "courseCode": "Math 1011",
-    "department": "Natural Science",
-    "question": "Evaluate the definite integral ∫ (from 0 to 2) (3x² + 2x) dx:",
+    "year": "2023 Exam",
+    "course": "Applied Mathematics I",
+    "question": "If f(x) = x³ - 3x² + 2, what are the critical numbers of f(x)?",
     "options": [
-      {
-        "id": "A",
-        "text": "10"
-      },
-      {
-        "id": "B",
-        "text": "12"
-      },
-      {
-        "id": "C",
-        "text": "14"
-      },
-      {
-        "id": "D",
-        "text": "16"
-      }
+      "x = 0 and x = 2",
+      "x = 1 and x = 3",
+      "x = -1 and x = 2",
+      "x = 0 only"
     ],
-    "correctOption": "B",
-    "explanation": "Antiderivative: [x³ + x²] from 0 to 2 = (2³ + 2²) - (0 + 0) = 8 + 4 = 12."
+    "answer": 0,
+    "explanation": "Differentiate f'(x) = 3x² - 6x = 3x(x - 2). Setting f'(x) = 0 yields x = 0 and x = 2."
   },
   {
-    "id": "geo-hu-2025-mid-01",
+    "id": "math-hu-2023-mid-01",
     "university": "Haramaya University",
-    "universityShort": "HU",
-    "year": 2025,
-    "examType": "Mid Exam",
-    "course": "Geography of Ethiopia & the Horn",
-    "courseCode": "GeES 1011",
-    "department": "Common Course",
-    "question": "Which of the following physiographic regions covers the largest portion of Ethiopia's total land area?",
+    "year": "2023 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Evaluate the definite integral ∫ from 0 to 2 of (3x² + 2x) dx:",
     "options": [
-      {
-        "id": "A",
-        "text": "The Western Highlands and Lowlands"
-      },
-      {
-        "id": "B",
-        "text": "The South-Eastern Highlands and Lowlands"
-      },
-      {
-        "id": "C",
-        "text": "The Main Ethiopian Rift Valley"
-      },
-      {
-        "id": "D",
-        "text": "The Afar Depression"
-      }
+      "10",
+      "12",
+      "14",
+      "16"
     ],
-    "correctOption": "A",
-    "explanation": "The Western Highlands and Lowlands constitute approximately 43-44% of the country's total landmass, forming the largest physiographic unit."
+    "answer": 1,
+    "explanation": "Antiderivative F(x) = x³ + x². Evaluating from 0 to 2: F(2) - F(0) = (2³ + 2²) - (0) = 8 + 4 = 12."
   },
   {
-    "id": "logic-astu-2026-mid-01",
-    "university": "Adama Science and Technology University",
-    "universityShort": "ASTU",
-    "year": 2026,
-    "examType": "Mid Exam",
-    "course": "Critical Thinking & Logic",
-    "courseCode": "LoCT 1011",
-    "department": "Common Course",
-    "question": "If an argument is valid and all its premises are factually true, the argument is classified as:",
+    "id": "math-aastu-2022-mid-01",
+    "university": "AASTU",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "What is the derivative of f(x) = ln(x² + 1) with respect to x?",
     "options": [
-      {
-        "id": "A",
-        "text": "Strong"
-      },
-      {
-        "id": "B",
-        "text": "Sound"
-      },
-      {
-        "id": "C",
-        "text": "Cogent"
-      },
-      {
-        "id": "D",
-        "text": "Unsound"
-      }
+      "1 / (x² + 1)",
+      "2x / (x² + 1)",
+      "2 / (x² + 1)",
+      "2x * ln(x² + 1)"
     ],
-    "correctOption": "B",
-    "explanation": "In deductive logic, a Sound argument is a valid deductive argument whose premises are all actually true."
+    "answer": 1,
+    "explanation": "Using the chain rule: d/dx [ln(u)] = (1/u) * (du/dx). With u = x² + 1 and du/dx = 2x, we get f'(x) = 2x / (x² + 1)."
   },
   {
-    "id": "phys-bdu-2024-final-01",
+    "id": "math-ju-2022-final-01",
+    "university": "Jimma University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "If matrix A = [[2, 1], [4, 3]], what is the determinant det(A)?",
+    "options": [
+      "2",
+      "6",
+      "10",
+      "-2"
+    ],
+    "answer": 0,
+    "explanation": "For a 2x2 matrix [[a, b], [c, d]], det(A) = ad - bc = (2 * 3) - (1 * 4) = 6 - 4 = 2."
+  },
+  {
+    "id": "math-hawassa-2021-final-01",
+    "university": "Hawassa University",
+    "year": "2021 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which of the following vectors is orthogonal (perpendicular) to vector u = (2, 3)?",
+    "options": [
+      "(3, 2)",
+      "(-3, 2)",
+      "(2, -3)",
+      "(4, 6)"
+    ],
+    "answer": 1,
+    "explanation": "Two vectors are orthogonal if their dot product is zero. For u = (2, 3) and v = (-3, 2): u · v = (2)(-3) + (3)(2) = -6 + 6 = 0."
+  },
+  {
+    "id": "psyc-hu-2022-mid-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which conflict of motives happens when a child who loves both parents must choose to stay with either the father or mother?",
+    "options": [
+      "Approach-Approach",
+      "Approach-Avoidance",
+      "Avoidance-Avoidance",
+      "Multiple Approach-Avoidance"
+    ],
+    "answer": 0,
+    "explanation": "An Approach-Approach conflict occurs when an individual is caught between two equally desirable choices."
+  },
+  {
+    "id": "psyc-aau-2023-final-01",
+    "university": "Addis Ababa University",
+    "year": "2023 Exam",
+    "course": "General Psychology",
+    "question": "In Ivan Pavlov's classical conditioning experiment with dogs, the sound of the bell after conditioning represents the:",
+    "options": [
+      "Unconditioned Stimulus (UCS)",
+      "Unconditioned Response (UCR)",
+      "Conditioned Stimulus (CS)",
+      "Conditioned Response (CR)"
+    ],
+    "answer": 2,
+    "explanation": "The bell was initially a neutral stimulus that, after repeated pairing with food, triggers salivation on its own, making it the Conditioned Stimulus (CS)."
+  },
+  {
+    "id": "psyc-ju-2023-mid-01",
+    "university": "Jimma University",
+    "year": "2023 Exam",
+    "course": "General Psychology",
+    "question": "According to Sigmund Freud's psychoanalytic theory of personality, which component operates strictly on the 'pleasure principle'?",
+    "options": [
+      "Ego",
+      "Superego",
+      "Id",
+      "Ideal Ego"
+    ],
+    "answer": 2,
+    "explanation": "The Id is the primitive, instinctual component of personality that demands immediate gratification of biological urges regardless of social norms."
+  },
+  {
+    "id": "psyc-bdu-2024-mid-01",
     "university": "Bahir Dar University",
-    "universityShort": "BDU",
-    "year": 2024,
-    "examType": "Final Exam",
-    "course": "General Physics",
-    "courseCode": "Phys 1011",
-    "department": "Natural Science",
-    "question": "A simple pendulum of length 1 meter oscillates under gravity (g = 9.8 m/s²). What is its period of oscillation T?",
+    "year": "2024 Exam",
+    "course": "General Psychology",
+    "question": "The capacity of short-term memory (working memory) in adult humans is traditionally estimated by George Miller as:",
     "options": [
-      {
-        "id": "A",
-        "text": "1.01 s"
-      },
-      {
-        "id": "B",
-        "text": "2.01 s"
-      },
-      {
-        "id": "C",
-        "text": "3.14 s"
-      },
-      {
-        "id": "D",
-        "text": "4.02 s"
-      }
+      "3 ± 1 items",
+      "7 ± 2 items",
+      "12 ± 3 items",
+      "Unlimited capacity"
     ],
-    "correctOption": "B",
-    "explanation": "Formula: T = 2π√(L/g) = 2π√(1 / 9.8) ≈ 2 × 3.1416 × 0.3194 ≈ 2.007 ≈ 2.01 s."
+    "answer": 1,
+    "explanation": "George Miller's classic 1956 paper established 'The Magical Number Seven, Plus or Minus Two' as the working limit of short-term storage chunks."
+  },
+  {
+    "id": "psyc-hawassa-2022-final-01",
+    "university": "Hawassa University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which defense mechanism involves attributing one's own unacceptable thoughts or impulses onto other people?",
+    "options": [
+      "Repression",
+      "Rationalization",
+      "Projection",
+      "Displacement"
+    ],
+    "answer": 2,
+    "explanation": "Projection is a psychological defense mechanism in which individuals disguise their own threatening impulses by attributing them to others."
+  },
+  {
+    "id": "logic-ju-2022-mid-01",
+    "university": "Jimma University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "Which fallacy is committed when an arguer attacks their opponent's personal traits or character rather than evaluating their argument?",
+    "options": [
+      "Straw Man Fallacy",
+      "Argumentum Ad Hominem",
+      "Appeal to Ignorance",
+      "False Dilemma"
+    ],
+    "answer": 1,
+    "explanation": "Argumentum Ad Hominem (against the person) rejects a claim solely based on negative personal attributes of the arguer rather than substance."
+  },
+  {
+    "id": "logic-aau-2023-final-01",
+    "university": "Addis Ababa University",
+    "year": "2023 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What is the quantity and quality of the categorical proposition: 'No reptiles are warm-blooded animals'?",
+    "options": [
+      "Universal Affirmative (A)",
+      "Universal Negative (E)",
+      "Particular Affirmative (I)",
+      "Particular Negative (O)"
+    ],
+    "answer": 1,
+    "explanation": "Standard-form proposition 'No S are P' has universal quantity (applies to all reptiles) and negative quality (denies membership), classified as an E-proposition."
+  },
+  {
+    "id": "logic-hu-2023-mid-01",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "A deductive argument whose premises are all factually true and whose reasoning is logically valid is described as:",
+    "options": [
+      "Strong",
+      "Cogent",
+      "Sound",
+      "Unsound"
+    ],
+    "answer": 2,
+    "explanation": "A deductive argument is sound if and only if it is valid AND all of its premises are factually true."
+  },
+  {
+    "id": "logic-bdu-2021-final-01",
+    "university": "Bahir Dar University",
+    "year": "2021 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "Identify the fallacy: 'If we allow students to use calculators on quizzes, soon they won't know arithmetic, and university education will collapse.'",
+    "options": [
+      "Slippery Slope",
+      "Hasty Generalization",
+      "Begging the Question",
+      "Appeal to Force (Ad Baculum)"
+    ],
+    "answer": 0,
+    "explanation": "The Slippery Slope fallacy assumes that an initial event will inevitably trigger a disastrous chain reaction without providing evidence for each step."
+  },
+  {
+    "id": "logic-astu-2024-mid-01",
+    "university": "ASTU",
+    "year": "2024 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "In the traditional Square of Opposition, what is the relation between an 'A' proposition and an 'O' proposition with identical subject and predicate?",
+    "options": [
+      "Contrary",
+      "Subcontrary",
+      "Contradictory",
+      "Subalternation"
+    ],
+    "answer": 2,
+    "explanation": "A (All S are P) and O (Some S are not P) are contradictory statements; they must have opposite truth values (one must be true, the other false)."
+  },
+  {
+    "id": "eng-aau-2023-mid-01",
+    "university": "Addis Ababa University",
+    "year": "2023 Exam",
+    "course": "Communicative English",
+    "question": "Choose the grammatically correct sentence in the passive voice for: 'The university board approved the new curriculum.'",
+    "options": [
+      "The new curriculum has been approved by the university board.",
+      "The new curriculum was approved by the university board.",
+      "The new curriculum is approved by the university board.",
+      "The new curriculum had been approving by the board."
+    ],
+    "answer": 1,
+    "explanation": "The original sentence is in Simple Past ('approved'). The corresponding passive voice structure is 'was/were + past participle' => 'was approved'."
+  },
+  {
+    "id": "eng-hu-2022-final-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Neither the lecturer nor the students _______ present in the hall when the power went out.",
+    "options": [
+      "was",
+      "were",
+      "is",
+      "are"
+    ],
+    "answer": 1,
+    "explanation": "In 'Neither... nor' constructions, the verb agrees with the closer subject. 'The students' is plural, requiring the plural past verb 'were'."
+  },
+  {
+    "id": "eng-ju-2024-mid-01",
+    "university": "Jimma University",
+    "year": "2024 Exam",
+    "course": "Communicative English",
+    "question": "Which cohesive transitional device best expresses concession in academic writing?",
+    "options": [
+      "Furthermore",
+      "Consequently",
+      "Although",
+      "In addition"
+    ],
+    "answer": 2,
+    "explanation": "'Although' is a subordinating conjunction used to indicate concession or contrast between two clauses."
+  },
+  {
+    "id": "eng-bdu-2023-final-01",
+    "university": "Bahir Dar University",
+    "year": "2023 Exam",
+    "course": "Communicative English",
+    "question": "Identify the word that is an antonym for 'EPHEMERAL':",
+    "options": [
+      "Transient",
+      "Permanent",
+      "Fleeting",
+      "Momentary"
+    ],
+    "answer": 1,
+    "explanation": "'Ephemeral' means lasting for a very short time. Its direct antonym is 'Permanent' (lasting or intended to last indefinitely)."
+  },
+  {
+    "id": "emte-aastu-2023-mid-01",
+    "university": "AASTU",
+    "year": "2023 Exam",
+    "course": "Emerging Technologies",
+    "question": "Which core characteristic distinguishes Industry 4.0 from previous industrial revolutions?",
+    "options": [
+      "Steam and water power mechanization",
+      "Cyber-Physical Systems and IoT integration",
+      "Mass production using electrical energy",
+      "Manual mechanical assembly lines"
+    ],
+    "answer": 1,
+    "explanation": "Industry 4.0 is defined by the fusion of physical assets and digital technologies (Cyber-Physical Systems, IoT, Cloud, and Big Data)."
+  },
+  {
+    "id": "emte-astu-2024-final-01",
+    "university": "ASTU",
+    "year": "2024 Exam",
+    "course": "Emerging Technologies",
+    "question": "Which of the following AI learning paradigms trains a model using reward and penalty signals without labelled input datasets?",
+    "options": [
+      "Supervised Learning",
+      "Unsupervised Learning",
+      "Reinforcement Learning",
+      "Semi-supervised Learning"
+    ],
+    "answer": 2,
+    "explanation": "Reinforcement Learning trains an autonomous agent by rewarding desirable behaviors and punishing undesirable ones through environmental feedback."
+  },
+  {
+    "id": "emte-aau-2023-mid-01",
+    "university": "Addis Ababa University",
+    "year": "2023 Exam",
+    "course": "Emerging Technologies",
+    "question": "In blockchain architecture, what mechanism ensures data immutability and cryptographic agreement across peer nodes?",
+    "options": [
+      "Central server validation",
+      "Consensus algorithms (e.g., Proof of Work/Stake)",
+      "SQL transactional indexing",
+      "DNS lookup table"
+    ],
+    "answer": 1,
+    "explanation": "Distributed consensus algorithms ensure all nodes agree on the valid ledger history without a centralized intermediary."
+  },
+  {
+    "id": "emte-hu-2024-mid-01",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Emerging Technologies",
+    "question": "Which cloud computing deployment model provides pooled computing resources accessible over the open internet to any general subscriber?",
+    "options": [
+      "Private Cloud",
+      "Public Cloud",
+      "Hybrid Cloud",
+      "Community Cloud"
+    ],
+    "answer": 1,
+    "explanation": "A Public Cloud (such as AWS, Google Cloud, or Microsoft Azure) renders services over the public internet to multiple external tenants."
+  },
+  {
+    "id": "geog-aau-2023-final-01",
+    "university": "Addis Ababa University",
+    "year": "2023 Exam",
+    "course": "Geography of Ethiopia",
+    "question": "Which physiographic sub-region contains the highest peak in Ethiopia (Ras Dejen, 4,550 meters above sea level)?",
+    "options": [
+      "North Western Highlands (Simien Mountains)",
+      "South Eastern Highlands (Bale Mountains)",
+      "Afar Triangle Depression",
+      "Main Ethiopian Rift Valley"
+    ],
+    "answer": 0,
+    "explanation": "Ras Dejen is situated in the Simien Mountain Massif within the North Western Highlands of Ethiopia."
+  },
+  {
+    "id": "geog-hu-2022-mid-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia",
+    "question": "Which drainage system in Ethiopia is an endorheic (inland drainage) basin that terminates in Lake Turkana without reaching any ocean?",
+    "options": [
+      "Abbay (Blue Nile) Basin",
+      "Awash River Basin",
+      "Omo-Gibe Basin",
+      "Baro-Akobo Basin"
+    ],
+    "answer": 2,
+    "explanation": "The Omo-Gibe River flows southward across southwestern Ethiopia and empties into the closed internal basin of Lake Turkana in Kenya."
+  },
+  {
+    "id": "geog-ju-2023-mid-01",
+    "university": "Jimma University",
+    "year": "2023 Exam",
+    "course": "Geography of Ethiopia",
+    "question": "According to the traditional agro-climatic altitude zones of Ethiopia, regions located above 3,300 meters are classified as:",
+    "options": [
+      "Kolla (Tropical / Hot)",
+      "Woina Dega (Sub-tropical)",
+      "Dega (Temperate / Cool)",
+      "Kur / Wurch (Alpine / Cold)"
+    ],
+    "answer": 3,
+    "explanation": "The Wurch (or Kur) zone encompasses afro-alpine elevations above 3,300m characterized by frost, high winds, and cold temperatures."
+  },
+  {
+    "id": "geog-bdu-2024-final-01",
+    "university": "Bahir Dar University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia",
+    "question": "The Mesozoic Era in Ethiopia's geological history was predominantly characterized by:",
+    "options": [
+      "Precambrian folding and metamorphism",
+      "Marine transgression and regression depositing limestone and sandstone",
+      "Cenozoic rifting and extensive Trappean volcanism",
+      "Quaternary glaciation in the lowlands"
+    ],
+    "answer": 1,
+    "explanation": "The Mesozoic Era was characterized by the flooding of the Horn of Africa by the Tethys sea, producing Adigrat Sandstone, Antalo Limestone, and Upper Sandstone."
   }
 ]
