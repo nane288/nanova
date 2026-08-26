@@ -1,73 +1,9 @@
 /* ===================================================
    NANOVA - Freshman Exam Board & Community Feed Engine
-   Enforced Admin-Only Posting & Interactive Practice
+   100% English Language - Ethiopian University Freshman App
    =================================================== */
 (() => {
   'use strict';
-
-  /* ── TRANSLATIONS DICTIONARY ───────────────────────── */
-  const TRANSLATIONS = {
-    en: {
-      board_title: 'Freshman Exam Board',
-      board_subtitle: 'Practice real course and university exams with detailed solutions.',
-      community_title: 'Community Feed',
-      community_subtitle: 'Connect, interact and share experiences with fellow students.',
-      subject_label: 'SUBJECT / COURSE',
-      univ_label: 'UNIVERSITY',
-      year_label: 'EXAM YEAR',
-      done_label: 'DONE',
-      all_subjects: 'All Subjects',
-      all_univs: 'All Universities',
-      all_years: 'All Years',
-      next_btn: 'Next Question',
-      prev_btn: 'Previous',
-      attach_image: 'Attach Image',
-      publish_post: 'Publish Post',
-      like: 'Like',
-      comment: 'Comment',
-      share: 'Share'
-    },
-    om: {
-      board_title: 'Giddugala Qormaata Yunibarsitii',
-      board_subtitle: 'Qormaata Yunibarsitii Itoophiyaa shaakali fi deebii bal\x27inaa argadhu.',
-      community_title: 'Hawaasa Barattootaa',
-      community_subtitle: 'Barattoota waliin odeeffannoo fi muuxannoo wal-jijjiiraa.',
-      subject_label: 'GOSA BARNOOTAA',
-      univ_label: 'YUNIBARSITII',
-      year_label: 'BARA QORMAATAA',
-      done_label: 'XUMURAME',
-      all_subjects: 'Gosa Barnootaa Hunda',
-      all_univs: 'Yunibarsitii Hunda',
-      all_years: 'Bara Hunda',
-      next_btn: 'Itti Aanaa',
-      prev_btn: 'Dura',
-      attach_image: 'Fakkii Dabaladhu',
-      publish_post: 'Maxxansi',
-      like: 'Jaalladhu',
-      comment: 'Yaada',
-      share: 'Qoodi'
-    },
-    am: {
-      board_title: 'የመጀመሪያ ዓመት ፈተና ቦርድ',
-      board_subtitle: 'የዩኒቨርስቲ ፈተናዎችን ከዝርዝር ማብራሪያ ጋር ይለማመዱ።',
-      community_title: 'የተማሪዎች ማህበረሰብ',
-      community_subtitle: 'ከተማሪዎች ጋር ይገናኙ እና ልምዶችን ያካፍሉ።',
-      subject_label: 'የትምህርት ዓይነት',
-      univ_label: 'ዩኒቨርስቲ',
-      year_label: 'የፈተና ዓመት',
-      done_label: 'ተጠናቋል',
-      all_subjects: 'ሁሉም ትምህርቶች',
-      all_univs: 'ሁሉም ዩኒቨርስቲዎች',
-      all_years: 'ሁሉም ዓመታት',
-      next_btn: 'ቀጣይ ጥያቄ',
-      prev_btn: 'ቀዳሚ',
-      attach_image: 'ምስል ያያይዙ',
-      publish_post: 'አሳትም',
-      like: 'ውደድ',
-      comment: 'አስተያየት',
-      share: 'አጋራ'
-    }
-  };
 
   /* ── INDEXEDDB PERSISTENCE ─────────────────────────── */
   const NanovaDB = {
@@ -108,7 +44,7 @@
     }
   };
 
-  /* ── DEFAULT DATA ──────────────────────────────────── */
+  /* ── DEFAULT DATA (ENGLISH ONLY) ───────────────────── */
   const DEFAULT_QUESTIONS = [
     {
       id: 'q1',
@@ -212,7 +148,6 @@
 
   /* ── APPLICATION STATE ─────────────────────────────── */
   const State = {
-    lang: 'en',
     profile: { name: 'Adnan', university: 'Haramaya University', stream: 'Natural Science' },
     isAdmin: false,
     adminPasskey: 'nanova2026',
@@ -233,7 +168,6 @@
   /* ── INITIALIZATION ────────────────────────────────── */
   async function initApp() {
     loadSavedState();
-    setupLanguageListener();
     await NanovaDB.init().catch(console.warn);
     await loadExamsData();
     await loadPosts();
@@ -243,7 +177,7 @@
     updateAdminComposerUI();
     updateCounterBadges();
     if (window.lucide) window.lucide.createIcons();
-    console.log('[Nanova] Initialized - Admin Only Posting Active');
+    console.log('[Nanova] 100% English UI initialized');
   }
 
   function loadSavedState() {
@@ -254,30 +188,10 @@
       if (ans) State.userAnswers = JSON.parse(ans);
       State.isPremium = localStorage.getItem('nanova_is_premium') === 'true';
       State.isAdmin = localStorage.getItem('nanova_is_admin') === 'true';
-      const l = localStorage.getItem('nanova_lang');
-      if (l && TRANSLATIONS[l]) State.lang = l;
+      // Clean any legacy language key
+      localStorage.removeItem('nanova_lang');
     } catch {}
     updateProfileUI();
-  }
-
-  function setupLanguageListener() {
-    const sel = document.getElementById('langSelect');
-    if (sel) {
-      sel.value = State.lang;
-      sel.addEventListener('change', (e) => {
-        State.lang = e.target.value;
-        localStorage.setItem('nanova_lang', State.lang);
-        applyTranslations();
-      });
-    }
-  }
-
-  function applyTranslations() {
-    const t = TRANSLATIONS[State.lang] || TRANSLATIONS.en;
-    const prevBtn = document.getElementById('boardPrevBtn');
-    const nextBtn = document.getElementById('boardNextBtn');
-    if (prevBtn) prevBtn.querySelector('span').textContent = t.prev_btn;
-    if (nextBtn) nextBtn.querySelector('span').textContent = t.next_btn;
   }
 
   function updateProfileUI() {
