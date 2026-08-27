@@ -1,0 +1,45 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        // Users can read and update their own profile; Admins can read/write any profile
+        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
+        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin')",
+        // Only existing admins can change a user's role to 'admin'
+        "role": {
+          ".validate": "newData.val() === 'student' || root.child('users').child(auth.uid).child('role').val() === 'admin'"
+        },
+        "isPaid": {
+          ".validate": "root.child('users').child(auth.uid).child('role').val() === 'admin' || (data.val() === newData.val())"
+        }
+      },
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    },
+    "posts": {
+      // Everyone (authenticated or unauthenticated) can read public announcements
+      ".read": true,
+      // Only verified admins can publish or delete announcements
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'",
+      "$postId": {
+        // Users can increment likes
+        "likes": {
+          ".write": "auth != null"
+        }
+      }
+    },
+    "paymentRequests": {
+      // Admins can read all requests; Users can only read their own
+      ".read": "auth != null",
+      // Authenticated users can create payment requests
+      "$reqId": {
+        ".write": "auth != null && (newData.child('uid').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin')"
+      }
+    },
+    "settings": {
+      // Everyone can read payment instructions (price, telebirr, CBE, ebirr)
+      ".read": true,
+      // Only admins can modify payment settings
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"
+    }
+  }
+}

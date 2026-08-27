@@ -1,5 +1,6 @@
 /* ===================================================
-   NANOVA - Firebase Authentication & Offline App Engine
+   NANOVA - Freshman Exam Board & Community Engine
+   Firebase Authentication & Cloud Database Sync
    Firebase Project: nanova-st (nanova-st.firebaseapp.com)
    =================================================== */
 (() => {
@@ -9,6 +10,7 @@
   const firebaseConfig = {
     apiKey: "AIzaSyCUKyTmsymb7T-ai2eYhcxcXSDSD4Tom58",
     authDomain: "nanova-st.firebaseapp.com",
+    databaseURL: "https://nanova-st-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "nanova-st",
     storageBucket: "nanova-st.firebasestorage.app",
     messagingSenderId: "127653158506",
@@ -16,27 +18,37 @@
     measurementId: "G-YDF5Z7Y2SJ"
   };
 
+  let firebaseApp = null;
   let firebaseAuth = null;
+  let firebaseDb = null;
+  let firebaseFirestore = null;
   let googleProvider = null;
 
   try {
     if (window.firebase) {
       if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
+        firebaseApp = firebase.initializeApp(firebaseConfig);
         try { firebase.analytics(); } catch {}
+      } else {
+        firebaseApp = firebase.app();
       }
       firebaseAuth = firebase.auth();
+      try { firebaseDb = firebase.database(); } catch (e) { console.warn('[Firebase RTDB Init]', e); }
+      try { firebaseFirestore = firebase.firestore(); } catch (e) { console.warn('[Firebase Firestore Init]', e); }
       googleProvider = new firebase.auth.GoogleAuthProvider();
-      console.log('[Firebase] Initialized for project: nanova-st');
+      googleProvider.addScope('email');
+      googleProvider.addScope('profile');
+      googleProvider.setCustomParameters({ prompt: 'select_account' });
+      console.log('[Firebase] Initialized with Google Auth Provider for: nanova-st');
     }
   } catch (err) {
     console.warn('[Firebase] Init notice:', err.message);
   }
 
-  /* ── INDEXEDDB PERSISTENCE ─────────────────────────── */
+  /* ── INDEXEDDB PERSISTENCE (OFFLINE EXAM ENGINE) ─── */
   const NanovaDB = {
-    dbName: 'NanovaBoardDB',
-    version: 3,
+    dbName: 'NanovaBoardDB_v4',
+    version: 4,
     db: null,
 
     async init() {
@@ -73,7 +85,7 @@
     }
   };
 
-  /* ── DEFAULT DATA ──────────────────────────────────── */
+  /* ── DEFAULT DATA FALLBACKS ────────────────────────── */
   const DEFAULT_QUESTIONS = [
     {
       id: 'q1',
@@ -100,103 +112,49 @@
         '50 meters',
         '100 meters',
         '25 meters',
-        '200 meters'
+        '40 meters'
       ],
       answer: 0,
-      explanation: 'Using kinematic formula: d = ((v_i + v_f) / 2) * t = ((0 + 20) / 2) * 5 = 10 * 5 = 50 meters.'
-    },
-    {
-      id: 'q3',
-      course: 'Applied Mathematics I',
-      university: 'ASTU',
-      year: '2024 Exam',
-      question: 'What is the limit of (sin(3x) / x) as x approaches 0?',
-      options: [
-        '0',
-        '1',
-        '3',
-        'Undefined'
-      ],
-      answer: 2,
-      explanation: 'Using the standard trigonometric limit lim(x->0) [sin(kx)/x] = k, here k = 3, therefore the limit is 3.'
-    },
-    {
-      id: 'q4',
-      course: 'Logic and Critical Thinking',
-      university: 'Jimma University',
-      year: '2022 Exam',
-      question: 'Which fallacy is committed when an arguer attacks their opponent\'s character rather than addressing the substance of their argument?',
-      options: [
-        'Straw Man Fallacy',
-        'Argumentum Ad Hominem',
-        'Appeal to Ignorance',
-        'False Dilemma'
-      ],
-      answer: 1,
-      explanation: 'Argumentum Ad Hominem directly attacks the person rather than addressing the merits of the actual argument.'
-    },
-    {
-      id: 'q5',
-      course: 'Emerging Technologies',
-      university: 'AASTU',
-      year: '2023 Exam',
-      question: 'Which core characteristic distinguishes Industry 4.0 from previous industrial revolutions?',
-      options: [
-        'Steam and water power mechanization',
-        'Cyber-Physical Systems and IoT integration',
-        'Mass production using electrical energy',
-        'Manual assembly line labor'
-      ],
-      answer: 1,
-      explanation: 'Industry 4.0 is characterized by Cyber-Physical Systems, Internet of Things (IoT), cloud computing, and AI-driven automation.'
+      explanation: 'Using kinematic equation s = ut + 0.5at²: Acceleration a = (20 - 0)/5 = 4 m/s². Distance s = 0 + 0.5*(4)*(5²) = 50 meters.'
     }
   ];
 
   const DEFAULT_UNIVERSITIES = [
     {
-      id: 'univ_haramaya',
+      id: 'univ_hu',
       name: 'Haramaya University',
       website: 'https://www.haramaya.edu.et',
       telegram: 'https://t.me/HaramayaUniversityOfficial',
       image: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&auto=format&fit=crop&q=80',
       location: 'Dire Dawa / Harar, Ethiopia',
-      description: 'One of the oldest and most prestigious pioneer agricultural & science universities in Ethiopia.'
+      description: 'Pioneer agricultural & science research university with national freshman centers.'
     },
     {
       id: 'univ_aau',
       name: 'Addis Ababa University',
       website: 'http://www.aau.edu.et',
-      telegram: 'https://t.me/AddisAbabaUniversityOfficial',
-      image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80',
+      telegram: 'https://t.me/AAU_Official_Telegram',
+      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&auto=format&fit=crop&q=80',
       location: 'Addis Ababa, Ethiopia',
-      description: 'The flagship national higher education institution of Ethiopia, founded in 1950.'
+      description: 'Oldest and leading autonomous university in Ethiopia.'
     },
     {
       id: 'univ_astu',
       name: 'Adama Science & Technology University (ASTU)',
       website: 'http://www.astu.edu.et',
       telegram: 'https://t.me/ASTU_Official',
-      image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&auto=format&fit=crop&q=80',
-      location: 'Adama (Nazret), Oromia, Ethiopia',
-      description: 'A center of excellence in applied science, technology, and engineering education.'
+      image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80',
+      location: 'Adama, Oromia, Ethiopia',
+      description: 'Center of excellence in STEM, engineering innovations, and technology research.'
     },
     {
-      id: 'univ_jimma',
+      id: 'univ_ju',
       name: 'Jimma University',
       website: 'https://www.ju.edu.et',
       telegram: 'https://t.me/JimmaUniversityOfficial',
       image: 'https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?w=600&auto=format&fit=crop&q=80',
       location: 'Jimma, Oromia, Ethiopia',
-      description: 'Renowned for community-based education and leading medical & public health training.'
-    },
-    {
-      id: 'univ_hawassa',
-      name: 'Hawassa University',
-      website: 'https://www.hu.edu.et',
-      telegram: 'https://t.me/HawassaUniversityOfficial',
-      image: 'https://images.unsplash.com/photo-1592280771190-3e2e4d571952?w=600&auto=format&fit=crop&q=80',
-      location: 'Hawassa, Sidama, Ethiopia',
-      description: 'Prominent comprehensive university situated alongside beautiful Lake Hawassa.'
+      description: 'Innovative community-based higher educational institution with medical leadership.'
     },
     {
       id: 'univ_bdu',
@@ -212,65 +170,65 @@
   const DEFAULT_POSTS = [
     {
       id: 'post_1',
-      author: 'Adnan Abduletif (Campus Admin)',
-      email: 'adnanabduletif010@gmail.com',
+      author: 'Campus Administrator',
+      email: '',
       initial: 'A',
       isAdminPost: true,
-      date: '05 Jul 2026, 14:59',
+      date: 'Official Notice',
       content: 'Freshman Math Lecture Video: Master limits, derivatives, and continuous functions for midterm preparation with this step-by-step video solution!',
       youtubeUrl: 'https://www.youtube.com/watch?v=WUvTyaaNkzM',
       imageUrl: '',
-      likes: 18,
-      isLiked: true
+      likes: 24,
+      isLiked: false
     },
     {
       id: 'post_2',
-      author: 'Adnan Abduletif (Campus Admin)',
-      email: 'adnanabduletif010@gmail.com',
+      author: 'Campus Administrator',
+      email: '',
       initial: 'A',
       isAdminPost: true,
-      date: '04 Jul 2026, 10:15',
+      date: 'Study Guide',
       content: 'General Physics formulas cheat sheet & university past questions guide. Make sure to check the Universities tab for official portals and Telegram study groups.',
       youtubeUrl: '',
       imageUrl: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop&q=80',
-      likes: 12,
+      likes: 18,
       isLiked: false
     }
   ];
 
   /* ── APPLICATION STATE ─────────────────────────────── */
   const State = {
-    profile: { name: 'Adnan', university: 'Haramaya University', stream: 'Natural Science' },
+    profile: { name: 'Student', university: 'Haramaya University', stream: 'Natural Science', email: '' },
     currentUser: null,
     isAdmin: false,
-    adminEmails: ['adnoab705@gmail.com', 'adnoab705', 'adnanabduletif010@gmail.com', 'adnanabduletif010.agmail.com', 'adnanabduletif010', 'adnan'],
+    isPaid: false,
+    pageSize: 10,
+    currentPage: 1,
     paymentSettings: {
       price: 50,
       telebirr: '+251 91 234 5678',
       cbe: '1000234567890 (Commercial Bank of Ethiopia)',
-      chapa: 'https://chapa.co',
-      instructions: 'Send 50 ETB via Telebirr or CBE Birr and confirm to instantly unlock all 300+ freshman questions.'
+      ebirr: '+251 91 234 5678 (E-Birr)',
+      instructions: 'Send 50 ETB via Telebirr, CBE Birr, or E-Birr and confirm to instantly unlock all freshman questions.'
     },
-    adminPasskey: 'nanova2026',
-    adminProfile: { name: 'Adnan Abduletif', email: 'adnanabduletif010@gmail.com', title: 'Lead Campus Admin' },
     exams: [],
     questions: [],
     filteredQuestions: [],
-    currentQuestionIndex: 0,
     userAnswers: {},
-    isPremium: false,
+    missedRetries: {},
     bookmarks: JSON.parse(localStorage.getItem('nanova_bookmarks') || '[]'),
-    onlyBookmarks: false,
+    activeQuickFilter: 'all',
     searchKeyword: '',
-    mockExam: {
-      active: false,
-      timer: null,
-      secondsLeft: 1200,
-      totalTime: 1200,
-      score: 0
-    },
+    examMode: 'practice',
+    timerSeconds: 1800,
+    examStartTime: null,
+    timerInterval: null,
     universities: [],
     posts: [],
+    paymentRequests: [],
+    registeredUsers: [],
+    activeCommentPostId: null,
+    comments: JSON.parse(localStorage.getItem('nanova_comments') || '{}'),
     filters: {
       course: 'ALL',
       university: 'ALL',
@@ -280,48 +238,62 @@
 
   /* ── INITIALIZATION ────────────────────────────────── */
   async function initApp() {
-    loadSavedState();
-    loadSavedPaymentSettings();
+    loadSavedLocalState();
     await NanovaDB.init().catch(console.warn);
     await loadExamsData();
     await loadUniversities();
-    await loadPosts();
-    renderBoardQuestion();
+    await loadPostsFromFirebase();
+    await loadPaymentSettingsFromFirebase();
+    initFirebaseAuthListener();
+    applyFilters();
     renderUniversities();
     renderCommunityPosts();
     updateAdminUI();
     updateCounterBadges();
-    initFirebaseAuthListener();
     if (window.lucide) window.lucide.createIcons();
-    console.log('[Nanova] 100% English Engine with Firebase Auth & Universities');
+    console.log('[Nanova] Engine Initialized with 10-Question Pagination & 3 Payment Options (Telebirr, CBE, E-Birr)');
   }
 
-  function loadSavedState() {
+  function loadSavedLocalState() {
     try {
       const p = localStorage.getItem('nanova_profile');
       if (p) Object.assign(State.profile, JSON.parse(p));
       const ans = localStorage.getItem('nanova_board_answers');
       if (ans) State.userAnswers = JSON.parse(ans);
-      State.isPremium = localStorage.getItem('nanova_is_premium') === 'true';
-      State.isAdmin = localStorage.getItem('nanova_is_admin') === 'true';
-      localStorage.removeItem('nanova_lang');
+      const savedPay = localStorage.getItem('nanova_payment_settings');
+      if (savedPay) Object.assign(State.paymentSettings, JSON.parse(savedPay));
     } catch {}
     updateProfileUI();
   }
 
   function updateProfileUI() {
-    const init = State.profile.name ? State.profile.name[0].toUpperCase() : 'A';
-    const headerInit = document.getElementById('headerProfileInitial');
-    const compInit = document.getElementById('composerAvatar');
-    const profInit = document.getElementById('profileLargeInitial');
-    if (headerInit) headerInit.textContent = init;
-    if (compInit) compInit.innerHTML = '<span>' + init + '</span>';
-    if (profInit) profInit.textContent = init;
+    const btn = document.getElementById('profileAvatarBtn');
+    if (btn) {
+      if (State.currentUser) {
+        const init = State.profile.name ? State.profile.name[0].toUpperCase() : (State.currentUser.email ? State.currentUser.email[0].toUpperCase() : 'U');
+        const displayName = State.profile.name || State.currentUser.email?.split('@')[0] || 'User';
+        btn.className = 'px-3 py-1.5 rounded-2xl bg-white text-slate-900 font-extrabold text-xs flex items-center space-x-2 border-2 border-white/80 hover:bg-blue-50 transition shadow-lg shadow-blue-900/30';
+        btn.innerHTML = `
+          <span class="w-6 h-6 rounded-xl bg-blue-100 text-[#0052fe] font-black text-xs flex items-center justify-center">${init}</span>
+          <span class="hidden sm:inline font-extrabold text-xs text-slate-800 max-w-[100px] truncate">${escapeHtml(displayName)}</span>
+        `;
+      } else {
+        btn.className = 'px-3.5 py-1.5 rounded-2xl bg-white text-[#0052fe] font-black text-xs flex items-center space-x-1.5 border-2 border-white hover:bg-blue-50 transition shadow-lg shadow-blue-900/30';
+        btn.innerHTML = `
+          <i data-lucide="user" class="w-4 h-4 text-[#0052fe]"></i>
+          <span>Login</span>
+        `;
+      }
+    }
 
+    const profInit = document.getElementById('profileLargeInitial');
     const pName = document.getElementById('profileLargeName');
     const pUniv = document.getElementById('profileLargeUniv');
-    if (pName) pName.textContent = State.profile.name;
-    if (pUniv) pUniv.textContent = State.profile.university;
+    if (profInit) profInit.textContent = State.profile.name ? State.profile.name[0].toUpperCase() : 'S';
+    if (pName) pName.textContent = State.currentUser ? (State.profile.name || State.currentUser.email?.split('@')[0] || 'Student Account') : 'Guest Student';
+    if (pUniv) pUniv.textContent = State.profile.university || 'Haramaya University';
+
+    if (window.lucide) window.lucide.createIcons();
   }
 
   /* ── FIREBASE AUTHENTICATION FLOWS ─────────────────── */
@@ -330,38 +302,82 @@
   function initFirebaseAuthListener() {
     if (!firebaseAuth) return;
 
-    firebaseAuth.onAuthStateChanged((user) => {
+    // Handle return from Google redirect sign-in (no popup, no password)
+    if (firebaseAuth.getRedirectResult) {
+      firebaseAuth.getRedirectResult().catch((err) => {
+        if (err && err.code !== 'auth/user-cancelled') {
+          console.warn('[Google Redirect]', err.message);
+        }
+      });
+    }
+
+    firebaseAuth.onAuthStateChanged(async (user) => {
       if (user) {
         State.currentUser = user;
-        const email = (user.email || '').toLowerCase();
+        const email = (user.email || '').toLowerCase().trim();
         State.profile.name = user.displayName || email.split('@')[0] || 'Student';
         State.profile.email = email;
 
-        if (email === 'adnoab705@gmail.com' || email.includes('adnoab705') || email === 'adnanabduletif010@gmail.com' || email.includes('adnanabduletif010')) {
-          State.isAdmin = true;
-          localStorage.setItem('nanova_is_admin', 'true');
+        // Admin is determined ONLY by Firebase role field — no emails in source code
+        State.isAdmin = false;
+
+        // Synchronize / Listen to User Document in Firebase
+        if (firebaseDb) {
+          try {
+            const userRef = firebaseDb.ref('users/' + user.uid);
+            userRef.on('value', (snap) => {
+              const uData = snap.val();
+              if (uData) {
+                State.isAdmin = uData.role === 'admin';
+                State.isPaid = State.isAdmin || !!uData.isPaid;
+              } else {
+                // New user — register as student by default
+                userRef.set({
+                  uid: user.uid,
+                  email: user.email || '',
+                  displayName: State.profile.name,
+                  role: 'student',
+                  isPaid: false,
+                  createdAt: Date.now()
+                }).catch(console.warn);
+                State.isAdmin = false;
+                State.isPaid = false;
+              }
+              updateAdminUI();
+              renderBoardQuestionsPage();
+            });
+          } catch (e) {
+            console.warn('[Firebase RTDB User Listener]', e);
+          }
+        } else {
+          State.isPaid = false;
         }
 
         localStorage.setItem('nanova_profile', JSON.stringify(State.profile));
         updateProfileUI();
         updateAdminUI();
-        renderUniversities();
-        renderCommunityPosts();
-        console.log('[Firebase Auth] Logged in:', email, '| Admin:', State.isAdmin);
+        if (State.isAdmin) {
+          loadPaymentRequestsAndUsers();
+        }
+        console.log('[Firebase Auth] User:', email, '| Admin:', State.isAdmin, '| Paid:', State.isPaid);
       } else {
         State.currentUser = null;
-        console.log('[Firebase Auth] Signed out state');
+        State.isAdmin = false;
+        State.isPaid = false;
+        updateProfileUI();
+        updateAdminUI();
+        renderBoardQuestionsPage();
+        console.log('[Firebase Auth] Signed out');
       }
+      if (window.lucide) window.lucide.createIcons();
     });
   }
 
   function openAuthModal() {
-    if (State.currentUser || State.isAdmin) {
-      // If user is already logged in, switch to profile or show details
-      const email = State.currentUser?.email || State.profile.email || (State.isAdmin ? 'adnanabduletif010@gmail.com' : 'Student');
-      const role = State.isAdmin ? 'Lead Administrator' : 'Student';
-      const prompt = confirm('Logged in as: ' + email + ' (' + role + ')\n\nWould you like to Sign Out?');
-      if (prompt) {
+    if (State.currentUser) {
+      const email = State.currentUser.email || State.profile.email;
+      const confirmed = confirm('Signed in as: ' + email + '\n\nWould you like to Sign Out?');
+      if (confirmed) {
         firebaseSignOut();
       }
     } else {
@@ -396,7 +412,7 @@
   async function handleEmailAuth(e) {
     e.preventDefault();
     if (!firebaseAuth) {
-      alert('Firebase is initializing, please try again.');
+      alert('Firebase Auth is initializing, please try again in a moment.');
       return;
     }
 
@@ -405,20 +421,17 @@
     const submitBtn = document.getElementById('authSubmitBtn');
 
     if (!email || !pass) return;
-
     if (submitBtn) { submitBtn.textContent = 'Authenticating...'; submitBtn.disabled = true; }
 
     try {
       if (authMode === 'signup') {
         await firebaseAuth.createUserWithEmailAndPassword(email, pass);
-        alert('✅ Account registered successfully in Firebase!');
       } else {
         await firebaseAuth.signInWithEmailAndPassword(email, pass);
-        alert('✅ Signed in successfully via Firebase!');
       }
       closeAuthModal();
     } catch (err) {
-      alert('❌ Firebase Auth: ' + err.message);
+      alert('❌ ' + err.message);
     } finally {
       if (submitBtn) {
         submitBtn.textContent = authMode === 'signup' ? 'Register Account' : 'Sign In';
@@ -429,15 +442,24 @@
 
   async function handleGoogleSignIn() {
     if (!firebaseAuth || !googleProvider) {
-      alert('Google Auth initializing...');
+      alert('Google Sign-In is initializing. Please try again.');
       return;
     }
     try {
       await firebaseAuth.signInWithPopup(googleProvider);
-      alert('✅ Signed in with Google successfully!');
       closeAuthModal();
     } catch (err) {
-      alert('Google Sign-In notice: ' + err.message);
+      if (err.code === 'auth/popup-blocked') {
+        console.info('[Google Sign-In] Popup blocked, falling back to redirect...');
+        await firebaseAuth.signInWithRedirect(googleProvider);
+      } else if (err.code === 'auth/operation-not-allowed') {
+        alert('Google Sign-In is not enabled in Firebase Console. Go to Firebase Console -> Authentication -> Sign-in method -> Enable Google.');
+      } else if (err.code === 'auth/unauthorized-domain') {
+        alert('This domain (' + window.location.hostname + ') is not authorized in Firebase. Add it under Firebase Console -> Authentication -> Settings -> Authorized domains.');
+      } else if (err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
+        console.error('[Google Sign-In Error]', err);
+        alert('Google Sign-In Error: ' + (err.message || err.code));
+      }
     }
   }
 
@@ -445,195 +467,60 @@
     if (firebaseAuth) {
       await firebaseAuth.signOut();
     }
+    State.currentUser = null;
     State.isAdmin = false;
-    localStorage.removeItem('nanova_is_admin');
+    State.isPaid = false;
     updateAdminUI();
-    renderUniversities();
-    renderCommunityPosts();
+    renderBoardQuestionsPage();
     alert('Logged out of Firebase.');
   }
 
-  /* ── ADMIN ACCESS CONTROLS ─────────────────────────── */
-    /* ── BOOKMARK & MOCK EXAM FEATURES ───────────────── */
-  function toggleBookmark(qId) {
-    const id = qId || (State.filteredQuestions[State.currentQuestionIndex] ? State.filteredQuestions[State.currentQuestionIndex].id : null);
-    if (!id) return;
-
-    const idx = State.bookmarks.indexOf(id);
-    if (idx === -1) {
-      State.bookmarks.push(id);
-    } else {
-      State.bookmarks.splice(idx, 1);
-    }
-
-    localStorage.setItem('nanova_bookmarks', JSON.stringify(State.bookmarks));
-    renderBoardQuestion();
-    updateCounterBadges();
-  }
-
-  function toggleBookmarksOnlyFilter() {
-    State.onlyBookmarks = !State.onlyBookmarks;
-    const btn = document.getElementById('filterBookmarksBtn');
-    if (btn) {
-      if (State.onlyBookmarks) {
-        btn.classList.add('bg-blue-600', 'text-white');
-        btn.classList.remove('bg-white', 'text-slate-700');
-      } else {
-        btn.classList.remove('bg-blue-600', 'text-white');
-        btn.classList.add('bg-white', 'text-slate-700');
-      }
-    }
-    applyFilters();
-  }
-
-  function onSearchInput(val) {
-    State.searchKeyword = val;
-    applyFilters();
-  }
-
-  function startTimedExamMode() {
-    if (State.mockExam.active) {
-      if (confirm('Exit Timed Exam Mode?')) {
-        clearInterval(State.mockExam.timer);
-        State.mockExam.active = false;
-        document.getElementById('timerBanner')?.classList.add('hidden');
-        document.getElementById('startExamBtnText')?.replaceChildren(document.createTextNode('Timed Exam'));
-        applyFilters();
-      }
-      return;
-    }
-
-    // Shuffle questions and select 20 for exam mode
-    State.mockExam.active = true;
-    State.mockExam.secondsLeft = 1200; // 20 minutes
-    State.mockExam.totalTime = 1200;
-    
-    // Pick 20 questions
-    const shuffled = [...State.questions].sort(() => 0.5 - Math.random()).slice(0, 20);
-    State.filteredQuestions = shuffled;
-    State.currentQuestionIndex = 0;
-    State.userAnswers = {};
-
-    const banner = document.getElementById('timerBanner');
-    if (banner) banner.classList.remove('hidden');
-    const btnText = document.getElementById('startExamBtnText');
-    if (btnText) btnText.textContent = 'End Exam';
-
-    renderBoardQuestion();
-    updateCounterBadges();
-
-    clearInterval(State.mockExam.timer);
-    State.mockExam.timer = setInterval(() => {
-      State.mockExam.secondsLeft--;
-      const min = Math.floor(State.mockExam.secondsLeft / 60);
-      const sec = State.mockExam.secondsLeft % 60;
-      const display = (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
-      const timerEl = document.getElementById('examTimerDisplay');
-      if (timerEl) timerEl.textContent = display;
-
-      if (State.mockExam.secondsLeft <= 0) {
-        clearInterval(State.mockExam.timer);
-        finishTimedExam();
-      }
-    }, 1000);
-  }
-
-  function finishTimedExam() {
-    clearInterval(State.mockExam.timer);
-    State.mockExam.active = false;
-    document.getElementById('timerBanner')?.classList.add('hidden');
-
-    let correctCount = 0;
-    let totalQs = State.filteredQuestions.length;
-    State.filteredQuestions.forEach((q) => {
-      if (State.userAnswers[q.id] === q.answer) correctCount++;
-    });
-
-    const percent = Math.round((correctCount / totalQs) * 100);
-    let grade = 'A';
-    if (percent < 50) grade = 'F (Need Revision)';
-    else if (percent < 65) grade = 'C';
-    else if (percent < 80) grade = 'B';
-    else if (percent < 90) grade = 'A';
-    else grade = 'A+ (Distinction)';
-
-    alert('📋 MOCK EXAM RESULT:\n\nScore: ' + correctCount + ' / ' + totalQs + ' (' + percent + '%)\nLetter Grade: ' + grade + '\n\nGreat work! Review individual answers on the board.');
-  }
-
-function updateAdminUI() {
-    const adminView = document.getElementById('adminComposerView');
-    const studentView = document.getElementById('studentComposerView');
+  /* ── ADMIN UI & ROLE CONTROLS ──────────────────────── */
+  function updateAdminUI() {
+    const adminNavBtn = document.getElementById('adminNavBtn');
+    const composerCard = document.getElementById('composerCard');
     const adminLockedBox = document.getElementById('adminLockedBox');
     const adminUnlockedBox = document.getElementById('adminUnlockedBox');
     const addUnivBtn = document.getElementById('addUnivBtn');
-    const adminNavBtn = document.getElementById('adminNavBtn');
     const addQuestionBtn = document.getElementById('addQuestionBtn');
 
     if (State.isAdmin) {
       if (adminNavBtn) adminNavBtn.classList.remove('hidden');
-      if (adminView) adminView.classList.remove('hidden');
-      if (studentView) studentView.classList.add('hidden');
+      if (composerCard) composerCard.classList.remove('hidden');
       if (adminLockedBox) adminLockedBox.classList.add('hidden');
       if (adminUnlockedBox) adminUnlockedBox.classList.remove('hidden');
       if (addUnivBtn) addUnivBtn.classList.remove('hidden');
       if (addQuestionBtn) addQuestionBtn.classList.remove('hidden');
+
+      const nameEl = document.getElementById('adminProfileDisplayName');
+      const emailEl = document.getElementById('adminProfileEmailDisplay');
+      if (nameEl) nameEl.textContent = State.currentUser?.displayName || State.profile.name || 'Administrator';
+      if (emailEl) emailEl.textContent = (State.currentUser?.email || '') + ' • Verified Administrator';
+
       renderAdminDashboard();
     } else {
-      if (adminView) adminView.classList.add('hidden');
-      if (studentView) studentView.classList.remove('hidden');
+      if (adminNavBtn) adminNavBtn.classList.add('hidden');
+      if (composerCard) composerCard.classList.add('hidden');
       if (adminLockedBox) adminLockedBox.classList.remove('hidden');
       if (adminUnlockedBox) adminUnlockedBox.classList.add('hidden');
       if (addUnivBtn) addUnivBtn.classList.add('hidden');
       if (addQuestionBtn) addQuestionBtn.classList.add('hidden');
     }
+
+    const freeNotice = document.getElementById('freeLimitNotice');
+    if (freeNotice) {
+      if (!State.isPaid && !State.isAdmin) {
+        freeNotice.classList.remove('hidden');
+      } else {
+        freeNotice.classList.add('hidden');
+      }
+    }
+
+    updateProfileUI();
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function verifyAdminCredential(input) {
-    if (!input) return false;
-    const clean = input.trim().toLowerCase();
-    return clean === State.adminPasskey.toLowerCase() ||
-           State.adminEmails.some((email) => clean === email.toLowerCase() || clean.includes('adnoab705') || clean.includes('adnanabduletif010'));
-  }
-
-  function promptAdminLogin() {
-    const input = prompt('Enter Admin Email (adnanabduletif010@gmail.com) or Passkey:');
-    if (!input) return;
-
-    if (verifyAdminCredential(input)) {
-      State.isAdmin = true;
-      localStorage.setItem('nanova_is_admin', 'true');
-      updateAdminUI();
-      renderUniversities();
-      alert('🛡️ Welcome Admin Adnan Abduletif (adnanabduletif010@gmail.com)! Admin mode unlocked.');
-    } else {
-      alert('❌ Invalid admin credential.');
-    }
-  }
-
-  function handleAdminLogin(e) {
-    e.preventDefault();
-    const input = document.getElementById('adminPasskeyInput')?.value;
-    if (verifyAdminCredential(input)) {
-      State.isAdmin = true;
-      localStorage.setItem('nanova_is_admin', 'true');
-      updateAdminUI();
-      renderUniversities();
-      alert('🛡️ Admin Access Verified for adnanabduletif010@gmail.com!');
-    } else {
-      alert('❌ Invalid admin credential.');
-    }
-  }
-
-  function adminLogout() {
-    State.isAdmin = false;
-    localStorage.removeItem('nanova_is_admin');
-    updateAdminUI();
-    renderUniversities();
-    alert('Logged out of Admin mode.');
-  }
-
-  /* ── DATA FETCHING ─────────────────────────────────── */
+  /* ── DATA FETCHING (EXAMS STAY ON JSON) ─────────────── */
   async function loadExamsData() {
     try {
       const resp = await fetch('./data/exams.json');
@@ -641,7 +528,7 @@ function updateAdminUI() {
         let text = await resp.text();
         if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
         const data = JSON.parse(text);
-        
+
         let allQs = [];
         if (Array.isArray(data)) {
           data.forEach((item, idx) => {
@@ -675,28 +562,25 @@ function updateAdminUI() {
             }
           });
         }
-        
+
         if (allQs.length) {
           State.questions = allQs;
           NanovaDB.saveAll('exams', allQs).catch(console.warn);
         }
       }
     } catch (e) {
-      console.warn('[Nanova] Fetch error, attempting offline DB:', e);
+      console.warn('[Nanova] JSON fetch error, checking offline DB:', e);
       try {
         const cached = await NanovaDB.getAll('exams');
         if (cached && cached.length) State.questions = cached;
       } catch (err) {
-        console.warn('[Nanova] DB cache error:', err);
+        console.warn('[Nanova] DB error:', err);
       }
     }
 
     if (!State.questions.length) {
       State.questions = DEFAULT_QUESTIONS;
     }
-
-    applyFilters();
-    updateCounterBadges();
   }
 
   async function loadUniversities() {
@@ -712,56 +596,466 @@ function updateAdminUI() {
     }
   }
 
-  async function loadPosts() {
+  /* ── COMMUNITY FEED (FIREBASE HANDLED) ─────────────── */
+  async function loadPostsFromFirebase() {
+    if (firebaseDb) {
+      try {
+        const postsRef = firebaseDb.ref('posts');
+        postsRef.on('value', (snap) => {
+          const val = snap.val();
+          if (val) {
+            State.posts = Object.values(val).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+          } else {
+            loadFallbackAnnouncements();
+          }
+          renderCommunityPosts();
+          if (State.isAdmin) renderAdminPostsList();
+        });
+        return;
+      } catch (e) {
+        console.warn('[Firebase RTDB Posts]', e);
+      }
+    }
+    await loadFallbackAnnouncements();
+  }
+
+  async function loadFallbackAnnouncements() {
     try {
       const resp = await fetch('./data/announcements.json');
-      let announcements = [];
       if (resp.ok) {
-        const text = await resp.text();
-        const data = JSON.parse(text);
+        const data = await resp.json();
         if (Array.isArray(data)) {
-          announcements = data.map((ann) => ({
+          State.posts = data.map((ann) => ({
             id: ann.id,
-            author: ann.author || 'Academic Commission',
+            author: ann.author || 'Campus Administrator',
             initial: 'A',
             isAdminPost: true,
-            isPinned: !!ann.pinned,
-            category: ann.category || 'Official',
-            date: ann.date || '2026-08-26',
+            date: ann.date || 'Official Notice',
             content: (ann.title ? '📢 **' + ann.title + '**\n\n' : '') + ann.content,
             youtubeUrl: '',
             imageUrl: '',
-            likes: 24,
+            likes: 12,
             isLiked: false,
-            comments: []
+            timestamp: Date.now()
           }));
         }
+      } else {
+        State.posts = DEFAULT_POSTS;
       }
-
-      const cached = await NanovaDB.getAll('posts');
-      const customPosts = (cached && cached.length) ? cached : DEFAULT_POSTS;
-      
-      // Combine official announcements and student posts
-      const mergedMap = new Map();
-      announcements.forEach((p) => mergedMap.set(p.id, p));
-      customPosts.forEach((p) => mergedMap.set(p.id, p));
-
-      State.posts = Array.from(mergedMap.values());
-    } catch (e) {
-      console.warn('[Nanova] Could not fetch announcements, using fallback:', e);
+    } catch {
       State.posts = DEFAULT_POSTS;
+    }
+    renderCommunityPosts();
+  }
+
+  function publishCommunityPost(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (!State.isAdmin) {
+      alert('Only verified Firebase Administrators can publish announcements.');
+      return;
+    }
+
+    const input = document.getElementById('adminPostContentInput') || document.getElementById('postInputContent');
+    const ytInput = document.getElementById('adminPostYoutubeInput') || document.getElementById('postYoutubeUrl');
+    const imgInput = document.getElementById('adminPostImageInput') || document.getElementById('postImageUrl');
+
+    const content = (input?.value || '').trim();
+    const youtubeUrl = (ytInput?.value || '').trim();
+    const imageUrl = (imgInput?.value || '').trim();
+
+    if (!content && !youtubeUrl && !imageUrl) {
+      alert('Please enter announcement text or media.');
+      return;
+    }
+
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' +
+                    now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const postId = 'post_' + Date.now();
+
+    const newPost = {
+      id: postId,
+      author: State.currentUser?.displayName || State.profile.name || 'Campus Administrator',
+      email: State.currentUser?.email || '',
+      initial: 'A',
+      isAdminPost: true,
+      date: dateStr,
+      timestamp: Date.now(),
+      content: content || 'Campus Announcement',
+      youtubeUrl: youtubeUrl,
+      imageUrl: imageUrl,
+      likes: 0,
+      isLiked: false
+    };
+
+    if (firebaseDb) {
+      firebaseDb.ref('posts/' + postId).set(newPost).then(() => {
+        alert('✅ Announcement published to Firebase Community Feed!');
+      }).catch((err) => {
+        console.warn(err);
+        State.posts.unshift(newPost);
+        renderCommunityPosts();
+      });
+    } else {
+      State.posts.unshift(newPost);
+      NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+      renderCommunityPosts();
+      alert('✅ Announcement published locally.');
+    }
+
+    if (input) input.value = '';
+    if (ytInput) ytInput.value = '';
+    if (imgInput) imgInput.value = '';
+  }
+
+  function deletePost(postId) {
+    if (!State.isAdmin) {
+      alert('Only administrators can delete feed posts.');
+      return;
+    }
+    if (!confirm('Are you sure you want to delete this community post?')) return;
+
+    if (firebaseDb) {
+      firebaseDb.ref('posts/' + postId).remove().catch(console.warn);
+    }
+    State.posts = State.posts.filter((p) => p.id !== postId);
+    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+    renderCommunityPosts();
+    renderAdminPostsList();
+  }
+
+  function toggleLikePost(postId) {
+    const p = State.posts.find((item) => item.id === postId);
+    if (!p) return;
+
+    p.isLiked = !p.isLiked;
+    p.likes = (p.likes || 0) + (p.isLiked ? 1 : -1);
+    if (p.likes < 0) p.likes = 0;
+
+    if (firebaseDb) {
+      firebaseDb.ref('posts/' + postId + '/likes').set(p.likes).catch(console.warn);
+    }
+    renderCommunityPosts();
+  }
+
+  /* ── 3 PAYMENT METHODS CONFIG (TELEBIRR, CBE, E-BIRR) ── */
+  async function loadPaymentSettingsFromFirebase() {
+    if (firebaseDb) {
+      try {
+        firebaseDb.ref('settings/payment').on('value', (snap) => {
+          const val = snap.val();
+          if (val) {
+            Object.assign(State.paymentSettings, val);
+            localStorage.setItem('nanova_payment_settings', JSON.stringify(State.paymentSettings));
+            updatePaywallUI();
+          }
+        });
+      } catch (e) {
+        console.warn('[Firebase RTDB Payment Settings]', e);
+      }
+    }
+    updatePaywallUI();
+  }
+
+  function saveAdminPaymentSettings(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (!State.isAdmin) {
+      alert('Only administrators can update payment configuration.');
+      return;
+    }
+
+    const telebirr = document.getElementById('adminTelebirrInput')?.value.trim();
+    const cbe = document.getElementById('adminCbeInput')?.value.trim();
+    const ebirr = document.getElementById('adminEbirrInput')?.value.trim();
+    const price = parseInt(document.getElementById('adminPriceInput')?.value || '50', 10);
+    const instructions = document.getElementById('adminInstructionsInput')?.value.trim();
+
+    if (!telebirr || !cbe) {
+      alert('Please provide Telebirr and CBE accounts.');
+      return;
+    }
+
+    const settings = {
+      telebirr: telebirr || '+251 91 234 5678',
+      cbe: cbe || '1000234567890',
+      ebirr: ebirr || '+251 91 234 5678',
+      price: price || 50,
+      instructions: instructions || 'Send payment and confirm to unlock unlimited freshman exam access.'
+    };
+
+    State.paymentSettings = settings;
+    localStorage.setItem('nanova_payment_settings', JSON.stringify(settings));
+
+    if (firebaseDb) {
+      firebaseDb.ref('settings/payment').set(settings).then(() => {
+        alert('✅ Payment configuration (Telebirr, CBE & E-Birr) saved to Firebase!');
+      }).catch((err) => {
+        alert('Saved locally. Firebase error: ' + err.message);
+      });
+    } else {
+      alert('✅ Payment settings saved.');
+    }
+
+    updatePaywallUI();
+    renderAdminDashboard();
+  }
+
+  function updatePaywallUI() {
+    const s = State.paymentSettings;
+    const tDisplay = document.getElementById('paywallTelebirrDisplay');
+    const cDisplay = document.getElementById('paywallCbeDisplay');
+    const eDisplay = document.getElementById('paywallEbirrDisplay');
+
+    if (tDisplay) tDisplay.textContent = s.telebirr;
+    if (cDisplay) cDisplay.textContent = s.cbe;
+    if (eDisplay) eDisplay.textContent = s.ebirr || '+251 91 234 5678';
+
+    const tInput = document.getElementById('adminTelebirrInput');
+    const cInput = document.getElementById('adminCbeInput');
+    const eInput = document.getElementById('adminEbirrInput');
+    const pInput = document.getElementById('adminPriceInput');
+    const iInput = document.getElementById('adminInstructionsInput');
+
+    if (tInput) tInput.value = s.telebirr;
+    if (cInput) cInput.value = s.cbe;
+    if (eInput) eInput.value = s.ebirr || '+251 91 234 5678';
+    if (pInput) pInput.value = s.price;
+    if (iInput) iInput.value = s.instructions;
+
+    const statPrice = document.getElementById('adminStatPrice');
+    if (statPrice) statPrice.textContent = s.price + ' ETB';
+  }
+
+  /* ── PAYMENT REQUESTS & USER MANAGEMENT (ADMIN) ────── */
+  function verifyPaymentReference(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const refInput = document.getElementById('paywallTxRefInput');
+    const txRef = (refInput ? refInput.value : '').trim();
+
+    if (!txRef || txRef.length < 3) {
+      alert('Please enter a valid Transaction ID or SMS confirmation from Telebirr, CBE, or E-Birr.');
+      return;
+    }
+
+    if (!State.currentUser) {
+      alert('Please sign in or register an account before submitting a payment verification.');
+      openAuthModal();
+      return;
+    }
+
+    const reqId = 'req_' + Date.now();
+    const reqData = {
+      id: reqId,
+      uid: State.currentUser.uid,
+      userEmail: State.currentUser.email || State.profile.email,
+      userName: State.profile.name || 'Freshman Student',
+      txRef: txRef,
+      amount: State.paymentSettings.price,
+      status: 'pending',
+      timestamp: Date.now(),
+      dateStr: new Date().toLocaleString()
+    };
+
+    if (firebaseDb) {
+      firebaseDb.ref('paymentRequests/' + reqId).set(reqData).then(() => {
+        firebaseDb.ref('users/' + State.currentUser.uid + '/paymentRequest').set(reqData).catch(console.warn);
+        hidePaywallModal();
+        alert('✅ Payment Request Submitted to Admin!\n\nTransaction Ref: ' + txRef + '\nThe administrator will verify your transaction and approve your full access shortly.');
+      }).catch((err) => {
+        alert('Submission error: ' + err.message);
+      });
+    } else {
+      hidePaywallModal();
+      alert('✅ Payment verification recorded. The campus admin will review it.');
     }
   }
 
-  /* ── FILTERING ─────────────────────────────────────── */
+  function loadPaymentRequestsAndUsers() {
+    if (!firebaseDb || !State.isAdmin) return;
+
+    // Load Payment Requests
+    firebaseDb.ref('paymentRequests').on('value', (snap) => {
+      const val = snap.val();
+      State.paymentRequests = val ? Object.values(val).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)) : [];
+      renderAdminPaymentRequests();
+
+      const pending = State.paymentRequests.filter((r) => r.status === 'pending').length;
+      const statP = document.getElementById('adminStatPendingRequests');
+      const badge = document.getElementById('pendingRequestsBadge');
+      if (statP) statP.textContent = pending;
+      if (badge) {
+        badge.textContent = pending;
+        if (pending > 0) badge.classList.remove('hidden');
+        else badge.classList.add('hidden');
+      }
+    });
+
+    // Load Users
+    firebaseDb.ref('users').on('value', (snap) => {
+      const val = snap.val();
+      State.registeredUsers = val ? Object.values(val) : [];
+      renderAdminUsersList();
+    });
+  }
+
+  function renderAdminPaymentRequests() {
+    const container = document.getElementById('adminPaymentRequestsList');
+    if (!container) return;
+
+    if (!State.paymentRequests.length) {
+      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No payment verification requests submitted yet.</div>';
+      return;
+    }
+
+    container.innerHTML = State.paymentRequests.map((req) => {
+      const isPending = req.status === 'pending';
+      return `
+        <div class="p-3.5 rounded-2xl bg-slate-50 border ${isPending ? 'border-amber-300 ring-2 ring-amber-100' : 'border-slate-200'} flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <div class="flex items-center space-x-2">
+              <span class="font-extrabold text-xs text-slate-900">${escapeHtml(req.userName || 'Student')}</span>
+              <span class="text-[11px] text-slate-500 font-mono">(${escapeHtml(req.userEmail)})</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isPending ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
+                ${req.status.toUpperCase()}
+              </span>
+            </div>
+            <div class="flex items-center space-x-3 text-xs">
+              <span class="font-mono font-bold text-[#0052fe]">Tx: ${escapeHtml(req.txRef)}</span>
+              <span class="text-slate-400 font-medium">${escapeHtml(req.dateStr || 'Recent')}</span>
+              <span class="font-bold text-slate-700">${req.amount || 50} ETB</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2 self-end sm:self-center flex-shrink-0">
+            ${isPending ? `
+              <button onclick="NanovaApp.acceptPayment('${req.id}', '${req.uid}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-sm transition flex items-center space-x-1">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+                <span>Accept Payment</span>
+              </button>
+              <button onclick="NanovaApp.rejectPayment('${req.id}', '${req.uid}')" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+                Reject
+              </button>
+            ` : `
+              <button onclick="NanovaApp.revokePayment('${req.id}', '${req.uid}')" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-xl transition">
+                Revoke Access
+              </button>
+            `}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function renderAdminUsersList() {
+    const container = document.getElementById('adminUsersList');
+    if (!container) return;
+
+    if (!State.registeredUsers.length) {
+      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No registered users in database.</div>';
+      return;
+    }
+
+    container.innerHTML = State.registeredUsers.map((u) => {
+      const isAdm = u.role === 'admin';
+      const isPaid = isAdm || !!u.isPaid;
+      return `
+        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+          <div class="space-y-0.5">
+            <div class="flex items-center space-x-2">
+              <span class="font-extrabold text-xs text-slate-900">${escapeHtml(u.displayName || u.email?.split('@')[0] || 'User')}</span>
+              <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold ${isAdm ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-200 text-slate-700'}">
+                ${(u.role || 'student').toUpperCase()}
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold ${isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                ${isPaid ? 'PAID UNLIMITED' : 'FREE PREVIEW (10 Qs)'}
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500 font-mono">${escapeHtml(u.email || 'No email')}</p>
+          </div>
+          <div class="flex items-center space-x-2 flex-shrink-0">
+            ${!isAdm ? `
+              <button onclick="NanovaApp.toggleUserPaidStatus('${u.uid}', ${!isPaid})" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-200 transition">
+                ${isPaid ? 'Set Free' : 'Grant Paid'}
+              </button>
+              <button onclick="NanovaApp.deleteUserAccount('${u.uid}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-lg transition" title="Delete User">
+                Delete
+              </button>
+            ` : '<span class="text-[11px] text-blue-600 font-bold px-2">Primary Admin</span>'}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function acceptPayment(reqId, uid) {
+    if (!State.isAdmin) return;
+    if (firebaseDb) {
+      firebaseDb.ref('paymentRequests/' + reqId + '/status').set('approved');
+      if (uid) firebaseDb.ref('users/' + uid + '/isPaid').set(true);
+      alert('✅ Payment accepted! User has been granted full 300+ exam access.');
+    }
+  }
+
+  function rejectPayment(reqId, uid) {
+    if (!State.isAdmin) return;
+    if (confirm('Reject this payment verification request?')) {
+      if (firebaseDb) {
+        firebaseDb.ref('paymentRequests/' + reqId + '/status').set('rejected');
+        if (uid) firebaseDb.ref('users/' + uid + '/isPaid').set(false);
+      }
+    }
+  }
+
+  function revokePayment(reqId, uid) {
+    if (!State.isAdmin) return;
+    if (confirm('Revoke paid access for this student?')) {
+      if (firebaseDb) {
+        firebaseDb.ref('paymentRequests/' + reqId + '/status').set('revoked');
+        if (uid) firebaseDb.ref('users/' + uid + '/isPaid').set(false);
+      }
+    }
+  }
+
+  function toggleUserPaidStatus(uid, newStatus) {
+    if (!State.isAdmin || !firebaseDb) return;
+    firebaseDb.ref('users/' + uid + '/isPaid').set(newStatus).then(() => {
+      alert(`User status updated to: ${newStatus ? 'PAID' : 'FREE'}`);
+    });
+  }
+
+  function deleteUserAccount(uid) {
+    if (!State.isAdmin) return;
+    if (confirm('Permanently delete this user from the app database?')) {
+      if (firebaseDb) {
+        firebaseDb.ref('users/' + uid).remove().then(() => {
+          alert('User account removed.');
+        });
+      }
+    }
+  }
+
+  function refreshPaymentRequests() {
+    loadPaymentRequestsAndUsers();
+  }
+
+  function refreshUsersList() {
+    loadPaymentRequestsAndUsers();
+  }
+
+  /* ── FILTERING & 10-QUESTIONS SCROLLABLE PAGINATION ── */
   function onFilterChange() {
     const c = document.getElementById('courseSelect')?.value || 'ALL';
     const u = document.getElementById('universitySelect')?.value || 'ALL';
     const y = document.getElementById('yearSelect')?.value || 'ALL';
+    const s = document.getElementById('examSearchInput')?.value || '';
 
     State.filters.course = c;
     State.filters.university = u;
     State.filters.year = y;
+    State.searchKeyword = s;
 
     applyFilters();
   }
@@ -770,8 +1064,228 @@ function updateAdminUI() {
     const { course, university, year } = State.filters;
     const search = (State.searchKeyword || '').toLowerCase().trim();
 
-    State.filteredQuestions = State.questions.filter((q) => {
-      if (State.onlyBookmarks && !State.bookmarks.includes(q.id)) return false;
+    let matched = State.questions.filter((q) => {
+      if (course !== 'ALL' && q.course !== course) return false;
+      if (university !== 'ALL' && q.university !== university) return false;
+      if (year !== 'ALL' && !q.year.includes(year)) return false;
+
+      // Quick filter
+      if (State.activeQuickFilter === 'saved' && !State.bookmarks.includes(q.id)) return false;
+      if (State.activeQuickFilter === 'unanswered' && State.userAnswers[q.id] !== undefined) return false;
+      if (State.activeQuickFilter === 'incorrect') {
+        const userAns = State.userAnswers[q.id];
+        if (userAns === undefined || userAns === q.answer) return false;
+      }
+      if (State.activeQuickFilter === 'answered') {
+        const userAns = State.userAnswers[q.id];
+        if (userAns === undefined || userAns !== q.answer) return false;
+      }
+
+      if (search) {
+        const textMatch = q.question && q.question.toLowerCase().includes(search);
+        const courseMatch = q.course && q.course.toLowerCase().includes(search);
+        const univMatch = q.university && q.university.toLowerCase().includes(search);
+        if (!textMatch && !courseMatch && !univMatch) return false;
+      }
+      return true;
+    });
+
+    State.filteredQuestions = matched;
+    State.currentPage = 1;
+    renderBoardQuestionsPage();
+    updateCounterBadges();
+  }
+
+  /* ── RENDER 10 QUESTIONS ON ONE SCROLLABLE PAGE ─────── */
+  function renderBoardQuestionsPage() {
+    const container = document.getElementById('boardQuestionsListContainer');
+    if (!container) return;
+
+    const totalQuestions = State.filteredQuestions.length;
+    if (!totalQuestions) {
+      container.innerHTML = '<div class="white-card text-center text-slate-400 py-12">No exam questions matched your active filters. Try selecting another course or university.</div>';
+      updatePaginationControls(0, 0, 0);
+      return;
+    }
+
+    const isUnlocked = State.isPaid || State.isAdmin;
+    const totalPages = Math.max(1, Math.ceil(totalQuestions / State.pageSize));
+
+    // Ensure valid page bounds
+    if (State.currentPage < 1) State.currentPage = 1;
+    if (State.currentPage > totalPages) State.currentPage = totalPages;
+
+    // Free users can only access Page 1 (questions 1 to 10)
+    if (!isUnlocked && State.currentPage > 1) {
+      State.currentPage = 1;
+      showPaywallModal();
+    }
+
+    const startIndex = (State.currentPage - 1) * State.pageSize;
+    const endIndex = Math.min(startIndex + State.pageSize, totalQuestions);
+    const pageQuestions = State.filteredQuestions.slice(startIndex, endIndex);
+
+    const letters = ['A', 'B', 'C', 'D'];
+
+    container.innerHTML = pageQuestions.map((q, localIdx) => {
+      const globalNumber = startIndex + localIdx + 1;
+      const isMissedMode = State.activeQuickFilter === 'incorrect';
+      const isAnsweredMode = State.activeQuickFilter === 'answered';
+      // In answered mode: always show the stored answer (they got it right)
+      const answered = isMissedMode ? State.missedRetries[q.id] : State.userAnswers[q.id];
+      const isBookmarked = State.bookmarks.includes(q.id);
+
+      const optionsHtml = (q.options || []).map((opt, optIdx) => {
+        let cls = 'option-btn';
+        if (answered !== undefined) {
+          if (optIdx === q.answer) cls += ' selected-correct';
+          else if (optIdx === answered) cls += ' selected-incorrect';
+          else cls += ' dimmed';
+        }
+        return `
+          <button class="${cls}" onclick="NanovaApp.handleQuestionAnswer('${escapeAttr(q.id)}', ${optIdx})">
+            <span class="option-letter-badge">${letters[optIdx]}</span>
+            <span class="option-label-text">${escapeHtml(opt)}</span>
+          </button>
+        `;
+      }).join('');
+
+      const explanationHtml = (answered !== undefined && q.explanation) ? `
+        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 mt-4 text-sm text-slate-800 animate-fade-in">
+          <div class="flex items-center space-x-2 text-blue-800 font-bold mb-1.5">
+            <i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i>
+            <span>Detailed Solution & Explanation</span>
+          </div>
+          <p class="leading-relaxed text-slate-700">${escapeHtml(q.explanation)}</p>
+        </div>
+      ` : '';
+
+      return `
+        <div class="white-card border border-slate-100 shadow-md hover:shadow-lg transition space-y-4" id="q_card_${escapeAttr(q.id)}">
+          <!-- Question Header Tag & Meta -->
+          <div class="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="exam-tag-pill">
+                <i data-lucide="book-open" class="w-3.5 h-3.5 text-blue-600"></i>
+                <span>${escapeHtml((q.course || 'GENERAL PSYCHOLOGY').toUpperCase())}</span>
+              </span>
+              <span class="exam-tag-pill">
+                <i data-lucide="building-2" class="w-3.5 h-3.5 text-indigo-600"></i>
+                <span>${escapeHtml((q.university || 'HARAMAYA UNIVERSITY').toUpperCase())}</span>
+              </span>
+              <span class="exam-tag-pill">
+                <i data-lucide="calendar" class="w-3.5 h-3.5 text-amber-600"></i>
+                <span>${escapeHtml(q.year || '2024 Exam')}</span>
+              </span>
+            </div>
+
+            <div class="flex items-center space-x-2">
+              ${isMissedMode && answered === undefined ? '<span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 text-[10px] font-extrabold border border-amber-200/80 flex items-center gap-1"><i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-600"></i><span>Retry Question</span></span>' : ''}
+              <button onclick="NanovaApp.toggleQuestionBookmark('${escapeAttr(q.id)}')" class="p-2 rounded-xl ${isBookmarked ? 'bg-blue-50 text-[#0052fe] border border-blue-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition" title="${isBookmarked ? 'Saved' : 'Save Question'}">
+                <i data-lucide="${isBookmarked ? 'bookmark-check' : 'bookmark'}" class="w-4 h-4"></i>
+              </button>
+              <span class="question-num-tag">Q. ${globalNumber}</span>
+            </div>
+          </div>
+
+          <!-- Question Prompt -->
+          <h3 class="question-text-title text-base sm:text-lg font-bold text-slate-900 leading-snug">
+            ${escapeHtml(q.question)}
+          </h3>
+
+          <!-- 2x2 Answer Options -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${optionsHtml}
+          </div>
+
+          <!-- Explanation Box -->
+          ${explanationHtml}
+        </div>
+      `;
+    }).join('');
+
+    updatePaginationControls(startIndex, endIndex, totalQuestions);
+    updateBookmarkBadge();
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function handleQuestionAnswer(qId, optIndex) {
+    if (State.activeQuickFilter === 'incorrect') {
+      State.missedRetries[qId] = optIndex;
+    }
+    State.userAnswers[qId] = optIndex;
+    localStorage.setItem('nanova_board_answers', JSON.stringify(State.userAnswers));
+
+    renderBoardQuestionsPage();
+    updateCounterBadges();
+  }
+
+  function updatePaginationControls(startIndex, endIndex, totalQuestions) {
+    const totalPages = Math.max(1, Math.ceil(totalQuestions / State.pageSize));
+    const pageInfo = document.getElementById('boardPageInfo');
+    const pageRange = document.getElementById('boardPageRange');
+    const prevBtn = document.getElementById('boardPrevPageBtn');
+    const nextBtn = document.getElementById('boardNextPageBtn');
+
+    if (pageInfo) pageInfo.textContent = `Page ${State.currentPage} of ${totalPages}`;
+    if (pageRange) {
+      if (totalQuestions > 0) {
+        pageRange.textContent = `(Questions ${startIndex + 1} - ${endIndex} of ${totalQuestions})`;
+      } else {
+        pageRange.textContent = '(0 Questions)';
+      }
+    }
+
+    if (prevBtn) prevBtn.disabled = State.currentPage <= 1;
+    if (nextBtn) {
+      const isUnlocked = State.isPaid || State.isAdmin;
+      if (!isUnlocked && State.currentPage === 1 && totalPages > 1) {
+        nextBtn.innerHTML = '<span>Unlock the Next Questions</span><i data-lucide="lock" class="w-4 h-4"></i>';
+      } else {
+        nextBtn.innerHTML = '<span>Next Questions</span><i data-lucide="chevron-right" class="w-4 h-4"></i>';
+        nextBtn.disabled = State.currentPage >= totalPages;
+      }
+    }
+  }
+
+  function boardNextPage() {
+    const totalPages = Math.ceil(State.filteredQuestions.length / State.pageSize);
+    const isUnlocked = State.isPaid || State.isAdmin;
+
+    if (!isUnlocked) {
+      showPaywallModal();
+      return;
+    }
+
+    if (State.currentPage < totalPages) {
+      State.currentPage++;
+      renderBoardQuestionsPage();
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+    } else {
+      alert('You have reached the last page of questions for this subject/exam.');
+    }
+  }
+
+  function boardPrevPage() {
+    if (State.currentPage > 1) {
+      State.currentPage--;
+      renderBoardQuestionsPage();
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+  }
+
+  function shuffleQuestions() {
+    State.filteredQuestions.sort(() => Math.random() - 0.5);
+    State.currentPage = 1;
+    renderBoardQuestionsPage();
+  }
+
+  function updateCounterBadges() {
+    const { course, university, year } = State.filters;
+    const search = (State.searchKeyword || '').toLowerCase().trim();
+
+    // Base questions in current exam scope
+    const baseQuestions = State.questions.filter((q) => {
       if (course !== 'ALL' && q.course !== course) return false;
       if (university !== 'ALL' && q.university !== university) return false;
       if (year !== 'ALL' && !q.year.includes(year)) return false;
@@ -784,137 +1298,39 @@ function updateAdminUI() {
       return true;
     });
 
-    if (!State.filteredQuestions.length) {
-      const container = document.getElementById('boardQuestionText');
-      if (container) container.textContent = 'No exam questions matched your active filters.';
-    }
+    let answeredCount = 0;
+    let unansweredCount = 0;
+    let incorrectCount = 0;
 
-    State.currentQuestionIndex = 0;
-    renderBoardQuestion();
-    updateCounterBadges();
-  }
-
-  /* ── QUESTION BOARD RENDERING ──────────────────────── */
-  function renderBoardQuestion() {
-    const total = State.filteredQuestions.length;
-    if (!total) return;
-
-    const q = State.filteredQuestions[State.currentQuestionIndex];
-    if (!q) return;
-
-    const cTag = document.getElementById('boardCourseName');
-    const uTag = document.getElementById('boardUnivName');
-    const yTag = document.getElementById('boardYearName');
-    const qNum = document.getElementById('boardQuestionNumber');
-    const qText = document.getElementById('boardQuestionText');
-    const bookmarkBtn = document.getElementById('boardBookmarkBtn');
-
-    if (cTag) cTag.textContent = (q.course || 'GENERAL PSYCHOLOGY').toUpperCase();
-    if (uTag) uTag.textContent = (q.university || 'HARAMAYA UNIVERSITY').toUpperCase();
-    if (yTag) yTag.textContent = q.year || '2022 Exam';
-    if (qNum) qNum.textContent = 'Q. ' + (State.currentQuestionIndex + 1) + ' of ' + total;
-    if (qText) qText.textContent = q.question;
-
-    if (bookmarkBtn) {
-      const isBookmarked = State.bookmarks.includes(q.id);
-      if (isBookmarked) {
-        bookmarkBtn.className = 'p-2 rounded-xl bg-blue-50 text-[#0052fe] hover:bg-blue-100 transition shadow-sm';
-        bookmarkBtn.innerHTML = '<i data-lucide="bookmark-check" class="w-5 h-5 fill-current"></i>';
+    baseQuestions.forEach((q) => {
+      const ans = State.userAnswers[q.id];
+      if (ans !== undefined) {
+        answeredCount++;
+        if (ans !== q.answer) incorrectCount++;
       } else {
-        bookmarkBtn.className = 'p-2 rounded-xl bg-slate-50 text-slate-400 hover:text-slate-700 transition';
-        bookmarkBtn.innerHTML = '<i data-lucide="bookmark" class="w-5 h-5"></i>';
+        unansweredCount++;
       }
-    }
+    });
 
-    const optGrid = document.getElementById('boardOptionsGrid');
-    if (optGrid) {
-      const answered = State.userAnswers[q.id];
-      const letters = ['A', 'B', 'C', 'D'];
-
-      optGrid.innerHTML = (q.options || []).map((opt, i) => {
-        let cls = 'option-btn';
-        if (answered !== undefined) {
-          if (i === q.answer) cls += ' selected-correct';
-          else if (i === answered) cls += ' selected-incorrect';
-          else cls += ' dimmed';
-        }
-        return '<button class="' + cls + '" onclick="NanovaApp.handleBoardOptionClick(' + i + ')">' +
-          '<span class="option-letter-badge">' + letters[i] + '</span>' +
-          '<span class="option-label-text">' + opt + '</span>' +
-        '</button>';
-      }).join('');
-    }
-
-    const expBox = document.getElementById('boardExplanationBox');
-    const expText = document.getElementById('boardExplanationText');
-    const answered = State.userAnswers[q.id];
-
-    if (expBox && expText) {
-      if (answered !== undefined && q.explanation) {
-        expBox.classList.remove('hidden');
-        expText.textContent = q.explanation;
-      } else {
-        expBox.classList.add('hidden');
-      }
-    }
-
-    const prevBtn = document.getElementById('boardPrevBtn');
-    if (prevBtn) prevBtn.disabled = State.currentQuestionIndex === 0;
-
-    if (window.lucide) window.lucide.createIcons();
-  }
-
-  function handleBoardOptionClick(optIndex) {
-    const q = State.filteredQuestions[State.currentQuestionIndex];
-    if (!q) return;
-
-    const answeredKeys = Object.keys(State.userAnswers);
-    if (!State.isPremium && answeredKeys.length >= 10 && State.userAnswers[q.id] === undefined) {
-      showPaywallModal();
-      return;
-    }
-
-    if (State.userAnswers[q.id] !== undefined) return;
-
-    State.userAnswers[q.id] = optIndex;
-    localStorage.setItem('nanova_board_answers', JSON.stringify(State.userAnswers));
-
-    renderBoardQuestion();
-    updateCounterBadges();
-  }
-
-  function boardNextQuestion() {
-    if (State.currentQuestionIndex < State.filteredQuestions.length - 1) {
-      State.currentQuestionIndex++;
-    } else {
-      State.currentQuestionIndex = 0;
-    }
-    renderBoardQuestion();
-  }
-
-  function boardPrevQuestion() {
-    if (State.currentQuestionIndex > 0) {
-      State.currentQuestionIndex--;
-      renderBoardQuestion();
-    }
-  }
-
-  function shuffleQuestions() {
-    State.filteredQuestions.sort(() => Math.random() - 0.5);
-    State.currentQuestionIndex = 0;
-    renderBoardQuestion();
-  }
-
-  function updateCounterBadges() {
-    const answeredTotal = Object.keys(State.userAnswers).length;
     const badgeCount = document.getElementById('answeredCountBadge');
     const badgeTotal = document.getElementById('totalQuestionsBadge');
+    const badgeSaved = document.getElementById('bookmarkCountBadge');
+    const badgeUnans = document.getElementById('unansweredCountBadge');
+    const badgeIncorr = document.getElementById('incorrectCountBadge');
 
-    if (badgeCount) badgeCount.textContent = answeredTotal;
-    if (badgeTotal) badgeTotal.textContent = State.filteredQuestions.length || 15;
+    if (badgeCount) badgeCount.textContent = answeredCount;
+    if (badgeTotal) badgeTotal.textContent = baseQuestions.length;
+    if (badgeSaved) badgeSaved.textContent = State.bookmarks.length;
+    if (badgeUnans) badgeUnans.textContent = unansweredCount;
+    if (badgeIncorr) badgeIncorr.textContent = incorrectCount;
   }
 
-  /* ── UNIVERSITIES DIRECTORY (ADMIN CRUD) ───────────── */
+  function updateBookmarkBadge() {
+    const badge = document.getElementById('bookmarkCountBadge');
+    if (badge) badge.textContent = State.bookmarks.length;
+  }
+
+  /* ── UNIVERSITIES DIRECTORY ────────────────────────── */
   function renderUniversities() {
     const grid = document.getElementById('universitiesGrid');
     if (!grid) return;
@@ -926,28 +1342,30 @@ function updateAdminUI() {
 
     grid.innerHTML = State.universities.map((u) => {
       const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80';
-      const imgSrc = u.image || fallbackImg;
+      const imgSrc = (u.image && /^https?:\/\/.+/i.test(u.image.trim())) ? sanitizeUrl(u.image) : fallbackImg;
+      const safeWebsite = sanitizeUrl(u.website);
+      const safeTelegram = sanitizeUrl(u.telegram);
 
       return '<div class="univ-card">' +
         '<div class="relative">' +
-          '<img src="' + imgSrc + '" alt="' + u.name + '" class="univ-card-image" onerror="this.src=\'' + fallbackImg + '\'" />' +
-          (u.location ? '<span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">' + u.location + '</span>' : '') +
+          '<img src="' + imgSrc + '" alt="' + escapeHtml(u.name) + '" class="univ-card-image" onerror="this.src=\'' + fallbackImg + '\'" />' +
+          (u.location ? '<span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">' + escapeHtml(u.location) + '</span>' : '') +
           (State.isAdmin ? '<div class="absolute top-2 right-2 flex space-x-1">' +
-            '<button onclick="NanovaApp.editUniversity(\'' + u.id + '\')" class="p-1.5 rounded-lg bg-white/90 text-slate-700 hover:bg-white shadow transition" title="Edit"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>' +
-            '<button onclick="NanovaApp.deleteUniversity(\'' + u.id + '\')" class="p-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 shadow transition" title="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
+            '<button onclick="NanovaApp.editUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-white/90 text-slate-700 hover:bg-white shadow transition" title="Edit"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>' +
+            '<button onclick="NanovaApp.deleteUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 shadow transition" title="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
           '</div>' : '') +
         '</div>' +
         '<div class="univ-card-body">' +
           '<div>' +
-            '<h3 class="font-extrabold text-slate-900 text-base mb-1.5">' + u.name + '</h3>' +
-            '<p class="text-xs text-slate-500 font-medium leading-relaxed mb-4">' + (u.description || 'Official Ethiopian higher education campus details.') + '</p>' +
+            '<h3 class="font-extrabold text-slate-900 text-base mb-1.5">' + escapeHtml(u.name) + '</h3>' +
+            '<p class="text-xs text-slate-500 font-medium leading-relaxed mb-4">' + escapeHtml(u.description || 'Official Ethiopian higher education campus details.') + '</p>' +
           '</div>' +
           '<div class="flex items-center justify-between pt-3 border-t border-slate-100 gap-2">' +
-            '<a href="' + (u.website || '#') + '" target="_blank" rel="noopener noreferrer" class="btn-portal flex-1 justify-center">' +
+            '<a href="' + safeWebsite + '" target="_blank" rel="noopener noreferrer" class="btn-portal flex-1 justify-center">' +
               '<i data-lucide="globe" class="w-3.5 h-3.5"></i>' +
               '<span>Portal</span>' +
             '</a>' +
-            '<a href="' + (u.telegram || '#') + '" target="_blank" rel="noopener noreferrer" class="btn-telegram flex-1 justify-center">' +
+            '<a href="' + safeTelegram + '" target="_blank" rel="noopener noreferrer" class="btn-telegram flex-1 justify-center">' +
               '<i data-lucide="send" class="w-3.5 h-3.5"></i>' +
               '<span>Telegram</span>' +
             '</a>' +
@@ -960,10 +1378,7 @@ function updateAdminUI() {
   }
 
   function openAddUnivModal() {
-    if (!State.isAdmin) {
-      promptAdminLogin();
-      return;
-    }
+    if (!State.isAdmin) return;
     const form = document.getElementById('univForm');
     if (form) form.reset();
     document.getElementById('univFormId').value = '';
@@ -993,10 +1408,7 @@ function updateAdminUI() {
 
   function saveUniversity(e) {
     e.preventDefault();
-    if (!State.isAdmin) {
-      alert('Only administrators can manage universities.');
-      return;
-    }
+    if (!State.isAdmin) return;
 
     const id = document.getElementById('univFormId')?.value || ('univ_' + Date.now());
     const name = document.getElementById('univNameInput')?.value.trim();
@@ -1016,11 +1428,8 @@ function updateAdminUI() {
     };
 
     const existingIdx = State.universities.findIndex((u) => u.id === id);
-    if (existingIdx >= 0) {
-      State.universities[existingIdx] = univData;
-    } else {
-      State.universities.unshift(univData);
-    }
+    if (existingIdx >= 0) State.universities[existingIdx] = univData;
+    else State.universities.unshift(univData);
 
     NanovaDB.saveAll('universities', State.universities).catch(console.warn);
     renderUniversities();
@@ -1037,9 +1446,31 @@ function updateAdminUI() {
     }
   }
 
-  /* ── YOUTUBE EMBED HELPER ──────────────────────────── */
+  /* ── SECURITY & SANITIZATION HELPERS ─────────────── */
+  function sanitizeUrl(url) {
+    if (!url || typeof url !== 'string') return '#';
+    const clean = url.trim();
+    if (/^https?:\/\/[a-zA-Z0-9\-\._~:\/\?#\[\]@!$&'\(\)\*\+,;=%]+/i.test(clean) ||
+        /^mailto:[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9_\.\-]+/i.test(clean) ||
+        /^tel:\+?[0-9\s\-]+/i.test(clean)) {
+      return escapeHtml(clean);
+    }
+    return '#';
+  }
+
+  function escapeAttr(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/'/g, '&#39;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  /* ── YOUTUBE EMBED HELPER (VALIDATED) ─────────────── */
   function extractYouTubeEmbedUrl(url) {
-    if (!url) return null;
+    if (!url || typeof url !== 'string') return null;
     try {
       const u = url.trim();
       let videoId = null;
@@ -1055,54 +1486,65 @@ function updateAdminUI() {
         videoId = u.split('youtube.com/shorts/')[1]?.split('?')[0];
       }
 
-      if (videoId) {
-        return 'https://www.youtube.com/embed/' + videoId + '?rel=0';
+      // Strictly validate videoId (alphanumeric, dash, underscore only)
+      if (videoId && /^[a-zA-Z0-9_-]{6,20}$/.test(videoId)) {
+        return 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) + '?rel=0';
       }
     } catch {}
     return null;
   }
 
-  /* ── COMMUNITY FEED ────────────────────────────────── */
+  /* ── COMMUNITY FEED RENDERING ──────────────────────── */
   function renderCommunityPosts() {
     const container = document.getElementById('communityPostsContainer');
     if (!container) return;
 
     if (!State.posts.length) {
-      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No announcements yet.</div>';
+      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No official announcements yet.</div>';
       return;
     }
 
     container.innerHTML = State.posts.map((post) => {
       const embedVideoUrl = extractYouTubeEmbedUrl(post.youtubeUrl);
-      const hasImage = post.imageUrl && post.imageUrl.startsWith('http');
+      const safeImageUrl = post.imageUrl && /^https?:\/\/.+/i.test(post.imageUrl.trim()) ? sanitizeUrl(post.imageUrl) : null;
 
-      return '<div class="white-card" id="' + post.id + '">' +
-        '<div class="flex items-center justify-between mb-3">' +
-          '<div class="flex items-center space-x-3">' +
-            '<div class="user-avatar-circle bg-black text-white font-bold">' + (post.initial || (post.author ? post.author[0].toUpperCase() : 'A')) + '</div>' +
-            '<div>' +
-              '<div class="flex items-center space-x-2">' +
-                '<h4 class="font-extrabold text-slate-900 text-sm">' + post.author + '</h4>' +
-                (post.isAdminPost ? '<span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-extrabold tracking-wide">ADMIN</span>' : '') +
+      // For regular users/guests: show posts cleanly without any admin identity
+      const headerHtml = State.isAdmin
+        ? '<div class="flex items-center justify-between mb-3">' +
+            '<div class="flex items-center space-x-3">' +
+              '<div class="user-avatar-circle bg-black text-white font-bold">' + (post.initial || 'A') + '</div>' +
+              '<div>' +
+                '<div class="flex items-center space-x-2">' +
+                  '<h4 class="font-extrabold text-slate-900 text-sm">' + escapeHtml(post.author) + '</h4>' +
+                  '<span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-extrabold tracking-wide">ADMIN</span>' +
+                '</div>' +
+                '<span class="text-xs text-slate-400 font-medium">' + escapeHtml(post.date || 'Official Notice') + '</span>' +
               '</div>' +
-              '<span class="text-xs text-slate-400 font-medium">' + post.date + '</span>' +
             '</div>' +
-          '</div>' +
-          (State.isAdmin ? '<button onclick="NanovaApp.deletePost(\'' + post.id + '\')" class="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg transition" title="Delete Post"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' : '') +
-        '</div>' +
+            '<button onclick="NanovaApp.deletePost(\'' + escapeAttr(post.id) + '\')" class="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg transition" title="Delete Post"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+          '</div>'
+        : '<div class="flex items-center mb-3 space-x-2">' +
+            '<span class="px-2 py-0.5 rounded-full bg-[#0052fe]/10 text-[#0052fe] text-[11px] font-extrabold tracking-wide flex items-center gap-1">' +
+              '<i data-lucide="megaphone" class="w-3 h-3"></i>' +
+              '<span>Official Announcement</span>' +
+            '</span>' +
+            '<span class="text-xs text-slate-400 font-medium">' + escapeHtml(post.date || 'Official Notice') + '</span>' +
+          '</div>';
 
-        '<p class="text-slate-800 text-sm leading-relaxed mb-3">' + post.content + '</p>' +
+      return '<div class="white-card shadow-sm border border-slate-100" id="' + escapeAttr(post.id) + '">' +
+        headerHtml +
+        '<p class="text-slate-800 text-sm leading-relaxed mb-3">' + escapeHtml(post.content) + '</p>' +
 
-        (embedVideoUrl ? '<div class="video-responsive-container">' +
+        (embedVideoUrl ? '<div class="video-responsive-container mb-3">' +
           '<iframe src="' + embedVideoUrl + '" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>' +
         '</div>' : '') +
 
-        (hasImage ? '<img src="' + post.imageUrl + '" alt="Announcement Visual" class="post-embedded-image" onerror="this.style.display=\'none\'" />' : '') +
+        (safeImageUrl && safeImageUrl !== '#' ? '<img src="' + safeImageUrl + '" alt="Announcement Visual" class="post-embedded-image mb-3" onerror="this.style.display=\'none\'" />' : '') +
 
         '<div class="flex items-center space-x-4 pt-3 border-t border-slate-100">' +
           '<button onclick="NanovaApp.toggleLikePost(\'' + post.id + '\')" class="post-action-btn ' + (post.isLiked ? 'liked' : '') + '">' +
             '<i data-lucide="thumbs-up" class="w-4 h-4"></i>' +
-            '<span>' + (post.isLiked ? '1 Like' : (post.likes || 0) + ' Likes') + '</span>' +
+            '<span>' + (post.likes || 0) + ' Likes</span>' +
           '</button>' +
           '<button onclick="NanovaApp.commentOnPost(\'' + post.id + '\')" class="post-action-btn">' +
             '<i data-lucide="message-circle" class="w-4 h-4"></i>' +
@@ -1119,80 +1561,18 @@ function updateAdminUI() {
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function publishCommunityPost() {
-    if (!State.isAdmin) {
-      promptAdminLogin();
-      return;
+  function sharePost(postId) {
+    if (navigator.share) {
+      navigator.share({ title: 'Nanova Freshman Announcement', url: window.location.href });
+    } else {
+      navigator.clipboard?.writeText(window.location.href);
+      alert('Announcement link copied to clipboard!');
     }
-
-    const input = document.getElementById('postInputContent');
-    const ytInput = document.getElementById('postYoutubeUrl');
-    const imgInput = document.getElementById('postImageUrl');
-
-    const content = (input?.value || '').trim();
-    const youtubeUrl = (ytInput?.value || '').trim();
-    const imageUrl = (imgInput?.value || '').trim();
-
-    if (!content && !youtubeUrl && !imageUrl) return;
-
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' +
-                    now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    const newPost = {
-      id: 'post_' + Date.now(),
-      author: 'Adnan Abduletif (Campus Admin)',
-      email: 'adnanabduletif010@gmail.com',
-      initial: 'A',
-      isAdminPost: true,
-      date: dateStr,
-      content: content || 'Campus Announcement',
-      youtubeUrl: youtubeUrl,
-      imageUrl: imageUrl,
-      likes: 0,
-      isLiked: false
-    };
-
-    State.posts.unshift(newPost);
-    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
-
-    if (input) input.value = '';
-    if (ytInput) ytInput.value = '';
-    if (imgInput) imgInput.value = '';
-
-    renderCommunityPosts();
-    alert('✅ Admin announcement published with embedded media!');
   }
 
-  function toggleLikePost(postId) {
-    const p = State.posts.find((item) => item.id === postId);
-    if (!p) return;
-
-    p.isLiked = !p.isLiked;
-    p.likes = (p.likes || 0) + (p.isLiked ? 1 : -1);
-    if (p.likes < 0) p.likes = 0;
-
-    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
-    renderCommunityPosts();
-  }
-
-  function deletePost(postId) {
-    if (!State.isAdmin) {
-      alert('Only administrators can delete posts.');
-      return;
-    }
-    State.posts = State.posts.filter((p) => p.id !== postId);
-    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
-    renderCommunityPosts();
-  }
-
-  
   /* ── ADMIN: QUESTION CREATOR ───────────────────────── */
   function openAddQuestionModal() {
-    if (!State.isAdmin) {
-      promptAdminLogin();
-      return;
-    }
+    if (!State.isAdmin) return;
     const form = document.getElementById('addQuestionForm');
     if (form) form.reset();
     document.getElementById('questionModal')?.classList.remove('hidden');
@@ -1204,10 +1584,7 @@ function updateAdminUI() {
 
   function saveNewQuestion(e) {
     e.preventDefault();
-    if (!State.isAdmin) {
-      alert('Only administrators can add exam questions.');
-      return;
-    }
+    if (!State.isAdmin) return;
 
     const course = document.getElementById('newQCourse')?.value;
     const university = document.getElementById('newQUniv')?.value;
@@ -1238,97 +1615,16 @@ function updateAdminUI() {
 
     State.questions.unshift(newQuestion);
     applyFilters();
-    NanovaDB.saveAll('exams', [{ id: 'custom_pkg_' + Date.now(), course, university, year, questions: [newQuestion] }]).catch(console.warn);
-
     closeAddQuestionModal();
     alert('✅ New exam question published to the Freshman Exam Board!');
   }
 
-  /* ── ADMIN: PAYMENT & PRICING CONFIG ──────────────── */
-  function loadSavedPaymentSettings() {
-    try {
-      const saved = localStorage.getItem('nanova_payment_settings');
-      if (saved) {
-        Object.assign(State.paymentSettings, JSON.parse(saved));
-      }
-    } catch {}
-    updatePaywallUI();
-  }
-
-  function updatePaywallUI() {
-    const s = State.paymentSettings;
-    const pDisplay = document.getElementById('paywallPriceDisplay');
-    const tDisplay = document.getElementById('paywallTelebirrDisplay');
-    const cDisplay = document.getElementById('paywallCbeDisplay');
-    const iDisplay = document.getElementById('paywallInstructionDisplay');
-
-    if (pDisplay) pDisplay.textContent = s.price + ' ETB';
-    if (tDisplay) tDisplay.textContent = s.telebirr;
-    if (cDisplay) cDisplay.innerHTML = '<strong>CBE Birr:</strong> ' + s.cbe;
-    if (iDisplay) iDisplay.textContent = s.instructions;
-
-    // Also populate Admin inputs
-    const pInput = document.getElementById('payConfigPrice');
-    const tInput = document.getElementById('payConfigTelebirr');
-    const cInput = document.getElementById('payConfigCbe');
-    const chInput = document.getElementById('payConfigChapa');
-    const iInput = document.getElementById('payConfigInstructions');
-
-    if (pInput) pInput.value = s.price;
-    if (tInput) tInput.value = s.telebirr;
-    if (cInput) cInput.value = s.cbe;
-    if (chInput) chInput.value = s.chapa;
-    if (iInput) iInput.value = s.instructions;
-  }
-
-  function savePaymentSettings(e) {
-    e.preventDefault();
-    if (!State.isAdmin) {
-      alert('Only administrators can configure payment settings.');
-      return;
-    }
-
-    State.paymentSettings.price = parseInt(document.getElementById('payConfigPrice')?.value || '50', 10);
-    State.paymentSettings.telebirr = document.getElementById('payConfigTelebirr')?.value.trim();
-    State.paymentSettings.cbe = document.getElementById('payConfigCbe')?.value.trim();
-    State.paymentSettings.chapa = document.getElementById('payConfigChapa')?.value.trim();
-    State.paymentSettings.instructions = document.getElementById('payConfigInstructions')?.value.trim();
-
-    localStorage.setItem('nanova_payment_settings', JSON.stringify(State.paymentSettings));
-    updatePaywallUI();
-    alert('✅ Payment methods and unlock price updated successfully!');
-  }
-
-  function openPaymentConfigModal() {
-    NanovaApp.switchTab('admin');
-  }
-
-  function promptImageAttachment() {
-    const url = prompt('Enter Image URL (e.g. https://...):');
-    const input = document.getElementById('postImageUrl');
-    if (url && input) input.value = url;
-  }
-
-  function commentOnPost(postId) {
-    const msg = prompt('Write your comment on this official announcement:');
-    if (msg) alert('Comment recorded!');
-  }
-
-  function sharePost(postId) {
-    if (navigator.share) {
-      navigator.share({ title: 'Nanova Freshman Announcement', url: window.location.href });
-    } else {
-      alert('Post link copied to clipboard!');
-    }
-  }
-
-  /* ── TAB SWITCHING ─────────────────────────────────── */
-    /* ── ADMIN DASHBOARD RENDERING & CONTROLS ─────────── */
+  /* ── ADMIN DASHBOARD SUBTABS ───────────────────────── */
   let currentAdminSubTab = 'questions';
 
   function switchAdminSubTab(tabId) {
     currentAdminSubTab = tabId;
-    const subtabs = ['questions', 'universities', 'posts', 'payment', 'system'];
+    const subtabs = ['questions', 'requests', 'universities', 'posts', 'payment', 'system'];
     subtabs.forEach((id) => {
       const section = document.getElementById('adminSection-' + id);
       const navBtn = document.getElementById('adminSubNav-' + id);
@@ -1351,7 +1647,7 @@ function updateAdminUI() {
     const qCount = State.questions ? State.questions.length : 0;
     const uCount = State.universities ? State.universities.length : 0;
     const pCount = State.posts ? State.posts.length : 0;
-    const price = (State.paymentSettings && State.paymentSettings.price) ? State.paymentSettings.price : 50;
+    const price = State.paymentSettings.price || 50;
 
     const statQ = document.getElementById('adminStatQuestions');
     const statU = document.getElementById('adminStatUniversities');
@@ -1363,20 +1659,11 @@ function updateAdminUI() {
     if (statP) statP.textContent = pCount;
     if (statPrice) statPrice.textContent = price + ' ETB';
 
-    if (State.paymentSettings) {
-      const tInput = document.getElementById('adminTelebirrInput');
-      const cInput = document.getElementById('adminCbeInput');
-      const pInput = document.getElementById('adminPriceInput');
-      const iInput = document.getElementById('adminInstructionsInput');
-      if (tInput) tInput.value = State.paymentSettings.telebirr || '+251 91 234 5678';
-      if (cInput) cInput.value = State.paymentSettings.cbe || '1000234567890';
-      if (pInput) pInput.value = State.paymentSettings.price || 50;
-      if (iInput) iInput.value = State.paymentSettings.instructions || 'Send payment and confirm to unlock unlimited freshman exam access.';
-    }
-
     renderAdminQuestionsList();
     renderAdminUniversitiesList();
     renderAdminPostsList();
+    renderAdminPaymentRequests();
+    renderAdminUsersList();
 
     if (window.lucide) window.lucide.createIcons();
   }
@@ -1497,7 +1784,7 @@ function updateAdminUI() {
             <div class="flex items-center space-x-2">
               <span class="text-xs font-extrabold text-slate-900">${escapeHtml(p.author)}</span>
               <span class="text-[10px] text-slate-400">${escapeHtml(p.date || 'Recent')}</span>
-              ${p.isAdminPost ? '<span class="px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 font-bold text-[9px]">Admin</span>' : ''}
+              ${p.isAdminPost ? '<span class="px-1.5 py-0.2 rounded bg-blue-100 text-blue-800 font-bold text-[9px]">Admin</span>' : ''}
             </div>
             <p class="text-xs text-slate-700 font-medium line-clamp-2">${escapeHtml(p.content)}</p>
           </div>
@@ -1511,32 +1798,7 @@ function updateAdminUI() {
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function saveAdminPaymentSettings(e) {
-    if (e && e.preventDefault) e.preventDefault();
-    const telebirr = document.getElementById('adminTelebirrInput')?.value.trim();
-    const cbe = document.getElementById('adminCbeInput')?.value.trim();
-    const price = parseInt(document.getElementById('adminPriceInput')?.value || '50', 10);
-    const instructions = document.getElementById('adminInstructionsInput')?.value.trim();
-
-    if (!telebirr || !cbe) {
-      alert('Please fill out Telebirr and CBE account numbers.');
-      return;
-    }
-
-    State.paymentSettings = {
-      telebirr,
-      cbe,
-      price,
-      instructions: instructions || 'Send payment and confirm to unlock unlimited freshman exam access.'
-    };
-
-    localStorage.setItem('nanova_payment_settings', JSON.stringify(State.paymentSettings));
-    updatePaywallUI();
-    renderAdminDashboard();
-    alert('✅ Payment settings saved successfully!');
-  }
-
-  /* ── REAL EXAM MODE & TIMED SIMULATOR ─────────────── */
+  /* ── TIMED EXAM MODE ───────────────────────────────── */
   function switchExamMode(mode) {
     State.examMode = mode;
     const btnPractice = document.getElementById('modeBtnPractice');
@@ -1544,25 +1806,17 @@ function updateAdminUI() {
     const timedBar = document.getElementById('timedExamBar');
 
     if (mode === 'timed') {
-      if (btnTimed) {
-        btnTimed.className = 'px-3.5 py-1.5 rounded-xl bg-[#0052fe] text-white font-extrabold text-xs shadow-sm flex items-center space-x-1.5 transition';
-      }
-      if (btnPractice) {
-        btnPractice.className = 'px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1.5';
-      }
+      if (btnTimed) btnTimed.className = 'px-3.5 py-1.5 rounded-xl bg-[#0052fe] text-white font-extrabold text-xs shadow-sm flex items-center space-x-1.5 transition';
+      if (btnPractice) btnPractice.className = 'px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1.5';
       if (timedBar) timedBar.classList.remove('hidden');
       startExamTimer();
     } else {
-      if (btnPractice) {
-        btnPractice.className = 'px-3.5 py-1.5 rounded-xl bg-[#0052fe] text-white font-extrabold text-xs shadow-sm flex items-center space-x-1.5 transition';
-      }
-      if (btnTimed) {
-        btnTimed.className = 'px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1.5';
-      }
+      if (btnPractice) btnPractice.className = 'px-3.5 py-1.5 rounded-xl bg-[#0052fe] text-white font-extrabold text-xs shadow-sm flex items-center space-x-1.5 transition';
+      if (btnTimed) btnTimed.className = 'px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1.5';
       if (timedBar) timedBar.classList.add('hidden');
       stopExamTimer();
     }
-    renderBoardQuestion();
+    renderBoardQuestionsPage();
   }
 
   function startExamTimer() {
@@ -1627,13 +1881,11 @@ function updateAdminUI() {
     const cElem = document.getElementById('scorecardCorrect');
     const tElem = document.getElementById('scorecardTime');
     const gElem = document.getElementById('scorecardGrade');
-    const subElem = document.getElementById('scorecardSubtitle');
 
     if (pElem) pElem.textContent = percent + '%';
     if (cElem) cElem.textContent = correct + ' / ' + total + ' (' + attempted + ' attempted)';
     if (tElem) tElem.textContent = elapsedM + 'm ' + elapsedS + 's';
     if (gElem) gElem.textContent = grade;
-    if (subElem) subElem.textContent = (State.filterCourse === 'ALL' ? 'Freshman Exam Assessment' : State.filterCourse) + ' • ' + (State.filterUniv === 'ALL' ? 'National Harmonized' : State.filterUniv);
 
     document.getElementById('scorecardModal')?.classList.remove('hidden');
     if (window.lucide) window.lucide.createIcons();
@@ -1644,57 +1896,47 @@ function updateAdminUI() {
     switchExamMode('practice');
   }
 
-  /* ── REAL BOOKMARK SYSTEM ──────────────────────────── */
-  function toggleCurrentBookmark() {
-    const q = State.filteredQuestions[State.currentQuestionIndex];
-    if (!q) return;
-
-    const idx = State.bookmarks.indexOf(q.id);
-    if (idx !== -1) {
-      State.bookmarks.splice(idx, 1);
-    } else {
-      State.bookmarks.push(q.id);
-    }
+  /* ── BOOKMARK SYSTEM ───────────────────────────────── */
+  function toggleQuestionBookmark(qId) {
+    if (!qId) return;
+    const idx = State.bookmarks.indexOf(qId);
+    if (idx !== -1) State.bookmarks.splice(idx, 1);
+    else State.bookmarks.push(qId);
 
     localStorage.setItem('nanova_bookmarks', JSON.stringify(State.bookmarks));
-    updateBookmarkUI();
+    renderBoardQuestionsPage();
+    updateBookmarkBadge();
   }
 
-  function toggleBookmarkFilter() {
-    State.isBookmarkedFilterOnly = !State.isBookmarkedFilterOnly;
-    const btn = document.getElementById('bookmarkFilterBtn');
-    if (btn) {
-      if (State.isBookmarkedFilterOnly) {
-        btn.className = 'px-3 py-1.5 rounded-xl bg-black text-white font-extrabold text-xs shadow-sm flex items-center space-x-1 transition';
-      } else {
-        btn.className = 'px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1';
+  function toggleFilterMode(mode) {
+    if (State.activeQuickFilter === mode) {
+      State.activeQuickFilter = 'all';
+    } else {
+      State.activeQuickFilter = mode;
+      if (mode === 'incorrect') {
+        State.missedRetries = {};
       }
     }
+    updateQuickFilterButtons();
     applyFilters();
   }
 
-  function updateBookmarkUI() {
-    const q = State.filteredQuestions ? State.filteredQuestions[State.currentQuestionIndex] : null;
-    const btn = document.getElementById('bookmarkCurrentBtn');
-    if (btn && q) {
-      const isSaved = State.bookmarks.includes(q.id);
-      if (isSaved) {
-        btn.innerHTML = '<i data-lucide="bookmark-check" class="w-4 h-4 text-[#0052fe]"></i>';
-        btn.title = 'Saved to Bookmarks';
-        btn.classList.add('bg-blue-50', 'border', 'border-blue-200');
-      } else {
-        btn.innerHTML = '<i data-lucide="bookmark" class="w-4 h-4 text-slate-600"></i>';
-        btn.title = 'Save Question';
-        btn.classList.remove('bg-blue-50', 'border', 'border-blue-200');
-      }
-    }
+  function updateQuickFilterButtons() {
+    const savedBtn = document.getElementById('bookmarkFilterBtn');
+    const unansBtn = document.getElementById('unansweredFilterBtn');
+    const incorrBtn = document.getElementById('incorrectFilterBtn');
+    const answdBtn = document.getElementById('answeredFilterBtn');
 
-    const badge = document.getElementById('bookmarkCountBadge');
-    if (badge) badge.textContent = State.bookmarks.length;
-    if (window.lucide) window.lucide.createIcons();
+    const activeClass = 'px-3 py-1.5 rounded-xl bg-black text-white font-extrabold text-xs shadow-sm flex items-center space-x-1.5 transition';
+    const inactiveClass = 'px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1.5';
+
+    if (savedBtn) savedBtn.className = State.activeQuickFilter === 'saved' ? activeClass : inactiveClass;
+    if (unansBtn) unansBtn.className = State.activeQuickFilter === 'unanswered' ? activeClass : inactiveClass;
+    if (incorrBtn) incorrBtn.className = State.activeQuickFilter === 'incorrect' ? activeClass : inactiveClass;
+    if (answdBtn) answdBtn.className = State.activeQuickFilter === 'answered' ? activeClass : inactiveClass;
   }
 
-  /* ── REAL COMMUNITY COMMENTS SYSTEM ───────────────── */
+  /* ── COMMENTS SYSTEM ───────────────────────────────── */
   function commentOnPost(postId) {
     State.activeCommentPostId = postId;
     renderCommentsModal();
@@ -1743,7 +1985,7 @@ function updateAdminUI() {
 
     const newComment = {
       id: 'cmt_' + Date.now(),
-      author: State.currentUser?.displayName || State.profile?.name || (State.isAdmin ? 'Adnan Abduletif (Admin)' : 'Freshman Student'),
+      author: State.currentUser?.displayName || State.profile?.name || (State.isAdmin ? 'Campus Admin' : 'Freshman Student'),
       text: text,
       date: new Date().toLocaleDateString('en-US', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
     };
@@ -1755,42 +1997,13 @@ function updateAdminUI() {
     renderCommentsModal();
   }
 
-  /* ── REAL PAYMENT HELPERS ──────────────────────────── */
-  function copyPaymentDetail(text, btnId) {
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.getElementById(btnId);
-      if (btn) {
-        const orig = btn.textContent;
-        btn.textContent = 'Copied!';
-        btn.classList.add('bg-black');
-        setTimeout(() => {
-          btn.textContent = orig;
-          btn.classList.remove('bg-black');
-        }, 2000);
-      }
-    }).catch(() => {
-      prompt('Copy payment number:', text);
-    });
-  }
-
-  function verifyPaymentReference(e) {
-    if (e && e.preventDefault) e.preventDefault();
-    const refInput = document.getElementById('paywallTxRefInput');
-    const refVal = refInput ? refInput.value.trim() : '';
-
-    if (!refVal || refVal.length < 3) {
-      alert('Please enter a valid Telebirr or CBE Transaction Reference ID.');
+  /* ── TAB NAVIGATION & PAYWALL MODALS ───────────────── */
+  function switchTab(tabId) {
+    if (tabId === 'admin' && !State.isAdmin) {
+      openAuthModal();
       return;
     }
 
-    State.isPremium = true;
-    localStorage.setItem('nanova_is_premium', 'true');
-    localStorage.setItem('nanova_tx_ref', refVal);
-    hidePaywallModal();
-    alert('✅ Payment verified! Transaction Ref: ' + refVal + '\nUnlimited Freshman Exam access is now permanently unlocked.');
-  }
-
-function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach((el) => el.classList.add('hidden'));
     const target = document.getElementById('tab-' + tabId);
     if (target) target.classList.remove('hidden');
@@ -1803,9 +2016,9 @@ function switchTab(tabId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  /* ── PAYWALL ───────────────────────────────────────── */
   function showPaywallModal() {
     document.getElementById('paywallModal')?.classList.remove('hidden');
+    updatePaywallUI();
   }
 
   function hidePaywallModal() {
@@ -1813,78 +2026,97 @@ function switchTab(tabId) {
   }
 
   function processPayment() {
-    const btn = document.getElementById('payNowBtn');
-    if (btn) { btn.textContent = 'Processing...'; btn.disabled = true; }
+    if (!State.currentUser) {
+      alert('Please sign in or register with Firebase first so your payment can be assigned to your account.');
+      openAuthModal();
+      return;
+    }
+    const txPrompt = prompt('Enter your Telebirr, CBE, or E-Birr Transaction ID to submit payment verification to Admin:');
+    if (txPrompt && txPrompt.trim().length >= 3) {
+      const refInput = document.getElementById('paywallTxRefInput');
+      if (refInput) refInput.value = txPrompt.trim();
+      verifyPaymentReference();
+    }
+  }
 
-    setTimeout(() => {
-      State.isPremium = true;
-      localStorage.setItem('nanova_is_premium', 'true');
-      hidePaywallModal();
-      alert('✅ Payment verified! Unlimited Freshman Exam Access unlocked.');
-      if (btn) { btn.textContent = 'Pay 50 ETB'; btn.disabled = false; }
-    }, 1500);
+  function copyPaymentDetail(text, btnId) {
+    if (!text) return;
+    const cleanText = text.trim();
+    navigator.clipboard?.writeText(cleanText).then(() => {
+      const btn = document.getElementById(btnId);
+      if (btn) {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+      }
+    }).catch(() => {
+      prompt('Copy payment details:', cleanText);
+    });
   }
 
   function clearCacheAndReset() {
-    if (confirm('Reset all cached exams and question progress?')) {
+    if (confirm('Reset all cached exams and local progress?')) {
       localStorage.clear();
       location.reload();
     }
   }
 
-  /* ── GLOBAL API EXPORT ─────────────────────────────── */
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  /* ── PUBLIC EXPORTS ────────────────────────────────── */
   window.NanovaApp = {
-    toggleBookmark,
-    toggleBookmarksOnlyFilter,
-    onSearchInput,
-    startTimedExamMode,
-    finishTimedExam,
+    switchTab,
+    onFilterChange,
+    handleQuestionAnswer,
+    boardNextPage,
+    boardPrevPage,
+    shuffleQuestions,
+    toggleQuestionBookmark,
+    toggleFilterMode,
     switchExamMode,
     submitExam,
     closeScorecardModal,
-    toggleCurrentBookmark,
-    toggleBookmarkFilter,
     commentOnPost,
     closeCommentModal,
     submitComment,
-    copyPaymentDetail,
-    verifyPaymentReference,
-
-    switchAdminSubTab,
-    renderAdminDashboard,
-    filterAdminQuestions,
-    deleteQuestion,
-    saveAdminPaymentSettings,
-
-    switchTab,
-    onFilterChange,
-    handleBoardOptionClick,
-    boardNextQuestion,
-    boardPrevQuestion,
-    shuffleQuestions,
+    sharePost,
+    publishCommunityPost,
+    deletePost,
+    toggleLikePost,
     renderUniversities,
     openAddUnivModal,
     closeUnivModal,
     editUniversity,
     saveUniversity,
     deleteUniversity,
-    publishCommunityPost,
-    promptAdminLogin,
-    handleAdminLogin,
-    adminLogout,
-    toggleLikePost,
-    deletePost,
-    promptImageAttachment,
-    commentOnPost,
-    sharePost,
+    openAddQuestionModal,
+    closeAddQuestionModal,
+    saveNewQuestion,
+    switchAdminSubTab,
+    renderAdminDashboard,
+    filterAdminQuestions,
+    deleteQuestion,
+    saveAdminPaymentSettings,
+    refreshPaymentRequests,
+    refreshUsersList,
+    acceptPayment,
+    rejectPayment,
+    revokePayment,
+    toggleUserPaidStatus,
+    deleteUserAccount,
     showPaywallModal,
     hidePaywallModal,
     processPayment,
-        openAddQuestionModal,
-    closeAddQuestionModal,
-    saveNewQuestion,
-    savePaymentSettings,
-    openPaymentConfigModal,
+    copyPaymentDetail,
+    verifyPaymentReference,
     openAuthModal,
     closeAuthModal,
     toggleAuthMode,

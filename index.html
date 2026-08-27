@@ -17,6 +17,7 @@
   <!-- Firebase App & Auth SDK (v10 Compat for robust vanilla PWA) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
 </head>
@@ -62,7 +63,7 @@
           <span class="hidden sm:inline">Community</span>
         </button>
         <!-- Dynamic Admin-Only Tab (Hidden for students, shown only when admin logs in) -->
-        <button id="adminNavBtn" class="nav-link" data-tab="admin" onclick="NanovaApp.switchTab('admin')">
+        <button id="adminNavBtn" class="nav-link hidden" data-tab="admin" onclick="NanovaApp.switchTab('admin')">
           <span class="nav-icon-badge"><i data-lucide="shield-check"></i></span>
           <span class="hidden sm:inline">Admin</span>
         </button>
@@ -102,8 +103,8 @@
       <div class="white-card mb-6 space-y-4">
         <!-- Top Row: Mode Switcher & Live Timer & Search -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100">
-          <!-- Mode Tabs -->
-          <div class="flex items-center space-x-2">
+          <!-- Mode & Status Quick Filters -->
+          <div class="flex flex-wrap items-center gap-2">
             <button id="modeBtnPractice" onclick="NanovaApp.switchExamMode('practice')" class="px-3.5 py-1.5 rounded-xl bg-[#0052fe] text-white font-extrabold text-xs shadow-sm flex items-center space-x-1.5 transition">
               <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
               <span>Practice Mode</span>
@@ -112,9 +113,21 @@
               <i data-lucide="timer" class="w-3.5 h-3.5"></i>
               <span>Timed Exam (30m)</span>
             </button>
-            <button id="bookmarkFilterBtn" onclick="NanovaApp.toggleBookmarkFilter()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1" title="Show Bookmarked Questions">
+            <button id="bookmarkFilterBtn" onclick="NanovaApp.toggleFilterMode('saved')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1" title="Show Bookmarked Questions">
               <i data-lucide="bookmark" class="w-3.5 h-3.5 text-blue-600"></i>
               <span id="bookmarkFilterText">Saved (<span id="bookmarkCountBadge">0</span>)</span>
+            </button>
+            <button id="unansweredFilterBtn" onclick="NanovaApp.toggleFilterMode('unanswered')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1" title="Show Unanswered Questions">
+              <i data-lucide="help-circle" class="w-3.5 h-3.5 text-amber-500"></i>
+              <span>Unanswered (<span id="unansweredCountBadge">0</span>)</span>
+            </button>
+            <button id="incorrectFilterBtn" onclick="NanovaApp.toggleFilterMode('incorrect')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1" title="Show Questions to Redo Later">
+              <i data-lucide="x-circle" class="w-3.5 h-3.5 text-rose-500"></i>
+              <span>Missed (<span id="incorrectCountBadge">0</span>)</span>
+            </button>
+            <button id="answeredFilterBtn" onclick="NanovaApp.toggleFilterMode('answered')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition flex items-center space-x-1" title="Show Correctly Answered Questions">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500"></i>
+              <span>Answered (<span id="answeredCountBadge">0</span>)</span>
             </button>
           </div>
 
@@ -192,85 +205,43 @@
         </div>
       </div>
 
-      <!-- Active Interactive Question Board Card -->
-      <div id="activeQuestionCard" class="white-card mb-6">
-        <!-- Question Meta Pills & Number -->
-        <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
-          <div class="flex flex-wrap items-center gap-2">
-            <span id="boardCourseTag" class="exam-tag-pill">
-              <i data-lucide="book-open" class="w-3.5 h-3.5 text-blue-600"></i>
-              <span id="boardCourseName">GENERAL PSYCHOLOGY</span>
-            </span>
-            <span id="boardUnivTag" class="exam-tag-pill">
-              <i data-lucide="building-2" class="w-3.5 h-3.5 text-indigo-600"></i>
-              <span id="boardUnivName">HARAMAYA UNIVERSITY</span>
-            </span>
-            <span id="boardYearTag" class="exam-tag-pill">
-              <i data-lucide="calendar" class="w-3.5 h-3.5 text-amber-600"></i>
-              <span id="boardYearName">2022 Exam</span>
-            </span>
+      <!-- Free Preview Notice (Shown for Free Users) -->
+      <div id="freeLimitNotice" class="hidden p-3.5 rounded-2xl bg-blue-50/80 border border-blue-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-blue-950 mb-4 shadow-sm">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
           </div>
-          <div class="flex items-center space-x-2">
-            <button id="bookmarkCurrentBtn" onclick="NanovaApp.toggleCurrentBookmark()" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition" title="Save Question">
-              <i data-lucide="bookmark" class="w-4 h-4 text-slate-700"></i>
-            </button>
-            <span id="boardQuestionNumber" class="question-num-tag">Q. 1</span>
+          <div>
+            <span class="font-extrabold text-blue-900">Free Preview Access (10 Questions Limit)</span>
+            <p class="text-[11px] text-blue-700">Submit a payment request to unlock all freshman questions with full explanations.</p>
           </div>
         </div>
+        <button onclick="NanovaApp.showPaywallModal()" class="px-4 py-2 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-sm transition whitespace-nowrap self-start sm:self-auto">
+          Unlock All Questions
+        </button>
+      </div>
 
-        <!-- Question Prompt -->
-        <h2 id="boardQuestionText" class="question-text-title">
-          Which conflict of motives happens when a child who loves both parents must choose to stay with either the father or mother?
-        </h2>
+      <!-- Scrollable 10-Questions List Container -->
+      <div id="boardQuestionsListContainer" class="space-y-6 mb-6">
+        <!-- 10 Questions for the current page rendered dynamically via JS -->
+      </div>
 
-        <!-- 2x2 Answer Options Grid -->
-        <div id="boardOptionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 mb-6">
-          <button class="option-btn" onclick="NanovaApp.handleBoardOptionClick(0)">
-            <span class="option-letter-badge">A</span>
-            <span class="option-label-text">Approach-Approach</span>
-          </button>
-          <button class="option-btn" onclick="NanovaApp.handleBoardOptionClick(1)">
-            <span class="option-letter-badge">B</span>
-            <span class="option-label-text">Approach-Avoidance</span>
-          </button>
-          <button class="option-btn" onclick="NanovaApp.handleBoardOptionClick(2)">
-            <span class="option-letter-badge">C</span>
-            <span class="option-label-text">Avoidance-Avoidance</span>
-          </button>
-          <button class="option-btn" onclick="NanovaApp.handleBoardOptionClick(3)">
-            <span class="option-letter-badge">D</span>
-            <span class="option-label-text">Multiple approach-Avoidance</span>
-          </button>
+      <!-- 10-Questions Pagination Controller -->
+      <div id="boardPaginationBar" class="white-card flex flex-col sm:flex-row items-center justify-between gap-4 p-4 shadow-md border border-slate-100">
+        <button id="boardPrevPageBtn" onclick="NanovaApp.boardPrevPage()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 transition flex items-center space-x-2">
+          <i data-lucide="chevron-left" class="w-4 h-4"></i>
+          <span>Previous Questions</span>
+        </button>
+
+        <div class="flex flex-col sm:flex-row items-center gap-1.5 text-center">
+          <span id="boardPageInfo" class="font-extrabold text-sm text-slate-900">Page 1 of 1</span>
+          <span id="boardPageRange" class="text-xs text-blue-600 font-bold px-2.5 py-0.5 rounded-full bg-blue-50 border border-blue-200/60">(Questions 1 - 10)</span>
         </div>
 
-        <!-- Explanation Drawer (Reveals on Answer) -->
-        <div id="boardExplanationBox" class="hidden bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-5 text-sm text-slate-800">
-          <div class="flex items-center space-x-2 text-blue-800 font-bold mb-1.5">
-            <i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i>
-            <span>Detailed Solution & Explanation</span>
-          </div>
-          <p id="boardExplanationText" class="leading-relaxed text-slate-700">
-            An Approach-Approach conflict occurs when an individual is drawn toward two equally attractive but mutually exclusive goals.
-          </p>
-        </div>
-
-        <!-- Question Navigation Actions -->
-        <div class="flex items-center justify-between pt-2 border-t border-slate-100">
-          <button id="boardPrevBtn" onclick="NanovaApp.boardPrevQuestion()" class="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition flex items-center space-x-2">
-            <i data-lucide="chevron-left" class="w-4 h-4"></i>
-            <span>Previous</span>
-          </button>
-
-          <div class="flex items-center space-x-2">
-            <button onclick="NanovaApp.shuffleQuestions()" class="p-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 transition" title="Shuffle Questions">
-              <i data-lucide="shuffle" class="w-4 h-4"></i>
-            </button>
-            <button id="boardNextBtn" onclick="NanovaApp.boardNextQuestion()" class="px-6 py-2.5 rounded-xl bg-[#0052fe] hover:bg-[#0041d0] text-white font-bold text-sm shadow-md hover:shadow-lg transition flex items-center space-x-2">
-              <span>Next Question</span>
-              <i data-lucide="chevron-right" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
+        <button id="boardNextPageBtn" onclick="NanovaApp.boardNextPage()" class="px-5 py-2.5 rounded-xl bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs shadow-md transition flex items-center space-x-2">
+          <span>Next Questions</span>
+          <i data-lucide="chevron-right" class="w-4 h-4"></i>
+        </button>
       </div>
 
       
@@ -312,20 +283,19 @@
         <p class="section-subtitle">Connect, interact and share experiences with fellow students.</p>
       </div>
 
-      <!-- Create Post Composer Card (Admin Only) -->
-      <div class="white-card mb-6" id="composerCard">
-        <!-- If Admin is Unlocked -->
-        <div id="adminComposerView" class="hidden">
+      <!-- Create Post Composer Card (Admin Only - Completely hidden for regular users/visitors) -->
+      <div class="hidden white-card mb-6" id="composerCard">
+        <div id="adminComposerView">
           <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
             <div class="flex items-center space-x-2">
               <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-xs font-extrabold flex items-center gap-1">
                 <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
                 <span>Admin Post Mode</span>
               </span>
-              <span class="text-xs text-slate-400 font-medium">Official announcements & updates</span>
+              <span class="text-xs text-slate-400 font-medium">Broadcast official announcements & study resources</span>
             </div>
-            <button onclick="NanovaApp.adminLogout()" class="text-xs text-slate-400 hover:text-rose-500 font-bold transition">
-              Log out Admin
+            <button onclick="NanovaApp.firebaseSignOut()" class="text-xs text-slate-400 hover:text-rose-500 font-bold transition">
+              Sign Out Admin
             </button>
           </div>
 
@@ -365,23 +335,6 @@
             </button>
           </div>
         </div>
-
-        <!-- If Student (Non-Admin Notice & Quick Unlock) -->
-        <div id="studentComposerView" class="flex flex-col sm:flex-row items-center justify-between gap-4 py-2">
-          <div class="flex items-center space-x-3 text-left">
-            <div class="w-10 h-10 rounded-2xl bg-blue-50 text-[#0052fe] flex items-center justify-center flex-shrink-0">
-              <i data-lucide="shield-alert" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h4 class="font-bold text-slate-900 text-sm">Official Community & Announcement Feed</h4>
-              <p class="text-xs text-slate-500">Only verified campus administrators can publish official announcements.</p>
-            </div>
-          </div>
-          <button onclick="NanovaApp.promptAdminLogin()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold flex items-center space-x-2 shadow-sm transition whitespace-nowrap">
-            <i data-lucide="key-round" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span>Admin Login to Post</span>
-          </button>
-        </div>
       </div>
 
       <!-- Posts List Feed Container -->
@@ -414,7 +367,7 @@
         <form id="profileForm" class="space-y-4">
           <div>
             <label class="filter-label">FULL NAME</label>
-            <input type="text" id="profileFullNameInput" class="custom-select" placeholder="Enter your name..." value="Adnan" />
+            <input type="text" id="profileFullNameInput" class="custom-select" placeholder="Enter your name..." />
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -458,29 +411,22 @@
     <!-- ============================================== -->
     <div id="tab-admin" class="tab-content hidden">
       
-      <!-- Admin Locked View -->
+      <!-- Admin Locked View (Visible when not authenticated as Admin in Firebase) -->
       <div id="adminLockedBox" class="white-card max-w-lg mx-auto text-center py-10 shadow-xl border border-slate-100">
         <div class="w-16 h-16 rounded-3xl bg-blue-50 text-[#0052fe] flex items-center justify-center mx-auto mb-4 shadow-sm ring-8 ring-blue-50/50">
-          <i data-lucide="shield-check" class="w-8 h-8"></i>
+          <i data-lucide="shield-alert" class="w-8 h-8"></i>
         </div>
         <h2 class="text-2xl font-extrabold text-slate-900 mb-1">Campus Administrator Portal</h2>
         <p class="text-xs text-slate-500 max-w-sm mx-auto mb-6">
-          Access the Nanova Admin Dashboard to manage freshman exam questions, universities, campus announcements, and telebirr monetization.
+          Access to this dashboard is strictly restricted to verified Firebase Administrators. Please sign in with your administrator account.
         </p>
 
-        <form onsubmit="NanovaApp.handleAdminLogin(event)" class="space-y-4 text-left max-w-sm mx-auto">
-          <div>
-            <label class="filter-label">ADMIN EMAIL OR PASSKEY</label>
-            <input type="text" id="adminPasskeyInput" class="custom-select font-bold text-sm" placeholder="adnanabduletif010@gmail.com or nanova2026" value="adnanabduletif010@gmail.com" required />
-          </div>
-          <button type="submit" class="w-full py-3.5 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold rounded-2xl text-sm shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2">
-            <i data-lucide="key" class="w-4 h-4"></i>
-            <span>Unlock Admin Dashboard</span>
+        <div class="space-y-3 max-w-sm mx-auto">
+          <button onclick="NanovaApp.openAuthModal()" class="w-full py-3.5 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold rounded-2xl text-sm shadow-md hover:shadow-lg transition flex items-center justify-center space-x-2">
+            <i data-lucide="lock" class="w-4 h-4"></i>
+            <span>Sign In to Access</span>
           </button>
-          <div class="pt-2 text-center">
-            <p class="text-[11px] text-slate-400">Authorized Admin: <span class="font-bold text-slate-700">Adnan Abduletif (adnanabduletif010@gmail.com)</span></p>
-          </div>
-        </form>
+        </div>
       </div>
 
       <!-- Admin Unlocked Dashboard View -->
@@ -495,13 +441,13 @@
               </div>
               <div>
                 <div class="flex items-center space-x-2">
-                  <h2 class="text-xl font-extrabold tracking-tight">Adnan Abduletif</h2>
+                  <h2 id="adminProfileDisplayName" class="text-xl font-extrabold tracking-tight">Campus Admin</h2>
                   <span class="px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 text-[10px] font-extrabold border border-blue-500/30 flex items-center gap-1">
                     <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse"></span>
-                    Super Admin
+                    Verified Admin
                   </span>
                 </div>
-                <p class="text-xs text-slate-300 font-medium mt-0.5">adnanabduletif010@gmail.com • Lead Campus Administrator</p>
+                <p id="adminProfileEmailDisplay" class="text-xs text-slate-300 font-medium mt-0.5">Verified Administrator Session</p>
               </div>
             </div>
 
@@ -514,62 +460,74 @@
                 <i data-lucide="building-2" class="w-4 h-4"></i>
                 <span>Add University</span>
               </button>
-              <button onclick="NanovaApp.adminLogout()" class="px-4 py-2.5 bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center space-x-1.5">
+              <button onclick="NanovaApp.firebaseSignOut()" class="px-4 py-2.5 bg-rose-600/80 hover:bg-rose-600 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center space-x-1.5">
                 <i data-lucide="log-out" class="w-4 h-4"></i>
-                <span>Exit Admin</span>
+                <span>Sign Out</span>
               </button>
             </div>
           </div>
         </div>
 
-        <!-- 4 KPI Metrics Cards -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- 5 KPI Metrics Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-5 gap-3">
           <!-- Metric 1 -->
-          <div class="white-card p-5 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('questions')">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
-                <i data-lucide="help-circle" class="w-5 h-5"></i>
+          <div class="white-card p-4 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('questions')">
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
+                <i data-lucide="help-circle" class="w-4 h-4"></i>
               </div>
-              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Bank</span>
+              <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Bank</span>
             </div>
-            <div id="adminStatQuestions" class="text-2xl font-black text-slate-900">0</div>
-            <p class="text-xs font-bold text-slate-500 mt-1">Exam Questions</p>
+            <div id="adminStatQuestions" class="text-xl font-black text-slate-900">0</div>
+            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Exam Questions</p>
           </div>
 
           <!-- Metric 2 -->
-          <div class="white-card p-5 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('universities')">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <i data-lucide="building-2" class="w-5 h-5"></i>
+          <div class="white-card p-4 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('universities')">
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                <i data-lucide="building-2" class="w-4 h-4"></i>
               </div>
-              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Campuses</span>
+              <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">Campuses</span>
             </div>
-            <div id="adminStatUniversities" class="text-2xl font-black text-slate-900">0</div>
-            <p class="text-xs font-bold text-slate-500 mt-1">Universities</p>
+            <div id="adminStatUniversities" class="text-xl font-black text-slate-900">0</div>
+            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Universities</p>
           </div>
 
           <!-- Metric 3 -->
-          <div class="white-card p-5 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('posts')">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
-                <i data-lucide="message-square" class="w-5 h-5"></i>
+          <div class="white-card p-4 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('posts')">
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
               </div>
-              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Feed</span>
+              <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Feed</span>
             </div>
-            <div id="adminStatPosts" class="text-2xl font-black text-slate-900">0</div>
-            <p class="text-xs font-bold text-slate-500 mt-1">Announcements</p>
+            <div id="adminStatPosts" class="text-xl font-black text-slate-900">0</div>
+            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Announcements</p>
           </div>
 
           <!-- Metric 4 -->
-          <div class="white-card p-5 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('payment')">
-            <div class="flex items-center justify-between mb-3">
-              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
+          <div class="white-card p-4 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('requests')">
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                <i data-lucide="users" class="w-4 h-4"></i>
               </div>
-              <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Telebirr</span>
+              <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Requests</span>
             </div>
-            <div id="adminStatPrice" class="text-2xl font-black text-slate-900">50 ETB</div>
-            <p class="text-xs font-bold text-slate-500 mt-1">Exam Pass Price</p>
+            <div id="adminStatPendingRequests" class="text-xl font-black text-slate-900">0</div>
+            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Pending Payments</p>
+          </div>
+
+          <!-- Metric 5 -->
+          <div class="white-card p-4 cursor-pointer hover:shadow-md transition border border-slate-100" onclick="NanovaApp.switchAdminSubTab('payment')">
+            <div class="flex items-center justify-between mb-2">
+              <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+              </div>
+              <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Telebirr</span>
+            </div>
+            <div id="adminStatPrice" class="text-xl font-black text-slate-900">50 ETB</div>
+            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Exam Pass Price</p>
           </div>
         </div>
 
@@ -578,6 +536,10 @@
           <button id="adminSubNav-questions" onclick="NanovaApp.switchAdminSubTab('questions')" class="px-4 py-2 rounded-xl bg-white text-slate-900 font-extrabold text-xs shadow-sm flex items-center space-x-1.5 whitespace-nowrap">
             <i data-lucide="layout-grid" class="w-4 h-4 text-[#0052fe]"></i>
             <span>Question Bank</span>
+          </button>
+          <button id="adminSubNav-requests" onclick="NanovaApp.switchAdminSubTab('requests')" class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
+            <i data-lucide="users" class="w-4 h-4"></i>
+            <span>Payment Requests & Users</span>
           </button>
           <button id="adminSubNav-universities" onclick="NanovaApp.switchAdminSubTab('universities')" class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
             <i data-lucide="building-2" class="w-4 h-4"></i>
@@ -633,7 +595,52 @@
           </div>
         </div>
 
-        <!-- SUBTAB 2: UNIVERSITIES MANAGER -->
+        <!-- SUBTAB 2: PAYMENT REQUESTS & USER ACCOUNTS -->
+        <div id="adminSection-requests" class="hidden space-y-4">
+          <!-- Pending Payment Approvals Card -->
+          <div class="white-card">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i>
+                  <span>Student Payment Verification Requests</span>
+                </h3>
+                <p class="text-xs text-slate-500">Accept Telebirr / CBE payment requests to grant full exam access.</p>
+              </div>
+              <button onclick="NanovaApp.refreshPaymentRequests()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 self-start sm:self-auto">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Refresh Requests</span>
+              </button>
+            </div>
+
+            <div id="adminPaymentRequestsList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- User Accounts Management Card -->
+          <div class="white-card">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
+                  <span>Firebase User Directory</span>
+                </h3>
+                <p class="text-xs text-slate-500">Inspect registered users, manage payment permissions, or delete accounts.</p>
+              </div>
+              <button onclick="NanovaApp.refreshUsersList()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 self-start sm:self-auto">
+                <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                <span>Refresh Users</span>
+              </button>
+            </div>
+
+            <div id="adminUsersList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: UNIVERSITIES MANAGER -->
         <div id="adminSection-universities" class="hidden space-y-4">
           <div class="white-card">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
@@ -724,9 +731,15 @@
                 </div>
               </div>
 
-              <div>
-                <label class="filter-label">CBE BIRR / COMMERCIAL BANK ACCOUNT</label>
-                <input type="text" id="adminCbeInput" class="custom-select font-bold text-sm text-slate-900" placeholder="1000234567890" required />
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="filter-label">CBE BIRR / COMMERCIAL BANK ACCOUNT</label>
+                  <input type="text" id="adminCbeInput" class="custom-select font-bold text-sm text-slate-900" placeholder="1000234567890" required />
+                </div>
+                <div>
+                  <label class="filter-label">E-BIRR PHONE / ACCOUNT NUMBER</label>
+                  <input type="text" id="adminEbirrInput" class="custom-select font-bold text-sm text-slate-900" placeholder="+251 91 234 5678" required />
+                </div>
               </div>
 
               <div>
@@ -762,10 +775,6 @@
                 <span class="font-extrabold text-slate-900">nanova-st.firebaseapp.com</span>
               </div>
               <div class="flex justify-between items-center">
-                <span class="font-bold text-slate-500">Primary Administrator:</span>
-                <span class="font-extrabold text-blue-700">adnanabduletif010@gmail.com</span>
-              </div>
-              <div class="flex justify-between items-center">
                 <span class="font-bold text-slate-500">Local Storage Engine:</span>
                 <span class="font-extrabold text-slate-900">IndexedDB (nanova_local_db_v2) + LocalStorage</span>
               </div>
@@ -794,7 +803,7 @@
         <i data-lucide="sparkles" class="w-7 h-7"></i>
       </div>
       <h3 class="text-xl font-extrabold text-slate-900 mb-1">Unlock Unlimited Freshman Exams</h3>
-      <p class="text-xs text-slate-500 mb-5">Access all 300+ past university exam questions with step-by-step verified solutions for only 50 ETB.</p>
+      <p class="text-xs text-slate-500 mb-5">Access all past university exam questions with step-by-step verified solutions for only 50 ETB.</p>
 
       <div id="paywallMethodsContainer" class="space-y-3 mb-6 text-left">
         <!-- Telebirr Row -->
@@ -821,6 +830,20 @@
             <span id="paywallCbeDisplay" class="text-xs text-slate-600 font-semibold font-mono">1000234567890</span>
           </div>
           <button type="button" id="copyCbeBtn" onclick="NanovaApp.copyPaymentDetail('1000234567890', 'copyCbeBtn')" class="px-3 py-1.5 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm">
+            Copy
+          </button>
+        </div>
+
+        <!-- E-Birr Row -->
+        <div class="p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/50 flex items-center justify-between">
+          <div>
+            <div class="flex items-center gap-1.5 font-extrabold text-emerald-950 text-sm">
+              <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
+              <span>E-Birr Account</span>
+            </div>
+            <span id="paywallEbirrDisplay" class="text-xs text-emerald-700 font-semibold font-mono">+251 91 234 5678</span>
+          </div>
+          <button type="button" id="copyEbirrBtn" onclick="NanovaApp.copyPaymentDetail(document.getElementById('paywallEbirrDisplay').textContent, 'copyEbirrBtn')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-sm">
             Copy
           </button>
         </div>
@@ -904,7 +927,7 @@
           <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
             <i data-lucide="user-check" class="w-4 h-4"></i>
           </div>
-          <h3 id="authModalTitle" class="text-lg font-extrabold text-slate-900">Student & Admin Account</h3>
+          <h3 id="authModalTitle" class="text-lg font-extrabold text-slate-900">Sign In to Nanova</h3>
         </div>
         <button onclick="NanovaApp.closeAuthModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">
           <i data-lucide="x" class="w-5 h-5"></i>
@@ -915,7 +938,7 @@
       <form id="firebaseAuthForm" onsubmit="NanovaApp.handleEmailAuth(event)" class="space-y-3.5">
         <div>
           <label class="filter-label">EMAIL ADDRESS</label>
-          <input type="email" id="authEmailInput" class="custom-select text-sm font-semibold" placeholder="student@example.com or admin email" required />
+          <input type="email" id="authEmailInput" class="custom-select text-sm font-semibold" placeholder="your@email.com" required />
         </div>
         <div>
           <label class="filter-label">PASSWORD</label>
