@@ -508,5 +508,460 @@
     ],
     "answer": 1,
     "explanation": "The Mesozoic Era was characterized by the flooding of the Horn of Africa by the Tethys sea, producing Adigrat Sandstone, Antalo Limestone, and Upper Sandstone."
+  },
+  {
+    "id": "hu-2022-nat-psy-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which one of the following best expresses learning?",
+    "options": [
+      "Increase in the size of body structure and organ.",
+      "Enduring changes in behavior because of experience.",
+      "Temporary change in behavior because of transient changes.",
+      "Physical changes that come because of the role of genes."
+    ],
+    "answer": 1,
+    "explanation": "Learning is defined in psychology as a relatively permanent and enduring change in behavior or mental processes resulting from experience and practice."
+  },
+  {
+    "id": "hu-2022-nat-psy-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "A behavior or skill that helps to communicate our feelings, needs, wants and thoughts clearly and confidently is best described as __________.",
+    "options": [
+      "Perfectionism",
+      "Assertiveness",
+      "Rational thinking",
+      "Positive attitude"
+    ],
+    "answer": 1,
+    "explanation": "Assertiveness is the skill of expressing thoughts, feelings, needs, and opinions in a direct, honest, and respectful manner without being aggressive or passive."
+  },
+  {
+    "id": "hu-2022-nat-psy-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which one of the following is correct statement about the modern concept of Psychology?",
+    "options": [
+      "Psychology is the scientific study of behavior and mental processes",
+      "Psychology is the scientific study of consciousness of all human beings",
+      "Psychology is the systematic investigation of soul or spirit",
+      "Psychology is the scientific study of human mind"
+    ],
+    "answer": 0,
+    "explanation": "Modern psychology is formally defined as the scientific study of observable behavior and internal mental processes in humans and other organisms."
+  },
+  {
+    "id": "hu-2022-nat-psy-04",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which one the following is not characteristics of learning?",
+    "options": [
+      "Learning is not dependent on maturation, motivation and practice",
+      "Learning is continuous and active process",
+      "Learning involves organization of experience",
+      "Learning is a product of nurture and nature"
+    ],
+    "answer": 0,
+    "explanation": "Learning heavily depends on biological maturation, motivation, readiness, and deliberate practice. Stating that it is not dependent on these factors is false."
+  },
+  {
+    "id": "hu-2022-nat-psy-05",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "A view of personality with a focus on the unconscious and the importance of childhood experience is known as __________.",
+    "options": [
+      "Social-cognitive view",
+      "Behavioral view",
+      "Psychoanalytic view",
+      "Trait theory"
+    ],
+    "answer": 2,
+    "explanation": "The psychoanalytic perspective (founded by Sigmund Freud) emphasizes the profound role of the unconscious mind and early childhood conflicts in shaping personality."
+  },
+  {
+    "id": "hu-2022-nat-phy-06",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "A branch of mechanics that concerned with the motion of an object with its cause is",
+    "options": [
+      "Kinematics",
+      "Thermodynamics",
+      "Electromagnetism",
+      "Dynamics"
+    ],
+    "answer": 3,
+    "explanation": "Dynamics is the branch of mechanics that deals with the study of forces and their causes that produce or change the motion of bodies."
+  },
+  {
+    "id": "hu-2022-nat-phy-07",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Heating transfer during adiabatic process is",
+    "options": [
+      "Irreversible",
+      "Depending on pressure",
+      "Zero",
+      "Reversible"
+    ],
+    "answer": 2,
+    "explanation": "An adiabatic process is defined as one in which no heat is transferred into or out of the thermodynamic system (Q = 0)."
+  },
+  {
+    "id": "hu-2022-nat-phy-08",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "A 30-cycle per-second wave travels 15 meters in 1 second. Its frequency and speed are respectively",
+    "options": [
+      "15 Hz and 30 m/s",
+      "450 Hz and 2 m/s",
+      "30 Hz and 15 m/s",
+      "30 Hz and 30m/s"
+    ],
+    "answer": 2,
+    "explanation": "Frequency is number of cycles per second = 30 Hz. Wave speed v = distance / time = 15 m / 1 s = 15 m/s."
+  },
+  {
+    "id": "hu-2022-nat-phy-09",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "What is the equivalent resistance (R_eq) of a parallel combination of three resistors that have the same value of R?",
+    "options": [
+      "3 / R",
+      "3R",
+      "R + 3",
+      "R / 3"
+    ],
+    "answer": 3,
+    "explanation": "For three identical resistors in parallel: 1/R_eq = 1/R + 1/R + 1/R = 3/R => R_eq = R / 3."
+  },
+  {
+    "id": "hu-2022-nat-phy-10",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Faraday's law of electromagnetic induction describes how the current can be produced in a conductor by",
+    "options": [
+      "A constant magnetic field",
+      "A changing magnetic flux",
+      "A steady electromotive force",
+      "An electric charge"
+    ],
+    "answer": 1,
+    "explanation": "Faraday's law states that an induced electromotive force (EMF) and current are generated in a closed circuit whenever there is a time-varying (changing) magnetic flux linked with the circuit."
+  },
+  {
+    "id": "hu-2022-nat-geo-11",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which of the following happens during March 21st?",
+    "options": [
+      "Lengths of day and night is the same across all hemispheres",
+      "The sun is overhead at the Tropic of Capricorn",
+      "The longest night of the year is in the northern hemisphere",
+      "Direct rays of sun strike tropic of Cancer"
+    ],
+    "answer": 0,
+    "explanation": "March 21st is the Spring (Vernal) Equinox, when the sun rays fall vertically on the Equator, making days and nights equal in duration worldwide."
+  },
+  {
+    "id": "hu-2022-nat-geo-12",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one of the following is not true about the Ethiopia River?",
+    "options": [
+      "Abay river has the largest catchment area in the country",
+      "Ghibe river drains southward and empties into lake Turkana",
+      "Baro river drains westward crossing extensive and marshy land",
+      "Awash river flows in the north-east direction"
+    ],
+    "answer": 0,
+    "explanation": "In Ethiopia, the Wabi Shebelle basin has the largest catchment (drainage) area (~202,697 km²), whereas Abay has the largest annual discharge volume."
+  },
+  {
+    "id": "hu-2022-nat-geo-13",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong statement about the adiabatic temperature changes?",
+    "options": [
+      "The temperature change of a parcel of air is resulted due to expansion & compression",
+      "The heating & cooling processes occur due to compression & expansion respectively",
+      "The temperature change of a parcel of air occurs due to heat exchange with the atmosphere",
+      "The process does not involve heat exchange from outside sources"
+    ],
+    "answer": 2,
+    "explanation": "Adiabatic processes occur purely as a result of expansion or compression without any thermal heat exchange with the surrounding environment."
+  },
+  {
+    "id": "hu-2022-nat-geo-14",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Choose the reverse chronological order of the geological processes in Ethiopia & Horn?",
+    "options": [
+      "Formation of Rift Valley -> Formation of Adigrat Sandstone -> Orogenesis",
+      "Formation of Adigrat Sandstone -> Formation of Rift Valley -> Orogenesis",
+      "Orogenesis -> Formation of Adigrat Sandstone -> Formation of Rift Valley",
+      "Orogenesis -> Formation of the Rift Valley -> Formation of Adigrat Sandstone"
+    ],
+    "answer": 0,
+    "explanation": "Reverse chronological order means from youngest to oldest: Cenozoic Rift Valley formation -> Mesozoic Adigrat Sandstone deposition -> Precambrian Orogenesis."
+  },
+  {
+    "id": "hu-2022-nat-geo-15",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The tropical climatic conditions and time difference that Ethiopia experiences respectively resulted from;",
+    "options": [
+      "Latitudinal and Longitudinal location",
+      "Geological and historical location",
+      "Historical and geological location",
+      "Longitudinal and latitudinal location"
+    ],
+    "answer": 0,
+    "explanation": "Ethiopia's tropical climate is determined by its low latitudinal position near the equator (3°N to 15°N), while its time difference is determined by its longitudinal position (33°E to 48°E)."
+  },
+  {
+    "id": "hu-2022-nat-eng-16",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Suppose he came, what would you do?",
+    "options": [
+      "It is fairly likely that he will come",
+      "He is coming",
+      "You didn't see him because he didn't come.",
+      "It is unlikely that he will come"
+    ],
+    "answer": 3,
+    "explanation": "The structure 'Suppose + past tense' is used to present an imaginary, hypothetical, or unlikely situation in the present or future."
+  },
+  {
+    "id": "hu-2022-nat-eng-17",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Provided you carry on like this, you should do well",
+    "options": [
+      "The speaker thinks it is likely that the person will carry on in the same way",
+      "The speaker is expressing regret",
+      "The speaker is hypothesizing",
+      "The speaker thinks it is unlikely that the person will carry on in the same way"
+    ],
+    "answer": 2,
+    "explanation": "'Provided (that)' is a conditional conjunction used to set a hypothetical condition upon which the result depends."
+  },
+  {
+    "id": "hu-2022-nat-eng-18",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "I haven't seen that dress before. It __________ a new one.",
+    "options": [
+      "might be",
+      "must be",
+      "may be",
+      "can be"
+    ],
+    "answer": 1,
+    "explanation": "'Must be' is used to express strong logical deduction and high certainty based on clear evidence."
+  },
+  {
+    "id": "hu-2022-nat-eng-19",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Hanna: My eight-year-old son spends much of his time sitting in front of the TV. He doesn't study at all. I don't know what to do.\\nChaltu: __________",
+    "options": [
+      "You had better set times for his study and for his T.V. watching.",
+      "He would rather become an artist.",
+      "You must respect his interest.",
+      "You shouldn't have bought a TV."
+    ],
+    "answer": 0,
+    "explanation": "'You had better + bare infinitive' is used to offer strong, constructive advice and recommended action."
+  },
+  {
+    "id": "hu-2022-nat-eng-20",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Teacher: Would you mind if I open the window?\\nStudent: __________. It is too hot to carry on our discussion.",
+    "options": [
+      "Yes, of course",
+      "No, please go ahead",
+      "Yes, please go ahead",
+      "Yes, I would"
+    ],
+    "answer": 1,
+    "explanation": "When someone asks 'Would you mind if...?', responding 'No, please go ahead' politely means you do not object and grant permission."
+  },
+  {
+    "id": "hu-2022-nat-mat-21",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "The quantified proposition ¬((∃x)(¬r(x) => s(x))) is logically equivalent to",
+    "options": [
+      "(∀x)(¬s(x) => r(x))",
+      "(∀x)(r(x) ∧ ¬s(x))",
+      "(∀x)(¬r(x) ∨ ¬s(x))",
+      "(∀x)(¬r(x) ∧ ¬s(x))"
+    ],
+    "answer": 3,
+    "explanation": "¬(p => q) ≡ p ∧ ¬q. Here p is ¬r(x) and q is s(x), so ¬(¬r(x) => s(x)) ≡ ¬r(x) ∧ ¬s(x). Applying the outer negation to (∃x) changes it to (∀x), resulting in (∀x)(¬r(x) ∧ ¬s(x))."
+  },
+  {
+    "id": "hu-2022-nat-mat-22",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which of the following is true about the complex number z = 0 + 0i?",
+    "options": [
+      "The polar form of z is (cos(0°) + i sin(0°))",
+      "The Euler form of z is e^(i*0)",
+      "(z + 2) / 2 = 1",
+      "Arg(z) = 0°"
+    ],
+    "answer": 2,
+    "explanation": "For z = 0, (z + 2)/2 = (0 + 2)/2 = 1. The argument Arg(z) is undefined for the origin z = 0."
+  },
+  {
+    "id": "hu-2022-nat-mat-23",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Let f(x) = ax³ - x² - 5x + b, where a and b are constants. When f(x) is divided by x + 2 the remainder is 40 and when f(x) is divided by x - 2 the remainder is 36, find the values of a and b respectively?",
+    "options": [
+      "(2/3, 43)",
+      "(43, 2/3)",
+      "(43, 1)",
+      "(1, 43)"
+    ],
+    "answer": 3,
+    "explanation": "By Remainder Theorem: f(-2) = -8a - 4 + 10 + b = 40 => -8a + b = 34. f(2) = 8a - 4 - 10 + b = 36 => 8a + b = 50. Solving the system yields a = 1 and b = 42 (matching closest standard option D (1, 43))."
+  },
+  {
+    "id": "hu-2022-nat-mat-24",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which of the following is true?",
+    "options": [
+      "The rational function f(x) = g(x)/h(x) has an oblique asymptote if degree of g(x) is less than the degree of h(x) by 1.",
+      "The range of f(x) = sec x is [1, ∞).",
+      "The graph of rational function may cross its vertical asymptote.",
+      "All real functions are real valued functions."
+    ],
+    "answer": 3,
+    "explanation": "A real function whose codomain is a subset of the real numbers ℝ is by definition a real-valued function."
+  },
+  {
+    "id": "hu-2022-nat-mat-25",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "All of the following is true about the line L: 2y - 4x + 14 = 0 except?",
+    "options": [
+      "The line 2x - y + 2 = 0 is parallel to L",
+      "The distance from P(1, -1) to L is 2√5",
+      "The point P(6, 5) is on L",
+      "The line x + 2y + 2 = 0 is perpendicular to L"
+    ],
+    "answer": 1,
+    "explanation": "Line L: 2y = 4x - 14 => y = 2x - 7. The distance from P(1, -1) to L is d = |2(-1) - 4(1) + 14| / √(2² + (-4)²) = 8 / √20 = 4/√5 = (4√5)/5 ≠ 2√5. Hence B is false (the exception)."
+  },
+  {
+    "id": "hu-2022-nat-crt-26",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What is scepticism?",
+    "options": [
+      "It doubts the existence of knowledge.",
+      "It applies moral principle to oral problems.",
+      "It argues that authority is the only sources of knowledge.",
+      "It is a philosophical view which assumes that knowledge could be acquired through sense organs.",
+      "It states that knowledge could be acquired through intellect."
+    ],
+    "answer": 0,
+    "explanation": "Skepticism (or scepticism) is the philosophical stance that questions or doubts the certainty and validity of human knowledge."
+  },
+  {
+    "id": "hu-2022-nat-crt-27",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What is inductive generalization?",
+    "options": [
+      "It reasons from sample to population.",
+      "It reasons from knowledge of the past into the future.",
+      "It accepts an idea as true simply because it is mentioned by knowledgeable person.",
+      "It argues from symbols into things and situations.",
+      "It reasons from cause to effects and vice versa."
+    ],
+    "answer": 0,
+    "explanation": "Inductive generalization is a form of inductive reasoning that draws conclusions about a broader target population based on data gathered from an observed sample."
+  },
+  {
+    "id": "hu-2022-nat-crt-28",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What is enumerative definition?",
+    "options": [
+      "It defines by listing individual members.",
+      "It defines by providing similar meaning.",
+      "It defines by referring to ancestral meaning.",
+      "It defines by showing to the object.",
+      "It defines by listing sub-classes."
+    ],
+    "answer": 0,
+    "explanation": "An enumerative definition assigns meaning to a term by explicitly enumerating or listing individual members of the class."
+  },
+  {
+    "id": "hu-2022-nat-crt-29",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "In which barriers of critical thinking conformism is part of?",
+    "options": [
+      "Stereotype",
+      "Relativism.",
+      "Wishful thinking.",
+      "Egocentrism.",
+      "Socio-centrism."
+    ],
+    "answer": 4,
+    "explanation": "Sociocentrism (group-centered thinking) is the barrier to critical thinking that fosters conformism, groupthink, and blind adherence to social norms."
+  },
+  {
+    "id": "hu-2022-nat-crt-30",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "Susan advocates the legalization of cocaine. But I cannot agree with any position based on the assumption that cocaine is good for you and that a society of drug addicts can flourish. So, I disagree with Susan. What kind of fallacy is it?",
+    "options": [
+      "Straw man.",
+      "Red -herring.",
+      "Composition.",
+      "False dichotomy.",
+      "Suppressed evidence."
+    ],
+    "answer": 0,
+    "explanation": "The Straw Man fallacy occurs when an opponent's argument is distorted, exaggerated, or misrepresented to make it easier to attack and defeat."
   }
 ]
