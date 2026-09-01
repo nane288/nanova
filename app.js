@@ -232,7 +232,8 @@
     filters: {
       course: 'ALL',
       university: 'ALL',
-      year: 'ALL'
+      year: 'ALL',
+      category: 'ALL'
     }
   };
 
@@ -246,6 +247,7 @@
     await loadPaymentSettingsFromFirebase();
     initFirebaseAuthListener();
     applyFilters();
+    updateFilterSummaryText();
     renderUniversities();
     renderCommunityPosts();
     updateAdminUI();
@@ -540,6 +542,7 @@
                   course: item.course,
                   university: item.university,
                   year: (item.year ? (item.year + '').includes('Exam') ? item.year : item.year + ' Exam' : '2024 Exam'),
+                  category: q.category || item.category || 'Mid Exam',
                   question: q.question,
                   options: q.options ? (typeof q.options[0] === 'object' ? q.options.map(o => o.text) : q.options) : [],
                   answer: typeof q.answer === 'number' ? q.answer : (q.correctOption === 'B' ? 1 : q.correctOption === 'C' ? 2 : q.correctOption === 'D' ? 3 : 0),
@@ -554,6 +557,7 @@
                 course: item.course || 'Freshman Course',
                 university: item.university || 'General University',
                 year: (item.year ? (item.year + '').includes('Exam') ? item.year : item.year + ' Exam' : '2024 Exam'),
+                category: item.category || 'Mid Exam',
                 question: item.question,
                 options: optTexts,
                 answer: ansIdx,
@@ -1046,26 +1050,121 @@
   }
 
   /* ── FILTERING & 10-QUESTIONS SCROLLABLE PAGINATION ── */
-  function onFilterChange() {
-    const c = document.getElementById('courseSelect')?.value || 'ALL';
+  function updateFilterSummaryText() {
+    const summaryEl = document.getElementById('activeFilterSummaryText');
+    if (!summaryEl) return;
+    const cat = document.getElementById('categorySelect')?.value || 'ALL';
+    const course = document.getElementById('courseSelect')?.value || 'ALL';
+    const univ = document.getElementById('universitySelect')?.value || 'ALL';
+    const yr = document.getElementById('yearSelect')?.value || 'ALL';
+
+    const parts = [];
+    if (course !== 'ALL') parts.push(course);
+    if (cat !== 'ALL') parts.push(cat);
+    if (univ !== 'ALL') parts.push(univ);
+    if (yr !== 'ALL') parts.push(yr);
+
+    if (parts.length === 0) {
+      summaryEl.innerHTML = 'Showing <b>All Questions</b> • Tap <b class="text-[#0052fe]">OK</b> to refresh';
+    } else {
+      summaryEl.innerHTML = `Selected: <span class="font-bold text-[#0052fe]">${escapeHtml(parts.join(' • '))}</span> • Tap <b>OK</b> to display`;
+    }
+  }
+
+  function onFilterChange(isExplicitSubmit = false) {
+    const cat = document.getElementById('categorySelect')?.value || 'ALL';
+    const courseEl = document.getElementById('courseSelect');
+
+    // For COC Exam: COC contains all subjects, so do not restrict by single subject category
+    if (cat === 'COC Exam') {
+      if (courseEl) {
+        courseEl.value = 'ALL';
+        courseEl.disabled = true;
+        courseEl.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+    } else {
+      if (courseEl && courseEl.disabled) {
+        courseEl.disabled = false;
+        courseEl.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+    }
+
+    const c = courseEl?.value || 'ALL';
     const u = document.getElementById('universitySelect')?.value || 'ALL';
     const y = document.getElementById('yearSelect')?.value || 'ALL';
     const s = document.getElementById('examSearchInput')?.value || '';
 
     State.filters.course = c;
+    State.filters.category = cat;
     State.filters.university = u;
     State.filters.year = y;
     State.searchKeyword = s;
 
+    updateFilterSummaryText();
+
+    // Pulse the OK button on mobile screen to signal readiness to display
+    const okBtn = document.getElementById('applyFiltersOkBtn');
+    if (okBtn && !isExplicitSubmit) {
+      okBtn.classList.add('ring-2', 'ring-blue-400');
+    }
+
     applyFilters();
   }
 
+  function applyFiltersWithFeedback(scrollOnMobile = true) {
+    onFilterChange(true);
+    const okBtn = document.getElementById('applyFiltersOkBtn');
+    if (okBtn) {
+      okBtn.classList.remove('ring-2', 'ring-blue-400');
+      const count = State.filteredQuestions.length;
+      const originalHtml = `
+        <div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-white stroke-[3]"></i>
+        </div>
+        <span class="tracking-wider uppercase font-black text-xs">OK</span>
+        <span class="text-[11px] text-blue-100 font-medium hidden xs:inline">• Display Questions</span>
+      `;
+
+      okBtn.innerHTML = `
+        <div class="w-5 h-5 rounded-full bg-white/30 flex items-center justify-center animate-bounce">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-white stroke-[3]"></i>
+        </div>
+        <span class="tracking-wider uppercase font-black text-xs">OK</span>
+        <span class="text-[11px] text-blue-100 font-semibold">• Displaying (${count})</span>
+      `;
+      if (window.lucide) window.lucide.createIcons();
+
+      setTimeout(() => {
+        if (okBtn) {
+          okBtn.innerHTML = originalHtml;
+          if (window.lucide) window.lucide.createIcons();
+        }
+      }, 1600);
+    }
+
+    if (scrollOnMobile) {
+      const targetEl = document.getElementById('boardQuestionsListContainer');
+      if (targetEl) {
+        const yOffset = -75;
+        const y = targetEl.getBoundingClientRect().top + window.pageYOffset + yOffset;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  }
+
   function applyFilters() {
-    const { course, university, year } = State.filters;
+    const { course, category, university, year } = State.filters;
     const search = (State.searchKeyword || '').toLowerCase().trim();
 
     let matched = State.questions.filter((q) => {
-      if (course !== 'ALL' && q.course !== course) return false;
+      // COC Exam contains all subjects together; do not separate by subject category
+      if (category === 'COC Exam') {
+        if (q.category !== 'COC Exam') return false;
+      } else {
+        if (course !== 'ALL' && q.course !== course) return false;
+        if (category && category !== 'ALL' && q.category !== category) return false;
+      }
+
       if (university !== 'ALL' && q.university !== university) return false;
       if (year !== 'ALL' && !q.year.includes(year)) return false;
 
@@ -1168,6 +1267,10 @@
               <span class="exam-tag-pill">
                 <i data-lucide="book-open" class="w-3.5 h-3.5 text-blue-600"></i>
                 <span>${escapeHtml((q.course || 'GENERAL PSYCHOLOGY').toUpperCase())}</span>
+              </span>
+              <span class="exam-tag-pill">
+                <i data-lucide="award" class="w-3.5 h-3.5 text-purple-600"></i>
+                <span>${escapeHtml((q.category || 'MID EXAM').toUpperCase())}</span>
               </span>
               <span class="exam-tag-pill">
                 <i data-lucide="building-2" class="w-3.5 h-3.5 text-indigo-600"></i>
@@ -1281,12 +1384,17 @@
   }
 
   function updateCounterBadges() {
-    const { course, university, year } = State.filters;
+    const { course, category, university, year } = State.filters;
     const search = (State.searchKeyword || '').toLowerCase().trim();
 
     // Base questions in current exam scope
     const baseQuestions = State.questions.filter((q) => {
-      if (course !== 'ALL' && q.course !== course) return false;
+      if (category === 'COC Exam') {
+        if (q.category !== 'COC Exam') return false;
+      } else {
+        if (course !== 'ALL' && q.course !== course) return false;
+        if (category && category !== 'ALL' && q.category !== category) return false;
+      }
       if (university !== 'ALL' && q.university !== university) return false;
       if (year !== 'ALL' && !q.year.includes(year)) return false;
       if (search) {
@@ -1582,10 +1690,21 @@
     document.getElementById('questionModal')?.classList.add('hidden');
   }
 
+  function onNewQCategoryChange() {
+    const category = document.getElementById('newQCategory')?.value || 'Mid Exam';
+    const courseEl = document.getElementById('newQCourse');
+    if (courseEl) {
+      if (category === 'COC Exam') {
+        courseEl.title = 'COC exams can include questions from any subject.';
+      }
+    }
+  }
+
   function saveNewQuestion(e) {
     e.preventDefault();
     if (!State.isAdmin) return;
 
+    const category = document.getElementById('newQCategory')?.value || 'Mid Exam';
     const course = document.getElementById('newQCourse')?.value;
     const university = document.getElementById('newQUniv')?.value;
     const year = document.getElementById('newQYear')?.value;
@@ -1604,6 +1723,7 @@
 
     const newQuestion = {
       id: 'custom_q_' + Date.now(),
+      category: category,
       course: course,
       university: university,
       year: year,
@@ -2075,6 +2195,7 @@
   window.NanovaApp = {
     switchTab,
     onFilterChange,
+    applyFiltersWithFeedback,
     handleQuestionAnswer,
     boardNextPage,
     boardPrevPage,
@@ -2099,6 +2220,7 @@
     deleteUniversity,
     openAddQuestionModal,
     closeAddQuestionModal,
+    onNewQCategoryChange,
     saveNewQuestion,
     switchAdminSubTab,
     renderAdminDashboard,

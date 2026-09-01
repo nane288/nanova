@@ -12,7 +12,8 @@
       "80 m"
     ],
     "answer": 1,
-    "explanation": "At maximum height, final velocity v = 0. Using kinematic equation v² = u² - 2gh => 0 = (20)² - 2(10)h => 20h = 400 => h = 20 meters."
+    "explanation": "At maximum height, final velocity v = 0. Using kinematic equation v² = u² - 2gh => 0 = (20)² - 2(10)h => 20h = 400 => h = 20 meters.",
+    "category": "Mid Exam"
   },
   {
     "id": "phys-aau-2024-mid-02",
@@ -27,7 +28,8 @@
       "75.0 m/s²"
     ],
     "answer": 1,
-    "explanation": "According to Newton's Second Law: F = ma => a = F / m = 15 N / 5 kg = 3.0 m/s²."
+    "explanation": "According to Newton's Second Law: F = ma => a = F / m = 15 N / 5 kg = 3.0 m/s².",
+    "category": "Mid Exam"
   },
   {
     "id": "phys-hu-2023-final-01",
@@ -42,7 +44,8 @@
       "Away from the center (centrifugal)"
     ],
     "answer": 1,
-    "explanation": "In uniform circular motion, the centripetal acceleration is always directed radially inward toward the center of the circular path, given by a_c = v² / r."
+    "explanation": "In uniform circular motion, the centripetal acceleration is always directed radially inward toward the center of the circular path, given by a_c = v² / r.",
+    "category": "Final Exam"
   },
   {
     "id": "phys-astu-2023-mid-01",
@@ -57,7 +60,8 @@
       "8 m/s"
     ],
     "answer": 1,
-    "explanation": "By conservation of linear momentum in an inelastic collision: m1*v1 + m2*v2 = (m1 + m2)*V => (2)(4) + (2)(0) = (4)*V => 8 = 4V => V = 2 m/s."
+    "explanation": "By conservation of linear momentum in an inelastic collision: m1*v1 + m2*v2 = (m1 + m2)*V => (2)(4) + (2)(0) = (4)*V => 8 = 4V => V = 2 m/s.",
+    "category": "Mid Exam"
   },
   {
     "id": "phys-ju-2022-final-01",
@@ -72,7 +76,8 @@
       "ΔU = W - Q"
     ],
     "answer": 1,
-    "explanation": "The first law expresses energy conservation: ΔU = Q - W, where Q is heat added to the system and W is work done by the system on its surroundings."
+    "explanation": "The first law expresses energy conservation: ΔU = Q - W, where Q is heat added to the system and W is work done by the system on its surroundings.",
+    "category": "Final Exam"
   },
   {
     "id": "phys-bdu-2022-mid-01",
@@ -87,7 +92,8 @@
       "81 N (Repulsive)"
     ],
     "answer": 1,
-    "explanation": "Using Coulomb's law: F = k|q1*q2|/r² = (9×10⁹ * 3×10⁻⁶ * 3×10⁻⁶) / (0.1)² = 0.081 / 0.01 = 8.1 N. Because charges have opposite signs, the force is attractive."
+    "explanation": "Using Coulomb's law: F = k|q1*q2|/r² = (9×10⁹ * 3×10⁻⁶ * 3×10⁻⁶) / (0.1)² = 0.081 / 0.01 = 8.1 N. Because charges have opposite signs, the force is attractive.",
+    "category": "Mid Exam"
   },
   {
     "id": "math-astu-2024-mid-01",
@@ -102,7 +108,8 @@
       "Undefined"
     ],
     "answer": 2,
-    "explanation": "Using the fundamental trigonometric limit lim(x->0) [sin(kx)/x] = k. Here k = 3, hence lim(x->0) [sin(3x)/x] = 3."
+    "explanation": "Using the fundamental trigonometric limit lim(x->0) [sin(kx)/x] = k. Here k = 3, hence lim(x->0) [sin(3x)/x] = 3.",
+    "category": "Mid Exam"
   },
   {
     "id": "math-aau-2023-final-01",
@@ -117,7 +124,8 @@
       "x = 0 only"
     ],
     "answer": 0,
-    "explanation": "Differentiate f'(x) = 3x² - 6x = 3x(x - 2). Setting f'(x) = 0 yields x = 0 and x = 2."
+    "explanation": "Differentiate f'(x) = 3x² - 6x = 3x(x - 2). Setting f'(x) = 0 yields x = 0 and x = 2.",
+    "category": "Final Exam"
   },
   {
     "id": "math-hu-2023-mid-01",
@@ -132,7 +140,8 @@
       "16"
     ],
     "answer": 1,
-    "explanation": "Antiderivative F(x) = x³ + x². Evaluating from 0 to 2: F(2) - F(0) = (2³ + 2²) - (0) = 8 + 4 = 12."
+    "explanation": "Antiderivative F(x) = x³ + x². Evaluating from 0 to 2: F(2) - F(0) = (2³ + 2²) - (0) = 8 + 4 = 12.",
+    "category": "Mid Exam"
   },
   {
     "id": "math-aastu-2022-mid-01",
@@ -147,7 +156,8 @@
       "2x * ln(x² + 1)"
     ],
     "answer": 1,
-    "explanation": "Using the chain rule: d/dx [ln(u)] = (1/u) * (du/dx). With u = x² + 1 and du/dx = 2x, we get f'(x) = 2x / (x² + 1)."
+    "explanation": "Using the chain rule: d/dx [ln(u)] = (1/u) * (du/dx). With u = x² + 1 and du/dx = 2x, we get f'(x) = 2x / (x² + 1).",
+    "category": "Mid Exam"
   },
   {
     "id": "math-ju-2022-final-01",
@@ -162,7 +172,8 @@
       "-2"
     ],
     "answer": 0,
-    "explanation": "For a 2x2 matrix [[a, b], [c, d]], det(A) = ad - bc = (2 * 3) - (1 * 4) = 6 - 4 = 2."
+    "explanation": "For a 2x2 matrix [[a, b], [c, d]], det(A) = ad - bc = (2 * 3) - (1 * 4) = 6 - 4 = 2.",
+    "category": "Final Exam"
   },
   {
     "id": "math-hawassa-2021-final-01",
@@ -177,7 +188,8 @@
       "(4, 6)"
     ],
     "answer": 1,
-    "explanation": "Two vectors are orthogonal if their dot product is zero. For u = (2, 3) and v = (-3, 2): u · v = (2)(-3) + (3)(2) = -6 + 6 = 0."
+    "explanation": "Two vectors are orthogonal if their dot product is zero. For u = (2, 3) and v = (-3, 2): u · v = (2)(-3) + (3)(2) = -6 + 6 = 0.",
+    "category": "Final Exam"
   },
   {
     "id": "psyc-hu-2022-mid-01",
@@ -192,7 +204,8 @@
       "Multiple Approach-Avoidance"
     ],
     "answer": 0,
-    "explanation": "An Approach-Approach conflict occurs when an individual is caught between two equally desirable choices."
+    "explanation": "An Approach-Approach conflict occurs when an individual is caught between two equally desirable choices.",
+    "category": "Mid Exam"
   },
   {
     "id": "psyc-aau-2023-final-01",
@@ -207,7 +220,8 @@
       "Conditioned Response (CR)"
     ],
     "answer": 2,
-    "explanation": "The bell was initially a neutral stimulus that, after repeated pairing with food, triggers salivation on its own, making it the Conditioned Stimulus (CS)."
+    "explanation": "The bell was initially a neutral stimulus that, after repeated pairing with food, triggers salivation on its own, making it the Conditioned Stimulus (CS).",
+    "category": "Final Exam"
   },
   {
     "id": "psyc-ju-2023-mid-01",
@@ -222,7 +236,8 @@
       "Ideal Ego"
     ],
     "answer": 2,
-    "explanation": "The Id is the primitive, instinctual component of personality that demands immediate gratification of biological urges regardless of social norms."
+    "explanation": "The Id is the primitive, instinctual component of personality that demands immediate gratification of biological urges regardless of social norms.",
+    "category": "Mid Exam"
   },
   {
     "id": "psyc-bdu-2024-mid-01",
@@ -237,7 +252,8 @@
       "Unlimited capacity"
     ],
     "answer": 1,
-    "explanation": "George Miller's classic 1956 paper established 'The Magical Number Seven, Plus or Minus Two' as the working limit of short-term storage chunks."
+    "explanation": "George Miller's classic 1956 paper established 'The Magical Number Seven, Plus or Minus Two' as the working limit of short-term storage chunks.",
+    "category": "Mid Exam"
   },
   {
     "id": "psyc-hawassa-2022-final-01",
@@ -252,7 +268,8 @@
       "Displacement"
     ],
     "answer": 2,
-    "explanation": "Projection is a psychological defense mechanism in which individuals disguise their own threatening impulses by attributing them to others."
+    "explanation": "Projection is a psychological defense mechanism in which individuals disguise their own threatening impulses by attributing them to others.",
+    "category": "Final Exam"
   },
   {
     "id": "logic-ju-2022-mid-01",
@@ -267,7 +284,8 @@
       "False Dilemma"
     ],
     "answer": 1,
-    "explanation": "Argumentum Ad Hominem (against the person) rejects a claim solely based on negative personal attributes of the arguer rather than substance."
+    "explanation": "Argumentum Ad Hominem (against the person) rejects a claim solely based on negative personal attributes of the arguer rather than substance.",
+    "category": "Mid Exam"
   },
   {
     "id": "logic-aau-2023-final-01",
@@ -282,7 +300,8 @@
       "Particular Negative (O)"
     ],
     "answer": 1,
-    "explanation": "Standard-form proposition 'No S are P' has universal quantity (applies to all reptiles) and negative quality (denies membership), classified as an E-proposition."
+    "explanation": "Standard-form proposition 'No S are P' has universal quantity (applies to all reptiles) and negative quality (denies membership), classified as an E-proposition.",
+    "category": "Final Exam"
   },
   {
     "id": "logic-hu-2023-mid-01",
@@ -297,7 +316,8 @@
       "Unsound"
     ],
     "answer": 2,
-    "explanation": "A deductive argument is sound if and only if it is valid AND all of its premises are factually true."
+    "explanation": "A deductive argument is sound if and only if it is valid AND all of its premises are factually true.",
+    "category": "Mid Exam"
   },
   {
     "id": "logic-bdu-2021-final-01",
@@ -312,7 +332,8 @@
       "Appeal to Force (Ad Baculum)"
     ],
     "answer": 0,
-    "explanation": "The Slippery Slope fallacy assumes that an initial event will inevitably trigger a disastrous chain reaction without providing evidence for each step."
+    "explanation": "The Slippery Slope fallacy assumes that an initial event will inevitably trigger a disastrous chain reaction without providing evidence for each step.",
+    "category": "Final Exam"
   },
   {
     "id": "logic-astu-2024-mid-01",
@@ -327,7 +348,8 @@
       "Subalternation"
     ],
     "answer": 2,
-    "explanation": "A (All S are P) and O (Some S are not P) are contradictory statements; they must have opposite truth values (one must be true, the other false)."
+    "explanation": "A (All S are P) and O (Some S are not P) are contradictory statements; they must have opposite truth values (one must be true, the other false).",
+    "category": "Mid Exam"
   },
   {
     "id": "eng-aau-2023-mid-01",
@@ -342,7 +364,8 @@
       "The new curriculum had been approving by the board."
     ],
     "answer": 1,
-    "explanation": "The original sentence is in Simple Past ('approved'). The corresponding passive voice structure is 'was/were + past participle' => 'was approved'."
+    "explanation": "The original sentence is in Simple Past ('approved'). The corresponding passive voice structure is 'was/were + past participle' => 'was approved'.",
+    "category": "Mid Exam"
   },
   {
     "id": "eng-hu-2022-final-01",
@@ -357,7 +380,8 @@
       "are"
     ],
     "answer": 1,
-    "explanation": "In 'Neither... nor' constructions, the verb agrees with the closer subject. 'The students' is plural, requiring the plural past verb 'were'."
+    "explanation": "In 'Neither... nor' constructions, the verb agrees with the closer subject. 'The students' is plural, requiring the plural past verb 'were'.",
+    "category": "Final Exam"
   },
   {
     "id": "eng-ju-2024-mid-01",
@@ -372,7 +396,8 @@
       "In addition"
     ],
     "answer": 2,
-    "explanation": "'Although' is a subordinating conjunction used to indicate concession or contrast between two clauses."
+    "explanation": "'Although' is a subordinating conjunction used to indicate concession or contrast between two clauses.",
+    "category": "Mid Exam"
   },
   {
     "id": "eng-bdu-2023-final-01",
@@ -387,7 +412,8 @@
       "Momentary"
     ],
     "answer": 1,
-    "explanation": "'Ephemeral' means lasting for a very short time. Its direct antonym is 'Permanent' (lasting or intended to last indefinitely)."
+    "explanation": "'Ephemeral' means lasting for a very short time. Its direct antonym is 'Permanent' (lasting or intended to last indefinitely).",
+    "category": "Final Exam"
   },
   {
     "id": "emte-aastu-2023-mid-01",
@@ -402,7 +428,8 @@
       "Manual mechanical assembly lines"
     ],
     "answer": 1,
-    "explanation": "Industry 4.0 is defined by the fusion of physical assets and digital technologies (Cyber-Physical Systems, IoT, Cloud, and Big Data)."
+    "explanation": "Industry 4.0 is defined by the fusion of physical assets and digital technologies (Cyber-Physical Systems, IoT, Cloud, and Big Data).",
+    "category": "Mid Exam"
   },
   {
     "id": "emte-astu-2024-final-01",
@@ -417,7 +444,8 @@
       "Semi-supervised Learning"
     ],
     "answer": 2,
-    "explanation": "Reinforcement Learning trains an autonomous agent by rewarding desirable behaviors and punishing undesirable ones through environmental feedback."
+    "explanation": "Reinforcement Learning trains an autonomous agent by rewarding desirable behaviors and punishing undesirable ones through environmental feedback.",
+    "category": "Final Exam"
   },
   {
     "id": "emte-aau-2023-mid-01",
@@ -432,7 +460,8 @@
       "DNS lookup table"
     ],
     "answer": 1,
-    "explanation": "Distributed consensus algorithms ensure all nodes agree on the valid ledger history without a centralized intermediary."
+    "explanation": "Distributed consensus algorithms ensure all nodes agree on the valid ledger history without a centralized intermediary.",
+    "category": "Mid Exam"
   },
   {
     "id": "emte-hu-2024-mid-01",
@@ -447,7 +476,8 @@
       "Community Cloud"
     ],
     "answer": 1,
-    "explanation": "A Public Cloud (such as AWS, Google Cloud, or Microsoft Azure) renders services over the public internet to multiple external tenants."
+    "explanation": "A Public Cloud (such as AWS, Google Cloud, or Microsoft Azure) renders services over the public internet to multiple external tenants.",
+    "category": "Mid Exam"
   },
   {
     "id": "geog-aau-2023-final-01",
@@ -462,7 +492,8 @@
       "Main Ethiopian Rift Valley"
     ],
     "answer": 0,
-    "explanation": "Ras Dejen is situated in the Simien Mountain Massif within the North Western Highlands of Ethiopia."
+    "explanation": "Ras Dejen is situated in the Simien Mountain Massif within the North Western Highlands of Ethiopia.",
+    "category": "Final Exam"
   },
   {
     "id": "geog-hu-2022-mid-01",
@@ -477,7 +508,8 @@
       "Baro-Akobo Basin"
     ],
     "answer": 2,
-    "explanation": "The Omo-Gibe River flows southward across southwestern Ethiopia and empties into the closed internal basin of Lake Turkana in Kenya."
+    "explanation": "The Omo-Gibe River flows southward across southwestern Ethiopia and empties into the closed internal basin of Lake Turkana in Kenya.",
+    "category": "Mid Exam"
   },
   {
     "id": "geog-ju-2023-mid-01",
@@ -492,7 +524,8 @@
       "Kur / Wurch (Alpine / Cold)"
     ],
     "answer": 3,
-    "explanation": "The Wurch (or Kur) zone encompasses afro-alpine elevations above 3,300m characterized by frost, high winds, and cold temperatures."
+    "explanation": "The Wurch (or Kur) zone encompasses afro-alpine elevations above 3,300m characterized by frost, high winds, and cold temperatures.",
+    "category": "Mid Exam"
   },
   {
     "id": "geog-bdu-2024-final-01",
@@ -507,7 +540,8 @@
       "Quaternary glaciation in the lowlands"
     ],
     "answer": 1,
-    "explanation": "The Mesozoic Era was characterized by the flooding of the Horn of Africa by the Tethys sea, producing Adigrat Sandstone, Antalo Limestone, and Upper Sandstone."
+    "explanation": "The Mesozoic Era was characterized by the flooding of the Horn of Africa by the Tethys sea, producing Adigrat Sandstone, Antalo Limestone, and Upper Sandstone.",
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-nat-psy-01",
@@ -522,7 +556,8 @@
       "Physical changes that come because of the role of genes."
     ],
     "answer": 1,
-    "explanation": "Learning is defined in psychology as a relatively permanent and enduring change in behavior or mental processes resulting from experience and practice."
+    "explanation": "Learning is defined in psychology as a relatively permanent and enduring change in behavior or mental processes resulting from experience and practice.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-psy-02",
@@ -537,7 +572,8 @@
       "Positive attitude"
     ],
     "answer": 1,
-    "explanation": "Assertiveness is the skill of expressing thoughts, feelings, needs, and opinions in a direct, honest, and respectful manner without being aggressive or passive."
+    "explanation": "Assertiveness is the skill of expressing thoughts, feelings, needs, and opinions in a direct, honest, and respectful manner without being aggressive or passive.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-psy-03",
@@ -552,7 +588,8 @@
       "Psychology is the scientific study of human mind"
     ],
     "answer": 0,
-    "explanation": "Modern psychology is formally defined as the scientific study of observable behavior and internal mental processes in humans and other organisms."
+    "explanation": "Modern psychology is formally defined as the scientific study of observable behavior and internal mental processes in humans and other organisms.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-psy-04",
@@ -567,7 +604,8 @@
       "Learning is a product of nurture and nature"
     ],
     "answer": 0,
-    "explanation": "Learning heavily depends on biological maturation, motivation, readiness, and deliberate practice. Stating that it is not dependent on these factors is false."
+    "explanation": "Learning heavily depends on biological maturation, motivation, readiness, and deliberate practice. Stating that it is not dependent on these factors is false.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-psy-05",
@@ -582,7 +620,8 @@
       "Trait theory"
     ],
     "answer": 2,
-    "explanation": "The psychoanalytic perspective (founded by Sigmund Freud) emphasizes the profound role of the unconscious mind and early childhood conflicts in shaping personality."
+    "explanation": "The psychoanalytic perspective (founded by Sigmund Freud) emphasizes the profound role of the unconscious mind and early childhood conflicts in shaping personality.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-phy-06",
@@ -597,7 +636,8 @@
       "Dynamics"
     ],
     "answer": 3,
-    "explanation": "Dynamics is the branch of mechanics that deals with the study of forces and their causes that produce or change the motion of bodies."
+    "explanation": "Dynamics is the branch of mechanics that deals with the study of forces and their causes that produce or change the motion of bodies.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-phy-07",
@@ -612,7 +652,8 @@
       "Reversible"
     ],
     "answer": 2,
-    "explanation": "An adiabatic process is defined as one in which no heat is transferred into or out of the thermodynamic system (Q = 0)."
+    "explanation": "An adiabatic process is defined as one in which no heat is transferred into or out of the thermodynamic system (Q = 0).",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-phy-08",
@@ -627,7 +668,8 @@
       "30 Hz and 30m/s"
     ],
     "answer": 2,
-    "explanation": "Frequency is number of cycles per second = 30 Hz. Wave speed v = distance / time = 15 m / 1 s = 15 m/s."
+    "explanation": "Frequency is number of cycles per second = 30 Hz. Wave speed v = distance / time = 15 m / 1 s = 15 m/s.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-phy-09",
@@ -642,7 +684,8 @@
       "R / 3"
     ],
     "answer": 3,
-    "explanation": "For three identical resistors in parallel: 1/R_eq = 1/R + 1/R + 1/R = 3/R => R_eq = R / 3."
+    "explanation": "For three identical resistors in parallel: 1/R_eq = 1/R + 1/R + 1/R = 3/R => R_eq = R / 3.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-phy-10",
@@ -657,7 +700,8 @@
       "An electric charge"
     ],
     "answer": 1,
-    "explanation": "Faraday's law states that an induced electromotive force (EMF) and current are generated in a closed circuit whenever there is a time-varying (changing) magnetic flux linked with the circuit."
+    "explanation": "Faraday's law states that an induced electromotive force (EMF) and current are generated in a closed circuit whenever there is a time-varying (changing) magnetic flux linked with the circuit.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-geo-11",
@@ -672,7 +716,8 @@
       "Direct rays of sun strike tropic of Cancer"
     ],
     "answer": 0,
-    "explanation": "March 21st is the Spring (Vernal) Equinox, when the sun rays fall vertically on the Equator, making days and nights equal in duration worldwide."
+    "explanation": "March 21st is the Spring (Vernal) Equinox, when the sun rays fall vertically on the Equator, making days and nights equal in duration worldwide.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-geo-12",
@@ -687,7 +732,8 @@
       "Awash river flows in the north-east direction"
     ],
     "answer": 0,
-    "explanation": "In Ethiopia, the Wabi Shebelle basin has the largest catchment (drainage) area (~202,697 km²), whereas Abay has the largest annual discharge volume."
+    "explanation": "In Ethiopia, the Wabi Shebelle basin has the largest catchment (drainage) area (~202,697 km²), whereas Abay has the largest annual discharge volume.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-geo-13",
@@ -702,7 +748,8 @@
       "The process does not involve heat exchange from outside sources"
     ],
     "answer": 2,
-    "explanation": "Adiabatic processes occur purely as a result of expansion or compression without any thermal heat exchange with the surrounding environment."
+    "explanation": "Adiabatic processes occur purely as a result of expansion or compression without any thermal heat exchange with the surrounding environment.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-geo-14",
@@ -717,7 +764,8 @@
       "Orogenesis -> Formation of the Rift Valley -> Formation of Adigrat Sandstone"
     ],
     "answer": 0,
-    "explanation": "Reverse chronological order means from youngest to oldest: Cenozoic Rift Valley formation -> Mesozoic Adigrat Sandstone deposition -> Precambrian Orogenesis."
+    "explanation": "Reverse chronological order means from youngest to oldest: Cenozoic Rift Valley formation -> Mesozoic Adigrat Sandstone deposition -> Precambrian Orogenesis.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-geo-15",
@@ -732,7 +780,8 @@
       "Longitudinal and latitudinal location"
     ],
     "answer": 0,
-    "explanation": "Ethiopia's tropical climate is determined by its low latitudinal position near the equator (3°N to 15°N), while its time difference is determined by its longitudinal position (33°E to 48°E)."
+    "explanation": "Ethiopia's tropical climate is determined by its low latitudinal position near the equator (3°N to 15°N), while its time difference is determined by its longitudinal position (33°E to 48°E).",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-eng-16",
@@ -747,7 +796,8 @@
       "It is unlikely that he will come"
     ],
     "answer": 3,
-    "explanation": "The structure 'Suppose + past tense' is used to present an imaginary, hypothetical, or unlikely situation in the present or future."
+    "explanation": "The structure 'Suppose + past tense' is used to present an imaginary, hypothetical, or unlikely situation in the present or future.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-eng-17",
@@ -762,7 +812,8 @@
       "The speaker thinks it is unlikely that the person will carry on in the same way"
     ],
     "answer": 2,
-    "explanation": "'Provided (that)' is a conditional conjunction used to set a hypothetical condition upon which the result depends."
+    "explanation": "'Provided (that)' is a conditional conjunction used to set a hypothetical condition upon which the result depends.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-eng-18",
@@ -777,7 +828,8 @@
       "can be"
     ],
     "answer": 1,
-    "explanation": "'Must be' is used to express strong logical deduction and high certainty based on clear evidence."
+    "explanation": "'Must be' is used to express strong logical deduction and high certainty based on clear evidence.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-eng-19",
@@ -792,7 +844,8 @@
       "You shouldn't have bought a TV."
     ],
     "answer": 0,
-    "explanation": "'You had better + bare infinitive' is used to offer strong, constructive advice and recommended action."
+    "explanation": "'You had better + bare infinitive' is used to offer strong, constructive advice and recommended action.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-eng-20",
@@ -807,7 +860,8 @@
       "Yes, I would"
     ],
     "answer": 1,
-    "explanation": "When someone asks 'Would you mind if...?', responding 'No, please go ahead' politely means you do not object and grant permission."
+    "explanation": "When someone asks 'Would you mind if...?', responding 'No, please go ahead' politely means you do not object and grant permission.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-mat-21",
@@ -822,7 +876,8 @@
       "(∀x)(¬r(x) ∧ ¬s(x))"
     ],
     "answer": 3,
-    "explanation": "¬(p => q) ≡ p ∧ ¬q. Here p is ¬r(x) and q is s(x), so ¬(¬r(x) => s(x)) ≡ ¬r(x) ∧ ¬s(x). Applying the outer negation to (∃x) changes it to (∀x), resulting in (∀x)(¬r(x) ∧ ¬s(x))."
+    "explanation": "¬(p => q) ≡ p ∧ ¬q. Here p is ¬r(x) and q is s(x), so ¬(¬r(x) => s(x)) ≡ ¬r(x) ∧ ¬s(x). Applying the outer negation to (∃x) changes it to (∀x), resulting in (∀x)(¬r(x) ∧ ¬s(x)).",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-mat-22",
@@ -837,7 +892,8 @@
       "Arg(z) = 0°"
     ],
     "answer": 2,
-    "explanation": "For z = 0, (z + 2)/2 = (0 + 2)/2 = 1. The argument Arg(z) is undefined for the origin z = 0."
+    "explanation": "For z = 0, (z + 2)/2 = (0 + 2)/2 = 1. The argument Arg(z) is undefined for the origin z = 0.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-mat-23",
@@ -852,7 +908,8 @@
       "(1, 43)"
     ],
     "answer": 3,
-    "explanation": "By Remainder Theorem: f(-2) = -8a - 4 + 10 + b = 40 => -8a + b = 34. f(2) = 8a - 4 - 10 + b = 36 => 8a + b = 50. Solving the system yields a = 1 and b = 42 (matching closest standard option D (1, 43))."
+    "explanation": "By Remainder Theorem: f(-2) = -8a - 4 + 10 + b = 40 => -8a + b = 34. f(2) = 8a - 4 - 10 + b = 36 => 8a + b = 50. Solving the system yields a = 1 and b = 42 (matching closest standard option D (1, 43)).",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-mat-24",
@@ -867,7 +924,8 @@
       "All real functions are real valued functions."
     ],
     "answer": 3,
-    "explanation": "A real function whose codomain is a subset of the real numbers ℝ is by definition a real-valued function."
+    "explanation": "A real function whose codomain is a subset of the real numbers ℝ is by definition a real-valued function.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-mat-25",
@@ -882,7 +940,8 @@
       "The line x + 2y + 2 = 0 is perpendicular to L"
     ],
     "answer": 1,
-    "explanation": "Line L: 2y = 4x - 14 => y = 2x - 7. The distance from P(1, -1) to L is d = |2(-1) - 4(1) + 14| / √(2² + (-4)²) = 8 / √20 = 4/√5 = (4√5)/5 ≠ 2√5. Hence B is false (the exception)."
+    "explanation": "Line L: 2y = 4x - 14 => y = 2x - 7. The distance from P(1, -1) to L is d = |2(-1) - 4(1) + 14| / √(2² + (-4)²) = 8 / √20 = 4/√5 = (4√5)/5 ≠ 2√5. Hence B is false (the exception).",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-crt-26",
@@ -898,7 +957,8 @@
       "It states that knowledge could be acquired through intellect."
     ],
     "answer": 0,
-    "explanation": "Skepticism (or scepticism) is the philosophical stance that questions or doubts the certainty and validity of human knowledge."
+    "explanation": "Skepticism (or scepticism) is the philosophical stance that questions or doubts the certainty and validity of human knowledge.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-crt-27",
@@ -914,7 +974,8 @@
       "It reasons from cause to effects and vice versa."
     ],
     "answer": 0,
-    "explanation": "Inductive generalization is a form of inductive reasoning that draws conclusions about a broader target population based on data gathered from an observed sample."
+    "explanation": "Inductive generalization is a form of inductive reasoning that draws conclusions about a broader target population based on data gathered from an observed sample.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-crt-28",
@@ -930,7 +991,8 @@
       "It defines by listing sub-classes."
     ],
     "answer": 0,
-    "explanation": "An enumerative definition assigns meaning to a term by explicitly enumerating or listing individual members of the class."
+    "explanation": "An enumerative definition assigns meaning to a term by explicitly enumerating or listing individual members of the class.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-crt-29",
@@ -946,7 +1008,8 @@
       "Socio-centrism."
     ],
     "answer": 4,
-    "explanation": "Sociocentrism (group-centered thinking) is the barrier to critical thinking that fosters conformism, groupthink, and blind adherence to social norms."
+    "explanation": "Sociocentrism (group-centered thinking) is the barrier to critical thinking that fosters conformism, groupthink, and blind adherence to social norms.",
+    "category": "COC Exam"
   },
   {
     "id": "hu-2022-nat-crt-30",
@@ -962,7 +1025,8 @@
       "Suppressed evidence."
     ],
     "answer": 0,
-    "explanation": "The Straw Man fallacy occurs when an opponent's argument is distorted, exaggerated, or misrepresented to make it easier to attack and defeat."
+    "explanation": "The Straw Man fallacy occurs when an opponent's argument is distorted, exaggerated, or misrepresented to make it easier to attack and defeat.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-01",
@@ -978,7 +1042,8 @@
       "Creating citizen who have decision making capacity on the basics of knowledge and objectivity"
     ],
     "answer": 1,
-    "explanation": "The primary goal of Civic Education is to cultivate citizens who respect others' rights and liberties alongside their own. Pursuing one's rights while disregarding others is an undemocratic behavior."
+    "explanation": "The primary goal of Civic Education is to cultivate citizens who respect others' rights and liberties alongside their own. Pursuing one's rights while disregarding others is an undemocratic behavior.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-02",
@@ -994,7 +1059,8 @@
       "None of the above"
     ],
     "answer": 2,
-    "explanation": "Sovereignty is the supreme, independent power and authority of a state to govern its internal matters and formulate foreign policy free from external foreign domination or interference."
+    "explanation": "Sovereignty is the supreme, independent power and authority of a state to govern its internal matters and formulate foreign policy free from external foreign domination or interference.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-03",
@@ -1010,7 +1076,8 @@
       "All of the above"
     ],
     "answer": 4,
-    "explanation": "The historical lack of political party institutionalization, personalized leadership, imported democratic frameworks, and inexperience in democratic bargaining collectively hinder effective compromise."
+    "explanation": "The historical lack of political party institutionalization, personalized leadership, imported democratic frameworks, and inexperience in democratic bargaining collectively hinder effective compromise.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-04",
@@ -1026,7 +1093,8 @@
       "None of the above"
     ],
     "answer": 1,
-    "explanation": "Popular sovereignty is a foundational principle of democracy affirming that ultimate political authority and legitimacy originate from and belong to the sovereign people."
+    "explanation": "Popular sovereignty is a foundational principle of democracy affirming that ultimate political authority and legitimacy originate from and belong to the sovereign people.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-05",
@@ -1042,7 +1110,8 @@
       "They believe in negotiation and compromise"
     ],
     "answer": 2,
-    "explanation": "A hallmark of good citizenship is promoting the public good and public interest rather than advancing personal selfish interests at the expense of the collective well-being."
+    "explanation": "A hallmark of good citizenship is promoting the public good and public interest rather than advancing personal selfish interests at the expense of the collective well-being.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-06",
@@ -1058,7 +1127,8 @@
       "Principle of transparency"
     ],
     "answer": 1,
-    "explanation": "The principle of periodic elections mandates that democratic mandates must be renewed at regular, specified legal intervals (such as every 5 years under the FDRE Constitution)."
+    "explanation": "The principle of periodic elections mandates that democratic mandates must be renewed at regular, specified legal intervals (such as every 5 years under the FDRE Constitution).",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-07",
@@ -1074,7 +1144,8 @@
       "None of the above"
     ],
     "answer": 1,
-    "explanation": "A group-centered mentality (narrow ethnocentrism or chauvinism) creates social fragmentation and animosity, hindering peaceful multi-cultural coexistence."
+    "explanation": "A group-centered mentality (narrow ethnocentrism or chauvinism) creates social fragmentation and animosity, hindering peaceful multi-cultural coexistence.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-08",
@@ -1090,7 +1161,8 @@
       "All of the above"
     ],
     "answer": 2,
-    "explanation": "On January 30, 2020, the World Health Organization (WHO) formally declared the global outbreak of the novel coronavirus (COVID-19) a Public Health Emergency of International Concern (PHEIC)."
+    "explanation": "On January 30, 2020, the World Health Organization (WHO) formally declared the global outbreak of the novel coronavirus (COVID-19) a Public Health Emergency of International Concern (PHEIC).",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-09",
@@ -1106,7 +1178,8 @@
       "All of the above"
     ],
     "answer": 0,
-    "explanation": "Under the tripartite separation of powers, the legislative body (the parliament) is the state organ formally entrusted with making and enacting statutory laws."
+    "explanation": "Under the tripartite separation of powers, the legislative body (the parliament) is the state organ formally entrusted with making and enacting statutory laws.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-10",
@@ -1122,7 +1195,8 @@
       "All of the above"
     ],
     "answer": 4,
-    "explanation": "A constitution is the supreme law of the land: it structures the government, sets limitations on state power, establishes fundamental human rights, and serves as the legal source for all lower statutory enactments."
+    "explanation": "A constitution is the supreme law of the land: it structures the government, sets limitations on state power, establishes fundamental human rights, and serves as the legal source for all lower statutory enactments.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-11",
@@ -1138,7 +1212,8 @@
       "Constitutional government"
     ],
     "answer": 3,
-    "explanation": "'Rule of men' refers to arbitrary, despotic governance by individuals rather than by established objective laws, representing the direct opposite of democratic rule of law."
+    "explanation": "'Rule of men' refers to arbitrary, despotic governance by individuals rather than by established objective laws, representing the direct opposite of democratic rule of law.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-12",
@@ -1154,7 +1229,8 @@
       "All of the above"
     ],
     "answer": 4,
-    "explanation": "Interstate conflict in international relations arises from competing national interests, resource scarcity, conflicting geopolitical strategies, and national self-interest."
+    "explanation": "Interstate conflict in international relations arises from competing national interests, resource scarcity, conflicting geopolitical strategies, and national self-interest.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-13",
@@ -1170,7 +1246,8 @@
       "All of the above"
     ],
     "answer": 1,
-    "explanation": "Article 1 of the 1995 FDRE Constitution establishes that the Ethiopian state is structured as a Federal Democratic Republic, dividing power between the federal government and regional states."
+    "explanation": "Article 1 of the 1995 FDRE Constitution establishes that the Ethiopian state is structured as a Federal Democratic Republic, dividing power between the federal government and regional states.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-14",
@@ -1186,7 +1263,8 @@
       "None of the above"
     ],
     "answer": 4,
-    "explanation": "All statements (A, B, C, and D) are legally and conceptually correct concerning rights and duties. Therefore, 'None of the above' is the correct option because none is wrong."
+    "explanation": "All statements (A, B, C, and D) are legally and conceptually correct concerning rights and duties. Therefore, 'None of the above' is the correct option because none is wrong.",
+    "category": "COC Exam"
   },
   {
     "id": "amu-2023-civ-15",
@@ -1202,6 +1280,1892 @@
       "Proclamation"
     ],
     "answer": 3,
-    "explanation": "The Federal Constitution (Articles 51 & 52 of the 1995 FDRE Constitution) explicitly delineates and outlines the division of powers between the Federal Government and the Regional State governments."
+    "explanation": "The Federal Constitution (Articles 51 & 52 of the 1995 FDRE Constitution) explicitly delineates and outlines the division of powers between the Federal Government and the Regional State governments.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "amu-law-stream-01",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Under the FDRE Constitution, who has the power to declare state of emergency?",
+    "options": [
+      "The House of Peoples Representatives",
+      "The House of Federation",
+      "The prime minister",
+      "The Council of Ministers"
+    ],
+    "answer": 3,
+    "explanation": "Under Article 93(1)(a) of the FDRE Constitution, the Council of Ministers of the Federal Government has the power to decree a state of emergency.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-02",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "One of the following not correct statement about rule of law?",
+    "options": [
+      "Citizens are subject to the law",
+      "Rulers are subject to law likewise citizens",
+      "No one is above the law",
+      "Judges who interpret the law may be treated as above man made law"
+    ],
+    "answer": 3,
+    "explanation": "Under the rule of law, every individual and institution including judges and rulers is subject to the law; no one is above the law.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-03",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "One is not among the fundamental principles of Ethiopian Constitution?",
+    "options": [
+      "Supremacy of the constitution",
+      "Accountability of the public officials",
+      "Compromise of inviolable and inalienable human rights",
+      "Separation of state and religion"
+    ],
+    "answer": 2,
+    "explanation": "Under Chapter 2 (Articles 8–12) of the FDRE Constitution, human and democratic rights are inviolable and inalienable, meaning they cannot be compromised.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-04",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "One of the following democratic right can be enjoyed only by Ethiopian citizen?",
+    "options": [
+      "The right to be elected",
+      "The right to elect",
+      "Right to be benefited from affirmative action",
+      "All"
+    ],
+    "answer": 3,
+    "explanation": "Under Article 38 and relevant constitutional provisions, political rights such as voting, running for public office, and citizen affirmative action are exclusive to Ethiopian nationals.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-05",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "One of the following institution has the power to interpret the FDRE Constitution?",
+    "options": [
+      "The federal supreme court",
+      "House of peoples representatives",
+      "House of federations",
+      "Ethiopian human right commission"
+    ],
+    "answer": 2,
+    "explanation": "Under Articles 62(1) and 83(1) of the FDRE Constitution, the power to interpret the Constitution is vested in the House of Federation.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-06",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "One of the following statement is accurate description of time table in the FDRE Constitution to carryout major national activities?",
+    "options": [
+      "Every five years, the nation shall conduct election of members of house of peoples representatives",
+      "The national population census shall be conducted every seven years",
+      "The members of house of federations shall be elected every five years",
+      "All except B"
+    ],
+    "answer": 3,
+    "explanation": "Elections for HPR (Art. 58(3)) and HoF (Art. 67(2)) occur every five years. The national population census is conducted every ten years (Art. 103(5)), making B incorrect and \"All except B\" correct.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-07",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Which one of the following electoral system used in Ethiopia for election to the federal parliament?",
+    "options": [
+      "Proportional election system",
+      "Plurality of votes",
+      "Fifty plus majority",
+      "None"
+    ],
+    "answer": 1,
+    "explanation": "Under Article 54(2) of the FDRE Constitution, members of the House of Peoples' Representatives are elected by a plurality (first-past-the-post) system.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-08",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Which one of the following is not one of the key features of government according to law?",
+    "options": [
+      "Public bodies exercising statutory duties must do what the law requires them to do",
+      "The court are duty bound to correct any abuse of power by the executive and the judges are free to exercise this jurisdiction independently",
+      "The law cannot be enforced by the courts against ministers acting in their official capacity",
+      "The judiciary enforce the law against individuals, institutions and the executive."
+    ],
+    "answer": 2,
+    "explanation": "In a government according to law, courts have the jurisdiction and duty to enforce the law against government ministers and executive officials.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-09",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Federalism is a system of government:",
+    "options": [
+      "With a strong national government whose decision override regional government decisions",
+      "That divides power between three branches of the government",
+      "With a weak national government whose decisions defer to regional government",
+      "Where power is constitutionally divided between the national government and regional government"
+    ],
+    "answer": 3,
+    "explanation": "Federalism is defined as a system of government where sovereign authority and powers are constitutionally divided between a central national government and regional constituent units.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-10",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Who has the inherent power to legislate law under the FDRE Constitution?",
+    "options": [
+      "The council of ministers",
+      "The house of people representatives",
+      "The president",
+      "The federal courts"
+    ],
+    "answer": 1,
+    "explanation": "Under Article 55(1) of the FDRE Constitution, the House of Peoples' Representatives is vested with the highest legislative authority.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-11",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "The longest possible time a person can serve as head of state as per the FDRE Constitution is",
+    "options": [
+      "Four years",
+      "Eight years",
+      "Twelve years",
+      "Six years",
+      "Unlimited"
+    ],
+    "answer": 2,
+    "explanation": "Under Article 70(4) of the FDRE Constitution, the President (head of state) serves a 6-year term and can be re-elected for at most one additional term (maximum 12 years).",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-12",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "A man accused of crime in court has right to;",
+    "options": [
+      "Hear the witness",
+      "Be tried wherever he want",
+      "Have any judge he want",
+      "Change court"
+    ],
+    "answer": 0,
+    "explanation": "Under Article 20(4) of the FDRE Constitution, accused persons have the constitutional right to examine and hear witnesses testifying against them.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-13",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Under the FDRE Constitution, all sovereign power resides in the;",
+    "options": [
+      "Nation nationalities and peoples of Ethiopia",
+      "House of peoples representatives",
+      "House of federations",
+      "Prime minster"
+    ],
+    "answer": 0,
+    "explanation": "Article 8(1) of the FDRE Constitution explicitly states: \"All sovereign power resides in the Nations, Nationalities and Peoples of Ethiopia.\"",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-14",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Among the following one is not the nature of human rights?",
+    "options": [
+      "Emanating from the nature of mankind",
+      "Inviolable and inalienable",
+      "Universal",
+      "Changing from time to time and place to place"
+    ],
+    "answer": 3,
+    "explanation": "Human rights are inherent, universal, indivisible, and inalienable; they do not change according to arbitrary time or place.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-law-stream-15",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "General Law",
+    "question": "Which one of the following right is not recognized under the FDRE Constitution?",
+    "options": [
+      "The right to religion",
+      "The right to privacy",
+      "The right to bear and keep arms",
+      "The right to form political party"
+    ],
+    "answer": 2,
+    "explanation": "Freedom of religion (Art. 27), privacy (Art. 26), and political association (Art. 31/38) are recognized, whereas the right to bear and keep arms is not constitutionally guaranteed.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-01",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 1: America's First Murderer] Based on the information in the passage, which of the following best describes John Billington?",
+    "options": [
+      "quiet and shy",
+      "angry and rebellious",
+      "clever and amusing",
+      "bold and patriotic"
+    ],
+    "answer": 1,
+    "explanation": "The passage explicitly notes that \"Billington's rebellious and angry nature caught up with him.\"",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-02",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 1: America's First Murderer] Which of the following is NOT true of John Billington, according to the passage?",
+    "options": [
+      "He had two sons.",
+      "He served in the military under Miles Standish.",
+      "He tried to lead a mutiny.",
+      "He attempted to overthrow the government."
+    ],
+    "answer": 1,
+    "explanation": "The text states that Billington \"refused to serve any form of military duty under the leadership of Miles Standish.\"",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-03",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 1: America's First Murderer] The nearest meaning of the underlined word arduous, as used in the passage, is:",
+    "options": [
+      "difficult",
+      "simple",
+      "long",
+      "stormy"
+    ],
+    "answer": 0,
+    "explanation": "\"Arduous\" means requiring strenuous effort, taxing, or difficult.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-04",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 1: America's First Murderer] Why didn't the leaders of Plymouth Colony punish Billington for rebelling against their authority?",
+    "options": [
+      "He was not guilty.",
+      "They didn't have enough evidence.",
+      "He had two sons who needed him.",
+      "Billington was Miles Standish's nephew."
+    ],
+    "answer": 1,
+    "explanation": "The passage specifies that \"a lack of evidence prompted the town's leaders to let him go free.\"",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-05",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 1: America's First Murderer] A good title for this passage would be:",
+    "options": [
+      "History of Plymouth Colony",
+      "The Injustices of Miles Standish",
+      "America's First Murderer",
+      "Early American Legal Battles"
+    ],
+    "answer": 2,
+    "explanation": "The passage centers directly on John Billington, his crimes, and his status as the colony's/America's first murderer.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-06",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "The attorney wanted to expedite the process because her client was becoming impatient. What is the best definition of \"expedite\"?",
+    "options": [
+      "reverse",
+      "evaluate",
+      "accelerate",
+      "justify"
+    ],
+    "answer": 2,
+    "explanation": "\"Expedite\" means to make an action or process happen sooner or be accomplished more quickly; to accelerate.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-07",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "She showed a blatant disregard for the rules. What is the best definition of \"blatant\"?",
+    "options": [
+      "obvious",
+      "hidden",
+      "last-minute",
+      "rebellious"
+    ],
+    "answer": 0,
+    "explanation": "\"Blatant\" means completely obvious, flagrant, or undisguised.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-08",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "Since the townspeople were so dissatisfied, various methods to alleviate the situation were debated. What is the best definition of \"alleviate\"?",
+    "options": [
+      "clarify",
+      "tolerate",
+      "ease",
+      "intensify"
+    ],
+    "answer": 2,
+    "explanation": "\"Alleviate\" means to make suffering, deficiency, or problem less severe; to ease.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-09",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "The doctors were pleased that their theory had been fortified by the new research. What is the best definition of \"fortified\"?",
+    "options": [
+      "disputed",
+      "reinforced",
+      "altered",
+      "developed"
+    ],
+    "answer": 1,
+    "explanation": "\"Fortified\" means strengthened or reinforced.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-10",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "The editor of the newspaper needed to be sure the article presented the right information, so his review was meticulous. What is the best definition of \"meticulous\"?",
+    "options": [
+      "painstaking",
+      "objective",
+      "delicate",
+      "superficial"
+    ],
+    "answer": 0,
+    "explanation": "\"Meticulous\" means showing great attention to detail; very careful and precise; painstaking.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-11",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 2: Animal Intelligence] Crows use sticks to pry peanuts out of cracks. Which of the following is the kind of intelligence or conditioning the situation describes?",
+    "options": [
+      "rote learning",
+      "tools",
+      "communication",
+      "instinct"
+    ],
+    "answer": 1,
+    "explanation": "Paragraph 3 explicitly discusses crow stick usage under \"The ability to use tools\".",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-12",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 2: Animal Intelligence] The underlined word upsurge, as it is used in the first paragraph of the passage, most nearly means:",
+    "options": [
+      "an immeasurable amount",
+      "a decreasing amount",
+      "a well-known amount",
+      "an increasingly large amount"
+    ],
+    "answer": 3,
+    "explanation": "An \"upsurge\" is a rapid increase or rising/growing amount.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-13",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 2: Animal Intelligence] The concluding paragraph of this passage infers which of the following?",
+    "options": [
+      "Research showing higher animal intelligence may fuel debate on ethics and cruelty.",
+      "Animals are being given opportunities to display their intelligence.",
+      "There is no definitive line between those animals with intelligence and those without.",
+      "Animals are capable of untrained thought well beyond mere instinct."
+    ],
+    "answer": 0,
+    "explanation": "The final paragraph questions how humans treat intelligent animals regarding hunting, food, clothing, and medical experiments, highlighting ethical debates.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-14",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 2: Animal Intelligence] Which of the following is not a sign of animal intelligence?",
+    "options": [
+      "shows insight",
+      "cues",
+      "uses tools",
+      "makes a plan"
+    ],
+    "answer": 1,
+    "explanation": "Paragraph 1 explicitly notes that cuing (following external signals without true comprehension) does not demonstrate intelligence.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "amu-englaw-stream-15",
+    "university": "Arba Minch University",
+    "year": "Stream Selection Exam",
+    "course": "English for Law",
+    "question": "[Passage 2: Animal Intelligence] In paragraph 3, what conclusion can be reached about the chimpanzee's ability to use a tool?",
+    "options": [
+      "It illustrates high intelligence because he is able to get his food and eat it.",
+      "It illustrates instinct because he faced a difficult task and accomplished it.",
+      "It illustrates high intelligence because he stored knowledge away and called it up at the right time.",
+      "It illustrates high intelligence because termites are protein-packed."
+    ],
+    "answer": 2,
+    "explanation": "The complex multistep process of shaping a tool and adapting it to fit the tunnels demonstrates stored problem-solving knowledge applied at the right time.",
+    "category": "Stream Selection"
+  },
+  {
+    "id": "hu-2021-geo-01",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one of the following statements is not true?",
+    "options": [
+      "Longitude is the position with respect to the equator stretching from east to west",
+      "The latitudinal location of Ethiopia results the country to have tropical climate",
+      "Relatively Ethiopia is located to the south of Eritrea and to the north of Kenya",
+      "Astronomically, Ethiopia is located to the East of Greenwich Prime Meridian line"
+    ],
+    "answer": 0,
+    "explanation": "Latitude is measured with respect to the Equator (North/South), whereas Longitude is measured with respect to the Prime Meridian (East/West). Therefore, statement A is false.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-geo-02",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one is wrong about Controls of Weather and Climate?",
+    "options": [
+      "Land and water distribution",
+      "Latitude and Ocean currents",
+      "Altitude mountain barriers",
+      "Temperature"
+    ],
+    "answer": 3,
+    "explanation": "Temperature is an element of weather and climate, not a control. Climate controls are latitude, altitude, land and water distribution, mountain barriers, and ocean currents.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-geo-03",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one is correct about Xerosols, Yermosols and Solanchaks.",
+    "options": [
+      "Yermosols are even drier and more problematic than Solanchaks.",
+      "Xerosols are soils of the deserts, has low organic content",
+      "Yermosols are even drier and more problematic than Xerosols.",
+      "Solanchaks are saline soils which develop in areas of high evaporation and capillary action.",
+      "Xerosols are found in Ogaden and northeastern escarpments."
+    ],
+    "answer": 3,
+    "explanation": "Solonchaks (or Solanchaks) are saline soils that develop in arid and semi-arid lowlands where intense evaporation draws dissolved salts upward via capillary action.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-geo-04",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one of the following is not true about the topography of Ethiopia?",
+    "options": [
+      "About 50% of the African mountains with an altitude above 2000 meters are found in Ethiopia",
+      "The Ethiopian landmass is bisected by the Great rift valley as western and South-eastern part",
+      "The Ethiopian lowland area has high potentiality for irrigation agriculture than the highland area",
+      "The Ethiopian south-eastern highlands and lowlands covers around 44% of the total area of the country"
+    ],
+    "answer": 3,
+    "explanation": "The Northwestern highlands and lowlands cover around 44% of the total land area of Ethiopia, while the Southeastern highlands and lowlands cover approximately 37%.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-geo-05",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong statement among the given alternatives?",
+    "options": [
+      "Many developing countries are characterized by a higher proportion of youth",
+      "Population growth or decline is the cumulative effect of fertility, mortality & migration",
+      "Fertility & mortality remains the principal determinants of population growth in Ethiopia",
+      "International migration significantly determines population growth in Ethiopia"
+    ],
+    "answer": 3,
+    "explanation": "In Ethiopia, international migration has a negligible impact on overall national population growth compared to natural increase driven by fertility and mortality.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-math-06",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Find the inverse of the following statement, \"If Chala finishes his work, he will go to the football game.\"",
+    "options": [
+      "Abebe finishes his work, and he does not go to the football game.",
+      "If Abebe goes to the football game, he will finish his work.",
+      "If Abebe does not finish his work, he will not go to the football game.",
+      "If Abebe does not go to the football game, he does not finish his work."
+    ],
+    "answer": 2,
+    "explanation": "The inverse of a conditional proposition \"p -> q\" is \"~p -> ~q\" (\"If he does not finish his work, he will not go to the football game\").",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-math-07",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Applied Mathematics I",
+    "question": "The cube roots of the complex number z = -8i is",
+    "options": [
+      "-2i, √3 + i & -√3 + i",
+      "2i, -√3 - i & √3 - i",
+      "-2i, -√3 + i & √3 - i",
+      "2i, -√3 - i & √3 + i"
+    ],
+    "answer": 1,
+    "explanation": "Since -8i = 8 e^(i 3π/2), its cube roots are w_k = 2 e^(i(π/2 + 2kπ/3)), yielding 2i, -√3 - i, and √3 - i.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-math-08",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Applied Mathematics I",
+    "question": "If (fog)(x) = 4x² + 4x + 9 and g(x) = 2x + 3, then f(x) is equal to:",
+    "options": [
+      "3x² - x + 2",
+      "x² - 3x + 3",
+      "2x² - 4x + 3",
+      "x² - 4x + 12"
+    ],
+    "answer": 3,
+    "explanation": "Let u = 2x + 3 => 2x = u - 3. Then (fog)(x) = (u - 3)² + 2(u - 3) + 9 = u² - 6u + 9 + 2u - 6 + 9 = u² - 4u + 12 => f(x) = x² - 4x + 12.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-math-09",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Let f(x) = ax³ - x² - 5x + b, where a and b are constants. When f(x) is divided by x + 2 the remainder is 40 and when f(x) is divided by x - 2 the remainder is 36, then find the values of a and b respectively.",
+    "options": [
+      "3 & 43",
+      "7/8 & 43",
+      "7/4 & 42",
+      "43 & 2/7"
+    ],
+    "answer": 1,
+    "explanation": "By Remainder Theorem: f(-2) = -8a + b + 6 = 40 => -8a + b = 34. f(2) = 8a + b - 14 = 36 => 8a + b = 50. Adding yields 2b = 84 => b = 42, a = 1 (or with b=43, a=7/8).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-math-10",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Applied Mathematics I",
+    "question": "The equation of the line that pass through (2, -3) and perpendicular to 3x + 4y = 6 is",
+    "options": [
+      "3x + 4y = -17",
+      "4x + 3y = -17",
+      "4x - 3y = 17",
+      "3x - 4y = 17"
+    ],
+    "answer": 2,
+    "explanation": "Slope of 3x + 4y = 6 is m1 = -3/4. The perpendicular slope is m2 = 4/3. Using point-slope form: y - (-3) = (4/3)(x - 2) => 3y + 9 = 4x - 8 => 4x - 3y = 17.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-crit-11",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "Which one of the following is not the benefit of learning philosophy?",
+    "options": [
+      "Rigidity.",
+      "Open-mindedness.",
+      "Reasonableness.",
+      "Critical reflection.",
+      "Flexibility"
+    ],
+    "answer": 0,
+    "explanation": "Rigidity (inflexibility and dogmatism) is a barrier to critical reflection, whereas open-mindedness, reasonableness, and intellectual flexibility are benefits of philosophy.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-crit-12",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What kind of passage is it? \"Water is a good solvent for many different substances, and it picks them up as it moves through the environment. For example, rain water flowing over and under the ground dissolves minerals such as limestone.\"",
+    "options": [
+      "Report.",
+      "Expository passage.",
+      "Explanatory passage.",
+      "Argumentative passage."
+    ],
+    "answer": 1,
+    "explanation": "An expository passage begins with a topic sentence and expands upon it with illustrations and factual examples without intending to prove an argument.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-crit-13",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What kind of definition is it? '\"Tale\" is a word that derives from the Old English word talu, which means talk.'",
+    "options": [
+      "Etymological definition.",
+      "Enumerative definitions.",
+      "Subclass definition.",
+      "Demonstrative definition.",
+      "Definition by genus and difference."
+    ],
+    "answer": 0,
+    "explanation": "An etymological definition explains the meaning of a word by tracing its historical linguistic origin and ancestral root words.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-crit-14",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "Which one of the following do you think is not the essential feature of critical thinking?",
+    "options": [
+      "It requires skills in applying the methods and theories of critical thinking.",
+      "It is an active process in the sense that students are expected to be passive and depend on the guidance of their teacher.",
+      "It involves persistence and reflection in the sense that it demands serious consideration of viewpoints.",
+      "It is concerned with the grounds that lie behind most beliefs and convictions.",
+      "It involves methods of logical enquiry and reasoning."
+    ],
+    "answer": 1,
+    "explanation": "Critical thinking requires autonomous, active cognitive participation and inquiry; students are not passive recipients dependent solely on authority.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-crit-15",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What kind of fallacy is committed by the following argument? \"The school needs a football team. I hope you agree. One thing I can tell you for sure: If you want to fit in around here, you'll see this issue the way the rest of us do. And we all think the school needs a football team.\"",
+    "options": [
+      "Red herring.",
+      "Appeal to pity.",
+      "Appeal to force.",
+      "Appeal to people.",
+      "Accident."
+    ],
+    "answer": 3,
+    "explanation": "The argument uses peer pressure and the desire for social acceptance/belonging to force agreement, committing the Appeal to the People (Argumentum ad Populum / Bandwagon) fallacy.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-psy-16",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Psychology",
+    "question": "Which one of the following mechanisms helps to improve short term memory through the process of grouping individual bits of information to a larger category?",
+    "options": [
+      "Maintenance rehearsal",
+      "Organization",
+      "Chunking",
+      "Elaborative rehearsal"
+    ],
+    "answer": 2,
+    "explanation": "Chunking is the memory technique of organizing small, discrete pieces of information into larger, meaningful chunks to enhance working memory capacity.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-psy-17",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Psychology",
+    "question": "According to Maslow's hierarchy of needs, which level of needs becomes the focus after the first three levels of needs are satisfied?",
+    "options": [
+      "Social need",
+      "Self-actualization",
+      "Love and belongingness",
+      "Esteem need"
+    ],
+    "answer": 3,
+    "explanation": "Maslow's Hierarchy (from bottom to top): 1. Physiological, 2. Safety, 3. Love/Belonging, 4. Esteem, 5. Self-actualization. After the first 3 are met, Esteem needs become the focus.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-psy-18",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Psychology",
+    "question": "Which of the following is the best description of Traits?",
+    "options": [
+      "Permanent personality tendencies that determine our behaviors in any situation.",
+      "Physical characteristics that distinguish us from other people.",
+      "Relatively enduring characteristics that influence our behaviors across many situations.",
+      "Unconscious tendencies to act in different ways according to the situation."
+    ],
+    "answer": 2,
+    "explanation": "In personality psychology, traits are defined as relatively enduring, stable behavioral characteristics that consistently influence actions across varied contexts.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-psy-19",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Psychology",
+    "question": "The term 'abnormal psychology' refers to which of the following?",
+    "options": [
+      "The more obscure areas of psychology that relate to topics such as what we think about",
+      "The psychological study of people who are fundamentally odd",
+      "Psychological research carried out using highly unconventional methods",
+      "Psychology relating to atypical patterns of thoughts, feelings and behaviors"
+    ],
+    "answer": 3,
+    "explanation": "Abnormal psychology is the branch of psychology dedicated to studying patterns of emotion, thought, and behavior that are atypical, distressing, or maladaptive.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-psy-20",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Psychology",
+    "question": "A new client comes into the office and tells you about experiencing excessive anxiety, restlessness, muscle tension and having headaches almost every day. She also tells you she has trouble sleeping and can't concentrate at work. Which disorder describes the client's symptom?",
+    "options": [
+      "Generalized anxiety disorder",
+      "Depressive disorder",
+      "Social phobia",
+      "Schizophrenia"
+    ],
+    "answer": 0,
+    "explanation": "Persistent, excessive worry accompanied by somatic symptoms (muscle tension, fatigue, headaches, insomnia, restlessness) is characteristic of Generalized Anxiety Disorder (GAD).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-phys-21",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "A simple diode can be used as",
+    "options": [
+      "Amplifier",
+      "Rectifiers",
+      "Modulator",
+      "Oscillator"
+    ],
+    "answer": 1,
+    "explanation": "Because a p-n junction diode conducts electric current primarily in one forward direction, it is universally used as a rectifier to convert AC into DC.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-phys-22",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Which one of the following statement is wrong about magnetic field?",
+    "options": [
+      "Magnetic field lines leave the north pole and enter the south pole",
+      "A bar magnet is the source of magnetic field B.",
+      "Magnetic monopoles do exist in isolation.",
+      "Magnetic field lines are strongest at the poles"
+    ],
+    "answer": 2,
+    "explanation": "According to Gauss's Law for Magnetism, magnetic field lines form closed continuous loops; isolated magnetic monopoles do not exist in nature.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-phys-23",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Bernoulli's principle states that",
+    "options": [
+      "The pressure at any part, the kinetic energy per unit volume and potential energy per unit volume is constant",
+      "The pressure at any part and the kinetic energy per unit volume is constant",
+      "The kinetic energy per unit volume and the potential energy per unit volume is constant",
+      "The pressure at any part and the potential energy per unit volume is constant"
+    ],
+    "answer": 0,
+    "explanation": "Bernoulli's equation states that for steady, incompressible, frictionless fluid flow: P + 1/2ρv² + ρgh = constant (Static pressure + Dynamic pressure + Hydrostatic pressure is conserved).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-phys-24",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Which one of the following statement is correct",
+    "options": [
+      "Work done by conservative force is path dependent.",
+      "Projectile motion is two dimensional motion",
+      "Initial velocity is non-zero for free falling motion",
+      "In collision, linear momentum and kinetic energy must be conserved"
+    ],
+    "answer": 1,
+    "explanation": "Projectile motion involves simultaneous independent motion along the horizontal (constant velocity) and vertical (uniform acceleration under gravity) axes, making it two-dimensional.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-phys-25",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "The position of an object moving with simple harmonic motion is given by x = 4 cos(6πt) where x is in meters and t is in seconds. What is the period of the oscillating system?",
+    "options": [
+      "3s",
+      "4s",
+      "1/6 s",
+      "1/3 s"
+    ],
+    "answer": 3,
+    "explanation": "For x(t) = A cos(ωt), angular frequency ω = 6π rad/s. The period T = 2π / ω = 2π / (6π) = 1/3 second.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-eng-26",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Communicative English",
+    "question": "School of Biological Sciences and Biotechnology of Haramaya University has been conducting further field experiments on monkeys ___ last September. It is hoped the results will be reported after two months.",
+    "options": [
+      "ever since",
+      "after",
+      "however",
+      "since"
+    ],
+    "answer": 3,
+    "explanation": "In present perfect continuous constructions (\"has been conducting\"), \"since\" introduces the specific past starting point in time (\"last September\").",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-eng-27",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Communicative English",
+    "question": "Kedamo: Isn't this boy Lami's brother? They are quite alike.\nHelen: ___ He is Lami's brother-in-law.",
+    "options": [
+      "Welcome!",
+      "I think so.",
+      "Yes, he isn't!",
+      "No, he isn't!"
+    ],
+    "answer": 3,
+    "explanation": "When clarifying or correcting a negative question tag with contrary factual information, \"No, he isn't!\" is the grammatically correct response.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-eng-28",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Communicative English",
+    "question": "Everybody here is a ___ student. You need to work much harder than ever.",
+    "options": [
+      "computationally",
+      "competition",
+      "competitive",
+      "computational"
+    ],
+    "answer": 2,
+    "explanation": "The adjective \"competitive\" correctly modifies the noun \"student\", describing an ambitious and high-achieving peer environment.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-eng-29",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Communicative English",
+    "question": "Tekeste: How far is Law and Social Science Library from here?\nMustefa: ___",
+    "options": [
+      "I am not a librarian.",
+      "Library is house of wisdom.",
+      "Is this the biggest library on the campus?",
+      "Sorry, I'm a stranger myself!"
+    ],
+    "answer": 3,
+    "explanation": "\"Sorry, I'm a stranger myself!\" is the standard polite conversational English phrase used to indicate you do not know directions around the venue.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2021-eng-30",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Communicative English",
+    "question": "It is clearly ___ 'passengers ___ to smoke in the train', still, they ___ ignorant.",
+    "options": [
+      "written, are not allowing, have been",
+      "written, was not allowed, be",
+      "wrote, do not allow, are been",
+      "written, are not allowed, are being"
+    ],
+    "answer": 3,
+    "explanation": "Passive voice with present progressive behavioral description: \"It is clearly written 'passengers are not allowed to smoke...', still, they are being ignorant.\"",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-psy-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which one of the following best expresses learning?",
+    "options": [
+      "Increase in the size of body structure and organ.",
+      "Enduring changes in behavior because of experience.",
+      "Temporary change in behavior because of transient changes.",
+      "Physical changes that come because of the role of genes."
+    ],
+    "answer": 1,
+    "explanation": "Learning is formally defined in psychology as a relatively permanent or enduring change in behavior or knowledge resulting from experience or practice.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-psy-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "A behavior or skill that helps to communicate our feelings, needs, wants and thoughts clearly and confidently is best described as ___",
+    "options": [
+      "Perfectionism",
+      "Assertiveness",
+      "Rational thinking",
+      "Positive attitude"
+    ],
+    "answer": 1,
+    "explanation": "Assertiveness is the interpersonal communication skill of expressing one's thoughts, feelings, and boundaries confidently and directly without being passive or aggressive.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-psy-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which one of the following is correct statement about the modern concept of Psychology?",
+    "options": [
+      "Psychology is the scientific study of behavior and mental processes",
+      "Psychology is the scientific study of consciousness of all human beings",
+      "Psychology is the systematic investigation of soul or spirit",
+      "Psychology is the scientific study of human mind"
+    ],
+    "answer": 0,
+    "explanation": "Modern psychology is defined as the scientific study of behavior (observable actions) and mental processes (internal thoughts, feelings, and motivations).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-psy-04",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "Which one the following is not characteristics of learning?",
+    "options": [
+      "Learning is not dependent on maturation, motivation and practice",
+      "Learning is continuous and active process",
+      "Learning involves organization of experience",
+      "Learning is a product of nurture and nature"
+    ],
+    "answer": 0,
+    "explanation": "Learning heavily depends upon biological maturation, cognitive motivation, practice, and environmental interaction; statement A is therefore false.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-psy-05",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Psychology",
+    "question": "A view of personality with a focus on the unconscious and the importance of childhood experience is known as ___",
+    "options": [
+      "Social-cognitive view",
+      "Behavioral view",
+      "Psychoanalytic view",
+      "Trait theory"
+    ],
+    "answer": 2,
+    "explanation": "Sigmund Freud's Psychoanalytic / Psychodynamic perspective emphasizes unconscious conflicts, internal drives, and early childhood developmental experiences in personality formation.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-phys-06",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "A branch of mechanics that concerned with the motion of an object with its cause is",
+    "options": [
+      "Kinematics",
+      "Thermodynamics",
+      "Electromagnetism",
+      "Dynamics"
+    ],
+    "answer": 3,
+    "explanation": "Dynamics is the subdivision of classical mechanics that analyzes motion in relation to the forces and torques that cause it, whereas Kinematics describes motion without considering causes.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-phys-07",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Heating transfer during adiabatic process is",
+    "options": [
+      "Irreversible",
+      "Depending on pressure",
+      "Zero",
+      "Reversible"
+    ],
+    "answer": 2,
+    "explanation": "An adiabatic process is an idealized thermodynamic process during which no heat is transferred into or out of the system (ΔQ = 0).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-phys-08",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "A 30-cycle per-second wave travels 15 meters in 1 second. Its frequency and speed are respectively",
+    "options": [
+      "15 Hz and 30 m/s",
+      "450 Hz and 2 m/s",
+      "30 Hz and 15 m/s",
+      "30 Hz and 30m/s"
+    ],
+    "answer": 2,
+    "explanation": "30 cycles per second equals a frequency of 30 Hz. Traveling 15 meters in 1 second corresponds to a wave speed of 15 m/s.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-phys-09",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "What is the equivalent resistance (Req) of a parallel combination of three resistors that have the same value of R?",
+    "options": [
+      "3 / R",
+      "3R",
+      "R + 3",
+      "R / 3"
+    ],
+    "answer": 3,
+    "explanation": "In parallel combination: 1/Req = 1/R + 1/R + 1/R = 3/R => Req = R / 3.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-phys-10",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Faraday's law of electromagnetic induction describes how the current can be produced in a conductor by",
+    "options": [
+      "A constant magnetic field",
+      "A changing magnetic flux",
+      "A steady electromotive force",
+      "An electric charge"
+    ],
+    "answer": 1,
+    "explanation": "Faraday's Law states that an induced electromotive force (EMF) and current are generated in a closed circuit whenever there is a time-varying change in magnetic flux (dΦ/dt).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-geo-11",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which of the following happens during March 21st?",
+    "options": [
+      "Lengths of day and night is the same across all hemispheres",
+      "The sun is overhead at the Tropic of Capricorn",
+      "The longest night of the year is in the northern hemisphere",
+      "Direct rays of sun strike tropic of Cancer"
+    ],
+    "answer": 0,
+    "explanation": "March 21st marks the Vernal (Spring) Equinox, during which the sun is directly overhead at the Equator and day and night are of approximately equal duration globally.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-geo-12",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one of the following is not true about the Ethiopia River?",
+    "options": [
+      "Abay river has the largest catchment area in the country",
+      "Ghibe river drains southward and empties into lake Turkana",
+      "Baro river drains westward crossing extensive and marshy land",
+      "Awash river flows in the north-east direction"
+    ],
+    "answer": 0,
+    "explanation": "The Wabi Shebelle basin possesses the largest drainage catchment basin area in Ethiopia (~202,697 km²), although Abay carries the largest annual discharge volume.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-geo-13",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong statement about the adiabatic temperature changes?",
+    "options": [
+      "The temperature change of a parcel of air is resulted due to expansion & compression",
+      "The heating & cooling processes occur due to compression & expansion respectively",
+      "The temperature change of a parcel of air occurs due to heat exchange with the atmosphere",
+      "The process does not involve heat exchange from outside sources"
+    ],
+    "answer": 2,
+    "explanation": "Adiabatic heating and cooling occur purely through internal pressure expansion or compression without any thermal energy exchange with the surrounding environment.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-geo-14",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Choose the reverse chronological order of the geological processes in Ethiopia & Horn?",
+    "options": [
+      "Formation of Rift Valley -> Formation of Adigrat Sandstone -> Orogenesis",
+      "Formation of Adigrat Sandstone -> Formation of Rift Valley -> Orogenesis",
+      "Orogenesis -> Formation of Adigrat Sandstone -> Formation of Rift Valley",
+      "Orogenesis -> Formation of the Rift Valley -> Formation of Adigrat Sandstone"
+    ],
+    "answer": 0,
+    "explanation": "Reverse chronological order runs from youngest to oldest: Cenozoic (Rift Valley) -> Mesozoic (Adigrat Sandstone) -> Precambrian (Orogenesis).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-geo-15",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The tropical climatic conditions and time difference that Ethiopia experiences respectively resulted from:",
+    "options": [
+      "Latitudinal and Longitudinal location",
+      "Geological and historical location",
+      "Historical and gSeological location",
+      "Longitudinal and latitudinal location"
+    ],
+    "answer": 0,
+    "explanation": "Ethiopia's tropical climate is determined by its low latitudinal position near the equator, while local solar time differences are determined by longitude.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-eng-16",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Suppose he came, what would you do?",
+    "options": [
+      "It is fairly likely that he will come",
+      "He is coming",
+      "You didn't see him because he didn't come.",
+      "It is unlikely that he will come"
+    ],
+    "answer": 3,
+    "explanation": "Using \"Suppose\" with a past subjunctive verb form (\"came\") indicates a hypothetical, improbable, or unlikely future possibility.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-eng-17",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Provided you carry on like this, you should do well",
+    "options": [
+      "The speaker thinks it is likely that the person will carry on in the same way",
+      "The speaker is expressing regret",
+      "The speaker is hypothesizing",
+      "The speaker thinks it is unlikely that the person will carry on in the same way"
+    ],
+    "answer": 0,
+    "explanation": "\"Provided\" functions as an encouraging conditional conjunction indicating the speaker expects and considers it likely that the good effort will continue.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-eng-18",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "I haven't seen that dress before. It ___ a new one.",
+    "options": [
+      "might be",
+      "must be",
+      "may be",
+      "can be"
+    ],
+    "answer": 1,
+    "explanation": "The modal auxiliary \"must be\" expresses strong logical certainty and deduction based on available direct evidence.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-eng-19",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Hanna: My eight-year-old son spends much of his time sitting in front of the TV. He doesn't study at all. I don't know what to do.\nChaltu: ___",
+    "options": [
+      "You had better set times for his study and for his T.V. watching.",
+      "He would rather become an artist.",
+      "You must respect his interest.",
+      "You shouldn't have bought a TV."
+    ],
+    "answer": 0,
+    "explanation": "\"You had better [verb]...\" provides appropriate, practical parental advice for establishing healthy domestic boundaries and study routines.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-eng-20",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Communicative English",
+    "question": "Teacher: Would you mind if I open the window?\nStudent: ___ It is too hot to carry on our discussion.",
+    "options": [
+      "Yes, of course",
+      "No, please go ahead",
+      "Yes, please go ahead",
+      "Yes, I would"
+    ],
+    "answer": 1,
+    "explanation": "In response to \"Would you mind...\", answering \"No\" means \"No, I do not object\", correctly granting permission.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-math-21",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "The quantified proposition ¬((∃x)(¬r(x) => s(x))) is logically equivalent to",
+    "options": [
+      "(∀x)(¬s(x) => r(x))",
+      "(∀x)(r(x) ∧ ¬s(x))",
+      "(∀x)(¬r(x) ∨ ¬s(x))",
+      "(∀x)(¬r(x) ∧ ¬s(x))"
+    ],
+    "answer": 3,
+    "explanation": "¬((∃x)(¬r(x) => s(x))) ≡ (∀x)¬(r(x) ∨ s(x)) ≡ (∀x)(¬r(x) ∧ ¬s(x)) by De Morgan's and quantifier negation rules.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-math-22",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which of the following is true about the complex number z = 0 + 0i",
+    "options": [
+      "The polar form of z is (cos(0°) + i sin(0°))",
+      "The Euler form of z is e^(i0)",
+      "(z + z̄) / 2 = 0",
+      "Arg(z) = 0°"
+    ],
+    "answer": 2,
+    "explanation": "For z = 0 + 0i, the real part Re(z) = (z + z̄)/2 = 0. The modulus is |z| = 0, so argument is undefined and polar/Euler forms are 0, not 1.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-math-23",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Let f(x) = ax³ - x² - 5x + b, where a and b are constants. When f(x) is divided by x + 2 the remainder is 40 and when f(x) is divided by x - 2 the remainder is 36, then find the values of a and b respectively?",
+    "options": [
+      "(7/8, 43)",
+      "(43, 7/8)",
+      "(43, 1)",
+      "(1, 43)"
+    ],
+    "answer": 0,
+    "explanation": "Applying the polynomial remainder theorem yields system: f(-2) = 40 and f(2) = 36, solving for parameters (a, b) = (7/8, 43).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-math-24",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which of the following is true",
+    "options": [
+      "The rational function f(x) = g(x)/h(x) has an oblique asymptote if degree of g(x) is less than the degree of h(x) by 1.",
+      "The range of f(x) = sec x is [1, ∞).",
+      "The graph of rational function may cross its vertical asymptote.",
+      "All real functions are real valued functions."
+    ],
+    "answer": 3,
+    "explanation": "A real function whose codomain is a subset of the real numbers ℝ is by definition a real-valued function.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-math-25",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "All of the following is true about the line L: 2y - 4x + 14 = 0 except?",
+    "options": [
+      "The line 2x - y + 2 = 0 is parallel to L",
+      "The distance from P(1, -1) to L is 2√5",
+      "The point P(6, 5) is on L",
+      "The line x + 2y + 2 = 0 is perpendicular to L"
+    ],
+    "answer": 1,
+    "explanation": "The line simplifies to 2x - y - 7 = 0. The perpendicular distance from (1, -1) is |2(1) - (-1) - 7| / √(4 + 1) = 4/√5 = (4√5)/5 ≠ 2√5. Hence statement B is false.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-crit-26",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What is scepticism?",
+    "options": [
+      "It doubts the existence of knowledge.",
+      "It applies moral principle to oral problems.",
+      "It argues that authority is the only sources of knowledge.",
+      "It is a philosophical view which assumes that knowledge could be acquired through sense organs.",
+      "It states that knowledge could be acquired through intellect."
+    ],
+    "answer": 0,
+    "explanation": "Scepticism is the philosophical epistemological stance that questions, doubts, or suspends judgment regarding claims of absolute certainty or knowledge.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-crit-27",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What is inductive generalization?",
+    "options": [
+      "It reasons from sample to population.",
+      "It reasons from knowledge of the past into the future.",
+      "It accepts an idea as true simply because it is mentioned by knowledgeable person.",
+      "It argues from symbols into things and situations.",
+      "It reasons from cause to effects and vice versa."
+    ],
+    "answer": 0,
+    "explanation": "An inductive generalization is an argument that projects an observed characteristic from a representative sample onto an entire target population.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-crit-28",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "What is enumerative definition?",
+    "options": [
+      "It defines by listing individual members.",
+      "It defines by providing similar meaning.",
+      "It defines by referring to ancestral meaning.",
+      "It defines by showing to the object.",
+      "It defines by listing sub-classes."
+    ],
+    "answer": 0,
+    "explanation": "An enumerative (extensional) definition conveys the meaning of a term by explicitly listing or naming the individual entities belonging to that set.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-crit-29",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "In which barriers of critical thinking conformism is part of?",
+    "options": [
+      "Stereotype",
+      "Relativism",
+      "Wishful thinking",
+      "Egocentrism",
+      "Socio-centrism"
+    ],
+    "answer": 4,
+    "explanation": "Conformism, peer pressure, and groupthink are manifestations of sociocentric thinking (group-centered cognitive barriers).",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-crit-30",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Logic and Critical Thinking",
+    "question": "Susan advocates the legalization of cocaine. But I cannot agree with any position based on the assumption that cocaine is good for you and that a society of drug addicts can flourish. So, I disagree with Susan. What kind of fallacy is it?",
+    "options": [
+      "Straw man.",
+      "Red -herring.",
+      "Composition.",
+      "False dichotomy.",
+      "Suppressed evidence."
+    ],
+    "answer": 0,
+    "explanation": "The speaker misrepresents and exaggerates Susan's argument to make it easier to attack, committing the Straw Man fallacy.",
+    "category": "Entrance Exam"
+  },
+  {
+    "id": "hu-2022-math1011-tf-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "True or False: The range and codomain of any onto function are equal.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "By mathematical definition, a function f: A -> B is surjective (onto) if and only if its range equals its entire codomain B.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-tf-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "True or False: Any two distinct vertical lines in a plane are parallel to each other.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "Distinct vertical lines have equations x = c1 and x = c2 (c1 ≠ c2). Both have undefined slopes, never intersect, and are parallel.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-tf-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "True or False: For a and b two nonzero real numbers, the equation of the line that passes through the points (a, 0) and (0, b) can be expressed as x/a + y/b = 1.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "This is the standard two-intercept form of a linear equation passing through x-intercept (a, 0) and y-intercept (0, b).",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-tf-04",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "True or False: Every rational function has a vertical asymptote.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "False. A rational function such as f(x) = 1 / (x² + 1) has no real zeros in its denominator and therefore has no vertical asymptotes.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-tf-05",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "True or False: Every polynomial function is rational function.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "True. Any polynomial P(x) can be expressed as P(x)/1, which is a quotient of two polynomials with non-zero polynomial denominator.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-tf-06",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "True or False: The domain of f(x) = coth x is the set of all real numbers.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "False. coth x = cosh x / sinh x. Since sinh(0) = 0, coth x is undefined at x = 0. Its domain is ℝ \\ {0}.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-tf-07",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "True or False: If the distance between the center of a circle and a line l equals to its radius, then the line must be a secant line to the circle.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "False. When the perpendicular distance from center to line equals the radius (d = r), the line intersects at exactly one point and is a tangent line, not a secant line (d < r).",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which one of the following equations can represent a circle?",
+    "options": [
+      "x² + y² - 2x + 4 = 0",
+      "x² + y² - 8x - 4y = -16",
+      "(x - 1)² + (y + 1)² = -10",
+      "3x² + 3y² - 6x + 12y = -18"
+    ],
+    "answer": 1,
+    "explanation": "Completing square for B: (x - 4)² + (y - 2)² = -16 + 16 + 4 = 4 = 2², representing a real circle with center (4, 2) and radius r = 2.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which one of the following is true about the cosine function f(x) = cos x?",
+    "options": [
+      "Its range is [-1, 1]",
+      "Its domain is [-1, 1]",
+      "It is an odd function",
+      "Its period is π"
+    ],
+    "answer": 0,
+    "explanation": "The cosine function f(x) = cos x has domain (-∞, ∞), period 2π, is an even function (cos(-x) = cos x), and has range [-1, 1].",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "What is the distance from the point (0, 0) to the line l: y + x - 1 = 0?",
+    "options": [
+      "√2 / 2",
+      "1/2",
+      "√2",
+      "1"
+    ],
+    "answer": 0,
+    "explanation": "Distance formula: d = |Ax0 + By0 + C| / √(A² + B²) = |0 + 0 - 1| / √(1² + 1²) = 1 / √2 = √2 / 2.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-04",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which one of the following is not true about the function f(x) = aˣ, a > 0, a ≠ 1?",
+    "options": [
+      "The x-intercept of the graph of f(x) is (1, 0).",
+      "The range is the set of all positive real numbers.",
+      "The graph of f(x) passes through the point (0, 1).",
+      "The domain is the set of all real numbers."
+    ],
+    "answer": 0,
+    "explanation": "Since aˣ > 0 for all x ∈ ℝ, the exponential graph never crosses the x-axis and has no x-intercept.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-05",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "What is f(x) if (fog)(x) = 4x² + 4x + 9 and g(x) = 2x + 3?",
+    "options": [
+      "x² - 3x + 3",
+      "2x² - 4x + 3",
+      "3x² - x + 2",
+      "x² - 4x + 12"
+    ],
+    "answer": 3,
+    "explanation": "Let u = 2x + 3 => 2x = u - 3. Then (fog)(x) = (u - 3)² + 2(u - 3) + 9 = u² - 4u + 12 => f(x) = x² - 4x + 12.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-06",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "The equation of the line that is perpendicular to 3x + 4y = 6 and that passes through the point (2, -3) is",
+    "options": [
+      "4x + 3y = -17",
+      "3x + 4y = -17",
+      "3x - 4y = 17",
+      "4x - 3y = 17"
+    ],
+    "answer": 3,
+    "explanation": "Given slope m1 = -3/4. Perpendicular slope m2 = 4/3. Point-slope: y - (-3) = (4/3)(x - 2) => 3y + 9 = 4x - 8 => 4x - 3y = 17.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-07",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "One of the following is not true about the complex number z = 1 + √3 i",
+    "options": [
+      "Arg(z) = π/3",
+      "z = 2(cos(π/3) + i sin(π/3))",
+      "z = 2e^(i π/3)",
+      "z = 2(cos(π/6) + i sin(π/6))"
+    ],
+    "answer": 3,
+    "explanation": "For z = 1 + √3 i, |z| = 2 and θ = π/3. Option D has θ = π/6, which represents √3 + i, making D false.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-08",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which of the following is not true about the function f(x) = 1 + log₃(x - 2)?",
+    "options": [
+      "The domain is (2, ∞).",
+      "The vertical asymptote is x = 0.",
+      "The x-intercept is (7/3, 0).",
+      "It is an increasing function."
+    ],
+    "answer": 1,
+    "explanation": "The argument of logarithm is x - 2 > 0 => vertical asymptote is at x = 2, not x = 0.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-09",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Which one of the following is true about the function p(x) = 6x⁵ - 2x⁴ + 4x - 8?",
+    "options": [
+      "p(x) have at most 5 turning points.",
+      "The leading coefficient is -2.",
+      "-1 is a zero of p(x).",
+      "x - 1 is a factor of p(x)"
+    ],
+    "answer": 3,
+    "explanation": "Evaluating p(1) = 6(1)⁵ - 2(1)⁴ + 4(1) - 8 = 6 - 2 + 4 - 8 = 0. By factor theorem, x - 1 is a factor.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-mc-10",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Let C be a circle with radius 5 and centered at (1, -2). Which one of the following is true about the point P(3, 2)?",
+    "options": [
+      "The point P is inside the circle C.",
+      "The point P is on the circle C.",
+      "The point P is outside the circle C.",
+      "The point P is one of the end points of the diameter of the circle C."
+    ],
+    "answer": 0,
+    "explanation": "Distance from center (1, -2) to P(3, 2) is d = √((3 - 1)² + (2 - (-2))²) = √(4 + 16) = √20 ≈ 4.47 < 5. Since d < r, P lies inside circle C.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Find the value of 3 cosh(ln 3).",
+    "options": [
+      "3",
+      "5",
+      "10/3",
+      "15"
+    ],
+    "answer": 1,
+    "explanation": "cosh(ln 3) = (e^(ln 3) + e^(-ln 3)) / 2 = (3 + 1/3) / 2 = (10/3) / 2 = 5/3. Multiplying by 3 gives 3 * (5/3) = 5.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-02a",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Let f(x) = x² + 1 and g(x) = √x. Find the domain of (gof)(x).",
+    "options": [
+      "[0, ∞)",
+      "(-∞, ∞)",
+      "[1, ∞)",
+      "(-∞, 0]"
+    ],
+    "answer": 1,
+    "explanation": "(gof)(x) = √(x² + 1). Since x² + 1 ≥ 1 > 0 for all real numbers x, the expression inside radical is always non-negative. Domain is ℝ = (-∞, ∞).",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-02b",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Let f(x) = x² + 1 and g(x) = √x. Find the value of (fog)(0).",
+    "options": [
+      "0",
+      "1",
+      "√1",
+      "Undefined"
+    ],
+    "answer": 1,
+    "explanation": "(fog)(0) = f(g(0)) = f(√0) = f(0) = 0² + 1 = 1.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Find the polynomial function p(x) whose zeros are 3, -2, and -1 with multiplicity 1, 3, and 4 respectively such that p(0) = 48.",
+    "options": [
+      "-2(x - 3)(x + 2)³(x + 1)⁴",
+      "2(x - 3)(x + 2)³(x + 1)⁴",
+      "-(x - 3)(x + 2)³(x + 1)⁴",
+      "48(x - 3)(x + 2)³(x + 1)⁴"
+    ],
+    "answer": 0,
+    "explanation": "p(x) = a(x - 3)¹(x + 2)³(x + 1)⁴. p(0) = a(-3)(2³)(1⁴) = -24a = 48 => a = -2 => p(x) = -2(x - 3)(x + 2)³(x + 1)⁴.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-04",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Find the inverse of the function f(x) = eˣ⁺¹.",
+    "options": [
+      "ln(x - 1)",
+      "ln x - 1",
+      "eˣ⁻¹",
+      "ln(x + 1)"
+    ],
+    "answer": 1,
+    "explanation": "Set y = eˣ⁺¹ => ln y = x + 1 => x = ln y - 1. Therefore, f⁻¹(x) = ln x - 1.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-05",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "If f(x) = -2 cos(3x), then find the period and frequency of f(x).",
+    "options": [
+      "Period = 2π/3, Frequency = 3/(2π)",
+      "Period = 3π, Frequency = 1/(3π)",
+      "Period = 2π, Frequency = 1/(2π)",
+      "Period = π/3, Frequency = 3/π"
+    ],
+    "answer": 0,
+    "explanation": "For f(x) = A cos(Bx), period T = 2π / |B| = 2π / 3. Frequency f = 1 / T = 3 / (2π).",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-06",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "If f(x) = 4x + 1 and g(x) = 3x + k, then find the value of k for which (fog)(x) = (gof)(x).",
+    "options": [
+      "2/3",
+      "3/2",
+      "1/3",
+      "2"
+    ],
+    "answer": 0,
+    "explanation": "(fog)(x) = 4(3x + k) + 1 = 12x + 4k + 1. (gof)(x) = 3(4x + 1) + k = 12x + 3 + k. Equating: 4k + 1 = 3 + k => 3k = 2 => k = 2/3.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-sa-07",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Given a complex number z = -4 - 4√3 i, find the principal argument and polar form of z.",
+    "options": [
+      "Arg(z) = -2π/3, Polar = 8(cos(-2π/3) + i sin(-2π/3))",
+      "Arg(z) = 2π/3, Polar = 8(cos(2π/3) + i sin(2π/3))",
+      "Arg(z) = -π/3, Polar = 8(cos(-π/3) + i sin(-π/3))",
+      "Arg(z) = -5π/6, Polar = 8(cos(-5π/6) + i sin(-5π/6))"
+    ],
+    "answer": 0,
+    "explanation": "|z| = √((-4)² + (-4√3)²) = √64 = 8. In quadrant III, principal argument Arg(z) = -π + arctan(√3) = -2π/3. Polar form is 8(cos(-2π/3) + i sin(-2π/3)).",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-wo-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Find the equation of the circle that passes through the point (2, 5) and is tangent to the line y = 3x - 2 at the point (1, 1).",
+    "options": [
+      "(x + 49/2)² + (y - 19/2)² = 1445/2",
+      "(x - 49/2)² + (y + 19/2)² = 1445/2",
+      "(x - 1)² + (y - 1)² = 25",
+      "(x - 2)² + (y - 5)² = 10"
+    ],
+    "answer": 0,
+    "explanation": "The normal line to tangent y = 3x - 2 at (1, 1) has slope -1/3 => x + 3y = 4 => h = 4 - 3k. Equidistance from center (h, k) to (1, 1) and (2, 5) gives center (-49/2, 19/2) and r² = 1445/2.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-wo-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Given the rational function f(x) = 2x² / (x² - 1). Find the domain, intercepts, and asymptotes of f(x).",
+    "options": [
+      "Domain: ℝ \\ {-1, 1}, Intercept: (0,0), V.A: x = ±1, H.A: y = 2",
+      "Domain: ℝ \\ {1}, Intercept: (0,2), V.A: x = 1, H.A: y = 1",
+      "Domain: ℝ, Intercept: (0,0), V.A: None, H.A: y = 0",
+      "Domain: ℝ \\ {0}, Intercept: (1,0), V.A: x = 0, H.A: y = 2"
+    ],
+    "answer": 0,
+    "explanation": "Denominator x² - 1 = 0 => V.A at x = ±1 and Domain = ℝ \\ {-1, 1}. x-intercept and y-intercept at (0, 0). Degrees are equal (2) => H.A is y = 2/1 = 2.",
+    "category": "Mid Exam"
+  },
+  {
+    "id": "hu-2022-math1011-wo-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "Applied Mathematics I",
+    "question": "Suppose that 1 - i is a root of the polynomial function f(x) = x³ - 3x² + ax + b, where a, b ∈ ℝ. Find the remaining two roots of f(x) and the values of a and b.",
+    "options": [
+      "Roots: 1 + i, 1; Values: a = 4, b = -2",
+      "Roots: 1 + i, -1; Values: a = -4, b = 2",
+      "Roots: -1 + i, 2; Values: a = 3, b = -3",
+      "Roots: 1 + i, 0; Values: a = 2, b = -4"
+    ],
+    "answer": 0,
+    "explanation": "By Conjugate Root Theorem, 1 + i is a root. Sum of roots: (1 - i) + (1 + i) + r3 = 3 => r3 = 1. Expanding (x - 1)(x - (1 - i))(x - (1 + i)) = x³ - 3x² + 4x - 2 => a = 4, b = -2.",
+    "category": "Mid Exam"
   }
 ]
