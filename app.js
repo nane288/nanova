@@ -234,7 +234,8 @@
       university: 'ALL',
       year: 'ALL',
       category: 'ALL'
-    }
+    },
+    hasAppliedFilters: false
   };
 
   /* ── INITIALIZATION ────────────────────────────────── */
@@ -1102,20 +1103,25 @@
 
     updateFilterSummaryText();
 
-    // Pulse the OK button on mobile screen to signal readiness to display
+    // Highlight the OK button to prompt user to confirm display
     const okBtn = document.getElementById('applyFiltersOkBtn');
     if (okBtn && !isExplicitSubmit) {
-      okBtn.classList.add('ring-2', 'ring-blue-400');
+      okBtn.classList.add('ring-4', 'ring-blue-300', 'animate-pulse');
     }
 
-    applyFilters();
+    if (isExplicitSubmit || State.hasAppliedFilters) {
+      applyFilters();
+    } else {
+      updateCounterBadges();
+    }
   }
 
   function applyFiltersWithFeedback(scrollOnMobile = true) {
+    State.hasAppliedFilters = true;
     onFilterChange(true);
     const okBtn = document.getElementById('applyFiltersOkBtn');
     if (okBtn) {
-      okBtn.classList.remove('ring-2', 'ring-blue-400');
+      okBtn.classList.remove('ring-4', 'ring-blue-300', 'animate-pulse', 'ring-2', 'ring-blue-400');
       const count = State.filteredQuestions.length;
       const originalHtml = `
         <div class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center group-hover:scale-110 transition">
@@ -1200,9 +1206,36 @@
     const container = document.getElementById('boardQuestionsListContainer');
     if (!container) return;
 
+    // If user has not clicked OK yet, show instructional prompt
+    if (!State.hasAppliedFilters) {
+      container.innerHTML = `
+        <div class="white-card text-center py-12 px-6 border border-blue-100 shadow-md">
+          <div class="w-16 h-16 rounded-3xl bg-blue-50 text-[#0052fe] flex items-center justify-center mx-auto mb-4 border border-blue-200/60 shadow-sm">
+            <i data-lucide="help-circle" class="w-8 h-8 text-[#0052fe]"></i>
+          </div>
+          <h3 class="text-xl font-black text-slate-800 font-heading mb-2">Select Your Exam Filters</h3>
+          <p class="text-xs text-slate-500 max-w-md mx-auto mb-6 font-sans leading-relaxed">
+            Choose your <b>Subject / Course</b>, <b>Exam Category</b>, <b>University</b>, and <b>Exam Year</b> above, then tap the <b class="text-[#0052fe]">OK</b> button to display the questions.
+          </p>
+          <button onclick="NanovaApp.applyFiltersWithFeedback(true)"
+            class="inline-flex items-center space-x-2 px-6 py-3 bg-[#0052fe] hover:bg-[#003ec0] text-white font-extrabold text-xs rounded-2xl shadow-lg shadow-blue-500/25 transition active:scale-95 cursor-pointer">
+            <i data-lucide="check" class="w-4 h-4 text-white stroke-[3]"></i>
+            <span>Click OK to Display Questions</span>
+          </button>
+        </div>
+      `;
+      const paginationBar = document.getElementById('boardPaginationBar');
+      if (paginationBar) paginationBar.classList.add('hidden');
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
+
+    const paginationBar = document.getElementById('boardPaginationBar');
+    if (paginationBar) paginationBar.classList.remove('hidden');
+
     const totalQuestions = State.filteredQuestions.length;
     if (!totalQuestions) {
-      container.innerHTML = '<div class="white-card text-center text-slate-400 py-12">No exam questions matched your active filters. Try selecting another course or university.</div>';
+      container.innerHTML = '<div class="white-card text-center text-slate-400 py-12 font-medium">No exam questions matched your active filters. Try selecting another course or university and tap OK.</div>';
       updatePaginationControls(0, 0, 0);
       return;
     }
@@ -2029,6 +2062,7 @@
   }
 
   function toggleFilterMode(mode) {
+    State.hasAppliedFilters = true;
     if (State.activeQuickFilter === mode) {
       State.activeQuickFilter = 'all';
     } else {
