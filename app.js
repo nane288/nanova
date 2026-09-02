@@ -376,7 +376,7 @@
     });
   }
 
-  function openAuthModal() {
+  function openAuthModal(reason = '') {
     if (State.currentUser) {
       const email = State.currentUser.email || State.profile.email;
       const confirmed = confirm('Signed in as: ' + email + '\n\nWould you like to Sign Out?');
@@ -384,6 +384,14 @@
         firebaseSignOut();
       }
     } else {
+      const subtitle = document.getElementById('authModalSubtitle');
+      if (subtitle) {
+        if (reason === 'next_questions') {
+          subtitle.textContent = 'Please sign in to access the next questions.';
+        } else {
+          subtitle.textContent = 'Sign in to access your student profile & practice.';
+        }
+      }
       document.getElementById('authModal')?.classList.remove('hidden');
     }
   }
@@ -508,15 +516,6 @@
       if (adminUnlockedBox) adminUnlockedBox.classList.add('hidden');
       if (addUnivBtn) addUnivBtn.classList.add('hidden');
       if (addQuestionBtn) addQuestionBtn.classList.add('hidden');
-    }
-
-    const freeNotice = document.getElementById('freeLimitNotice');
-    if (freeNotice) {
-      if (!State.isPaid && !State.isAdmin) {
-        freeNotice.classList.remove('hidden');
-      } else {
-        freeNotice.classList.add('hidden');
-      }
     }
 
     updateProfileUI();
@@ -1247,10 +1246,18 @@
     if (State.currentPage < 1) State.currentPage = 1;
     if (State.currentPage > totalPages) State.currentPage = totalPages;
 
-    // Free users can only access Page 1 (questions 1 to 10)
-    if (!isUnlocked && State.currentPage > 1) {
-      State.currentPage = 1;
-      showPaywallModal();
+    // Check access when navigating beyond Page 1
+    if (State.currentPage > 1) {
+      if (!State.currentUser) {
+        State.currentPage = 1;
+        openAuthModal('next_questions');
+        return;
+      }
+      if (!isUnlocked) {
+        State.currentPage = 1;
+        showPaywallModal();
+        return;
+      }
     }
 
     const startIndex = (State.currentPage - 1) * State.pageSize;
@@ -1374,25 +1381,29 @@
 
     if (prevBtn) prevBtn.disabled = State.currentPage <= 1;
     if (nextBtn) {
-      const isUnlocked = State.isPaid || State.isAdmin;
-      if (!isUnlocked && State.currentPage === 1 && totalPages > 1) {
-        nextBtn.innerHTML = '<span>Unlock the Next Questions</span><i data-lucide="lock" class="w-4 h-4"></i>';
-      } else {
-        nextBtn.innerHTML = '<span>Next Questions</span><i data-lucide="chevron-right" class="w-4 h-4"></i>';
-        nextBtn.disabled = State.currentPage >= totalPages;
-      }
+      nextBtn.innerHTML = '<span>Next Questions</span><i data-lucide="chevron-right" class="w-4 h-4"></i>';
+      nextBtn.disabled = State.currentPage >= totalPages;
     }
+    if (window.lucide) window.lucide.createIcons();
   }
 
   function boardNextPage() {
     const totalPages = Math.ceil(State.filteredQuestions.length / State.pageSize);
-    const isUnlocked = State.isPaid || State.isAdmin;
 
+    // 1. If not logged in -> ask to log in first
+    if (!State.currentUser) {
+      openAuthModal('next_questions');
+      return;
+    }
+
+    // 2. If logged in but not paid (and not admin) -> ask for payment
+    const isUnlocked = State.isPaid || State.isAdmin;
     if (!isUnlocked) {
       showPaywallModal();
       return;
     }
 
+    // 3. If paid / unlocked -> show next questions
     if (State.currentPage < totalPages) {
       State.currentPage++;
       renderBoardQuestionsPage();

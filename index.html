@@ -248,24 +248,6 @@
         </div>
       </div>
 
-      <!-- Free Preview Notice (Shown for Free Users) -->
-      <div id="freeLimitNotice"
-        class="hidden p-3.5 rounded-2xl bg-blue-50/80 border border-blue-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-blue-950 mb-4 shadow-sm">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-7 h-7 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
-            <i data-lucide="sparkles" class="w-4 h-4"></i>
-          </div>
-          <div>
-            <span class="font-extrabold text-blue-900">Free Preview Access (10 Questions Limit)</span>
-            <p class="text-[11px] text-blue-700">Submit a payment request to unlock all freshman questions with full
-              explanations.</p>
-          </div>
-        </div>
-        <button onclick="NanovaApp.showPaywallModal()"
-          class="px-4 py-2 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-sm transition whitespace-nowrap self-start sm:self-auto">
-          Unlock All Questions
-        </button>
-      </div>
 
       <!-- Scrollable 10-Questions List Container -->
       <div id="boardQuestionsListContainer" class="space-y-6 mb-6">
@@ -1062,7 +1044,10 @@
           <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
             <i data-lucide="user-check" class="w-4 h-4"></i>
           </div>
-          <h3 id="authModalTitle" class="text-lg font-extrabold text-slate-900">Sign In to Nanova</h3>
+          <div>
+            <h3 id="authModalTitle" class="text-lg font-extrabold text-slate-900 leading-tight">Sign In to Nanova</h3>
+            <p id="authModalSubtitle" class="text-[11px] text-slate-500 font-medium">Sign in to access your student profile & practice.</p>
+          </div>
         </div>
         <button onclick="NanovaApp.closeAuthModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">
           <i data-lucide="x" class="w-5 h-5"></i>
