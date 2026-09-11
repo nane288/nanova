@@ -1,4 +1,4 @@
-﻿const CACHE_NAME = 'nanova-core-v1';
+const CACHE_NAME = 'nanova-core-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -6,6 +6,8 @@ const ASSETS_TO_CACHE = [
   './app.js',
   './manifest.json',
   './icons/favicon.svg',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
   './icons/icon-192.svg',
   './icons/icon-512.svg',
   './data/exams.json',

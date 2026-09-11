@@ -1264,7 +1264,7 @@
     const endIndex = Math.min(startIndex + State.pageSize, totalQuestions);
     const pageQuestions = State.filteredQuestions.slice(startIndex, endIndex);
 
-    const letters = ['A', 'B', 'C', 'D'];
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
     container.innerHTML = pageQuestions.map((q, localIdx) => {
       const globalNumber = startIndex + localIdx + 1;
