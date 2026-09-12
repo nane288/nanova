@@ -15914,5 +15914,453 @@
     "answer": 0,
     "explanation": "Area of the loop A = 0.054 m × 0.085 m = 0.00459 m² = 4.59 × 10⁻³ m². Magnetic field B = 0.35 T. Magnetic flux Φ = B · A · cos(θ), where θ is the angle between B and the normal to the plane of the loop. a) When the field is perpendicular to the plane of the loop, the normal is parallel to the field (θ = 0°): Φ = BA cos(0°) = 0.35 T × 0.00459 m² × 1 = 1.6065 × 10⁻³ Wb ≈ 1.61 × 10⁻³ Wb (1.61 mWb). b) When the angle between the field and the normal is 30° (θ = 30°): Φ = BA cos(30°) = 1.6065 × 10⁻³ Wb × cos(30°) = 1.6065 × 10⁻³ × (√3/2) ≈ 1.391 × 10⁻³ Wb ≈ 1.39 × 10⁻³ Wb (1.39 mWb).",
     "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-01",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Kirchhoff's loop rule is a result of",
+    "options": [
+      "The law of conservation of energy",
+      "The law of conservation of charge",
+      "The law of conservation of current",
+      "All of the above"
+    ],
+    "answer": 0,
+    "explanation": "Kirchhoff's loop rule (KVL) states that the sum of potential differences around any closed circuit loop is zero, which is a direct consequence of the law of conservation of energy. In contrast, Kirchhoff's junction rule (KCL) is based on the conservation of charge.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-02",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Which one of the stress causes the volume deformation on an object?",
+    "options": [
+      "Volume stress",
+      "Shear stress",
+      "Tensile stress",
+      "None of the above"
+    ],
+    "answer": 0,
+    "explanation": "Volume stress (also known as bulk stress or hydraulic stress) acts uniformly across the entire surface of an object, causing a fractional change in volume (volume deformation) without altering its shape.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-03",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Two point charges attract each other with an electric force of magnitude F. If the charge on one of the particles is reduced to one-third its original value and the distance between the particles is doubled, what is the resulting magnitude of the electric force between them?",
+    "options": [
+      "1/12 F",
+      "1/6 F",
+      "1/3 F",
+      "1/2 F"
+    ],
+    "answer": 0,
+    "explanation": "According to Coulomb's law, F = k·|q1·q2| / r². When q1' = q1/3 and r' = 2r, the new force is F' = k·|(q1/3)·q2| / (2r)² = (1/3)·(1/4)·[k·|q1·q2| / r²] = 1/12 F.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-04",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "The temperature at which water behaves abnormally and is used to define relative density or specific gravity is at",
+    "options": [
+      "0 K",
+      "4 °C",
+      "100 °C",
+      "20 °C"
+    ],
+    "answer": 1,
+    "explanation": "Water exhibits anomalous expansion between 0 °C and 4 °C, reaching its maximum density of 1.000 g/cm³ (1000 kg/m³) at 4 °C. This state is universally used as the standard reference density for relative density (specific gravity).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-05",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "In a transverse wave, the motion of the particles is _____ the wave's direction of propagation.",
+    "options": [
+      "along",
+      "perpendicular to",
+      "opposite from",
+      "parallel to"
+    ],
+    "answer": 1,
+    "explanation": "In a transverse wave, the particles of the medium vibrate perpendicularly (at 90°) to the direction in which the wave energy propagates.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-06",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "In the first law of thermodynamics:",
+    "options": [
+      "Temperature of objects in thermal contact is introduced",
+      "The total energy of the system is always constant",
+      "Nature always favors reversible process",
+      "State variables such as entropy are introduced"
+    ],
+    "answer": 1,
+    "explanation": "The first law of thermodynamics is an expression of the conservation of energy (ΔU = Q - W). It states that energy can neither be created nor destroyed, meaning the total energy of an isolated system is always constant.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-07",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "If the amplitude of a wave is doubled, what will be the maximum velocity of the wave with no other changes made to the wave?",
+    "options": [
+      "Halved",
+      "Doubled",
+      "Quadrupled",
+      "Tripled"
+    ],
+    "answer": 1,
+    "explanation": "For harmonic motion, the maximum particle velocity is given by v_max = ωA. Since angular frequency ω is unchanged, doubling the amplitude A directly doubles the maximum velocity (v'_max = 2 v_max).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-08",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "A wave has a speed of 10 m/s and a frequency of 10 Hz. What is its wavelength?",
+    "options": [
+      "0.1 m",
+      "1 m",
+      "10 m",
+      "100 m"
+    ],
+    "answer": 1,
+    "explanation": "Using the wave speed relationship v = f · λ, wavelength λ = v / f = (10 m/s) / (10 Hz) = 1 m.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-09",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Three equal resistances when combined in series are equivalent to 90 Ω. Their equivalent resistance when combined in parallel will be _________",
+    "options": [
+      "270 Ω",
+      "30 Ω",
+      "810 Ω",
+      "10 Ω"
+    ],
+    "answer": 3,
+    "explanation": "In series, R_eq = 3R = 90 Ω ⟹ R = 30 Ω each. In parallel, 1/R_parallel = 3/R = 3/30 Ω = 1/10 Ω ⟹ R_parallel = 10 Ω.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-10",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Consider two equal point charges separated by some distance 2d. Which of the following statements is NOT true about the net electric field?",
+    "options": [
+      "The net electric field is maximum between the two charges.",
+      "The net electric field becomes zero at midway between the two charges.",
+      "The field will never be zero to the left and right of the charges.",
+      "All of the above"
+    ],
+    "answer": 0,
+    "explanation": "For two identical like charges, the electric field vectors at the exact midpoint point in opposite directions with equal magnitude and cancel out completely (E_net = 0). Thus, the field is a minimum (zero) midway between them, not a maximum. Statement A is false.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-11",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "The heat required per unit mass of a substance to produce a phase change at constant temperature is called _________.",
+    "options": [
+      "Latent Heat",
+      "Phase Change",
+      "Specific heat capacity",
+      "None of the above"
+    ],
+    "answer": 0,
+    "explanation": "Latent heat is the thermal energy per unit mass (L = Q/m) required for a substance to undergo a change of state (phase transition) at constant temperature.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-12",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "If the density is kept constant, the pressure of a fluid increases with increasing:",
+    "options": [
+      "Volume",
+      "Base area",
+      "Mass",
+      "Depth"
+    ],
+    "answer": 3,
+    "explanation": "The hydrostatic pressure in an incompressible fluid is P = P_0 + ρgh. At constant density ρ and gravitational acceleration g, the pressure increases directly and linearly with increasing depth h.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-13",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Given that 1 cal (about 4.2 J) of heat is required to raise the temperature of 1 g of water by 1 °C, what will be the final temperature when 50.0 calories of heat are added to 5 g of water at 25 °C?",
+    "options": [
+      "22.6 °C",
+      "27.4 °C",
+      "35.0 °C",
+      "15.0 °C"
+    ],
+    "answer": 2,
+    "explanation": "From Q = m·c·ΔT: ΔT = Q / (m·c) = 50.0 cal / [5 g × 1 cal/(g·°C)] = 10.0 °C. The final temperature is T_f = T_i + ΔT = 25.0 °C + 10.0 °C = 35.0 °C.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-14",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Which one is false about the relationship between the coefficients of thermal expansion?",
+    "options": [
+      "β = 2α",
+      "γ = 3α",
+      "β = 2γ/3",
+      "γ = 2β/3"
+    ],
+    "answer": 3,
+    "explanation": "For isotropic materials, the area expansion coefficient is β ≈ 2α and volume expansion coefficient is γ ≈ 3α. Thus, α = β/2 = γ/3 ⟹ β = 2γ/3 (true), whereas γ = 3β/2. The statement γ = 2β/3 is mathematically false.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-mc-15",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "If a substance is hot, its particles will move:",
+    "options": [
+      "Faster than the cooler object",
+      "As fast as the cooler object",
+      "Slower than the cooler object",
+      "Faster or slower than the cooler object"
+    ],
+    "answer": 0,
+    "explanation": "Temperature is proportional to the average microscopic translational kinetic energy of the particles. Hence, particles in a hotter substance move with greater average speed than particles in a cooler substance.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-sa-01",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Write the mathematical equations for the first law of thermodynamics (ΔU = Q - W) for the following processes: A) Isochoric process, B) Isobaric process, C) Isolated process.",
+    "options": [
+      "A: ΔU = Q; B: ΔU = Q - PΔV; C: ΔU = 0",
+      "A: ΔU = -W; B: ΔU = Q; C: ΔU = Q - W",
+      "A: ΔU = Q - PΔV; B: ΔU = Q; C: ΔU = 0",
+      "A: ΔU = 0; B: ΔU = -PΔV; C: ΔU = Q"
+    ],
+    "answer": 0,
+    "explanation": "1) Isochoric process (constant volume): ΔV = 0 ⟹ W = 0, so ΔU = Q. 2) Isobaric process (constant pressure): W = PΔV, so ΔU = Q - PΔV. 3) Isolated process: No heat exchange or work done (Q = 0, W = 0), so ΔU = 0 (internal energy is constant).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-sa-02",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Electrical resistivity of a conductor depends on __________ and __________.",
+    "options": [
+      "the nature of the material, temperature",
+      "length, cross-sectional area",
+      "voltage, current",
+      "shape, volume"
+    ],
+    "answer": 0,
+    "explanation": "Electrical resistivity (ρ) is an intensive material property that depends fundamentally on the composition/nature of the material and its temperature. Resistance (R) depends on dimensions (length and area), but resistivity does not.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-sa-03",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "The maximum displacement of a vibrating body from its mean position is called __________.",
+    "options": [
+      "Amplitude",
+      "Wavelength",
+      "Frequency",
+      "Period"
+    ],
+    "answer": 0,
+    "explanation": "Amplitude is defined as the maximum displacement of an oscillating or vibrating object from its central equilibrium (mean) position.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-sa-04",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "__________ is the temperature value where the degree Fahrenheit and Celsius scales meet.",
+    "options": [
+      "-40°",
+      "0°",
+      "-32°",
+      "40°"
+    ],
+    "answer": 0,
+    "explanation": "Using the conversion formula °F = (9/5)°C + 32, equating °F = °C = T gives T = 1.8T + 32 ⟹ -0.8T = 32 ⟹ T = -40°. Thus, -40 °C = -40 °F.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-sa-05",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "__________ is a disturbance from equilibrium condition that propagates carrying energy and momentum through space without the transport of matter.",
+    "options": [
+      "A wave",
+      "Heat",
+      "Electric current",
+      "Mechanical force"
+    ],
+    "answer": 0,
+    "explanation": "A wave is a disturbance from an equilibrium state that travels through a medium or space, transmitting energy and momentum without transferring matter.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-qa-01",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Which of the following correctly states the Zeroth Law of Thermodynamics?",
+    "options": [
+      "If two bodies are each in thermal equilibrium with a third body, they are in thermal equilibrium with each other.",
+      "The total energy of an isolated system remains constant in all thermodynamic processes.",
+      "Heat cannot spontaneously flow from a colder body to a warmer body without external work.",
+      "The entropy of a perfect crystal approaches zero as the absolute temperature approaches zero."
+    ],
+    "answer": 0,
+    "explanation": "The Zeroth Law of Thermodynamics establishes the concept of temperature: if bodies A and B are separately in thermal equilibrium with body C, then A and B are in thermal equilibrium with each other.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-qa-02",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Which of the following sets of statements correctly describes the fundamental characteristics of Simple Harmonic Motion (SHM)?",
+    "options": [
+      "Restoring force is directly proportional to displacement; acceleration is directed toward equilibrium; period is independent of amplitude.",
+      "Restoring force is inversely proportional to displacement; acceleration is constant; velocity is always maximum at extreme positions.",
+      "Motion is non-periodic; restoring force acts in the direction of displacement; acceleration varies inversely with time.",
+      "Total energy fluctuates randomly; acceleration is zero at extremes; period depends directly on amplitude."
+    ],
+    "answer": 0,
+    "explanation": "Defining features of SHM: 1) Restoring force and acceleration are directly proportional to displacement (F = -kx, a = -ω²x); 2) Acceleration is always directed towards the equilibrium position; 3) Periodic motion with constant frequency/period independent of amplitude.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-qa-03",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Which of the following lists key defining characteristics of mechanical waves?",
+    "options": [
+      "They transmit energy and momentum without transferring matter, satisfy v = f·λ, and exhibit reflection, refraction, and interference.",
+      "They transport mass across long distances, propagate only in a vacuum, and always travel at the speed of light.",
+      "They do not require a medium, have infinite wavelength, and are unaffected by boundaries.",
+      "They only transfer matter, violate energy conservation, and cannot undergo diffraction."
+    ],
+    "answer": 0,
+    "explanation": "Mechanical waves propagate energy and momentum through a material medium without transporting bulk matter, obey the wave equation v = f·λ, and exhibit wave phenomena including reflection, refraction, diffraction, and interference.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-qa-04",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "What is the fundamental difference between heat capacity (C) and specific heat capacity (c)?",
+    "options": [
+      "Heat capacity (C = mc) is an extensive property for an entire object (J/K); specific heat capacity (c = C/m) is an intensive property per unit mass (J/kg·K).",
+      "Heat capacity applies only to liquids, whereas specific heat capacity applies only to gases.",
+      "Heat capacity is measured in J/(kg·K), while specific heat capacity is measured in Joules.",
+      "There is no difference; both terms represent the exact same physical property and units."
+    ],
+    "answer": 0,
+    "explanation": "Heat capacity C is the heat needed to raise the temperature of an entire object by 1 °C (extensive, J/K). Specific heat capacity c is the heat needed per unit mass of 1 kg to raise temperature by 1 °C (intensive, J/kg·K).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-wo-01",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "An insulated cup contains 75.0 g of water at 24.00 °C. A 26.00 g sample of metal at 82.25 °C is added. The final temperature of the water and metal is 28.34 °C. What is the specific heat capacity of the metal? (Use c_water = 4.186 J/g·°C)",
+    "options": [
+      "0.972 J/g·°C (or 972 J/kg·°C)",
+      "0.450 J/g·°C (or 450 J/kg·°C)",
+      "0.215 J/g·°C (or 215 J/kg·°C)",
+      "1.420 J/g·°C (or 1420 J/kg·°C)"
+    ],
+    "answer": 0,
+    "explanation": "By conservation of energy: Q_gained = Q_lost. Heat gained by water: Q_w = m_w · c_w · ΔT_w = 75.0 g × 4.186 J/(g·°C) × (28.34 - 24.00) °C = 1362.54 J. Heat lost by metal: Q_m = m_m · c_m · ΔT_m = 26.00 g × c_m × (82.25 - 28.34) °C = 1401.66 · c_m. Equating Q_m = Q_w gives c_m = 1362.54 / 1401.66 = 0.972 J/(g·°C) = 972 J/(kg·°C).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-wo-02",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "The position of a mass m = 4 kg in simple harmonic motion is given by x(t) = 4 cos(2πt + π) m (where t is in seconds). Calculate: a) the frequency of the oscillation, and b) the velocity and acceleration at t = 0 s.",
+    "options": [
+      "a) f = 1 Hz; b) v = 0 m/s, a = +16π² m/s² (≈ +157.9 m/s²)",
+      "a) f = 2 Hz; b) v = -8π m/s, a = 0 m/s²",
+      "a) f = 0.5 Hz; b) v = +8π m/s, a = -16π² m/s²",
+      "a) f = 1 Hz; b) v = 4 m/s, a = 16 m/s²"
+    ],
+    "answer": 0,
+    "explanation": "Given x(t) = A cos(ωt + φ) with A = 4 m, ω = 2π rad/s, φ = π rad. a) Frequency f = ω / (2π) = (2π) / (2π) = 1 Hz. b) Velocity v(t) = -Aω sin(ωt + φ) = -8π sin(2πt + π). At t = 0: v(0) = -8π sin(π) = 0 m/s. Acceleration a(t) = -ω² x(t) = -(2π)² [4 cos(2πt + π)] = -16π² cos(2πt + π). At t = 0: a(0) = -16π² cos(π) = -16π²(-1) = +16π² m/s² ≈ +157.9 m/s².",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-wo-03",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "Consider the circuit shown with a 9 V battery in series with a 5 kΩ resistor, connected to a network with 6 kΩ, 8 kΩ, 5 kΩ, and 20 kΩ resistors (where k stands for kilo-ohm). Find: i) the total equivalent resistance of the circuit, and ii) the current flowing through the battery.",
+    "options": [
+      "i) R_total = 9 kΩ (9000 Ω); ii) I = 1.0 mA (0.001 A)",
+      "i) R_total = 12 kΩ; ii) I = 0.75 mA",
+      "i) R_total = 15 kΩ; ii) I = 0.60 mA",
+      "i) R_total = 6 kΩ; ii) I = 1.5 mA"
+    ],
+    "answer": 0,
+    "explanation": "Working from right to left: 1) Parallel branch: 5 kΩ || 20 kΩ = (5 × 20) / (5 + 20) = 4 kΩ. 2) In series with 8 kΩ: 8 kΩ + 4 kΩ = 12 kΩ. 3) In parallel with 6 kΩ: 6 kΩ || 12 kΩ = (6 × 12) / (6 + 12) = 4 kΩ. 4) In series with battery resistor 5 kΩ: R_total = 5 kΩ + 4 kΩ = 9 kΩ. ii) Battery current: I = V / R_total = 9 V / 9,000 Ω = 1.0 mA (0.001 A).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2021-final-wo-04",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "General Physics",
+    "question": "In a multi-loop circuit, a 7.00 Ω resistor and 15.0 V battery are in the top branch, a 5.00 Ω resistor and ammeter reading 2.00 A are in the middle branch, and a 2.00 Ω resistor and battery ε are in the bottom branch. Currents I_1 (from top) and I_2 (from bottom) enter the middle junction. Find I_1, I_2, and ε.",
+    "options": [
+      "I_1 = 0.714 A (5/7 A), I_2 = 1.286 A (9/7 A), ε = 12.57 V (≈ 12.6 V)",
+      "I_1 = 1.00 A, I_2 = 1.00 A, ε = 10.0 V",
+      "I_1 = 0.50 A, I_2 = 1.50 A, ε = 15.0 V",
+      "I_1 = 1.25 A, I_2 = 0.75 A, ε = 14.2 V"
+    ],
+    "answer": 0,
+    "explanation": "Applying Kirchhoff's rules: 1) Junction rule at middle-left node: I_1 + I_2 = 2.00 A. 2) Top loop: 15.0 V - (7.00 Ω)·I_1 - (5.00 Ω)·(2.00 A) = 0 ⟹ 15.0 - 7·I_1 - 10.0 = 0 ⟹ 7·I_1 = 5.0 ⟹ I_1 = 5/7 A ≈ 0.714 A. 3) Junction calculation: I_2 = 2.00 - 5/7 = 9/7 A ≈ 1.286 A. 4) Bottom loop: ε - (2.00 Ω)·I_2 - (5.00 Ω)·(2.00 A) = 0 ⟹ ε = 10.0 + 2·(9/7) = 12.571 V ≈ 12.6 V.",
+    "category": "Final Exam"
   }
 ]
