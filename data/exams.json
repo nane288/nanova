@@ -16362,5 +16362,795 @@
     "answer": 0,
     "explanation": "Applying Kirchhoff's rules: 1) Junction rule at middle-left node: I_1 + I_2 = 2.00 A. 2) Top loop: 15.0 V - (7.00 Ω)·I_1 - (5.00 Ω)·(2.00 A) = 0 ⟹ 15.0 - 7·I_1 - 10.0 = 0 ⟹ 7·I_1 = 5.0 ⟹ I_1 = 5/7 A ≈ 0.714 A. 3) Junction calculation: I_2 = 2.00 - 5/7 = 9/7 A ≈ 1.286 A. 4) Bottom loop: ε - (2.00 Ω)·I_2 - (5.00 Ω)·(2.00 A) = 0 ⟹ ε = 10.0 + 2·(9/7) = 12.571 V ≈ 12.6 V.",
     "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-tf-01",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The spatial distribution of temperature in Ethiopia is primarily determined by latitude.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "Because Ethiopia lies near the equator (between 3°N and 15°N), temperature variations are predominantly determined by altitude (relief and elevation) rather than latitude.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-tf-02",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The main wildlife concentrations of Ethiopia occur in its Northern and Western parts.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "The major concentrations of wildlife in Ethiopia are found in the Southern, South-Western, and South-Eastern lowlands and river basins (such as Omo, Mago, Gambella, and Bale), whereas the Northern highlands have suffered extensive deforestation and habitat destruction.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-tf-03",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "All demographic rates and life expectancies are high and low for developed countries respectively.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "Developed nations are characterized by LOW demographic rates (low birth rates, low death rates, and low growth) and HIGH life expectancies, which is the exact reverse of the statement.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-tf-04",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Weathering refers to the process of disintegrating and transforming the parent material into soil.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "Weathering is the physical disintegration and chemical decomposition of rocks and minerals in situ at or near Earth's surface, providing parent regolith material for soil formation.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-tf-05",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Tropical temperature has full spatial coverage in Ethiopian lowlands.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "The Ethiopian peripheral lowlands (Kolla and Bereha zones below 1,500 meters) experience high tropical temperatures throughout the entire year.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mt-01",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "In Ethiopian agro-ecological classification, the 'Wurch' (Alpine) zone is characterized by:",
+    "options": [
+      "The length of growing period is between 211 and 365 days (elevation > 3,300 m)",
+      "Elevation range between 500 m and 1,500 m above sea level",
+      "The length of growing period is between zero and 45 days",
+      "Elevation ranges between 1,500 m and 2,300 m above sea level"
+    ],
+    "answer": 0,
+    "explanation": "Wurch represents the cold alpine zone above 3,300 m with mean annual temperatures below 10°C and an extended growing period (211 to 365 days).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mt-02",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "In Ethiopian agro-ecological classification, the 'Kola' (Warm semiarid) zone is characterized by:",
+    "options": [
+      "Elevation range between 500 m and 1,500 m above sea level",
+      "Elevation ranges between 2,300 m and 3,300 m above sea level",
+      "Elevation ranges between 1,500 m and 2,300 m above sea level",
+      "The length of growing period is between zero and 45 days"
+    ],
+    "answer": 0,
+    "explanation": "The Kola zone encompasses warm, semiarid lowlands situated between 500 m and 1,500 m above sea level, with mean annual temperatures between 20°C and 27°C.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mt-03",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "In Ethiopian agro-ecological classification, the 'Woyna Dega' (Temperate) zone is characterized by:",
+    "options": [
+      "Elevation ranges between 1,500 m and 2,300 m above sea level",
+      "Elevation ranges between 2,300 m and 3,300 m above sea level",
+      "Elevation range between 500 m and 1,500 m above sea level",
+      "The length of growing period is between zero and 45 days"
+    ],
+    "answer": 0,
+    "explanation": "Woyna Dega corresponds to the mid-altitude temperate plateau (1,500 m to 2,300 m), representing the most agriculturally productive and densely settled zone in Ethiopia.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mt-04",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "In Ethiopian agro-ecological classification, the 'Dega' (Cool temperate) zone is characterized by:",
+    "options": [
+      "Elevation ranges between 2,300 m and 3,300 m above sea level",
+      "Elevation ranges between 1,500 m and 2,300 m above sea level",
+      "Elevation range between 500 m and 1,500 m above sea level",
+      "The length of growing period is between zero and 45 days"
+    ],
+    "answer": 0,
+    "explanation": "The Dega zone lies between 2,300 m and 3,300 m, with cool temperatures (10°C to 15°C) and reliable rainfall suitable for barley, wheat, and livestock.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mt-05",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "In Ethiopian agro-ecological classification, the 'Bereha' (Hot arid) zone is characterized by:",
+    "options": [
+      "The length of growing period is between zero and 45 days (elevation < 500 m)",
+      "Elevation ranges between 2,300 m and 3,300 m above sea level",
+      "Elevation ranges between 1,500 m and 2,300 m above sea level",
+      "The length of growing period is between 211 and 365 days"
+    ],
+    "answer": 0,
+    "explanation": "Bereha comprises the hot, arid desert lowlands below 500 m (e.g. Afar and Danakil Depression) where temperatures exceed 27°C and growing periods are very brief (0 to 45 days).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-fb-01",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Assume that Mr. 'X' is a resident of Harar city. He has left for field work to Bale at the time of national census and is counted there. Such enumeration system refers to ________.",
+    "options": [
+      "De facto census enumeration",
+      "De jure census enumeration",
+      "Vital registration system",
+      "Continuous register system"
+    ],
+    "answer": 0,
+    "explanation": "In a 'de facto' enumeration method, individuals are recorded wherever they are physically situated at the exact reference time of the census, regardless of their habitual or permanent residence.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-fb-02",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "________ is an astronomical event that occurs when the direct rays of the sun strike the earth right at the equator (its center).",
+    "options": [
+      "Equinox",
+      "Solstice",
+      "Aphelion",
+      "Perihelion"
+    ],
+    "answer": 0,
+    "explanation": "An equinox (occurring around March 21 and September 23) is when the sun crosses the celestial equator, resulting in nearly equal periods of day and night worldwide.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-fb-03",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "________ refers to erosion by mechanical friction due to water containing sediment or wind carrying debris against rock surfaces.",
+    "options": [
+      "Abrasion (corrasion)",
+      "Attrition",
+      "Hydraulic action",
+      "Solution (corrosion)"
+    ],
+    "answer": 0,
+    "explanation": "Abrasion (corrasion) is the mechanical grinding, polishing, and wearing away of rock surfaces by particles suspended in moving water, ice, or wind.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-fb-04",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "________ refers to the process of weakening and subsequent disintegration of rock by plants, animals, and microbes.",
+    "options": [
+      "Biological weathering",
+      "Chemical weathering",
+      "Physical weathering",
+      "Hydrolysis"
+    ],
+    "answer": 0,
+    "explanation": "Biological (organic) weathering is the breakdown of rock minerals driven by the physical or chemical actions of organisms like plant roots, burrowing fauna, fungi, and lichens.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-fb-05",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "A geographic boundary or elevated ridge that separates one drainage basin from another is called a ________.",
+    "options": [
+      "Drainage divide (watershed)",
+      "Floodplain",
+      "River delta",
+      "Confluence"
+    ],
+    "answer": 0,
+    "explanation": "A drainage divide (or watershed) is an elevated topographic ridge that demarcates the boundary between adjacent drainage basins, directing precipitation runoff into different river systems.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-01",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong statement about adiabatic temperature changes:",
+    "options": [
+      "The temperature change of a parcel of air occurs due to heat exchange with the atmosphere.",
+      "The process does not involve heat exchange from outside sources.",
+      "The temperature change of a parcel of air is resulted due to expansion and compression.",
+      "The heating and cooling processes occur due to compression and expansion respectively."
+    ],
+    "answer": 0,
+    "explanation": "Adiabatic changes occur without any heat transfer between the rising or sinking air parcel and the surrounding environment (Q = 0). The temperature change is caused solely by expansion or compression.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-02",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one of the following is NOT true about the summer (Kiremt) rainfall season in Ethiopia?",
+    "options": [
+      "Most of the rain is caused by south easterly winds.",
+      "The ITCZ is in the northern hemisphere.",
+      "High pressure cell develops on Atlantic and Indian oceans.",
+      "It has a wide spatial coverage in the country."
+    ],
+    "answer": 0,
+    "explanation": "During summer (Kiremt), rainfall over Ethiopia is primarily caused by moisture-laden Equatorial Westerlies (South-Westerly winds) from the Atlantic Ocean and Congo Basin, not South-Easterlies.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-03",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong combination of major rain-bearing winds and their respective seasons in Ethiopia:",
+    "options": [
+      "North Easterlies ──────> Summer rainfall",
+      "North Easterlies ──────> Winter rainfall",
+      "South Easterlies ──────> Autumn and spring rainfall",
+      "South Westerlies & South Easterlies ──────> Summer rainfall"
+    ],
+    "answer": 0,
+    "explanation": "North Easterly winds (Northeast trade winds) blow during the winter (Bega) season from continental Asia, bringing cool and dry weather to most of Ethiopia (with rain only to the Red Sea coastal plain), never summer rainfall.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-04",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "________ refers to the process of assisting the normalization of a forest ecosystem that has been degraded, damaged, or destroyed.",
+    "options": [
+      "Rehabilitation",
+      "Sustainable forest management",
+      "Protection",
+      "None of the above"
+    ],
+    "answer": 0,
+    "explanation": "Forest rehabilitation is the process of assisting the recovery and restoration of an ecological system that has been degraded or destroyed to re-establish ecological integrity and services.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-05",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the correct statement regarding population study in Geography:",
+    "options": [
+      "Spatial distribution is the major emphasis of population study in Geography.",
+      "Effective socioeconomic development and administration does not necessarily depend on population data.",
+      "Population data has nothing to do with establishing voting district boundaries.",
+      "Demography cannot necessarily influence production, distribution, and consumption."
+    ],
+    "answer": 0,
+    "explanation": "Geographical study of population uniquely focuses on the spatial distribution, variations in density, and areal organization of human populations across space.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-06",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Inaccurate population data observed during a census could NOT be attributed to:",
+    "options": [
+      "Surveying all areas, be it accessible or inaccessible",
+      "Suspicion and ignorance of the census",
+      "Poor technical skills of the enumerators",
+      "Unstable administration"
+    ],
+    "answer": 0,
+    "explanation": "Surveying all areas (both accessible and remote) improves completeness and data quality; it is not a reason for census error or inaccuracy.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-07",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong statement among the given alternatives regarding population dynamics:",
+    "options": [
+      "International migration significantly determines population growth in Ethiopia.",
+      "Population growth or decline is the cumulative effect of fertility, mortality, and migration.",
+      "Fertility and mortality remain the principal determinants of population growth in Ethiopia.",
+      "Many developing countries are characterized by a higher proportion of youth."
+    ],
+    "answer": 0,
+    "explanation": "International migration has an almost negligible impact on Ethiopia's national population growth rate; natural increase (births minus deaths) is the primary governing factor.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-08",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one is false about demographic variables in Ethiopia?",
+    "options": [
+      "Women have lower life expectancy than men.",
+      "Urban areas have lower birth and death rates than rural areas.",
+      "Rural women have a higher numbers of children than urban women.",
+      "Both fertility and mortality are generally showing a declining trend."
+    ],
+    "answer": 0,
+    "explanation": "In Ethiopia (and globally), female life expectancy at birth is higher than male life expectancy (approx. 67 years vs. 63 years). Thus, statement A is false.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-09",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which of the following drainage systems in Ethiopia is the largest in terms of annual flow of water and area coverage?",
+    "options": [
+      "Western Drainage System",
+      "Southeastern Drainage System",
+      "Rift Valley Drainage System",
+      "Inland Drainage System"
+    ],
+    "answer": 0,
+    "explanation": "The Western Drainage System accounts for roughly 40% of the country's land area and carries roughly 60% to 70% of Ethiopia's total annual water discharge.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-10",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which one of the following topographical structures determines the general patterns of major Ethiopian river basins?",
+    "options": [
+      "All of the above",
+      "The inward-sloping of the Western and South eastern plateaus",
+      "The outward-sloping escarpments of the rift valley",
+      "The faults and joints of most river courses"
+    ],
+    "answer": 0,
+    "explanation": "Ethiopian river basins follow drainage directions shaped jointly by the inward/outward sloping plateaus, rift valley fault lines and fractures, and the outward-facing escarpments.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-11",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong statement about the characteristics of the Western Drainage System:",
+    "options": [
+      "It doesn't deliver majority of the annual water discharge of the country.",
+      "All rivers from this system do not flow westward.",
+      "All rivers in this system do not terminate at Mediterranean sea.",
+      "Most of the catchment area is rough and undulated resulted by erosion."
+    ],
+    "answer": 0,
+    "explanation": "The Western Drainage System delivers the vast majority (about 60%+) of the country's total annual runoff. Therefore, stating that it does not deliver the majority is false.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-12",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Identify the wrong choice about the characteristics of majority of Ethiopian rivers:",
+    "options": [
+      "Navigation",
+      "Highland origin",
+      "Seasonal fluctuation",
+      "Rapids and waterfalls"
+    ],
+    "answer": 0,
+    "explanation": "Almost all Ethiopian rivers are not navigable due to steep gradients, rapids, waterfalls, and seasonal discharge fluctuations (only a short stretch of the Baro River is navigable during high water).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-13",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which of the following is NOT a major problem associated with the use of Ethiopian rivers for hydroelectric power generation?",
+    "options": [
+      "Steep profile",
+      "Seasonal flow fluctuations",
+      "Climate change and variability",
+      "Sedimentation"
+    ],
+    "answer": 0,
+    "explanation": "A steep river profile provides high gravitational head and fast-moving water, which is a major advantage for hydroelectric power generation rather than an operational problem.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-14",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The most southerly circle of latitude on the earth at which the sun appears directly overhead at its culmination is named as:",
+    "options": [
+      "The Tropic of Capricorn",
+      "The Tropic of Cancer",
+      "The Antarctic Circle",
+      "The Arctic Circle"
+    ],
+    "answer": 0,
+    "explanation": "The Tropic of Capricorn (23.5° S) is the southernmost latitude where the sun can be directly overhead at noon (during the December solstice).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-15",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which of the following is NOT a determining factor (control) of Weather and Climate?",
+    "options": [
+      "Temperature",
+      "Ocean current",
+      "Relief",
+      "Nature of surface"
+    ],
+    "answer": 0,
+    "explanation": "Temperature is an ELEMENT of weather and climate, whereas relief, ocean currents, latitude, and surface reflectivity are controlling FACTORS.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-16",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Which of the following happens during March 21st?",
+    "options": [
+      "Lengths of day and night is the same across all hemispheres",
+      "Direct rays of sun strikes tropic of Cancer",
+      "The sun is overhead at the Tropic of Capricorn",
+      "The longest night of the year is in the northern hemisphere"
+    ],
+    "answer": 0,
+    "explanation": "March 21st marks the Vernal Equinox when the sun is overhead at the equator, resulting in equal 12-hour day and 12-hour night everywhere on Earth.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-17",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "One doesn't belong to the highland soil of Ethiopia?",
+    "options": [
+      "Yermosols",
+      "Nitosol",
+      "Vertisol",
+      "Acrisols"
+    ],
+    "answer": 0,
+    "explanation": "Yermosols (and Xerosols) are arid/desert soils found in lowlands (e.g. Afar and Ogaden), whereas Nitosols, Vertisols, and Acrisols are highland soils.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-18",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The spatial distribution of vegetation in Ethiopia is highly controlled by:",
+    "options": [
+      "Altitude",
+      "Distance from the Sea",
+      "Ocean Current",
+      "Latitude"
+    ],
+    "answer": 0,
+    "explanation": "Altitudinal variation dictates temperature and moisture zones in Ethiopia, which directly governs the types and distribution of natural vegetation.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-19",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The most continuous, accurate, and reliable source of population vital statistics is:",
+    "options": [
+      "Vital registration",
+      "Census method",
+      "Sample survey method",
+      "All of the above"
+    ],
+    "answer": 0,
+    "explanation": "A continuous vital registration system records demographic events (births, deaths, marriages) as they happen in real time, making it the most accurate source of vital statistics.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-20",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "In Ethiopia, birth rates remain higher than death rates due to all of the following EXCEPT:",
+    "options": [
+      "Relative low infant and child mortality rates",
+      "Early marriage",
+      "Lack of population awareness",
+      "Parents consideration of children as assets"
+    ],
+    "answer": 0,
+    "explanation": "Historically high infant mortality creates an incentive for higher fertility (replacement effect). Infant mortality in Ethiopia is still relatively high, not low, so relatively low infant mortality is not a cause of high birth rates.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-21",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The inclusion of all persons during the census refers to:",
+    "options": [
+      "Universality",
+      "Simultaneity",
+      "Government sponsorship",
+      "Periodicity"
+    ],
+    "answer": 0,
+    "explanation": "Universality means that a census must enumerate every person present within the designated geographic territory without omission.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-22",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Ethiopia has the largest extent of Afro-Alpine & Sub-Afro Alpine habitats. This is mainly due to its:",
+    "options": [
+      "Altitudinal extension",
+      "Latitudinal extension",
+      "Geographical position",
+      "Available intensive plain area"
+    ],
+    "answer": 0,
+    "explanation": "Ethiopia contains over 80% of all land in Africa above 3,000 meters elevation, resulting in the largest extent of Afro-Alpine environments on the continent.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-23",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Flamingos & Pelicans mainly belong to:",
+    "options": [
+      "Abijata and Shalla National parks",
+      "Mago, Omo and Gambella National parks",
+      "Kafeta Shiraro and Maze National parks",
+      "Lake Abaya and Nech Sar National parks"
+    ],
+    "answer": 0,
+    "explanation": "The alkaline Rift Valley lakes of Abijata and Shalla National Park host millions of Lesser and Greater Flamingos and Great White Pelicans.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-24",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "In which drainage system do we find the Grand Renaissance Dam (GERD)?",
+    "options": [
+      "The Western Drainage Systems",
+      "The Southeastern Drainage Systems",
+      "The Rift Valley Drainage System",
+      "The Lake region"
+    ],
+    "answer": 0,
+    "explanation": "The GERD is built on the Abay (Blue Nile) River in Benishangul-Gumuz Region, which belongs to the Western Drainage System.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-25",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "All are the implications of having a highest proportion of youth population EXCEPT:",
+    "options": [
+      "Encourage the capacity to save at both household and national levels",
+      "Adverse effect on capital formation and investment",
+      "Heavy reliance on subsistence life and imposing burden on the working group",
+      "Budget re-direction to fulfill social services than productive investments"
+    ],
+    "answer": 0,
+    "explanation": "A high young-age dependency ratio decreases savings capacity because household and national income is expended immediately on consumption, schooling, and healthcare.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-26",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The endless, permanent and compulsory process of recording demographic, social and other related data refers to:",
+    "options": [
+      "Vital events registration",
+      "Census",
+      "Sample survey",
+      "De facto enumeration system"
+    ],
+    "answer": 0,
+    "explanation": "Vital events registration is the continuous, permanent, and compulsory recording of vital statistics such as births, deaths, and marriages.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-27",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "All lakes in Ethiopia are resulted from the tectonic processes of:",
+    "options": [
+      "Cenozoic era",
+      "Mesozoic era",
+      "Precambrian era",
+      "Paleozoic era"
+    ],
+    "answer": 0,
+    "explanation": "Rifting and volcanism during the Tertiary and Quaternary periods of the Cenozoic era created the Ethiopian Rift Valley and tectonic lake basins.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-28",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The largest rivers in volume and catchment areas respectively are:",
+    "options": [
+      "Abay and Wabeshebelle",
+      "Abay and Baro",
+      "Wabeshebelle and Abay",
+      "Baro and Abay"
+    ],
+    "answer": 0,
+    "explanation": "Abay has the highest annual water runoff volume (~54.5 billion m³), while Wabeshebelle has the largest drainage basin area (~202,697 km²).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-mc-29",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "The largest and the shallowest rift valley lakes respectively are:",
+    "options": [
+      "Abaya and Ziway",
+      "Shalla and Abijata",
+      "Shalla and Ziway",
+      "Abijata and Ziway"
+    ],
+    "answer": 0,
+    "explanation": "Lake Abaya is the largest Rift Valley lake by surface area (~1,162 km²), and Lake Ziway is the shallowest Rift Valley lake (mean depth ~2.5-4 m).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-wo-01",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Based on the given data (Total mid-year population: 65,694,082; Total births during the year: 2,018,846), what is the Crude Birth Rate (CBR)?",
+    "options": [
+      "30.7 per 1,000",
+      "307 per 1,000",
+      "134.6 per 1,000",
+      "20.7 per 1,000"
+    ],
+    "answer": 0,
+    "explanation": "CBR = (Total Live Births / Total Mid-Year Population) × 1,000 = (2,018,846 / 65,694,082) × 1,000 = 30.73 ≈ 30.7 per 1,000.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-wo-02",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Based on the given data (Total births during the year: 2,018,846; Total women 15-49 years: 15,000,000), what is the General Fertility Rate (GFR)?",
+    "options": [
+      "134.6 per 1,000",
+      "307 per 1,000",
+      "30.7 per 1,000",
+      "13.46 per 1,000"
+    ],
+    "answer": 0,
+    "explanation": "GFR = (Total Live Births / Total Women aged 15-49) × 1,000 = (2,018,846 / 15,000,000) × 1,000 = 134.59 ≈ 134.6 per 1,000.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-wo-03",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Based on the given population age composition (0-14 years: 48.9%, 15-64 years: 45.7%, 65+ years: 5.4%), what is the Age Dependency Ratio (ADR)?",
+    "options": [
+      "118.8%",
+      "109.6%",
+      "100.7%",
+      "110.4%"
+    ],
+    "answer": 0,
+    "explanation": "ADR = [(Pop 0-14 + Pop 65+) / Pop 15-64] × 100 = [(48.9% + 5.4%) / 45.7%] × 100 = (54.3 / 45.7) × 100 = 118.82% ≈ 118.8%.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-wo-04",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Based on the given data (Infant deaths during the year: 250,000; Total births during the year: 2,018,846), what is the Infant Mortality Rate (IMR)?",
+    "options": [
+      "123.8 per 1,000 live births",
+      "113.5 per 1,000 live births",
+      "128.6 per 1,000 live births",
+      "188.7 per 1,000 live births"
+    ],
+    "answer": 0,
+    "explanation": "IMR = (Infant Deaths under 1 year / Total Live Births) × 1,000 = (250,000 / 2,018,846) × 1,000 = 123.83 ≈ 123.8 per 1,000 live births.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-wo-05",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Based on the given data (Total population: 65,694,082; Arable land: 500,000 km²), what is the Physiological Density?",
+    "options": [
+      "131.4 persons/km²",
+      "113.3 persons/km²",
+      "122.4 persons/km²",
+      "112.4 persons/km²"
+    ],
+    "answer": 0,
+    "explanation": "Physiological Density = Total Population / Total Arable Land Area = 65,694,082 / 500,000 km² = 131.39 ≈ 131.4 persons/km².",
+    "category": "Final Exam"
+  },
+  {
+    "id": "geog-hu-2024-final-wo-06",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Geography of Ethiopia and the Horn",
+    "question": "Based on the given data (Total births: 2,018,846; Total deaths: 976,860; Mid-year population: 65,694,082), what is the Rate of Natural Increase (RNI)?",
+    "options": [
+      "1.6%",
+      "3.6%",
+      "3.24%",
+      "2.5%"
+    ],
+    "answer": 0,
+    "explanation": "Natural Increase = Total Births - Total Deaths = 2,018,846 - 976,860 = 1,041,986. Rate of Natural Increase = (1,041,986 / 65,694,082) × 100% = 1.586% ≈ 1.6%.",
+    "category": "Final Exam"
   }
 ]
