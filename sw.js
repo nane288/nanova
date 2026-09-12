@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nanova-core-v11';
+const CACHE_NAME = 'nanova-core-v12';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
