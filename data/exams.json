@@ -15529,5 +15529,390 @@
     ],
     "answer": 3,
     "explanation": "Psychopathology is the scientific study of psychological disorders, including their symptoms, causes (etiology), and manifestation."
+  },
+  {
+    "id": "phys-hu-2022-final-mc-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Choose the wrong statement(s) among the following regarding phase transition:",
+    "options": [
+      "Temperature remains constant.",
+      "Heat is either released or absorbed.",
+      "Temperature can change.",
+      "Latent heat of fusion causes a substance to change from liquid to gas.",
+      "C and D"
+    ],
+    "answer": 4,
+    "explanation": "During a phase transition, temperature remains constant (making C false). Additionally, latent heat of fusion is responsible for the phase transition between solid and liquid (melting/freezing), whereas latent heat of vaporization causes liquid to gas transition (making D false). Therefore, both statements C and D are wrong.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Which of the following heat transfer mechanisms takes place through the mass flow of fluid?",
+    "options": [
+      "Convection",
+      "Conduction",
+      "Radiation",
+      "None of them"
+    ],
+    "answer": 0,
+    "explanation": "Convection is the process of heat transfer through fluids (liquids or gases) caused by the macroscopic bulk movement or mass flow of the fluid itself.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Heat is the flow of energy between systems in thermal contact due to difference in",
+    "options": [
+      "internal energy.",
+      "temperature.",
+      "thermal expansion.",
+      "heat capacity."
+    ],
+    "answer": 1,
+    "explanation": "Heat is energy in transit between systems or between a system and its environment solely driven by a temperature difference.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-04",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "In an adiabatic process, an increase in internal energy of a system is equal to the",
+    "options": [
+      "heat absorbed by the system.",
+      "work done by the system.",
+      "heat released from the system.",
+      "work done on the system."
+    ],
+    "answer": 3,
+    "explanation": "In an adiabatic process, no heat is exchanged (Q = 0). By the first law of thermodynamics, ΔU = Q + W_on = W_on (or ΔU = -W_by). Hence, an increase in internal energy is equal to the work done on the system.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-05",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "A simple pendulum with a length of 4 m oscillates on the surface of unknown planet. What is the surface gravity on the planet if the period of oscillations is 4 s?",
+    "options": [
+      "3.14 m/s²",
+      "6.28 m/s²",
+      "9.42 m/s²",
+      "9.86 m/s²"
+    ],
+    "answer": 3,
+    "explanation": "Period T = 2π√(L/g). Rearranging for g gives g = 4π²L / T² = 4π²(4) / (4²) = 4π²(4)/16 = π² ≈ 9.8696 m/s² ≈ 9.86 m/s².",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-06",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "If the amplitude of a simple harmonic motion is tripled, what will be the maximum velocity of the oscillation if no other changes made to the motion?",
+    "options": [
+      "Doubled",
+      "Tripled",
+      "Quadrupled",
+      "None of the above"
+    ],
+    "answer": 1,
+    "explanation": "The maximum velocity in simple harmonic motion is v_max = ωA. Because v_max is directly proportional to amplitude A, tripling the amplitude triples the maximum velocity.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-07",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "According to the Doppler effect, if a sound source and an observer are moving away from each other with velocities v_s and v_o, respectively, then the observed frequency f_o and the source frequency f_s are related as (denoting the speed of sound by v):",
+    "options": [
+      "f_o = [(v + v_o) / (v - v_s)] f_s",
+      "f_o = [(v + v_o) / (v + v_s)] f_s",
+      "f_o = [(v - v_o) / (v - v_s)] f_s",
+      "f_o = [(v - v_o) / (v + v_s)] f_s"
+    ],
+    "answer": 3,
+    "explanation": "When the observer moves away from the source, the relative speed is reduced, giving (v - v_o) in the numerator. When the source moves away from the observer, the wavelength increases, giving (v + v_s) in the denominator. Both effects decrease the observed frequency: f_o = [(v - v_o) / (v + v_s)] f_s.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-08",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "The magnetic flux through a loop of wire is maximum when the magnetic field lines are",
+    "options": [
+      "parallel to the loop's plane.",
+      "at 45° with respect to the loop's plane.",
+      "perpendicular to the loop's plane.",
+      "None of the above."
+    ],
+    "answer": 2,
+    "explanation": "Magnetic flux is given by Φ = B · A · cos(θ), where θ is the angle between the magnetic field vector and the normal to the surface area. When the field lines are perpendicular to the loop's plane, the normal is parallel to the field (θ = 0°), giving cos(0°) = 1, which maximizes the flux.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-09",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "If an inflated balloon contains a net charge of -0.016 nC, then the number of excess electrons on it will be",
+    "options": [
+      "1.0 × 10⁹",
+      "0.50 × 10⁸",
+      "1.0 × 10⁸",
+      "1.0 × 10⁷"
+    ],
+    "answer": 2,
+    "explanation": "The charge of one electron is -e = -1.6 × 10⁻¹⁹ C. Net charge Q = -0.016 nC = -1.6 × 10⁻¹¹ C. Number of excess electrons N = Q / (-e) = (-1.6 × 10⁻¹¹ C) / (-1.6 × 10⁻¹⁹ C) = 1.0 × 10⁸ electrons.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-10",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "What is the function of a diode?",
+    "options": [
+      "Acts as a current amplifier.",
+      "Acts as a switch.",
+      "Stores electric charge.",
+      "Allows the flow of current in both directions."
+    ],
+    "answer": 1,
+    "explanation": "A diode permits electrical current to flow easily in one direction (forward-biased) and prevents current flow in the opposite direction (reverse-biased), functioning essentially as an electronic one-way switch / rectifier.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-11",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Which of the following statement is correct about N-type semiconductors?",
+    "options": [
+      "The majority charge carriers are electrons.",
+      "The impurity added is a trivalent atom.",
+      "The majority charge carriers are holes.",
+      "B and C"
+    ],
+    "answer": 0,
+    "explanation": "In N-type semiconductors, the crystal is doped with pentavalent donor atoms (having 5 valence electrons), which provide free conduction electrons as the majority charge carriers (holes are minority carriers).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-12",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "One of the following materials are known to have the highest energy gap between the valence and conduction bands of their atoms:",
+    "options": [
+      "Insulators",
+      "Conductors",
+      "Semiconductors",
+      "None of the above"
+    ],
+    "answer": 0,
+    "explanation": "Insulators have a very large forbidden energy band gap (typically > 5 eV), which prevents electrons in the valence band from moving to the conduction band under normal conditions.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-13",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Among the three sections of transistors which one is heavily doped?",
+    "options": [
+      "Base",
+      "Emitter",
+      "Collector",
+      "All of the above"
+    ],
+    "answer": 1,
+    "explanation": "In a bipolar junction transistor, the emitter is heavily doped to supply/inject a large number of majority carriers into the base. The base is lightly doped and very thin, and the collector is moderately doped.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-mc-14",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Which one of the following logic gates give(s) the output as high only if all the inputs signals are high?",
+    "options": [
+      "NOT gate",
+      "AND gate",
+      "NAND gate",
+      "NOR gate"
+    ],
+    "answer": 1,
+    "explanation": "An AND gate gives a HIGH (1) output if and only if all of its input signals are HIGH (1). For any other combination with at least one LOW input, the output is LOW (0).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-sa-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "A gas is compressed at a constant pressure of 0.80 Pa from 0.09 m³ to 0.02 m³. In the process, 400 J of energy leaves from the gas in the form of heat. Then: A) work done on the gas is ________, and B) change in internal energy of the gas is ________.",
+    "options": [
+      "A: +0.056 J; B: -399.94 J",
+      "A: -0.056 J; B: +399.94 J",
+      "A: +5600 J; B: +5200 J",
+      "A: +400 J; B: -400 J"
+    ],
+    "answer": 0,
+    "explanation": "A) Work done on the gas: W_on = -P(V_f - V_i) = -0.80 Pa × (0.02 - 0.09) m³ = -0.80 × (-0.07) = +0.056 J. B) Change in internal energy: Since heat leaves the gas, Q = -400 J. Using ΔU = Q + W_on = -400 J + 0.056 J = -399.94 J (Note: If pressure was intended as 0.80 × 10⁵ Pa, W_on = +5600 J and ΔU = +5200 J).",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-sa-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "__________ is the amount of energy required to convert a unit mass of a solid into a liquid without any change in the temperature.",
+    "options": [
+      "Latent heat of fusion",
+      "Latent heat of vaporization",
+      "Specific heat capacity",
+      "Heat of sublimation"
+    ],
+    "answer": 0,
+    "explanation": "Latent heat of fusion (L_f) is the heat energy required to change 1 kg (unit mass) of a substance from the solid phase to the liquid phase at its melting point without a change in temperature.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-sa-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "If a simple harmonic oscillator takes 12.0 s to undergo five complete cycles, then the frequency of the oscillation is ________.",
+    "options": [
+      "0.417 Hz (or 5/12 Hz)",
+      "2.40 Hz",
+      "0.240 Hz",
+      "1.20 Hz"
+    ],
+    "answer": 0,
+    "explanation": "Period T = total time / number of cycles = 12.0 s / 5 = 2.40 s. Frequency f = 1 / T = 5 / 12.0 s ≈ 0.417 Hz.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-sa-04",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "The maximum displacement from its equilibrium position of a sinusoidal wave is known as __________.",
+    "options": [
+      "Amplitude",
+      "Wavelength",
+      "Phase constant",
+      "Crest"
+    ],
+    "answer": 0,
+    "explanation": "Amplitude is the maximum extent of a vibration or oscillation, measured from the position of equilibrium.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-sa-05",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Diodes have a low resistance when they are __________ biased and a very high resistance when they are __________ biased.",
+    "options": [
+      "forward, reverse",
+      "reverse, forward",
+      "unbiased, reverse",
+      "forward, zero"
+    ],
+    "answer": 0,
+    "explanation": "Under forward bias, the depletion layer shrinks, allowing high current with low resistance. Under reverse bias, the depletion layer widens, blocking current and offering high resistance.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-sa-06",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "__________ is the process of adding impurity to a pure semiconductor crystal to improve its conductivity.",
+    "options": [
+      "Doping",
+      "Diffusion",
+      "Ionization",
+      "Recombination"
+    ],
+    "answer": 0,
+    "explanation": "Doping is the deliberate introduction of impurities into an intrinsic semiconductor for the purpose of modulating its electrical, optical, and structural properties.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-sa-07",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "In the standard circuit symbol of an NPN bipolar junction transistor (BJT), the arrow on the emitter terminal points:",
+    "options": [
+      "Outward (away from the base)",
+      "Inward (toward the base)",
+      "Toward the collector",
+      "None of the above"
+    ],
+    "answer": 0,
+    "explanation": "In an NPN transistor, the arrowhead is on the emitter terminal and points outward (away from the base, indicating the direction of conventional current: 'Not Pointing iN'). In a PNP transistor, it points inward toward the base.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-wo-01",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "Find the amount of heat required to convert 500 g of ice at -10 °C into water at 20 °C? (Use L_f = 334 kJ/kg, c_ice = 2260 J/kg·°C and c_water = 4186 J/kg·°C)",
+    "options": [
+      "220.16 kJ (or 220,160 J)",
+      "178.30 kJ (or 178,300 J)",
+      "208.86 kJ (or 208,860 J)",
+      "262.02 kJ (or 262,020 J)"
+    ],
+    "answer": 0,
+    "explanation": "Mass m = 500 g = 0.5 kg. The process involves three steps: 1) Warming ice from -10 °C to 0 °C: Q1 = m · c_ice · ΔT = 0.5 kg × 2260 J/kg·°C × 10 °C = 11,300 J = 11.30 kJ. 2) Melting ice at 0 °C: Q2 = m · L_f = 0.5 kg × 334,000 J/kg = 167,000 J = 167.00 kJ. 3) Warming water from 0 °C to 20 °C: Q3 = m · c_water · ΔT = 0.5 kg × 4186 J/kg·°C × 20 °C = 41,860 J = 41.86 kJ. Total heat Q = Q1 + Q2 + Q3 = 11,300 + 167,000 + 41,860 = 220,160 J = 220.16 kJ.",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-wo-02",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "An object oscillates with simple harmonic motion along the x-axis. Its displacement as a function of time is x(t) = 2.0 cos(0.75π t - 0.25π) m, where t is in seconds and angles are in radians. Find: a) the amplitude, period and frequency of the motion; b) the displacement, velocity and acceleration of the object at t = 2.0 s.",
+    "options": [
+      "a) A = 2.0 m, T = 2.67 s, f = 0.375 Hz; b) x = -1.41 m, v = +3.33 m/s, a = +7.85 m/s²",
+      "a) A = 2.0 m, T = 1.33 s, f = 0.75 Hz; b) x = +1.41 m, v = -3.33 m/s, a = -7.85 m/s²",
+      "a) A = 4.0 m, T = 2.67 s, f = 0.375 Hz; b) x = -2.00 m, v = 0 m/s, a = +11.1 m/s²",
+      "a) A = 2.0 m, T = 3.14 s, f = 0.318 Hz; b) x = -1.41 m, v = -3.33 m/s, a = -7.85 m/s²"
+    ],
+    "answer": 0,
+    "explanation": "Given x(t) = A cos(ωt + φ): Amplitude A = 2.0 m, angular frequency ω = 0.75π rad/s. a) Period T = 2π / ω = 2π / (0.75π) = 8/3 s ≈ 2.67 s. Frequency f = 1 / T = 3/8 Hz = 0.375 Hz. b) At t = 2.0 s, phase angle θ = 0.75π(2.0) - 0.25π = 1.25π rad (225°). Displacement: x(2.0) = 2.0 cos(1.25π) = 2.0(-√2/2) = -√2 ≈ -1.41 m. Velocity: v(t) = -Aω sin(ωt + φ) ⟹ v(2.0) = -2.0(0.75π) sin(1.25π) = -1.5π(-√2/2) = 1.5π(√2/2) ≈ +3.33 m/s. Acceleration: a(t) = -ω² x(t) ⟹ a(2.0) = -(0.75π)² (-1.414 m) ≈ +7.85 m/s².",
+    "category": "Final Exam"
+  },
+  {
+    "id": "phys-hu-2022-final-wo-03",
+    "university": "Haramaya University",
+    "year": "2022 Exam",
+    "course": "General Physics",
+    "question": "A rectangular coil of dimension 5.4 cm × 8.5 cm is placed in a magnetic field of magnitude 0.35 T. What is the magnetic flux on the rectangular loop when: a) the field is perpendicular to the plane of the loop; b) the angle between the field and the normal of the loop is 30°?",
+    "options": [
+      "a) 1.61 × 10⁻³ Wb (1.61 mWb); b) 1.39 × 10⁻³ Wb (1.39 mWb)",
+      "a) 4.59 × 10⁻³ Wb; b) 3.98 × 10⁻³ Wb",
+      "a) 1.61 × 10⁻³ Wb; b) 0.80 × 10⁻³ Wb",
+      "a) 3.22 × 10⁻³ Wb; b) 2.78 × 10⁻³ Wb"
+    ],
+    "answer": 0,
+    "explanation": "Area of the loop A = 0.054 m × 0.085 m = 0.00459 m² = 4.59 × 10⁻³ m². Magnetic field B = 0.35 T. Magnetic flux Φ = B · A · cos(θ), where θ is the angle between B and the normal to the plane of the loop. a) When the field is perpendicular to the plane of the loop, the normal is parallel to the field (θ = 0°): Φ = BA cos(0°) = 0.35 T × 0.00459 m² × 1 = 1.6065 × 10⁻³ Wb ≈ 1.61 × 10⁻³ Wb (1.61 mWb). b) When the angle between the field and the normal is 30° (θ = 30°): Φ = BA cos(30°) = 1.6065 × 10⁻³ Wb × cos(30°) = 1.6065 × 10⁻³ × (√3/2) ≈ 1.391 × 10⁻³ Wb ≈ 1.39 × 10⁻³ Wb (1.39 mWb).",
+    "category": "Final Exam"
   }
 ]
