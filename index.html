@@ -1115,7 +1115,7 @@
     <div
       class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl animate-fade-in border border-slate-100 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-        <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+        <h3 id="questionModalTitle" class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
           <i data-lucide="file-plus-2" class="w-5 h-5 text-[#0052fe]"></i>
           <span>Add New Exam Question</span>
         </h3>
@@ -1126,13 +1126,16 @@
       </div>
 
       <form id="addQuestionForm" onsubmit="NanovaApp.saveNewQuestion(event)" class="space-y-3.5">
+        <input type="hidden" id="newQEditId" value="" />
+
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
           <div>
             <label class="filter-label">EXAM CATEGORY</label>
             <select id="newQCategory" class="custom-select text-xs font-bold" required onchange="NanovaApp.onNewQCategoryChange()">
               <option value="Mid Exam">Mid Exam</option>
               <option value="Final Exam">Final Exam</option>
-              <option value="COC Exam">COC Exam (All Subjects)</option>
+              <option value="COC Exam">COC Exam</option>
+              <option value="Entrance Exam">Entrance Exam</option>
             </select>
           </div>
           <div>
@@ -1144,7 +1147,10 @@
               <option value="Logic and Critical Thinking">Logic & Critical Thinking</option>
               <option value="Communicative English">Communicative English</option>
               <option value="Emerging Technologies">Emerging Technologies</option>
-              <option value="Geography of Ethiopia">Geography of Ethiopia</option>
+              <option value="Geography of Ethiopia and the Horn">Geography of Ethiopia</option>
+              <option value="Moral and Civics Education">Moral and Civics Education</option>
+              <option value="General Law">General Law</option>
+              <option value="English for Law">English for Law</option>
             </select>
           </div>
           <div>
@@ -1157,46 +1163,40 @@
               <option value="Hawassa University">Hawassa University</option>
               <option value="Bahir Dar University">Bahir Dar University</option>
               <option value="AASTU">AASTU</option>
+              <option value="Arba Minch University">Arba Minch University</option>
             </select>
           </div>
           <div>
             <label class="filter-label">EXAM YEAR</label>
             <select id="newQYear" class="custom-select text-xs font-bold" required>
+              <option value="2025 Exam">2025 Exam</option>
               <option value="2024 Exam">2024 Exam</option>
               <option value="2023 Exam">2023 Exam</option>
               <option value="2022 Exam">2022 Exam</option>
               <option value="2021 Exam">2021 Exam</option>
+              <option value="2020 Exam">2020 Exam</option>
             </select>
           </div>
         </div>
 
         <div>
           <label class="filter-label">QUESTION TEXT / PROMPT</label>
-          <textarea id="newQPrompt" class="post-textarea" rows="2" placeholder="Write the question prompt clearly..."
+          <textarea id="newQPrompt" class="post-textarea" rows="3" placeholder="Write the question prompt clearly..."
             required></textarea>
         </div>
 
         <div class="space-y-2">
-          <label class="filter-label">ANSWER OPTIONS (A, B, C, D)</label>
-          <div class="flex items-center space-x-2">
-            <span
-              class="w-7 h-7 rounded-full bg-blue-50 text-blue-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0">A</span>
-            <input type="text" id="newQOptA" class="custom-select text-xs" placeholder="Option A text..." required />
+          <div class="flex items-center justify-between">
+            <label class="filter-label">ANSWER OPTIONS</label>
+            <div class="flex items-center gap-1.5 text-[11px]">
+              <button type="button" onclick="NanovaApp.setQuestionOptionsPreset(4)" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">4 Opts</button>
+              <button type="button" onclick="NanovaApp.setQuestionOptionsPreset(5)" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">5 Opts</button>
+              <button type="button" onclick="NanovaApp.setQuestionOptionsPreset(2)" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition">True/False</button>
+              <button type="button" onclick="NanovaApp.addQuestionOptionRow()" class="px-2 py-0.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold transition">+ Add</button>
+            </div>
           </div>
-          <div class="flex items-center space-x-2">
-            <span
-              class="w-7 h-7 rounded-full bg-blue-50 text-blue-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0">B</span>
-            <input type="text" id="newQOptB" class="custom-select text-xs" placeholder="Option B text..." required />
-          </div>
-          <div class="flex items-center space-x-2">
-            <span
-              class="w-7 h-7 rounded-full bg-blue-50 text-blue-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0">C</span>
-            <input type="text" id="newQOptC" class="custom-select text-xs" placeholder="Option C text..." required />
-          </div>
-          <div class="flex items-center space-x-2">
-            <span
-              class="w-7 h-7 rounded-full bg-blue-50 text-blue-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0">D</span>
-            <input type="text" id="newQOptD" class="custom-select text-xs" placeholder="Option D text..." required />
+          <div id="newQOptionsContainer" class="space-y-2">
+            <!-- Rendered dynamically by NanovaApp -->
           </div>
         </div>
 
@@ -1212,8 +1212,8 @@
 
         <div>
           <label class="filter-label">DETAILED SOLUTION & EXPLANATION</label>
-          <textarea id="newQExplanation" class="post-textarea" rows="2"
-            placeholder="Step-by-step lecture rationale and formulas..." required></textarea>
+          <textarea id="newQExplanation" class="post-textarea" rows="3"
+            placeholder="Step-by-step lecture rationale, derivations and formulas..." required></textarea>
         </div>
 
         <div class="flex space-x-3 pt-3">
@@ -1221,8 +1221,8 @@
             class="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl text-sm">
             Cancel
           </button>
-          <button type="submit"
-            class="flex-1 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-bold rounded-xl text-sm shadow-md">
+          <button type="submit" id="questionModalSubmitBtn"
+            class="flex-1 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-bold rounded-xl text-sm shadow-md transition">
             Save Question
           </button>
         </div>

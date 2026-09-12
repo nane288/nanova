@@ -31,6 +31,43 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // Handle CORS preflight
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204, {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
+    res.end();
+    return;
+  }
+
+  // API Endpoint for Admin to save/edit exam questions directly to disk
+  if (req.method === 'POST' && (reqPath === '/api/exams/save' || reqPath === '/api/exams/update')) {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        const updatedExams = JSON.parse(body);
+        if (!Array.isArray(updatedExams)) {
+          res.writeHead(400, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+          res.end(JSON.stringify({ error: 'Expected an array of questions' }));
+          return;
+        }
+        const examsFilePath = path.resolve(ROOT_DIR, 'data', 'exams.json');
+        fs.writeFileSync(examsFilePath, JSON.stringify(updatedExams, null, 2), 'utf8');
+        console.log(`[Nanova Server] Admin updated exams.json: ${updatedExams.length} questions saved.`);
+        res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ success: true, count: updatedExams.length }));
+      } catch (err) {
+        console.error('[Nanova Server] Error saving exams:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
   // Prevent directory traversal attacks
   const safePath = path.normalize(decodedPath).replace(/^(\.\.[\/\\])+/, '');
   const filePath = path.resolve(ROOT_DIR, '.' + path.sep + safePath);

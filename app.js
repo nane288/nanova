@@ -1324,6 +1324,12 @@
 
             <div class="flex items-center space-x-2">
               ${isMissedMode && answered === undefined ? '<span class="px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 text-[10px] font-extrabold border border-amber-200/80 flex items-center gap-1"><i data-lucide="rotate-ccw" class="w-3 h-3 text-amber-600"></i><span>Retry Question</span></span>' : ''}
+              ${State.isAdmin ? `
+                <button onclick="NanovaApp.openEditQuestionModal('${escapeAttr(q.id)}')" class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs font-bold border border-amber-200/80 transition flex items-center gap-1 cursor-pointer" title="Edit Question (Admin)">
+                  <i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-600"></i>
+                  <span class="hidden xs:inline">Edit</span>
+                </button>
+              ` : ''}
               <button onclick="NanovaApp.toggleQuestionBookmark('${escapeAttr(q.id)}')" class="p-2 rounded-xl ${isBookmarked ? 'bg-blue-50 text-[#0052fe] border border-blue-200' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'} transition" title="${isBookmarked ? 'Saved' : 'Save Question'}">
                 <i data-lucide="${isBookmarked ? 'bookmark-check' : 'bookmark'}" class="w-4 h-4"></i>
               </button>
@@ -1723,15 +1729,206 @@
   }
 
   /* ── ADMIN: QUESTION CREATOR ───────────────────────── */
+  /* ── DATA SYNC HELPER (INDEXEDDB & LOCAL BACKEND) ─── */
+  async function syncExamsDataset() {
+    try {
+      // 1. Save to IndexedDB for offline and client session
+      await NanovaDB.saveAll('exams', State.questions);
+    } catch (err) {
+      console.warn('[Nanova] IndexedDB sync error:', err);
+    }
+
+    try {
+      // 2. Persist to local server file system (server.js -> data/exams.json)
+      const resp = await fetch('/api/exams/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(State.questions)
+      });
+      if (resp.ok) {
+        console.log('[Nanova] exams.json persisted to disk via server API');
+      }
+    } catch (e) {
+      // Offline or static hosting
+    }
+  }
+
+  /* ── ADMIN: QUESTION CREATOR & EDITOR ──────────────── */
+  const OPTION_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+
+  function renderQuestionModalOptions(optionsArray = ['', '', '', ''], selectedAnswerIndex = 0) {
+    const container = document.getElementById('newQOptionsContainer');
+    if (!container) return;
+
+    if (!optionsArray || !optionsArray.length) {
+      optionsArray = ['', '', '', ''];
+    }
+
+    container.innerHTML = optionsArray.map((optText, idx) => {
+      const letter = OPTION_LETTERS[idx] || (idx + 1);
+      return `
+        <div class="flex items-center space-x-2 option-row" data-index="${idx}">
+          <span class="w-7 h-7 rounded-full bg-blue-50 text-blue-700 font-extrabold text-xs flex items-center justify-center flex-shrink-0">${letter}</span>
+          <input type="text" class="new-q-opt-input custom-select text-xs flex-1" value="${escapeAttr(optText)}" placeholder="Option ${letter} text..." required oninput="NanovaApp.updateCorrectOptionsDropdown()" />
+          ${optionsArray.length > 2 ? `
+            <button type="button" onclick="NanovaApp.removeQuestionOptionRow(${idx})" class="text-slate-400 hover:text-rose-500 p-1.5 transition rounded-lg" title="Remove Option">
+              <i data-lucide="minus-circle" class="w-4 h-4"></i>
+            </button>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+
+    updateCorrectOptionsDropdown(optionsArray.length, selectedAnswerIndex);
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function updateCorrectOptionsDropdown(count, preferredIndex) {
+    const select = document.getElementById('newQCorrect');
+    if (!select) return;
+
+    const currentCount = count || document.querySelectorAll('.new-q-opt-input').length || 4;
+    const currentSelected = preferredIndex !== undefined ? preferredIndex : parseInt(select.value || '0', 10);
+
+    let html = '';
+    for (let i = 0; i < currentCount; i++) {
+      const letter = OPTION_LETTERS[i] || (i + 1);
+      const optInput = document.querySelectorAll('.new-q-opt-input')[i];
+      const preview = optInput && optInput.value.trim() ? ` ("${optInput.value.trim().substring(0, 20)}${optInput.value.trim().length > 20 ? '...' : ''}")` : '';
+      html += `<option value="${i}">Option ${letter} is Correct${preview}</option>`;
+    }
+    select.innerHTML = html;
+
+    if (currentSelected < currentCount) {
+      select.value = currentSelected;
+    } else {
+      select.value = 0;
+    }
+  }
+
+  function setQuestionOptionsPreset(numOrType) {
+    if (numOrType === 2) {
+      renderQuestionModalOptions(['True', 'False'], 0);
+    } else if (numOrType === 5) {
+      renderQuestionModalOptions(['', '', '', '', ''], 0);
+    } else {
+      renderQuestionModalOptions(['', '', '', ''], 0);
+    }
+  }
+
+  function addQuestionOptionRow(val = '') {
+    const currentInputs = Array.from(document.querySelectorAll('.new-q-opt-input')).map(inp => inp.value);
+    if (currentInputs.length >= 8) {
+      alert('Maximum of 8 options supported per question.');
+      return;
+    }
+    currentInputs.push(val);
+    const select = document.getElementById('newQCorrect');
+    const selected = select ? parseInt(select.value || '0', 10) : 0;
+    renderQuestionModalOptions(currentInputs, selected);
+  }
+
+  function removeQuestionOptionRow(idx) {
+    const currentInputs = Array.from(document.querySelectorAll('.new-q-opt-input')).map(inp => inp.value);
+    if (currentInputs.length <= 2) {
+      alert('A question must have at least 2 options.');
+      return;
+    }
+    currentInputs.splice(idx, 1);
+    const select = document.getElementById('newQCorrect');
+    let selected = select ? parseInt(select.value || '0', 10) : 0;
+    if (selected >= currentInputs.length) selected = currentInputs.length - 1;
+    renderQuestionModalOptions(currentInputs, selected);
+  }
+
   function openAddQuestionModal() {
     if (!State.isAdmin) return;
+    const editIdInput = document.getElementById('newQEditId');
+    if (editIdInput) editIdInput.value = '';
+
+    const titleEl = document.getElementById('questionModalTitle');
+    if (titleEl) {
+      titleEl.innerHTML = '<i data-lucide="file-plus-2" class="w-5 h-5 text-[#0052fe]"></i><span>Add New Exam Question</span>';
+    }
+    const submitBtn = document.getElementById('questionModalSubmitBtn');
+    if (submitBtn) submitBtn.textContent = 'Save Question';
+
     const form = document.getElementById('addQuestionForm');
     if (form) form.reset();
+
+    renderQuestionModalOptions(['', '', '', ''], 0);
     document.getElementById('questionModal')?.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function openEditQuestionModal(qId) {
+    if (!State.isAdmin) return;
+    const q = (State.questions || []).find(item => item.id === qId);
+    if (!q) {
+      alert('Question not found: ' + qId);
+      return;
+    }
+
+    const editIdInput = document.getElementById('newQEditId');
+    if (editIdInput) editIdInput.value = q.id;
+
+    const titleEl = document.getElementById('questionModalTitle');
+    if (titleEl) {
+      titleEl.innerHTML = '<i data-lucide="edit-3" class="w-5 h-5 text-amber-600"></i><span>Edit Exam Question</span>';
+    }
+    const submitBtn = document.getElementById('questionModalSubmitBtn');
+    if (submitBtn) submitBtn.textContent = 'Update Question';
+
+    const catEl = document.getElementById('newQCategory');
+    if (catEl) catEl.value = q.category || 'Mid Exam';
+
+    const courseEl = document.getElementById('newQCourse');
+    if (courseEl) {
+      let exists = Array.from(courseEl.options).some(o => o.value === q.course);
+      if (!exists && q.course) {
+        courseEl.add(new Option(q.course, q.course, true, true));
+      } else if (q.course) {
+        courseEl.value = q.course;
+      }
+    }
+
+    const univEl = document.getElementById('newQUniv');
+    if (univEl) {
+      let exists = Array.from(univEl.options).some(o => o.value === q.university);
+      if (!exists && q.university) {
+        univEl.add(new Option(q.university, q.university, true, true));
+      } else if (q.university) {
+        univEl.value = q.university;
+      }
+    }
+
+    const yearEl = document.getElementById('newQYear');
+    if (yearEl) {
+      let exists = Array.from(yearEl.options).some(o => o.value === q.year);
+      if (!exists && q.year) {
+        yearEl.add(new Option(q.year, q.year, true, true));
+      } else if (q.year) {
+        yearEl.value = q.year;
+      }
+    }
+
+    const promptEl = document.getElementById('newQPrompt');
+    if (promptEl) promptEl.value = q.question || '';
+
+    const explanationEl = document.getElementById('newQExplanation');
+    if (explanationEl) explanationEl.value = q.explanation || '';
+
+    const opts = (q.options && q.options.length) ? q.options : ['True', 'False'];
+    renderQuestionModalOptions(opts, q.answer || 0);
+
+    document.getElementById('questionModal')?.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
   }
 
   function closeAddQuestionModal() {
     document.getElementById('questionModal')?.classList.add('hidden');
+    const editIdInput = document.getElementById('newQEditId');
+    if (editIdInput) editIdInput.value = '';
   }
 
   function onNewQCategoryChange() {
@@ -1744,43 +1941,71 @@
     }
   }
 
-  function saveNewQuestion(e) {
+  async function saveNewQuestion(e) {
     e.preventDefault();
     if (!State.isAdmin) return;
 
+    const editId = document.getElementById('newQEditId')?.value?.trim();
     const category = document.getElementById('newQCategory')?.value || 'Mid Exam';
     const course = document.getElementById('newQCourse')?.value;
     const university = document.getElementById('newQUniv')?.value;
     const year = document.getElementById('newQYear')?.value;
     const promptText = document.getElementById('newQPrompt')?.value.trim();
-    const optA = document.getElementById('newQOptA')?.value.trim();
-    const optB = document.getElementById('newQOptB')?.value.trim();
-    const optC = document.getElementById('newQOptC')?.value.trim();
-    const optD = document.getElementById('newQOptD')?.value.trim();
-    const correctIdx = parseInt(document.getElementById('newQCorrect')?.value || '0', 10);
     const explanation = document.getElementById('newQExplanation')?.value.trim();
+    const correctIdx = parseInt(document.getElementById('newQCorrect')?.value || '0', 10);
 
-    if (!promptText || !optA || !optB || !optC || !optD) {
-      alert('Please fill out all question fields and options.');
+    const optInputs = Array.from(document.querySelectorAll('.new-q-opt-input'));
+    const options = optInputs.map(inp => inp.value.trim()).filter(Boolean);
+
+    if (!promptText) {
+      alert('Please enter the question text prompt.');
+      return;
+    }
+    if (options.length < 2) {
+      alert('Please provide at least 2 valid answer options.');
       return;
     }
 
-    const newQuestion = {
-      id: 'custom_q_' + Date.now(),
-      category: category,
-      course: course,
-      university: university,
-      year: year,
-      question: promptText,
-      options: [optA, optB, optC, optD],
-      answer: correctIdx,
-      explanation: explanation || 'Detailed solution provided by campus administrator.'
-    };
+    if (editId) {
+      // EDIT EXISTING QUESTION
+      const target = (State.questions || []).find(q => q.id === editId);
+      if (target) {
+        target.category = category;
+        target.course = course;
+        target.university = university;
+        target.year = year;
+        target.question = promptText;
+        target.options = options;
+        target.answer = correctIdx >= options.length ? 0 : correctIdx;
+        target.explanation = explanation || 'Detailed solution provided by campus administrator.';
+      }
 
-    State.questions.unshift(newQuestion);
-    applyFilters();
-    closeAddQuestionModal();
-    alert('✅ New exam question published to the Freshman Exam Board!');
+      await syncExamsDataset();
+      applyFilters();
+      renderAdminDashboard();
+      closeAddQuestionModal();
+      alert('✅ Exam question updated successfully!');
+    } else {
+      // CREATE NEW QUESTION
+      const newQuestion = {
+        id: 'custom_q_' + Date.now(),
+        category: category,
+        course: course,
+        university: university,
+        year: year,
+        question: promptText,
+        options: options,
+        answer: correctIdx >= options.length ? 0 : correctIdx,
+        explanation: explanation || 'Detailed solution provided by campus administrator.'
+      };
+
+      State.questions.unshift(newQuestion);
+      await syncExamsDataset();
+      applyFilters();
+      renderAdminDashboard();
+      closeAddQuestionModal();
+      alert('✅ New exam question published to the Freshman Exam Board!');
+    }
   }
 
   /* ── ADMIN DASHBOARD SUBTABS ───────────────────────── */
@@ -1842,8 +2067,20 @@
       return;
     }
 
-    container.innerHTML = list.map((q) => {
-      const optLetter = ['A', 'B', 'C', 'D'][q.answer] || 'A';
+    // Limit displayed questions to 150 for crisp rendering speed if full list
+    const displayList = list.slice(0, 150);
+    const countHeader = list.length > 150 ? `
+      <div class="px-2 py-1 text-[11px] font-bold text-slate-500 flex items-center justify-between">
+        <span>Showing first 150 of ${list.length} questions (use search to narrow down)</span>
+      </div>
+    ` : `
+      <div class="px-2 py-1 text-[11px] font-bold text-slate-500">
+        <span>Showing all ${list.length} questions</span>
+      </div>
+    `;
+
+    container.innerHTML = countHeader + displayList.map((q) => {
+      const optLetter = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'][q.answer] || 'A';
       return `
         <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-blue-200 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="space-y-1 flex-1">
@@ -1851,12 +2088,17 @@
               <span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 text-[10px] font-extrabold">${escapeHtml(q.course || 'Freshman Course')}</span>
               <span class="px-2 py-0.5 rounded-md bg-slate-200 text-slate-700 text-[10px] font-bold">${escapeHtml(q.university || 'General')}</span>
               <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 text-[10px] font-bold">${escapeHtml(q.year || '2024')}</span>
-              <span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-800 text-[10px] font-extrabold">Correct: ${optLetter}</span>
+              <span class="px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 text-[10px] font-extrabold">${escapeHtml(q.category || 'Mid Exam')}</span>
+              <span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">Correct: ${optLetter}</span>
             </div>
             <p class="text-xs font-bold text-slate-900 line-clamp-2">${escapeHtml(q.question)}</p>
           </div>
           <div class="flex items-center space-x-2 self-end sm:self-center flex-shrink-0">
-            <button onclick="NanovaApp.deleteQuestion('${q.id}')" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-xl transition flex items-center space-x-1">
+            <button onclick="NanovaApp.openEditQuestionModal('${escapeAttr(q.id)}')" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold text-xs rounded-xl transition flex items-center space-x-1 cursor-pointer" title="Edit Question">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>Edit</span>
+            </button>
+            <button onclick="NanovaApp.deleteQuestion('${escapeAttr(q.id)}')" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-xl transition flex items-center space-x-1 cursor-pointer" title="Delete Question">
               <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
               <span>Delete</span>
             </button>
@@ -1877,16 +2119,19 @@
       const matchSearch = !search ||
         (q.question && q.question.toLowerCase().includes(search)) ||
         (q.course && q.course.toLowerCase().includes(search)) ||
-        (q.university && q.university.toLowerCase().includes(search));
+        (q.university && q.university.toLowerCase().includes(search)) ||
+        (q.year && q.year.toLowerCase().includes(search)) ||
+        (q.category && q.category.toLowerCase().includes(search));
       return matchCourse && matchSearch;
     });
 
     renderAdminQuestionsList(filtered);
   }
 
-  function deleteQuestion(qId) {
+  async function deleteQuestion(qId) {
     if (!confirm('Are you sure you want to delete this exam question?')) return;
     State.questions = State.questions.filter((q) => q.id !== qId);
+    await syncExamsDataset();
     applyFilters();
     renderAdminDashboard();
     alert('Exam question deleted.');
@@ -2264,7 +2509,12 @@
     saveUniversity,
     deleteUniversity,
     openAddQuestionModal,
+    openEditQuestionModal,
     closeAddQuestionModal,
+    setQuestionOptionsPreset,
+    addQuestionOptionRow,
+    removeQuestionOptionRow,
+    updateCorrectOptionsDropdown,
     onNewQCategoryChange,
     saveNewQuestion,
     switchAdminSubTab,
