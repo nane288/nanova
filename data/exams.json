@@ -464,10 +464,10 @@
     "category": "Final Exam"
   },
   {
-    "id": "hu-2022-nat-psy-01",
+    "id": "hu-2022-coc-01",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Psychology",
+    "course": "Freshman COC",
     "question": "Which one of the following best expresses learning?",
     "options": [
       "Increase in the size of body structure and organ.",
@@ -480,10 +480,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-psy-02",
+    "id": "hu-2022-coc-02",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Psychology",
+    "course": "Freshman COC",
     "question": "A behavior or skill that helps to communicate our feelings, needs, wants and thoughts clearly and confidently is best described as __________.",
     "options": [
       "Perfectionism",
@@ -496,10 +496,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-psy-03",
+    "id": "hu-2022-coc-03",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Psychology",
+    "course": "Freshman COC",
     "question": "Which one of the following is correct statement about the modern concept of Psychology?",
     "options": [
       "Psychology is the scientific study of behavior and mental processes",
@@ -512,10 +512,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-psy-04",
+    "id": "hu-2022-coc-04",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Psychology",
+    "course": "Freshman COC",
     "question": "Which one the following is not characteristics of learning?",
     "options": [
       "Learning is not dependent on maturation, motivation and practice",
@@ -528,10 +528,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-psy-05",
+    "id": "hu-2022-coc-05",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Psychology",
+    "course": "Freshman COC",
     "question": "A view of personality with a focus on the unconscious and the importance of childhood experience is known as __________.",
     "options": [
       "Social-cognitive view",
@@ -544,10 +544,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-phy-06",
+    "id": "hu-2022-coc-06",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Physics",
+    "course": "Freshman COC",
     "question": "A branch of mechanics that concerned with the motion of an object with its cause is",
     "options": [
       "Kinematics",
@@ -560,10 +560,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-phy-07",
+    "id": "hu-2022-coc-07",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Physics",
+    "course": "Freshman COC",
     "question": "Heating transfer during adiabatic process is",
     "options": [
       "Irreversible",
@@ -576,10 +576,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-phy-08",
+    "id": "hu-2022-coc-08",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Physics",
+    "course": "Freshman COC",
     "question": "A 30-cycle per-second wave travels 15 meters in 1 second. Its frequency and speed are respectively",
     "options": [
       "15 Hz and 30 m/s",
@@ -592,10 +592,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-phy-09",
+    "id": "hu-2022-coc-09",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Physics",
+    "course": "Freshman COC",
     "question": "What is the equivalent resistance (R_eq) of a parallel combination of three resistors that have the same value of R?",
     "options": [
       "3 / R",
@@ -608,10 +608,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-phy-10",
+    "id": "hu-2022-coc-10",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "General Physics",
+    "course": "Freshman COC",
     "question": "Faraday's law of electromagnetic induction describes how the current can be produced in a conductor by",
     "options": [
       "A constant magnetic field",
@@ -624,10 +624,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-geo-11",
+    "id": "hu-2022-coc-11",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Geography of Ethiopia and the Horn",
+    "course": "Freshman COC",
     "question": "Which of the following happens during March 21st?",
     "options": [
       "Lengths of day and night is the same across all hemispheres",
@@ -640,10 +640,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-geo-12",
+    "id": "hu-2022-coc-12",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Geography of Ethiopia and the Horn",
+    "course": "Freshman COC",
     "question": "Which one of the following is not true about the Ethiopia River?",
     "options": [
       "Abay river has the largest catchment area in the country",
@@ -656,10 +656,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-geo-13",
+    "id": "hu-2022-coc-13",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Geography of Ethiopia and the Horn",
+    "course": "Freshman COC",
     "question": "Identify the wrong statement about the adiabatic temperature changes?",
     "options": [
       "The temperature change of a parcel of air is resulted due to expansion & compression",
@@ -672,10 +672,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-geo-14",
+    "id": "hu-2022-coc-14",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Geography of Ethiopia and the Horn",
+    "course": "Freshman COC",
     "question": "Choose the reverse chronological order of the geological processes in Ethiopia & Horn?",
     "options": [
       "Formation of Rift Valley -> Formation of Adigrat Sandstone -> Orogenesis",
@@ -688,10 +688,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-geo-15",
+    "id": "hu-2022-coc-15",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Geography of Ethiopia and the Horn",
+    "course": "Freshman COC",
     "question": "The tropical climatic conditions and time difference that Ethiopia experiences respectively resulted from;",
     "options": [
       "Latitudinal and Longitudinal location",
@@ -704,10 +704,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-eng-16",
+    "id": "hu-2022-coc-16",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Communicative English",
+    "course": "Freshman COC",
     "question": "Suppose he came, what would you do?",
     "options": [
       "It is fairly likely that he will come",
@@ -720,10 +720,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-eng-17",
+    "id": "hu-2022-coc-17",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Communicative English",
+    "course": "Freshman COC",
     "question": "Provided you carry on like this, you should do well",
     "options": [
       "The speaker thinks it is likely that the person will carry on in the same way",
@@ -736,10 +736,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-eng-18",
+    "id": "hu-2022-coc-18",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Communicative English",
+    "course": "Freshman COC",
     "question": "I haven't seen that dress before. It __________ a new one.",
     "options": [
       "might be",
@@ -752,10 +752,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-eng-19",
+    "id": "hu-2022-coc-19",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Communicative English",
+    "course": "Freshman COC",
     "question": "Hanna: My eight-year-old son spends much of his time sitting in front of the TV. He doesn't study at all. I don't know what to do.\\nChaltu: __________",
     "options": [
       "You had better set times for his study and for his T.V. watching.",
@@ -768,10 +768,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-eng-20",
+    "id": "hu-2022-coc-20",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Communicative English",
+    "course": "Freshman COC",
     "question": "Teacher: Would you mind if I open the window?\\nStudent: __________. It is too hot to carry on our discussion.",
     "options": [
       "Yes, of course",
@@ -784,10 +784,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-mat-21",
+    "id": "hu-2022-coc-21",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Freshman COC",
     "question": "The quantified proposition ¬((∃x)(¬r(x) => s(x))) is logically equivalent to",
     "options": [
       "(∀x)(¬s(x) => r(x))",
@@ -800,10 +800,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-mat-22",
+    "id": "hu-2022-coc-22",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Freshman COC",
     "question": "Which of the following is true about the complex number z = 0 + 0i?",
     "options": [
       "The polar form of z is (cos(0°) + i sin(0°))",
@@ -816,10 +816,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-mat-23",
+    "id": "hu-2022-coc-23",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Freshman COC",
     "question": "Let f(x) = ax³ - x² - 5x + b, where a and b are constants. When f(x) is divided by x + 2 the remainder is 40 and when f(x) is divided by x - 2 the remainder is 36, find the values of a and b respectively?",
     "options": [
       "(2/3, 43)",
@@ -832,10 +832,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-mat-24",
+    "id": "hu-2022-coc-24",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Freshman COC",
     "question": "Which of the following is true?",
     "options": [
       "The rational function f(x) = g(x)/h(x) has an oblique asymptote if degree of g(x) is less than the degree of h(x) by 1.",
@@ -848,10 +848,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-mat-25",
+    "id": "hu-2022-coc-25",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Applied Mathematics I",
+    "course": "Freshman COC",
     "question": "All of the following is true about the line L: 2y - 4x + 14 = 0 except?",
     "options": [
       "The line 2x - y + 2 = 0 is parallel to L",
@@ -864,10 +864,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-crt-26",
+    "id": "hu-2022-coc-26",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Logic and Critical Thinking",
+    "course": "Freshman COC",
     "question": "What is scepticism?",
     "options": [
       "It doubts the existence of knowledge.",
@@ -881,10 +881,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-crt-27",
+    "id": "hu-2022-coc-27",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Logic and Critical Thinking",
+    "course": "Freshman COC",
     "question": "What is inductive generalization?",
     "options": [
       "It reasons from sample to population.",
@@ -898,10 +898,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-crt-28",
+    "id": "hu-2022-coc-28",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Logic and Critical Thinking",
+    "course": "Freshman COC",
     "question": "What is enumerative definition?",
     "options": [
       "It defines by listing individual members.",
@@ -915,10 +915,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-crt-29",
+    "id": "hu-2022-coc-29",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Logic and Critical Thinking",
+    "course": "Freshman COC",
     "question": "In which barriers of critical thinking conformism is part of?",
     "options": [
       "Stereotype",
@@ -932,10 +932,10 @@
     "category": "COC Exam"
   },
   {
-    "id": "hu-2022-nat-crt-30",
+    "id": "hu-2022-coc-30",
     "university": "Haramaya University",
     "year": "2022 Exam",
-    "course": "Logic and Critical Thinking",
+    "course": "Freshman COC",
     "question": "Susan advocates the legalization of cocaine. But I cannot agree with any position based on the assumption that cocaine is good for you and that a society of drug addicts can flourish. So, I disagree with Susan. What kind of fallacy is it?",
     "options": [
       "Straw man.",
@@ -2181,7 +2181,7 @@
     ],
     "answer": 0,
     "explanation": "By mathematical definition, a function f: A -> B is surjective (onto) if and only if its range equals its entire codomain B.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-tf-02",
@@ -2195,7 +2195,7 @@
     ],
     "answer": 0,
     "explanation": "Distinct vertical lines have equations x = c1 and x = c2 (c1 ≠ c2). Both have undefined slopes, never intersect, and are parallel.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-tf-03",
@@ -2209,7 +2209,7 @@
     ],
     "answer": 0,
     "explanation": "This is the standard two-intercept form of a linear equation passing through x-intercept (a, 0) and y-intercept (0, b).",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-tf-04",
@@ -2223,7 +2223,7 @@
     ],
     "answer": 1,
     "explanation": "False. A rational function such as f(x) = 1 / (x² + 1) has no real zeros in its denominator and therefore has no vertical asymptotes.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-tf-05",
@@ -2237,7 +2237,7 @@
     ],
     "answer": 0,
     "explanation": "True. Any polynomial P(x) can be expressed as P(x)/1, which is a quotient of two polynomials with non-zero polynomial denominator.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-tf-06",
@@ -2251,7 +2251,7 @@
     ],
     "answer": 1,
     "explanation": "False. coth x = cosh x / sinh x. Since sinh(0) = 0, coth x is undefined at x = 0. Its domain is ℝ \\ {0}.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-tf-07",
@@ -2265,7 +2265,7 @@
     ],
     "answer": 1,
     "explanation": "False. When the perpendicular distance from center to line equals the radius (d = r), the line intersects at exactly one point and is a tangent line, not a secant line (d < r).",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-01",
@@ -2281,7 +2281,7 @@
     ],
     "answer": 1,
     "explanation": "Completing square for B: (x - 4)² + (y - 2)² = -16 + 16 + 4 = 4 = 2², representing a real circle with center (4, 2) and radius r = 2.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-02",
@@ -2297,7 +2297,7 @@
     ],
     "answer": 0,
     "explanation": "The cosine function f(x) = cos x has domain (-∞, ∞), period 2π, is an even function (cos(-x) = cos x), and has range [-1, 1].",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-03",
@@ -2313,7 +2313,7 @@
     ],
     "answer": 0,
     "explanation": "Distance formula: d = |Ax0 + By0 + C| / √(A² + B²) = |0 + 0 - 1| / √(1² + 1²) = 1 / √2 = √2 / 2.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-04",
@@ -2329,7 +2329,7 @@
     ],
     "answer": 0,
     "explanation": "Since aˣ > 0 for all x ∈ ℝ, the exponential graph never crosses the x-axis and has no x-intercept.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-05",
@@ -2345,7 +2345,7 @@
     ],
     "answer": 3,
     "explanation": "Let u = 2x + 3 => 2x = u - 3. Then (fog)(x) = (u - 3)² + 2(u - 3) + 9 = u² - 4u + 12 => f(x) = x² - 4x + 12.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-06",
@@ -2361,7 +2361,7 @@
     ],
     "answer": 3,
     "explanation": "Given slope m1 = -3/4. Perpendicular slope m2 = 4/3. Point-slope: y - (-3) = (4/3)(x - 2) => 3y + 9 = 4x - 8 => 4x - 3y = 17.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-07",
@@ -2377,7 +2377,7 @@
     ],
     "answer": 3,
     "explanation": "For z = 1 + √3 i, |z| = 2 and θ = π/3. Option D has θ = π/6, which represents √3 + i, making D false.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-08",
@@ -2393,7 +2393,7 @@
     ],
     "answer": 1,
     "explanation": "The argument of logarithm is x - 2 > 0 => vertical asymptote is at x = 2, not x = 0.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-09",
@@ -2409,7 +2409,7 @@
     ],
     "answer": 3,
     "explanation": "Evaluating p(1) = 6(1)⁵ - 2(1)⁴ + 4(1) - 8 = 6 - 2 + 4 - 8 = 0. By factor theorem, x - 1 is a factor.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-mc-10",
@@ -2425,7 +2425,7 @@
     ],
     "answer": 0,
     "explanation": "Distance from center (1, -2) to P(3, 2) is d = √((3 - 1)² + (2 - (-2))²) = √(4 + 16) = √20 ≈ 4.47 < 5. Since d < r, P lies inside circle C.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-01",
@@ -2441,7 +2441,7 @@
     ],
     "answer": 1,
     "explanation": "cosh(ln 3) = (e^(ln 3) + e^(-ln 3)) / 2 = (3 + 1/3) / 2 = (10/3) / 2 = 5/3. Multiplying by 3 gives 3 * (5/3) = 5.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-02a",
@@ -2457,7 +2457,7 @@
     ],
     "answer": 1,
     "explanation": "(gof)(x) = √(x² + 1). Since x² + 1 ≥ 1 > 0 for all real numbers x, the expression inside radical is always non-negative. Domain is ℝ = (-∞, ∞).",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-02b",
@@ -2473,7 +2473,7 @@
     ],
     "answer": 1,
     "explanation": "(fog)(0) = f(g(0)) = f(√0) = f(0) = 0² + 1 = 1.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-03",
@@ -2489,7 +2489,7 @@
     ],
     "answer": 0,
     "explanation": "p(x) = a(x - 3)¹(x + 2)³(x + 1)⁴. p(0) = a(-3)(2³)(1⁴) = -24a = 48 => a = -2 => p(x) = -2(x - 3)(x + 2)³(x + 1)⁴.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-04",
@@ -2505,7 +2505,7 @@
     ],
     "answer": 1,
     "explanation": "Set y = eˣ⁺¹ => ln y = x + 1 => x = ln y - 1. Therefore, f⁻¹(x) = ln x - 1.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-05",
@@ -2521,7 +2521,7 @@
     ],
     "answer": 0,
     "explanation": "For f(x) = A cos(Bx), period T = 2π / |B| = 2π / 3. Frequency f = 1 / T = 3 / (2π).",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-06",
@@ -2537,7 +2537,7 @@
     ],
     "answer": 0,
     "explanation": "(fog)(x) = 4(3x + k) + 1 = 12x + 4k + 1. (gof)(x) = 3(4x + 1) + k = 12x + 3 + k. Equating: 4k + 1 = 3 + k => 3k = 2 => k = 2/3.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-sa-07",
@@ -2553,7 +2553,7 @@
     ],
     "answer": 0,
     "explanation": "|z| = √((-4)² + (-4√3)²) = √64 = 8. In quadrant III, principal argument Arg(z) = -π + arctan(√3) = -2π/3. Polar form is 8(cos(-2π/3) + i sin(-2π/3)).",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-wo-01",
@@ -2569,7 +2569,7 @@
     ],
     "answer": 0,
     "explanation": "The normal line to tangent y = 3x - 2 at (1, 1) has slope -1/3 => x + 3y = 4 => h = 4 - 3k. Equidistance from center (h, k) to (1, 1) and (2, 5) gives center (-49/2, 19/2) and r² = 1445/2.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-wo-02",
@@ -2585,7 +2585,7 @@
     ],
     "answer": 0,
     "explanation": "Denominator x² - 1 = 0 => V.A at x = ±1 and Domain = ℝ \\ {-1, 1}. x-intercept and y-intercept at (0, 0). Degrees are equal (2) => H.A is y = 2/1 = 2.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-2022-math1011-wo-03",
@@ -2601,7 +2601,7 @@
     ],
     "answer": 0,
     "explanation": "By Conjugate Root Theorem, 1 + i is a root. Sum of roots: (1 - i) + (1 + i) + r3 = 3 => r3 = 1. Expanding (x - 1)(x - (1 - i))(x - (1 + i)) = x³ - 3x² + 4x - 2 => a = 4, b = -2.",
-    "category": "Mid Exam"
+    "category": "Final Exam"
   },
   {
     "id": "hu-crit-final-mc-01",
@@ -12590,7 +12590,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-01",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: Shaping is a technique used in operant conditioning to reinforce behaviors that progressively approximate the desired behavior.",
     "options": [
@@ -12604,7 +12604,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-02",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: In social learning theory, inattentiveness is one of the four essential conditions for learning.",
     "options": [
@@ -12618,7 +12618,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-03",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: Learning is a relatively permanent behavioral change that occurs primarily due to genetic factors.",
     "options": [
@@ -12632,7 +12632,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-04",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: Motivated forgetting involves intentionally pushing or erasing unpleasant and anxiety-provoking events from the conscious memory system.",
     "options": [
@@ -12646,7 +12646,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-05",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: Chunking is a memory strategy that involves grouping individual bits of information into meaningful units to enhance storage and retrieval.",
     "options": [
@@ -12660,7 +12660,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-06",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: Clinical psychology is a subfield of psychology that focuses primarily on diagnosing and treating physical health disorders.",
     "options": [
@@ -12674,7 +12674,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-07",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: Correlational research determines the degree and direction of association between two or more variables.",
     "options": [
@@ -12688,7 +12688,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-tf-08",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "True or False: Behaviorism is a psychological perspective that emphasizes the role of inherited traits and instincts in shaping behavior.",
     "options": [
@@ -12702,7 +12702,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mt-01",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "In classical conditioning, which term describes an initially neutral stimulus that, through repeated pairing with an unconditioned stimulus, comes to elicit a conditioned response?",
     "options": [
@@ -12718,7 +12718,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mt-02",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "In classical conditioning, a stimulus that naturally, automatically, and unconditionally triggers an innate physiological reflex is the:",
     "options": [
@@ -12734,7 +12734,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mt-03",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "In classical conditioning, the learned reflexive reaction elicited by a previously neutral, conditioned stimulus is known as the:",
     "options": [
@@ -12750,7 +12750,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mt-04",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "In classical conditioning, a stimulus that before conditioning does not naturally elicit the target reflex is called a(n):",
     "options": [
@@ -12766,7 +12766,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mt-05",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "In classical conditioning, the unlearned, naturally occurring automatic reaction to an unconditioned stimulus is the:",
     "options": [
@@ -12782,7 +12782,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-sa-01",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "A descriptive research method widely used to collect self-reported data on opinions, beliefs, or behaviors from a very large sample of people is called a __________.",
     "options": [
@@ -12798,7 +12798,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-sa-02",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "The applied subfield of psychology that applies psychological principles and assessments to the legal, judicial, and criminal justice systems is __________ psychology.",
     "options": [
@@ -12814,7 +12814,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-sa-03",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "The sub-system of long-term memory that stores unconsciously remembered motor skills, habits, classical conditioning, and behavioral actions is __________ (or procedural) memory.",
     "options": [
@@ -12830,7 +12830,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-sa-04",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Who established the first formal psychological research laboratory in 1879 at the University of Leipzig, Germany, marking the birth of psychology as an independent academic science?",
     "options": [
@@ -12846,7 +12846,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-01",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Haramaya University rewards outstanding instructors with bonus money after teaching every 20 classes. Which of the following schedules of reinforcement best describes this reward structure?",
     "options": [
@@ -12862,7 +12862,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-02",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Calling your new sorority sister Hana instead of Hanan because she reminds you of a Hana you knew back in high school is an example of which type of memory interference?",
     "options": [
@@ -12878,7 +12878,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-03",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Aster used to associate the sound of traditional Ethiopian instruments (such as the Krar and Washint) with joy during cultural festivals. After attending several festivals where no music was played, her conditioned association between the instruments and joy diminished and stopped. This phenomenon is an example of:",
     "options": [
@@ -12894,7 +12894,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-04",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Hussein was a lecturer at Haramaya University who missed freshman classes for an entire week without authorization. Consequently, university administration reduced his salary by 30% for that month. According to operant conditioning, this administrative action represents:",
     "options": [
@@ -12910,7 +12910,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-05",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "A counselor conducted an intensive clinical study investigating eating disorders with two patients over the past six years at Hiwot Fana Hospital. Which research methodology was employed?",
     "options": [
@@ -12926,7 +12926,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-06",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Selamu suffers from depression. During therapy, therapist Fatima notes: \"Your depression may be due to how you interpret and think about negative events in your life.\" Which psychological perspective does the therapist's explanation reflect?",
     "options": [
@@ -12942,7 +12942,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-07",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Forgetting your newly assigned phone number and repeatedly dialing your old phone number instead is a classic illustration of:",
     "options": [
@@ -12958,7 +12958,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-08",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Among the following statements, which one is NOT true regarding classical conditioning?",
     "options": [
@@ -12974,7 +12974,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-mc-09",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "In the formal definition of psychology as \"the scientific study of behavior and mental processes\", the term \"Scientific\" specifically means:",
     "options": [
@@ -12990,7 +12990,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-es-01",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "What are the four primary scientific goals of psychology? Briefly discuss each.",
     "options": [
@@ -13006,7 +13006,7 @@
   {
     "id": "psyc-hu-2023-mid-s2-es-02",
     "university": "Haramaya University",
-    "year": "2023 Exam",
+    "year": "2020 Exam",
     "course": "General Psychology",
     "question": "Discuss the three fundamental stages/processes of human memory.",
     "options": [
@@ -13704,476 +13704,6 @@
     ],
     "answer": 4,
     "explanation": "A persuasive definition uses emotive or value-laden words to subtly influence feelings and attitudes toward the term being defined.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-tf-01",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "True or False: We use monocular cues to determine closeness and binocular cues to determine farness.",
-    "options": [
-      "True",
-      "False"
-    ],
-    "answer": 1,
-    "explanation": "Both monocular cues and binocular cues contribute to distance and depth perception; binocular cues operate primarily at closer ranges (< few meters), not specifically for farness.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-tf-02",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "True or False: A researcher who wants to establish evidence for a cause-effect relationship between variables may use correlational research.",
-    "options": [
-      "True",
-      "False"
-    ],
-    "answer": 1,
-    "explanation": "Correlational research establishes association, not causation. Only an experimental design with manipulated independent variables can establish cause-and-effect relationships.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-tf-03",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "True or False: Humanistic psychologists believe that each person is the chief architect of his/her behavior.",
-    "options": [
-      "True",
-      "False"
-    ],
-    "answer": 0,
-    "explanation": "Humanistic psychology emphasizes human agency, personal responsibility, free will, and conscious self-direction.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-tf-04",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "True or False: Operant conditioning is considered as an independent form of learning.",
-    "options": [
-      "True",
-      "False"
-    ],
-    "answer": 0,
-    "explanation": "Operant (instrumental) conditioning is established as a distinct, independent learning paradigm alongside classical conditioning and observational learning.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-tf-05",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "True or False: The amount of change required to notice the change in a stimulus is called the just noticeable difference.",
-    "options": [
-      "True",
-      "False"
-    ],
-    "answer": 0,
-    "explanation": "The Just Noticeable Difference (JND), or difference threshold, is the minimum amount by which a stimulus must change for an observer to detect the difference.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-01",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Which one of the following best describes the field of developmental psychology?",
-    "options": [
-      "The study of how we grow and change from conception to death.",
-      "The study of how we grow and change in infancy and childhood.",
-      "The study of physical, cognitive, and psychosocial growth in children.",
-      "The study of emotions, personality, and social relationships."
-    ],
-    "answer": 0,
-    "explanation": "Developmental psychology investigates human physical, cognitive, and psychosocial changes across the entire lifespan from conception to death.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-02",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Which one of the following is a learned behavior?",
-    "options": [
-      "Baby crawling",
-      "Spider spinning a web",
-      "Fear of spiders",
-      "Pulling your hand away after touching a hot object"
-    ],
-    "answer": 2,
-    "explanation": "Web-spinning is an instinct, pulling away from heat is a spinal reflex, and crawling is biological maturation. A specific fear of spiders is an acquired, learned response.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-03",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Which schedule of reinforcement results in the slowest acquisition of behavior?",
-    "options": [
-      "Fixed ratio",
-      "Fixed interval",
-      "Variable ratio",
-      "Variable interval"
-    ],
-    "answer": 3,
-    "explanation": "Variable-interval reinforcement produces the slowest, most gradual acquisition rate among operant schedules, while delivering high resistance to extinction.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-04",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "A cup of milk would require a certain amount of sugar before you could detect a sweet taste. This example indicates:",
-    "options": [
-      "Absolute threshold",
-      "Difference threshold",
-      "Sensory threshold",
-      "Threshold"
-    ],
-    "answer": 0,
-    "explanation": "The absolute threshold is the minimum stimulus intensity necessary for a sensory system to detect its presence at least 50% of the time.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-05",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Which of the following psychologists are capable of examining the validity of eyewitness testimony?",
-    "options": [
-      "Counseling psychologists",
-      "Health psychologists",
-      "Clinical psychologists",
-      "Forensic psychologists"
-    ],
-    "answer": 3,
-    "explanation": "Forensic psychologists apply psychological science to the justice system, including evaluating the reliability of eyewitness memory.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-06",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "On a recent visit to the doctor, Kedir was given a painful injection. Since then, Kedir not only refuses to go to the same doctor, but also will not go to see any doctor or dentist. Kedir refusal behavior is an example of:",
-    "options": [
-      "Stimulus generalization",
-      "Stimulus discrimination",
-      "Extinction",
-      "Punishment"
-    ],
-    "answer": 0,
-    "explanation": "Stimulus generalization occurs when a conditioned response transfers to other stimuli that resemble the original conditioned stimulus.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-07",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "The process of becoming less sensitive to unchanging stimulus is referred to as:",
-    "options": [
-      "Sensory deprivation",
-      "Signal detection",
-      "Sensory overload",
-      "Sensory adaptation"
-    ],
-    "answer": 3,
-    "explanation": "Sensory adaptation is the declining sensitivity of sensory receptors following prolonged, constant stimulation.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-08",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Classical conditioning differs from operant conditioning in that:",
-    "options": [
-      "The learner plays a more active role in classical conditioning.",
-      "Behavior learned in classical conditioning is deliberate & goal directed",
-      "The response almost occurs prior to the stimulus in classical conditioning.",
-      "The response in classical conditioning is reflexive."
-    ],
-    "answer": 3,
-    "explanation": "Classical conditioning deals with automatic, involuntary, and reflexive responses, whereas operant conditioning deals with voluntary, emitted actions.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-09",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "If you had sight in only one eye, which of the following depth cues could you NOT use?",
-    "options": [
-      "Texture gradient",
-      "Convergence",
-      "Interposition",
-      "Shading"
-    ],
-    "answer": 1,
-    "explanation": "Convergence is a binocular cue that depends on the coordinated muscular movement of both eyes turning inward.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-10",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "The schedule of reinforcement associated with playing slot machines and other types of gambling is:",
-    "options": [
-      "Fixed ratio",
-      "Variable ratio",
-      "Fixed interval",
-      "Variable interval"
-    ],
-    "answer": 1,
-    "explanation": "Gambling devices reward users on a Variable Ratio schedule based on an unpredictable number of attempts.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-11",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "All of the following are true about behaviorism, EXCEPT:",
-    "options": [
-      "The first few years are decisive in personality development.",
-      "People are born neither good nor bad.",
-      "Learning takes the lion's share for our behaviors.",
-      "Human beings are infinitely changeable."
-    ],
-    "answer": 0,
-    "explanation": "Decisive early childhood determination is a core psychoanalytic claim (Freud), not behaviorism. Behaviorism views personality as continuously shaped by environment.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-12",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "What does the deduction of salary of an employee who was showing misconduct in an organization represent?",
-    "options": [
-      "Negative punishment",
-      "Negative reinforcement",
-      "Positive punishment",
-      "Positive reinforcement"
-    ],
-    "answer": 0,
-    "explanation": "Salary deduction removes a desired reward (money) following an undesirable behavior to decrease that behavior, representing negative punishment.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-13",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Being in an overcrowded room with lots of people talking, Mr 'x' is attempting to ignore the flooding of information and focused on only what is important for him. This process is known as:",
-    "options": [
-      "Sensory deprivation",
-      "Sensory overload",
-      "Selective attention",
-      "Sensory adaptation"
-    ],
-    "answer": 2,
-    "explanation": "Selective attention allows an individual to focus on a chosen auditory or visual stream while filtering out extraneous stimuli.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-14",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Suppose a one-year old child is playing with a toy near an electrical outlet. He sticks part of the toy into the outlet. He gets shocked, becomes frightened, and begins to cry. For several days after that experience, he shows fear when his mother gives him the toy and he refuses to play with it. In classical conditioning, the toy represents:",
-    "options": [
-      "Conditioned stimulus",
-      "Unconditioned stimulus",
-      "Unconditioned response",
-      "Conditioned response"
-    ],
-    "answer": 0,
-    "explanation": "The toy was a neutral stimulus that, after being paired with electrical shock (UCS), became a Conditioned Stimulus (CS) producing fear (CR).",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-mc-15",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "You are shown a picture of your grandfather's face, but the eyes and mouth are obstructed. You still recognize it as a picture of your grandfather. Which type of principle best explains this example of perception?",
-    "options": [
-      "Figure-ground principle",
-      "Closure",
-      "Proximity",
-      "Good continuation"
-    ],
-    "answer": 1,
-    "explanation": "The Gestalt principle of Closure explains how our mind automatically completes missing contours to perceive a complete, meaningful image.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-comp-01",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Our visual ability to perceive the world in three dimensions and judging the distance of an object is said to be:",
-    "options": [
-      "Depth perception",
-      "Visual acuity",
-      "Feature detection",
-      "Sensory adaptation"
-    ],
-    "answer": 0,
-    "explanation": "Depth perception is the cognitive and visual ability to judge distance and three-dimensional spatial relationships.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-comp-02",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "A branch of psychology that studies about the relationship between psychological factors and physical ailments is called:",
-    "options": [
-      "Health psychology",
-      "Clinical psychology",
-      "Counseling psychology",
-      "Forensic psychology"
-    ],
-    "answer": 0,
-    "explanation": "Health psychology focuses on how psychological, emotional, and social factors interact with physical illness and health.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-comp-03",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Which school of thought argues that psychology should focus on how the mind allows people to adapt to the real world?",
-    "options": [
-      "Functionalism (William James)",
-      "Structuralism (Edward Titchener)",
-      "Psychoanalysis (Sigmund Freud)",
-      "Gestalt Psychology (Max Wertheimer)"
-    ],
-    "answer": 0,
-    "explanation": "Functionalism, founded by William James, emphasized the adaptive evolutionary purpose of conscious mental processes.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-sc1-01",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Ikram is conducting her senior essay entitled \"Examining the relationship between parenting style and aggressive behavior among first year students in Harar campus\". Which research method should Ikram employ?",
-    "options": [
-      "Correlational Research",
-      "Experimental Research",
-      "Case Study",
-      "Naturalistic Observation"
-    ],
-    "answer": 0,
-    "explanation": "Because the objective is to assess the relationship between parenting styles and aggression without experimental manipulation, correlational research is required.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-sc1-02",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "In Ikram's study examining the relationship between parenting style and aggressive behavior among first year students in Harar campus, what is the Independent (Predictor) variable?",
-    "options": [
-      "Parenting style",
-      "Aggressive behavior",
-      "Students in Harar campus",
-      "Academic semester"
-    ],
-    "answer": 0,
-    "explanation": "Parenting style is the predictor/independent variable that is hypothesized to influence the student behavior.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-sc1-03",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "In Ikram's study examining the relationship between parenting style and aggressive behavior among first year students in Harar campus, what is the Dependent (Criterion) variable?",
-    "options": [
-      "Aggressive behavior",
-      "Parenting style",
-      "Campus enrollment",
-      "Family size"
-    ],
-    "answer": 0,
-    "explanation": "Aggressive behavior is the criterion/dependent variable being measured.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-sc2-01",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "Kalkidan was narrowly missed by a bus while listening to her favorite song. Later, hearing the song on the radio causes her hands to shake and her to cry. In this scenario, what is the Conditioned Stimulus (CS)?",
-    "options": [
-      "Her favorite song",
-      "The near-miss bus accident",
-      "Shaking hands and crying",
-      "The busy street"
-    ],
-    "answer": 0,
-    "explanation": "The favorite song was a neutral stimulus paired with the traumatic near-miss, becoming the Conditioned Stimulus (CS).",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-sc2-02",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "In Kalkidan's near-miss bus accident scenario, what is the Conditioned Response (CR)?",
-    "options": [
-      "Shaking hands and crying when hearing the song a week later",
-      "Stepping into the road",
-      "Listening to the radio",
-      "The bus speeding past"
-    ],
-    "answer": 0,
-    "explanation": "The conditioned response is the learned emotional/physiological reaction (hand shaking and crying) triggered by the conditioned song alone.",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-sc2-03",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "In Kalkidan's near-miss bus accident scenario, what is the Unconditioned Stimulus (UCS)?",
-    "options": [
-      "The traumatic near-miss accident with the speeding bus",
-      "Her favorite song",
-      "The MP3 player",
-      "The bedroom radio"
-    ],
-    "answer": 0,
-    "explanation": "The life-threatening bus near-miss is the natural, unlearned stimulus that inherently produces fear and shock (UCS).",
-    "category": "Mid Exam"
-  },
-  {
-    "id": "hu-psy-harar-sc2-04",
-    "university": "Haramaya University",
-    "year": "2022 Exam",
-    "course": "General Psychology",
-    "question": "In Kalkidan's near-miss bus accident scenario, what is the Unconditioned Response (UCR)?",
-    "options": [
-      "Immediate fear, shock, and trembling caused by the near-death bus accident",
-      "Hearing the song on the radio",
-      "Turning off the MP3 player",
-      "Stepping onto the sidewalk"
-    ],
-    "answer": 0,
-    "explanation": "The automatic, unlearned physiological terror and crying directly elicited by the near-fatal bus event is the Unconditioned Response (UCR).",
     "category": "Mid Exam"
   },
   {
@@ -18129,5 +17659,2037 @@
     ],
     "answer": 0,
     "explanation": "Multiply numerator and denominator by the conjugate (1 - ai): z = [(a + 4i)(1 - ai)] / (1 + a²) = [(a - a²i + 4i + 4a)] / (1 + a²) = [5a + (4 - a²)i] / (1 + a²). For z to be a real number, the imaginary part must be zero: (4 - a²) / (1 + a²) = 0 ⇒ 4 - a² = 0 ⇒ a² = 4 ⇒ a = ±2."
+  },
+  {
+    "id": "math-hu-2023-final-b-tf-01",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "True or False: Let f : A → B be a relation, then the domain of f is always equal to A.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "FALSE. The domain of a relation f : A → B is the set of all first elements of its ordered pairs, which is a subset of A, but not necessarily equal to A. The set A is the source (or input set), and the domain is only those elements of A that are actually mapped to something."
+  },
+  {
+    "id": "math-hu-2023-final-b-tf-02",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "True or False: A function is one-to-one if and only if no horizontal line intersects its graph more than once.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "TRUE. This is the horizontal line test: a function f is one-to-one (injective) if and only if every horizontal line y = c intersects the graph of f at most once. If a horizontal line hits the graph at two points, then two different x-values give the same output, violating injectivity."
+  },
+  {
+    "id": "math-hu-2023-final-b-tf-03",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "True or False: If f(x) = x / (x − 1), then the domain of (f ∘ f)(x) is the set of all real numbers.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "FALSE. (f ∘ f)(x) = f(f(x)). First f(x) = x/(x−1) requires x ≠ 1. Then f(f(x)) = f(x/(x−1)) = (x/(x−1)) / (x/(x−1) − 1) = (x/(x−1)) / (1/(x−1)) = x. Although the simplified result equals x, we must exclude values where f is undefined: x ≠ 1 (f(x) undefined) and x/(x−1) ≠ 1 (which gives 0 = −1, impossible). So the domain is ℝ \\ {1}, not all real numbers."
+  },
+  {
+    "id": "math-hu-2023-final-b-tf-04",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "True or False: Two lines with positive slopes are non-perpendicular lines.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "TRUE. Two lines are perpendicular if and only if the product of their slopes equals −1 (m₁ · m₂ = −1). If both slopes are positive, their product is positive, which can never equal −1. Therefore, two lines with positive slopes cannot be perpendicular."
+  },
+  {
+    "id": "math-hu-2023-final-b-tf-05",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "True or False: A circle is a set of points in a plane which are equidistant from a fixed point in the plane.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "TRUE. By definition, a circle is the locus (set) of all points in a plane that are at a fixed distance (the radius r) from a fixed point (the center). This is precisely the standard definition of a circle."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-01",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Let z and w be complex numbers. Then, which one of the following is true?\nA. Re(z + w) = Re(z) + Re(w)\nB. Im(z + w) = Im(z) + Im(w)\nC. Re(zw) = Re(z)Re(w) − Im(z)Im(w)\nD. Im(zw) = Re(z)Im(w) + Re(w)Im(z)\nE. All of the above",
+    "options": [
+      "Re(z + w) = Re(z) + Re(w)",
+      "Im(z + w) = Im(z) + Im(w)",
+      "Re(zw) = Re(z)Re(w) − Im(z)Im(w)",
+      "Im(zw) = Re(z)Im(w) + Re(w)Im(z)",
+      "All of the above"
+    ],
+    "answer": 4,
+    "explanation": "All four statements are true. Let z = a + bi and w = c + di. Then: Re(z+w) = a+c = Re(z)+Re(w) ✓; Im(z+w) = b+d = Im(z)+Im(w) ✓; zw = (ac−bd)+(ad+bc)i, so Re(zw) = ac−bd = Re(z)Re(w)−Im(z)Im(w) ✓; Im(zw) = ad+bc = Re(z)Im(w)+Re(w)Im(z) ✓. Answer: E (All)."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-02",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "The value of |i⁵⁰ + i⁵² + i⁵⁴ + i⁵⁶| is:",
+    "options": [
+      "1",
+      "-1",
+      "2",
+      "0"
+    ],
+    "answer": 3,
+    "explanation": "Powers of i cycle with period 4: i¹=i, i²=−1, i³=−i, i⁴=1. So: i⁵⁰ = i^(4·12+2) = i² = −1; i⁵² = i^(4·13) = 1; i⁵⁴ = i^(4·13+2) = i² = −1; i⁵⁶ = i^(4·14) = 1. Sum = −1 + 1 − 1 + 1 = 0. |0| = 0. Answer: D."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-03",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "The range of a relation R = {(x, x²) : x is a prime number less than 13} is:",
+    "options": [
+      "{2, 3, 5, 7}",
+      "{2, 3, 5, 7, 11}",
+      "{4, 9, 25, 49, 121}",
+      "{1, 4, 9, 25, 49, 121}"
+    ],
+    "answer": 2,
+    "explanation": "Primes less than 13 are: 2, 3, 5, 7, 11. The relation R pairs each prime x with x², so R = {(2,4),(3,9),(5,25),(7,49),(11,121)}. The range is the set of second elements: {4, 9, 25, 49, 121}. Answer: C."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-04",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "If the ordered pairs (a + 2, 4) and (5, 2a + b) are equal, then (a, b) is:",
+    "options": [
+      "(2, −2)",
+      "(5, 1)",
+      "(3, 10)",
+      "(3, −2)"
+    ],
+    "answer": 3,
+    "explanation": "Two ordered pairs are equal iff their corresponding components are equal. So: a + 2 = 5 → a = 3. And 4 = 2a + b → 4 = 2(3) + b → 4 = 6 + b → b = −2. Therefore (a, b) = (3, −2). Answer: D."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-05",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Let f = {(0,1),(2,0),(3,4),(4,2),(5,7)} and g = {(0,2),(1,0),(2,4),(−4,2),(7,0)}. Then the range of f ∘ g is:",
+    "options": [
+      "{0, 1, 2}",
+      "{−4, 1, 0, 2, 7}",
+      "{1, 2, 3, 4, 5}",
+      "{0, 2, 3, 4, 5}"
+    ],
+    "answer": 0,
+    "explanation": "f ∘ g means apply g first, then f. Computing: g(0)=2 → f(2)=0; g(1)=0 → f(0)=1; g(2)=4 → f(4)=2; g(−4)=2 → f(2)=0; g(7)=0 → f(0)=1. So f∘g = {(0,0),(1,1),(2,2),(−4,0),(7,1)}. Range = {0, 1, 2}. Answer: A."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-06",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Suppose that when the polynomial p(x) is divided by x − 5, the quotient is 3x⁴ − 5x² + 2x − 5 with a remainder of 4. Then we conclude that:",
+    "options": [
+      "x − 4 is a factor of p(x) and 4 is a zero of p(x)",
+      "x + 5 is not a factor of p(x) and −5 is not a zero of p(x)",
+      "x − 5 is a factor of p(x) and −5 is a zero of p(x)",
+      "x − 5 is not a factor of p(x) and 5 is not a zero of p(x)"
+    ],
+    "answer": 3,
+    "explanation": "By the division algorithm: p(x) = (x−5)(3x⁴−5x²+2x−5) + 4. Since the remainder is 4 ≠ 0, by the Factor Theorem, x−5 is NOT a factor of p(x). Also p(5) = 4 ≠ 0, so 5 is NOT a zero of p(x). Answer: D."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-07",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Which type of asymptote will never intersect the graph of a rational function?",
+    "options": [
+      "Horizontal",
+      "Oblique",
+      "Vertical",
+      "Slant"
+    ],
+    "answer": 2,
+    "explanation": "A vertical asymptote of a rational function occurs where the denominator is zero (and numerator is nonzero), making the function undefined at that x-value. Therefore the graph can NEVER cross or touch a vertical asymptote. Horizontal and oblique/slant asymptotes, on the other hand, CAN be crossed by the graph. Answer: C. Vertical."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-08",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Let C be a circle of radius 4 centered at (2, 2). Which one of the following is true about the point P(5, 0)?",
+    "options": [
+      "P is inside the circle C",
+      "P is outside of the circle C",
+      "P is on the circle C",
+      "All of the above"
+    ],
+    "answer": 0,
+    "explanation": "Compute the distance from P(5,0) to center (2,2): d = √((5−2)² + (0−2)²) = √(9 + 4) = √13 ≈ 3.61. Since √13 < 4 (the radius), point P lies INSIDE circle C. Answer: A."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-09",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Which of the following pairs of lines are perpendicular?",
+    "options": [
+      "3x − 6y + 1 = 0 and x − 2y = 3",
+      "2x − y + 1 = 0 and 2x + 4y = 3",
+      "y = 3x + 2 and y + 3x = 2",
+      "x/3 + y/2 = 1 and 4x + 6y − 12 = 0"
+    ],
+    "answer": 1,
+    "explanation": "Lines are perpendicular iff m₁·m₂ = −1. Check option B: 2x−y+1=0 → y=2x+1, so m₁=2. 2x+4y=3 → y=−x/2+3/4, so m₂=−1/2. Product: 2·(−1/2)=−1 ✓. Check others: A: both have m=1/2 (parallel). C: m₁=3, m₂=−3, product=−9≠−1. D: both simplify to y=−(2/3)x+2 (same line). Answer: B."
+  },
+  {
+    "id": "math-hu-2023-final-b-mc-10",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Among the following, which one does NOT represent an equation of a circle?",
+    "options": [
+      "x² + y² + 2x − 2y + 3 = 0",
+      "x² + y² − 2x + 4y + 1 = 0",
+      "x² + y² − 8x + 12y + 36 = 0",
+      "x² + y² − 4x − 6y + 3 = 0"
+    ],
+    "answer": 0,
+    "explanation": "For x²+y²+Dx+Ey+F=0 to be a circle, the radius² = (D/2)²+(E/2)²−F must be positive. Check A: r²=(1)²+(−1)²−3=1+1−3=−1<0. A negative radius² means no real circle exists. B: r²=1+4−1=4>0 ✓. C: r²=16+36−36=16>0 ✓. D: r²=4+9−3=10>0 ✓. Answer: A."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-01a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the conjugate of z.",
+    "options": [
+      "−3/2 + (3/2)i",
+      "3/2 − (3/2)i",
+      "3/2 + (3/2)i",
+      "−3/2 − (3/2)i"
+    ],
+    "answer": 0,
+    "explanation": "Multiply numerator and denominator by the conjugate of (−1−i), which is (−1+i): z = 3i(−1+i) / [(−1−i)(−1+i)] = (−3i+3i²) / (1+1) = (−3i−3)/2 = −3/2 − (3/2)i. The conjugate z̄ = −3/2 + (3/2)i."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-01b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the modulus of z.",
+    "options": [
+      "3√2 / 2",
+      "3/2",
+      "√2",
+      "3"
+    ],
+    "answer": 0,
+    "explanation": "From z = −3/2 − (3/2)i, the modulus is |z| = √((−3/2)² + (−3/2)²) = √(9/4 + 9/4) = √(9/2) = 3/√2 = 3√2/2."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-01c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the multiplicative inverse of z.",
+    "options": [
+      "−1/3 + (1/3)i",
+      "1/3 − (1/3)i",
+      "−1/3 − (1/3)i",
+      "1/3 + (1/3)i"
+    ],
+    "answer": 0,
+    "explanation": "z = −3/2 − (3/2)i, so z̄ = −3/2 + (3/2)i and |z|² = 9/2. The multiplicative inverse is 1/z = z̄/|z|² = (−3/2 + (3/2)i)/(9/2) = (−3/2 + (3/2)i)·(2/9) = −1/3 + (1/3)i."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-01d",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the principal argument of z.",
+    "options": [
+      "−3π/4",
+      "3π/4",
+      "−π/4",
+      "5π/4"
+    ],
+    "answer": 0,
+    "explanation": "z = −3/2 − (3/2)i lies in the third quadrant (both Re and Im are negative). The reference angle is arctan(|Im|/|Re|) = arctan(1) = π/4. For the third quadrant, the principal argument is −π + π/4 = −3π/4 (keeping it in (−π, π])."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-01e",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the polar form of z.",
+    "options": [
+      "(3√2/2)(cos(−3π/4) + i sin(−3π/4))",
+      "(3√2/2)(cos(3π/4) + i sin(3π/4))",
+      "(3/2)(cos(−3π/4) + i sin(−3π/4))",
+      "√2 (cos(−3π/4) + i sin(−3π/4))"
+    ],
+    "answer": 0,
+    "explanation": "The polar form is z = r(cosθ + i sinθ) where r = |z| = 3√2/2 and θ = Arg(z) = −3π/4. So z = (3√2/2)(cos(−3π/4) + i sin(−3π/4))."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-02",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "If (7x − 2y) + (3x + 2y)i = 4i, find x and y.",
+    "options": [
+      "x = 2/5, y = 7/5",
+      "x = 4/3, y = 0",
+      "x = 0, y = 4/3",
+      "x = 1, y = 7/2"
+    ],
+    "answer": 0,
+    "explanation": "Equate real and imaginary parts: Real: 7x − 2y = 0 → y = 7x/2. Imaginary: 3x + 2y = 4. Substituting: 3x + 2(7x/2) = 4 → 3x + 7x = 4 → 10x = 4 → x = 2/5. Then y = 7(2/5)/2 = 7/5. So x = 2/5, y = 7/5."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-03a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R be a relation on A defined by R = {(a,b) : a,b ∈ A, a is a multiple of b}. Find the relation R.",
+    "options": [
+      "{(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}",
+      "{(1,1),(2,2),(3,3),(4,4)}",
+      "{(2,1),(3,1),(4,1),(4,2)}",
+      "{(1,2),(1,3),(1,4),(2,4)}"
+    ],
+    "answer": 0,
+    "explanation": "a is a multiple of b means a = kb for some positive integer k. Checking all pairs: 1 is a multiple of 1 → (1,1); 2 is a multiple of 1 and 2 → (2,1),(2,2); 3 is a multiple of 1 and 3 → (3,1),(3,3); 4 is a multiple of 1, 2, and 4 → (4,1),(4,2),(4,4). So R = {(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-03b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R = {(a,b) : a,b ∈ A, a is a multiple of b}. Find the domain of R.",
+    "options": [
+      "{1, 2, 3, 4}",
+      "{1, 2}",
+      "{1, 2, 3}",
+      "{2, 3, 4}"
+    ],
+    "answer": 0,
+    "explanation": "The domain of R is the set of all first elements: from {(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}, the first elements are {1,2,3,4}. Domain = {1,2,3,4} = A."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-03c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R = {(a,b) : a,b ∈ A, a is a multiple of b}. Find the range of R.",
+    "options": [
+      "{1, 2, 3, 4}",
+      "{1, 2, 4}",
+      "{1, 2, 3}",
+      "{1, 2}"
+    ],
+    "answer": 0,
+    "explanation": "The range of R is the set of all second elements: from {(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}, the second elements are {1,2,3,4}. Range = {1,2,3,4}."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-03d",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R = {(a,b) : a,b ∈ A, a is a multiple of b}. Find R⁻¹.",
+    "options": [
+      "{(1,1),(1,2),(2,2),(1,3),(3,3),(1,4),(2,4),(4,4)}",
+      "{(1,1),(2,2),(3,3),(4,4)}",
+      "{(1,2),(1,3),(1,4),(2,4)}",
+      "{(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}"
+    ],
+    "answer": 0,
+    "explanation": "R⁻¹ is obtained by swapping each pair in R: {(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)} → swapping gives {(1,1),(1,2),(2,2),(1,3),(3,3),(1,4),(2,4),(4,4)}."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-04",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Find the domain of f(x) = √(16 − x²) / x.",
+    "options": [
+      "[−4, 0) ∪ (0, 4]",
+      "(−4, 4)",
+      "[−4, 4]",
+      "(−∞, −4) ∪ (4, ∞)"
+    ],
+    "answer": 0,
+    "explanation": "Two conditions: (1) 16 − x² ≥ 0 → x² ≤ 16 → −4 ≤ x ≤ 4. (2) x ≠ 0 (denominator). Combining: x ∈ [−4, 4] and x ≠ 0. Domain = [−4, 0) ∪ (0, 4]."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-05",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Find the inverse function of f(x) = (x − 1) / (2x + 3).",
+    "options": [
+      "f⁻¹(x) = (3x + 1) / (1 − 2x)",
+      "f⁻¹(x) = (x + 1) / (2x − 3)",
+      "f⁻¹(x) = (2x + 1) / (3x − 1)",
+      "f⁻¹(x) = (x − 3) / (2x + 1)"
+    ],
+    "answer": 0,
+    "explanation": "Let y = (x−1)/(2x+3). Swap x and y: x = (y−1)/(2y+3). Solve for y: x(2y+3) = y−1 → 2xy+3x = y−1 → 2xy−y = −1−3x → y(2x−1) = −(1+3x) → y = −(3x+1)/(2x−1) = (3x+1)/(1−2x). So f⁻¹(x) = (3x+1)/(1−2x), domain: x ≠ 1/2."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-06a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "The polynomial equation 2x³ − 5x² + cx − 5 = 0 (c ∈ ℝ) has a root 1 − 2i. Find the other two roots.",
+    "options": [
+      "1 + 2i and 1/2",
+      "1 + 2i and −1/2",
+      "−1 + 2i and 5",
+      "1 − 2i and 5/2"
+    ],
+    "answer": 0,
+    "explanation": "Since coefficients are real, complex roots come in conjugate pairs. So 1+2i is also a root. The quadratic factor is (x−(1−2i))(x−(1+2i)) = (x−1)²+4 = x²−2x+5. Dividing: 2x³−5x²+cx−5 ÷ (x²−2x+5) gives quotient 2x−1 (with c=12). So the third root is from 2x−1=0, i.e., x=1/2. The three roots are: 1−2i, 1+2i, and 1/2."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-06b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "The polynomial equation 2x³ − 5x² + cx − 5 = 0 has root 1 − 2i. Find the value of c.",
+    "options": [
+      "12",
+      "−12",
+      "5",
+      "−5"
+    ],
+    "answer": 0,
+    "explanation": "Since 1−2i is a root and coefficients are real, so is 1+2i. Quadratic factor: x²−2x+5. Divide 2x³−5x²+cx−5 by x²−2x+5: the quotient must be 2x−1 (to give third root 1/2). Expanding: (x²−2x+5)(2x−1) = 2x³−x²−4x²+2x+10x−5 = 2x³−5x²+12x−5. Matching coefficients: c = 12."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-07",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Find the exact value of tanh(2 ln 5).",
+    "options": [
+      "312/313",
+      "624/626",
+      "25/13",
+      "313/312"
+    ],
+    "answer": 0,
+    "explanation": "tanh(t) = (eᵗ − e⁻ᵗ)/(eᵗ + e⁻ᵗ). With t = 2ln5: e^(2ln5) = (e^(ln5))² = 25 and e^(−2ln5) = 1/25. So tanh(2ln5) = (25 − 1/25)/(25 + 1/25) = [(625−1)/25]/[(625+1)/25] = 624/626 = 312/313."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-08a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "The line x + cy = 1 has slope m = 4. Find the value of c.",
+    "options": [
+      "−1/4",
+      "1/4",
+      "4",
+      "−4"
+    ],
+    "answer": 0,
+    "explanation": "Rewriting x + cy = 1 as y = (1−x)/c = 1/c − (1/c)x, the slope is −1/c. Setting −1/c = 4 gives c = −1/4."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-08b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "The line x + cy = 1 passes through (−2, 1). Find the value of c.",
+    "options": [
+      "3",
+      "−3",
+      "1/3",
+      "−1/3"
+    ],
+    "answer": 0,
+    "explanation": "Substituting (−2, 1) into x + cy = 1: −2 + c(1) = 1 → c = 3."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-08c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "For the line x + cy = 1 to be a vertical line, find the value of c.",
+    "options": [
+      "0",
+      "1",
+      "undefined",
+      "∞"
+    ],
+    "answer": 0,
+    "explanation": "A vertical line has the form x = k (no y-term). For x + cy = 1 to be vertical, the coefficient of y must be zero: c = 0. The line becomes x = 1, which is vertical."
+  },
+  {
+    "id": "math-hu-2023-final-b-sa-09",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Given P(−3, 3) and Q(7, 8), find the coordinate of point R on segment PQ such that |PR| : |RQ| = 2 : 3.",
+    "options": [
+      "(1, 5)",
+      "(2, 6)",
+      "(0, 5)",
+      "(1, 6)"
+    ],
+    "answer": 0,
+    "explanation": "Using the section formula for internal division in ratio m:n = 2:3: R = ((m·x₂ + n·x₁)/(m+n), (m·y₂ + n·y₁)/(m+n)) = ((2·7 + 3·(−3))/5, (2·8 + 3·3)/5) = ((14−9)/5, (16+9)/5) = (5/5, 25/5) = (1, 5)."
+  },
+  {
+    "id": "math-hu-2023-final-b-wo-01",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "Find the three cube roots of the complex number z = −8i.",
+    "options": [
+      "√3 − i, 2i, −√3 − i",
+      "√3 + i, −2i, −√3 + i",
+      "2 − 2i, 2i, −2 − 2i",
+      "1 − i, 2i, −1 − i"
+    ],
+    "answer": 0,
+    "explanation": "Write z = −8i in polar form: |z|=8, Arg(z)=−π/2. So z = 8·cis(−π/2). The cube roots are: ∛8·cis((−π/2 + 2kπ)/3) for k=0,1,2. ∛8=2. k=0: 2·cis(−π/6) = 2(cos30°−i·sin30°) = 2(√3/2 − i/2) = √3 − i. k=1: 2·cis(−π/6+2π/3) = 2·cis(π/2) = 2i. k=2: 2·cis(−π/6+4π/3) = 2·cis(7π/6) = 2(−√3/2−i/2) = −√3 − i."
+  },
+  {
+    "id": "math-hu-2023-final-b-wo-02a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "For f(x) = (x − 2)/(x² − 4), find the domain of f.",
+    "options": [
+      "(−∞, −2) ∪ (−2, 2) ∪ (2, +∞)",
+      "(−∞, 2) ∪ (2, +∞)",
+      "(−2, 2)",
+      "(−∞, −2) ∪ (−2, +∞)"
+    ],
+    "answer": 0,
+    "explanation": "x²−4 = (x−2)(x+2) = 0 gives x = 2 or x = −2. Both must be excluded from the domain. Domain = ℝ \\ {−2, 2} = (−∞,−2) ∪ (−2,2) ∪ (2,+∞)."
+  },
+  {
+    "id": "math-hu-2023-final-b-wo-02b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "For f(x) = (x − 2)/(x² − 4), find the intercepts.",
+    "options": [
+      "No x-intercept; y-intercept at (0, 1/2)",
+      "x-intercept at (2, 0); y-intercept at (0, 1/2)",
+      "x-intercept at (0, 0); no y-intercept",
+      "No x-intercept; no y-intercept"
+    ],
+    "answer": 0,
+    "explanation": "Simplify: f(x) = (x−2)/[(x−2)(x+2)] = 1/(x+2) for x ≠ 2 (hole at x=2). x-intercept: set f(x)=0 → 1/(x+2)=0, which has no solution. So there is NO x-intercept (there is a removable discontinuity/hole at (2, 1/4)). y-intercept: x=0 → f(0)=1/(0+2)=1/2. y-intercept at (0, 1/2)."
+  },
+  {
+    "id": "math-hu-2023-final-b-wo-02c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2023 Exam",
+    "category": "Final Exam",
+    "question": "For f(x) = (x − 2)/(x² − 4), find all asymptotes.",
+    "options": [
+      "Vertical: x = −2; Horizontal: y = 0; Hole at x = 2",
+      "Vertical: x = 2 and x = −2; Horizontal: y = 0",
+      "Vertical: x = −2; Oblique: y = x",
+      "Vertical: x = −2; Horizontal: y = 1"
+    ],
+    "answer": 0,
+    "explanation": "Simplified form: f(x) = 1/(x+2), x ≠ 2. Vertical asymptote: x = −2 (denominator = 0 and not cancelled). At x = 2: both numerator and denominator are 0 → removable discontinuity (hole at (2, 1/4)), NOT a vertical asymptote. Horizontal asymptote: degree of numerator (0 in 1/(x+2)) < degree of denominator (1) → y = 0. No oblique asymptote."
+  },
+  {
+    "id": "math-hu-2021-final-tf-01",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "True or False: Let f : A → B be a relation, then the domain of f is always equal to A.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "FALSE. The domain of a relation f : A → B is the set of all first elements of its ordered pairs, which is a subset of A but not necessarily equal to A. A is the source set; the domain is only those elements of A that are actually paired with something in B."
+  },
+  {
+    "id": "math-hu-2021-final-tf-02",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "True or False: A function is one-to-one if and only if no horizontal line intersects its graph more than once.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "TRUE. This is the horizontal line test: a function f is one-to-one (injective) if and only if every horizontal line y = c intersects the graph of f at most once."
+  },
+  {
+    "id": "math-hu-2021-final-tf-03",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "True or False: If f(x) = x / (x − 1), then the domain of (f ∘ f)(x) is the set of all real numbers.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "FALSE. (f ∘ f)(x) = f(f(x)). f(x) = x/(x−1) is undefined at x = 1. Also f(f(x)) simplifies to x, but the domain must exclude x = 1 (where f is undefined). So domain = ℝ \\ {1}, not all real numbers."
+  },
+  {
+    "id": "math-hu-2021-final-tf-04",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "True or False: Two lines with positive slopes are non-perpendicular lines.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "TRUE. For two lines to be perpendicular, the product of their slopes must equal −1. If both slopes are positive, their product is positive and can never equal −1. So two lines with positive slopes are always non-perpendicular."
+  },
+  {
+    "id": "math-hu-2021-final-tf-05",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "True or False: A circle is a set of points in a plane which are equidistant from a fixed point in the plane.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "TRUE. By definition, a circle is the locus of all points in a plane at a fixed distance (radius r) from a fixed point (the center). This is the standard definition of a circle."
+  },
+  {
+    "id": "math-hu-2021-final-mc-01",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Let z and w be complex numbers. Then, which one of the following is true?\nA. Re(z + w) = Re(z) + Re(w)\nB. Im(z + w) = Im(z) + Im(w)\nC. Re(zw) = Re(z)Re(w) − Im(z)Im(w)\nD. Im(zw) = Re(z)Im(w) + Re(w)Im(z)\nE. All of the above",
+    "options": [
+      "Re(z + w) = Re(z) + Re(w)",
+      "Im(z + w) = Im(z) + Im(w)",
+      "Re(zw) = Re(z)Re(w) − Im(z)Im(w)",
+      "Im(zw) = Re(z)Im(w) + Re(w)Im(z)",
+      "All of the above"
+    ],
+    "answer": 4,
+    "explanation": "All four statements are true. Let z = a+bi and w = c+di. Then: Re(z+w)=a+c ✓; Im(z+w)=b+d ✓; zw=(ac−bd)+(ad+bc)i, so Re(zw)=ac−bd=Re(z)Re(w)−Im(z)Im(w) ✓; Im(zw)=ad+bc=Re(z)Im(w)+Re(w)Im(z) ✓. Answer: E."
+  },
+  {
+    "id": "math-hu-2021-final-mc-02",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "The value of |i⁵⁰ + i⁵² + i⁵⁴ + i⁵⁶| is:",
+    "options": [
+      "1",
+      "−1",
+      "2",
+      "0"
+    ],
+    "answer": 3,
+    "explanation": "Powers of i cycle with period 4. i⁵⁰ = i^(4·12+2) = i² = −1; i⁵² = i^(4·13) = 1; i⁵⁴ = i² = −1; i⁵⁶ = i^(4·14) = 1. Sum = −1+1−1+1 = 0. |0| = 0. Answer: D."
+  },
+  {
+    "id": "math-hu-2021-final-mc-03",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "The range of the relation R = {(x, x²) : x is a prime number less than 13} is:",
+    "options": [
+      "{2, 3, 5, 7}",
+      "{2, 3, 5, 7, 11}",
+      "{4, 9, 25, 49, 121}",
+      "{1, 4, 9, 25, 49, 121}"
+    ],
+    "answer": 2,
+    "explanation": "Primes less than 13: 2, 3, 5, 7, 11. Squaring each: 4, 9, 25, 49, 121. Range = {4, 9, 25, 49, 121}. Answer: C."
+  },
+  {
+    "id": "math-hu-2021-final-mc-04",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "If the ordered pairs (a + 2, 4) and (5, 2a + b) are equal, then (a, b) is:",
+    "options": [
+      "(2, −2)",
+      "(5, 1)",
+      "(3, 10)",
+      "(3, −2)"
+    ],
+    "answer": 3,
+    "explanation": "Equal ordered pairs → equal components: a + 2 = 5 → a = 3. And 4 = 2(3) + b → b = −2. So (a, b) = (3, −2). Answer: D."
+  },
+  {
+    "id": "math-hu-2021-final-mc-05",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Let f = {(0,1),(2,0),(3,4),(4,2),(5,7)} and g = {(0,2),(1,0),(2,4),(−4,2),(7,0)}. Then the range of f ∘ g is:",
+    "options": [
+      "{0, 1, 2}",
+      "{−4, 1, 0, 2, 7}",
+      "{1, 2, 3, 4, 5}",
+      "{0, 2, 3, 4, 5}"
+    ],
+    "answer": 0,
+    "explanation": "Apply g first, then f: g(0)=2→f(2)=0; g(1)=0→f(0)=1; g(2)=4→f(4)=2; g(−4)=2→f(2)=0; g(7)=0→f(0)=1. Range of f∘g = {0, 1, 2}. Answer: A."
+  },
+  {
+    "id": "math-hu-2021-final-mc-06",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "When polynomial p(x) is divided by x − 5, the quotient is 3x⁴ − 5x² + 2x − 5 with remainder 4. Then:",
+    "options": [
+      "x − 4 is a factor of p(x) and 4 is a zero of p(x)",
+      "x + 5 is not a factor of p(x) and −5 is not a zero of p(x)",
+      "x − 5 is a factor of p(x) and −5 is a zero of p(x)",
+      "x − 5 is not a factor of p(x) and 5 is not a zero of p(x)"
+    ],
+    "answer": 3,
+    "explanation": "p(x) = (x−5)(3x⁴−5x²+2x−5) + 4. Since remainder = 4 ≠ 0, by the Factor Theorem x−5 is NOT a factor and p(5) = 4 ≠ 0, so 5 is NOT a zero. Answer: D."
+  },
+  {
+    "id": "math-hu-2021-final-mc-07",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Which type of asymptote will never intersect the graph of a rational function?",
+    "options": [
+      "Horizontal",
+      "Oblique",
+      "Vertical",
+      "Slant"
+    ],
+    "answer": 2,
+    "explanation": "A vertical asymptote occurs where the denominator is zero, making the function undefined there. The graph can NEVER cross a vertical asymptote. Horizontal and oblique/slant asymptotes can be crossed. Answer: C."
+  },
+  {
+    "id": "math-hu-2021-final-mc-08",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Let C be a circle of radius 4 centered at (2, 2). Which is true about point P(5, 0)?",
+    "options": [
+      "P is inside the circle C",
+      "P is outside of the circle C",
+      "P is on the circle C",
+      "All of the above"
+    ],
+    "answer": 0,
+    "explanation": "Distance from P(5,0) to center (2,2): d = √((5−2)²+(0−2)²) = √(9+4) = √13 ≈ 3.61. Since √13 < 4 (radius), P is INSIDE circle C. Answer: A."
+  },
+  {
+    "id": "math-hu-2021-final-mc-09",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Which of the following pairs of lines are perpendicular?",
+    "options": [
+      "3x − 6y + 1 = 0 and x − 2y = 3",
+      "2x − y + 1 = 0 and 2x + 4y = 3",
+      "y = 3x + 2 and y + 3x = 2",
+      "x/3 + y/2 = 1 and 4x + 6y − 12 = 0"
+    ],
+    "answer": 1,
+    "explanation": "Check B: 2x−y+1=0 → m₁=2; 2x+4y=3 → m₂=−1/2. Product: 2×(−1/2)=−1 ✓ perpendicular. A: both m=1/2 (parallel). C: m₁=3, m₂=−3, product=−9≠−1. D: both same line. Answer: B."
+  },
+  {
+    "id": "math-hu-2021-final-mc-10",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Among the following, which one does NOT represent an equation of a circle?",
+    "options": [
+      "x² + y² + 2x − 2y + 3 = 0",
+      "x² + y² − 2x + 4y + 1 = 0",
+      "x² + y² − 8x + 12y + 36 = 0",
+      "x² + y² − 4x − 6y + 3 = 0"
+    ],
+    "answer": 0,
+    "explanation": "For x²+y²+Dx+Ey+F=0, radius² = (D/2)²+(E/2)²−F must be > 0. A: r²=1+1−3=−1<0 → NOT a circle. B: r²=1+4−1=4>0 ✓. C: r²=16+36−36=16>0 ✓. D: r²=4+9−3=10>0 ✓. Answer: A."
+  },
+  {
+    "id": "math-hu-2021-final-sa-01a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the conjugate of z.",
+    "options": [
+      "−3/2 + (3/2)i",
+      "3/2 − (3/2)i",
+      "3/2 + (3/2)i",
+      "−3/2 − (3/2)i"
+    ],
+    "answer": 0,
+    "explanation": "Multiply by conjugate of denominator: z = 3i(−1+i)/[(−1)²+(1)²] = (−3i+3i²)/2 = (−3−3i)/2 = −3/2 − (3/2)i. Conjugate z̄ = −3/2 + (3/2)i."
+  },
+  {
+    "id": "math-hu-2021-final-sa-01b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the modulus of z.",
+    "options": [
+      "3√2 / 2",
+      "3/2",
+      "√2",
+      "3"
+    ],
+    "answer": 0,
+    "explanation": "z = −3/2 − (3/2)i. |z| = √((3/2)²+(3/2)²) = √(9/2) = 3/√2 = 3√2/2."
+  },
+  {
+    "id": "math-hu-2021-final-sa-01c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the multiplicative inverse of z.",
+    "options": [
+      "−1/3 + (1/3)i",
+      "1/3 − (1/3)i",
+      "−1/3 − (1/3)i",
+      "1/3 + (1/3)i"
+    ],
+    "answer": 0,
+    "explanation": "1/z = z̄/|z|². z̄ = −3/2+(3/2)i, |z|² = 9/2. So 1/z = (−3/2+(3/2)i)/(9/2) = (−3/2+(3/2)i)·(2/9) = −1/3+(1/3)i."
+  },
+  {
+    "id": "math-hu-2021-final-sa-01d",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the principal argument of z.",
+    "options": [
+      "−3π/4",
+      "3π/4",
+      "−π/4",
+      "5π/4"
+    ],
+    "answer": 0,
+    "explanation": "z = −3/2 − (3/2)i is in the third quadrant. Reference angle = arctan(1) = π/4. Principal argument = −π + π/4 = −3π/4 (in range (−π, π])."
+  },
+  {
+    "id": "math-hu-2021-final-sa-01e",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Given z = 3i / (−1 − i), find the polar form of z.",
+    "options": [
+      "(3√2/2)(cos(−3π/4) + i sin(−3π/4))",
+      "(3√2/2)(cos(3π/4) + i sin(3π/4))",
+      "(3/2)(cos(−3π/4) + i sin(−3π/4))",
+      "√2(cos(−3π/4) + i sin(−3π/4))"
+    ],
+    "answer": 0,
+    "explanation": "Polar form: z = r(cosθ + i sinθ) with r = 3√2/2 and θ = −3π/4. So z = (3√2/2)(cos(−3π/4) + i sin(−3π/4))."
+  },
+  {
+    "id": "math-hu-2021-final-sa-02",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "If (7x − 2y) + (3x + 2y)i = 4i, find x and y.",
+    "options": [
+      "x = 2/5, y = 7/5",
+      "x = 4/3, y = 0",
+      "x = 0, y = 2",
+      "x = 1, y = 7/2"
+    ],
+    "answer": 0,
+    "explanation": "Equate real and imaginary parts. Real: 7x − 2y = 0 → y = 7x/2. Imaginary: 3x + 2y = 4. Substitute: 3x + 7x = 4 → 10x = 4 → x = 2/5, y = 7/5."
+  },
+  {
+    "id": "math-hu-2021-final-sa-03a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R = {(a,b) : a,b ∈ A, a is a multiple of b}. Find the relation R.",
+    "options": [
+      "{(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}",
+      "{(1,1),(2,2),(3,3),(4,4)}",
+      "{(2,1),(3,1),(4,1),(4,2)}",
+      "{(1,2),(1,3),(1,4),(2,4)}"
+    ],
+    "answer": 0,
+    "explanation": "a is a multiple of b: 1 is multiple of 1→(1,1); 2 is multiple of 1,2→(2,1),(2,2); 3 is multiple of 1,3→(3,1),(3,3); 4 is multiple of 1,2,4→(4,1),(4,2),(4,4). R = {(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}."
+  },
+  {
+    "id": "math-hu-2021-final-sa-03b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R = {(a,b) : a is a multiple of b}. Find the domain of R.",
+    "options": [
+      "{1, 2, 3, 4}",
+      "{1, 2}",
+      "{2, 3, 4}",
+      "{1, 2, 3}"
+    ],
+    "answer": 0,
+    "explanation": "Domain = set of all first elements = {1, 2, 3, 4}."
+  },
+  {
+    "id": "math-hu-2021-final-sa-03c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R = {(a,b) : a is a multiple of b}. Find the range of R.",
+    "options": [
+      "{1, 2, 3, 4}",
+      "{1, 2, 4}",
+      "{1, 2, 3}",
+      "{1, 4}"
+    ],
+    "answer": 0,
+    "explanation": "Range = set of all second elements from R = {1, 2, 3, 4}."
+  },
+  {
+    "id": "math-hu-2021-final-sa-03d",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Let A = {1,2,3,4} and R = {(a,b) : a is a multiple of b}. Find R⁻¹.",
+    "options": [
+      "{(1,1),(1,2),(2,2),(1,3),(3,3),(1,4),(2,4),(4,4)}",
+      "{(1,1),(2,2),(3,3),(4,4)}",
+      "{(1,2),(1,3),(1,4),(2,4)}",
+      "{(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)}"
+    ],
+    "answer": 0,
+    "explanation": "R⁻¹ swaps each pair: {(1,1),(2,1),(2,2),(3,1),(3,3),(4,1),(4,2),(4,4)} → {(1,1),(1,2),(2,2),(1,3),(3,3),(1,4),(2,4),(4,4)}."
+  },
+  {
+    "id": "math-hu-2021-final-sa-04",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Find the domain of f(x) = √(16 − x²) / x.",
+    "options": [
+      "[−4, 0) ∪ (0, 4]",
+      "(−4, 4)",
+      "[−4, 4]",
+      "(−∞, −4) ∪ (4, ∞)"
+    ],
+    "answer": 0,
+    "explanation": "Need 16−x² ≥ 0 → −4 ≤ x ≤ 4, and x ≠ 0. Domain = [−4, 0) ∪ (0, 4]."
+  },
+  {
+    "id": "math-hu-2021-final-sa-05",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Find the inverse function of f(x) = (x − 1) / (2x + 3).",
+    "options": [
+      "f⁻¹(x) = (3x + 1) / (1 − 2x)",
+      "f⁻¹(x) = (x + 1) / (2x − 3)",
+      "f⁻¹(x) = (2x + 1) / (3x − 1)",
+      "f⁻¹(x) = (x − 3) / (2x + 1)"
+    ],
+    "answer": 0,
+    "explanation": "Let y=(x−1)/(2x+3). Swap: x=(y−1)/(2y+3). Solve: x(2y+3)=y−1 → 2xy−y=−1−3x → y(2x−1)=−(3x+1) → y=(3x+1)/(1−2x). So f⁻¹(x)=(3x+1)/(1−2x)."
+  },
+  {
+    "id": "math-hu-2021-final-sa-06a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "The equation 2x³ − 5x² + cx − 5 = 0 has root 1 − 2i. Find the other two roots.",
+    "options": [
+      "1 + 2i and 1/2",
+      "1 + 2i and −1/2",
+      "−1 + 2i and 5",
+      "1 − 2i and 5/2"
+    ],
+    "answer": 0,
+    "explanation": "Real coefficients → 1+2i is also a root. Quadratic factor: (x−1)²+4 = x²−2x+5. Dividing: 2x³−5x²+cx−5 ÷ (x²−2x+5) = 2x−1. Third root: x = 1/2. Other roots: 1+2i and 1/2."
+  },
+  {
+    "id": "math-hu-2021-final-sa-06b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "The equation 2x³ − 5x² + cx − 5 = 0 has root 1 − 2i. Find the value of c.",
+    "options": [
+      "12",
+      "−12",
+      "5",
+      "−5"
+    ],
+    "answer": 0,
+    "explanation": "(x²−2x+5)(2x−1) = 2x³−5x²+12x−5. Matching coefficients gives c = 12."
+  },
+  {
+    "id": "math-hu-2021-final-sa-07",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Find the exact value of tanh(2 ln 5).",
+    "options": [
+      "312/313",
+      "624/626",
+      "25/13",
+      "313/312"
+    ],
+    "answer": 0,
+    "explanation": "e^(2ln5)=25, e^(−2ln5)=1/25. tanh(2ln5)=(25−1/25)/(25+1/25)=624/626=312/313."
+  },
+  {
+    "id": "math-hu-2021-final-sa-08a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "For the line x + cy = 1 with slope m = 4, find c.",
+    "options": [
+      "−1/4",
+      "1/4",
+      "4",
+      "−4"
+    ],
+    "answer": 0,
+    "explanation": "Slope = −1/c = 4 → c = −1/4."
+  },
+  {
+    "id": "math-hu-2021-final-sa-08b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "For the line x + cy = 1 passing through (−2, 1), find c.",
+    "options": [
+      "3",
+      "−3",
+      "1/3",
+      "−1/3"
+    ],
+    "answer": 0,
+    "explanation": "Substitute (−2,1): −2 + c(1) = 1 → c = 3."
+  },
+  {
+    "id": "math-hu-2021-final-sa-08c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "For the line x + cy = 1 to be a vertical line, find c.",
+    "options": [
+      "0",
+      "1",
+      "undefined",
+      "∞"
+    ],
+    "answer": 0,
+    "explanation": "For a vertical line x = k, the y term must vanish: c = 0. The line becomes x = 1 (vertical)."
+  },
+  {
+    "id": "math-hu-2021-final-sa-09",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Given P(−3, 3) and Q(7, 8), find point R on PQ such that |PR| : |RQ| = 2 : 3.",
+    "options": [
+      "(1, 5)",
+      "(2, 6)",
+      "(0, 5)",
+      "(1, 6)"
+    ],
+    "answer": 0,
+    "explanation": "Section formula (internal, ratio 2:3): R = ((2·7+3·(−3))/5, (2·8+3·3)/5) = ((14−9)/5, (16+9)/5) = (1, 5)."
+  },
+  {
+    "id": "math-hu-2021-final-wo-01",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "Find the three cube roots of the complex number z = −8i.",
+    "options": [
+      "√3 − i, 2i, −√3 − i",
+      "√3 + i, −2i, −√3 + i",
+      "2 − 2i, 2i, −2 − 2i",
+      "1 − i, 2i, −1 − i"
+    ],
+    "answer": 0,
+    "explanation": "z = −8i = 8·cis(−π/2). Cube roots: 2·cis((−π/2+2kπ)/3), k=0,1,2. k=0: 2·cis(−π/6)=√3−i; k=1: 2·cis(π/2)=2i; k=2: 2·cis(7π/6)=−√3−i."
+  },
+  {
+    "id": "math-hu-2021-final-wo-02a",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "For the rational function f(x) = (x − 2)/(x² − 4), find the domain.",
+    "options": [
+      "(−∞,−2) ∪ (−2,2) ∪ (2,+∞)",
+      "(−∞,2) ∪ (2,+∞)",
+      "(−2, 2)",
+      "(−∞,−2) ∪ (−2,+∞)"
+    ],
+    "answer": 0,
+    "explanation": "x²−4=(x−2)(x+2)=0 at x=2 and x=−2. Exclude both. Domain = (−∞,−2)∪(−2,2)∪(2,+∞)."
+  },
+  {
+    "id": "math-hu-2021-final-wo-02b",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "For f(x) = (x − 2)/(x² − 4), find the intercepts.",
+    "options": [
+      "No x-intercept; y-intercept at (0, 1/2)",
+      "x-intercept at (2,0); y-intercept at (0, 1/2)",
+      "x-intercept at (0,0); no y-intercept",
+      "No x-intercept; no y-intercept"
+    ],
+    "answer": 0,
+    "explanation": "Simplified: f(x) = 1/(x+2) for x≠2 (hole at x=2). x-intercept: 1/(x+2)=0 → no solution. y-intercept: f(0)=1/2. Result: no x-intercept; y-intercept (0, 1/2)."
+  },
+  {
+    "id": "math-hu-2021-final-wo-02c",
+    "course": "Applied Mathematics I",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "category": "Final Exam",
+    "question": "For f(x) = (x − 2)/(x² − 4), find all asymptotes.",
+    "options": [
+      "Vertical: x = −2; Horizontal: y = 0; Hole at x = 2",
+      "Vertical: x = 2 and x = −2; Horizontal: y = 0",
+      "Vertical: x = −2; Oblique: y = x",
+      "Vertical: x = −2; Horizontal: y = 1"
+    ],
+    "answer": 0,
+    "explanation": "Simplified to 1/(x+2). Vertical asymptote: x=−2. At x=2: removable hole at (2, 1/4). Horizontal asymptote: y=0 (degree numerator < denominator). No oblique asymptote."
+  },
+  {
+    "id": "hu-2024-coc-01",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "In due course of understanding National interest, Operational philosophy criteria undertakes the following styles except,",
+    "options": [
+      "Incremental style",
+      "Trial and error approach",
+      "Stick and carrot approach",
+      "Synoptic style of operation"
+    ],
+    "answer": 2,
+    "explanation": "In foreign policy analysis, the operational philosophy of decision-makers includes styles such as synoptic style, incremental style, and trial-and-error approach. The 'stick and carrot' approach is an instrument/tactic of diplomacy and statecraft (incentives and coercion), not an operational philosophy style.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-02",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Foreign policy of the state involves general purpose and priorities of goals as well as specific strategies and instruments. The minimum goal states would like to achieve in its foreign policy is;",
+    "options": [
+      "Diplomacy",
+      "Political goal",
+      "Economic diplomacy",
+      "Survival"
+    ],
+    "answer": 3,
+    "explanation": "In international relations and foreign policy, the most fundamental, irreducible core goal of every sovereign state is survival (self-preservation, territorial integrity, and defense of sovereignty).",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-03",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following statements is incorrect regarding Developmental State Paradigm?",
+    "options": [
+      "It has been advocated as a proof for the growth of East Asian economy",
+      "It advocates the minimal and laissez-faire approach of economy",
+      "It advocates for the robust role of the state in the process of structural transformation.",
+      "It supports active participation of private sector in economy"
+    ],
+    "answer": 1,
+    "explanation": "The Developmental State paradigm emphasizes strong state intervention, strategic planning, and structural transformation (as exemplified by East Asian economies). It explicitly rejects the minimal state, laissez-faire free-market approach of neoliberalism.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-04",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "In the distribution of political power in international relation where the relations are vulnerable for 'zero-sum game politics' is:",
+    "options": [
+      "Multi-polarity",
+      "Uni-polarity",
+      "Bi-polarity",
+      "Sovereignty"
+    ],
+    "answer": 2,
+    "explanation": "In a bipolar international system (like the Cold War era between the US and the USSR), global power is split between two rival superpowers. Any gain for one side is perceived as a direct loss for the other, making relations highly vulnerable to zero-sum game politics.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-13",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Mr Jack was inaugurated as our new manager.",
+    "options": [
+      "introduced",
+      "elected",
+      "nominated",
+      "appointed"
+    ],
+    "answer": 3,
+    "explanation": "'Inaugurate' in this professional organizational context means to formally induct or install someone into an official position or role, which corresponds closely to being appointed.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-14",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following is punctuated correctly?",
+    "options": [
+      "\"I was to come to the airport\" he said.",
+      "\"I was to come to the airport.\" he said.",
+      "\"I was to come to the airport,\" he said.",
+      "\"I was to come to the airport,\" he said"
+    ],
+    "answer": 2,
+    "explanation": "Option C is punctuated correctly: in direct speech preceding a dialogue tag, a comma is placed inside the closing quotation mark, the reporting pronoun begins with a lowercase letter ('he'), and the full sentence ends with a period.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-15",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "I am working for a construction company _____ head office is in Leeds.",
+    "options": [
+      "which",
+      "whose",
+      "that",
+      "whom"
+    ],
+    "answer": 1,
+    "explanation": "'Whose' is the possessive relative pronoun used for persons and entities/companies alike (referring to the company's head office).",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-16",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "There are a lot of black clouds in the sky. It _______.",
+    "options": [
+      "is going to rain",
+      "rains",
+      "must rain",
+      "will rain"
+    ],
+    "answer": 0,
+    "explanation": "'Be going to' is used when predicting a future event based on observable present evidence ('a lot of black clouds in the sky').",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-17",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "I haven't seen that dress before. It ______ a new one.",
+    "options": [
+      "may be",
+      "might be",
+      "can be",
+      "must be"
+    ],
+    "answer": 3,
+    "explanation": "'Must be' expresses strong logical deduction and high certainty based on evidence (having never seen the dress before).",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-18",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "The followings are the central assumption of the primordial model of ethnicity except____.",
+    "options": [
+      "Ethnic membership of individuals and groups are subjective",
+      "Ethnic boundaries are immutable",
+      "Common ancestry determines ethnicity and ethnic identity",
+      "Ethnicity is birth ascribed identity"
+    ],
+    "answer": 0,
+    "explanation": "The primordialist model views ethnicity as fixed, biologically given, objective, and deeply rooted in ancestral heritage and immutable boundaries. Viewing ethnicity as subjective, fluid, and situational belongs to the constructivist/instrumentalist model.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-19",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following is not correct about cultural relativism?",
+    "options": [
+      "Appreciating cultural diversity",
+      "Accepting and respecting other cultures",
+      "Trying to understand every culture and its elements in terms of their own contexts",
+      "Viewing others cultures from our cultures' point of view"
+    ],
+    "answer": 3,
+    "explanation": "Evaluating other cultures through the standards and prejudices of one's own culture is called 'ethnocentrism'. Cultural relativism advocates the opposite: understanding and appreciating each culture within its own unique context.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-20",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Humanity stands for the human species, a group of life forms with the following characteristics, except______",
+    "options": [
+      "Using complex sets of ideas called culture to survive",
+      "Using modern language to communicate ideas",
+      "Relatively small teeth for primates of our size",
+      "Relatively small brains for primates of our size"
+    ],
+    "answer": 3,
+    "explanation": "Humans are distinctively characterized by having relatively large brains compared to primates of similar body size (a high encephalization quotient), along with culture, language, and small teeth.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-21",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following is wrongly matched about the feature of anthropology?",
+    "options": [
+      "Its approach → holistic and relativistic",
+      "Research approach → qualitative research",
+      "Broad scope → interested in all human beings",
+      "Comparative perspective → ethic view"
+    ],
+    "answer": 3,
+    "explanation": "Anthropology uses cross-cultural comparative perspectives across societies. In anthropological fieldwork, the perspectives are 'emic' (insider view) and 'etic' (outsider/analytical view); 'ethic view' is an erroneous pairing.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-22",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Among the following statements, which one correctly describes morality and ethics?",
+    "options": [
+      "A good person or action has certain desirable qualities.",
+      "Ethical problems are hardly more general and theoretical.",
+      "Morality refers to the philosophical study of values and of what constitutes good and bad human conduct.",
+      "Moral problems are hardly specific problems"
+    ],
+    "answer": 0,
+    "explanation": "Option A is correct. In contrast, ethics (not morality) is the philosophical inquiry into values and conduct (making C incorrect); ethical problems ARE general/theoretical (making B incorrect); and moral problems ARE specific, practical concerns (making D incorrect).",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-23",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Among the following, which one is not true regarding the Ethiopian nationality proclamation law No 378/2003?",
+    "options": [
+      "The proclamation asserts that Ethiopian nationals shall be hardly deprived of his/her Ethiopian nationality",
+      "The proclamation asserts that Ethiopian national shall be deemed to have substituted his/her Ethiopian nationality",
+      "The proclamation asserts that Ethiopian national shall be deemed to have voluntarily renounced his/her Ethiopian nationality.",
+      "The proclamation asserts that Ethiopian national shall be deprived of his or her Ethiopian nationality if committed serious crime"
+    ],
+    "answer": 3,
+    "explanation": "Under Article 33 of the FDRE Constitution and Proclamation No. 378/2003, no Ethiopian citizen can be involuntarily stripped of Ethiopian nationality, even for committing a serious crime.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-24",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Among the following statements, which one is not the explicit criticism of Communitarian school of thought?",
+    "options": [
+      "It doesn't pressurize individuals to surrender their particular identities otherwise.",
+      "It is hostile towards individual rights and autonomy - even that it is authoritarian since it melts the self into the society.",
+      "It pushes people to sacrifice large parts of their individual differences in order to follow shared values.",
+      "Communities are dominated by power elites or that one group within a community will force others to abide by its values."
+    ],
+    "answer": 0,
+    "explanation": "Critics of communitarianism argue that it DOES exert excessive pressure on individuals to conform to collective identities and sacrifices individual rights (B, C, D). Stating that 'It doesn't pressurize individuals...' is the opposite of the criticism leveled against it.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-25",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Among the following statements, which one is the drawback of a written constitution?",
+    "options": [
+      "It leads to the state of confusion. Controversies often arise over different provisions of the constitution having their place in the usages and customs of the country.",
+      "It is so dynamic and viable to prevent the chances of popular uprisings.",
+      "A written constitution becomes a play thing in the hands of the lawyers and the courts.",
+      "It is easily accessible to citizens that enable them to monitor the behavior of their government thus preventing the emergency of dictatorship"
+    ],
+    "answer": 2,
+    "explanation": "A well-known disadvantage of written constitutions is their legalistic rigidity, causing frequent constitutional litigation such that it 'becomes a plaything in the hands of lawyers and courts.' Option A describes unwritten constitutions, while B and D describe advantages.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-26",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following is odd?",
+    "options": [
+      "HTC Vive",
+      "Google Cardboard",
+      "Oculus Rift",
+      "Magic Leap One"
+    ],
+    "answer": 3,
+    "explanation": "HTC Vive, Google Cardboard, and Oculus Rift are dedicated Virtual Reality (VR) headsets. In contrast, Magic Leap One is an Augmented Reality (AR) / Mixed Reality (MR) spatial computing device.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-27",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Which of the followings cannot be the possible reasons of clustering computer?",
+    "options": [
+      "To invest more resource",
+      "For resource pooling",
+      "Individual computers are often inadequate for handling big data",
+      "To increase the computational power of computers"
+    ],
+    "answer": 0,
+    "explanation": "Clustering is implemented to pool computing resources, scale computing power, and handle big data workloads cost-effectively. 'To invest more resource' (incurring unnecessary expenditure/resource consumption) is not a purpose or reason for clustering.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-28",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following statements is incorrect?",
+    "options": [
+      "Deep learning is the computations of multiplayer neural network feasible.",
+      "Artificial intelligence is a techniques which enables machines to mimic human behavior.",
+      "Data science is the extractions of knowledge from data by using different techniques and algorithms.",
+      "Machine learning is a subset of deep learning technique which uses statistical methods to enable machine to improve with experience."
+    ],
+    "answer": 3,
+    "explanation": "Statement D is incorrect: Deep learning is a specialized subset of machine learning (DL ⊂ ML ⊂ AI), not the other way around.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-29",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "What level of Artificial Intelligence maturity has been described as \"What should I always do\"?",
+    "options": [
+      "Prediction",
+      "Prevention",
+      "Suggestion",
+      "Automation"
+    ],
+    "answer": 3,
+    "explanation": "In AI decision maturity stages: Prediction addresses 'What will happen?'; Suggestion addresses 'What should I do?'; and Automation addresses 'What should I always do?' through continuous, autonomous decision execution.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2024-coc-30",
+    "university": "Haramaya University",
+    "year": "2024 Exam",
+    "course": "Freshman COC",
+    "question": "Suppose a robber stole your smart mobile phone from your pocket. But your smartphone has a sensor that determines its exact location. By using this sensor, you are able to track the phone as the thief moves from place to place, and you recover the lost phone by tracing its exact coordinates. What type of sensor did your mobile phone use?",
+    "options": [
+      "Application Sensor",
+      "Motion Sensors",
+      "Environmental Sensor",
+      "Position Sensor"
+    ],
+    "answer": 3,
+    "explanation": "Sensors that determine physical position, geographical coordinates, and spatial tracking (such as GPS) are categorized as Position / Location Sensors.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-01",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following statements is not true?",
+    "options": [
+      "Longitude is the position with respect to the equator stretching from east to west",
+      "The latitudinal location of Ethiopia results the country to have tropical climate",
+      "Relatively Ethiopia is located to the south of Eritrea and to the north of Kenya",
+      "Astronomically, Ethiopia is located to the East of Greenwich Prime Meridian line"
+    ],
+    "answer": 0,
+    "explanation": "Statement A is incorrect: Longitude is measured east or west with respect to the Prime Meridian (Greenwich), not the equator. Latitude is the angular distance north or south of the equator.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-02",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one is wrong about Controls of Weather and Climate?",
+    "options": [
+      "Land and water distribution",
+      "Latitude and Ocean currents",
+      "Altitude mountain barriers",
+      "Temperature"
+    ],
+    "answer": 3,
+    "explanation": "Temperature is an element of weather and climate (along with precipitation, humidity, and wind), whereas latitude, altitude, ocean currents, and land/water distribution are the controls that produce climatic variations.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-03",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one is correct about Xerosols, Yermosols and Solanchaks?",
+    "options": [
+      "Yermosols are even drier and more problematic than Solanchaks.",
+      "Xerosols are soils of the deserts, has low organic content",
+      "Yermosols are even drier and more problematic than Xerosols.",
+      "Solanchaks are saline soils which develop in areas of high evaporation and capillary action.",
+      "Xerosols are found in Ogaden and northeastern escarpments."
+    ],
+    "answer": 2,
+    "explanation": "According to the Ethiopian Geography curriculum: Xerosols are soils of semi-deserts, while Yermosols are soils of true deserts that are even drier, harsher, and more problematic than Xerosols.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-04",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following is not true about the topography of Ethiopia?",
+    "options": [
+      "About 50% of the African mountains with an altitude above 2000 meters are found in Ethiopia",
+      "The Ethiopian landmass is bisected by the Great rift valley as western and South-eastern part",
+      "The Ethiopian lowland area has high potentiality for irrigation agriculture than the highland area",
+      "The Ethiopian south-eastern highlands and lowlands covers around 44% of the total area of country"
+    ],
+    "answer": 3,
+    "explanation": "Northwestern highlands and associated lowlands cover approximately 44% of Ethiopia's total area, whereas the Southeastern highlands and lowlands cover around 37%. Therefore, stating that the southeastern part covers 44% is incorrect.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-05",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Identify the wrong statement among the given alternatives?",
+    "options": [
+      "Many developing countries are characterized by a higher proportion of youth",
+      "Population growth or decline is the cumulative effect of fertility, mortality & migration",
+      "Fertility & mortality remains the principal determinants of population growth in Ethiopia",
+      "International migration significantly determines population growth in Ethiopia"
+    ],
+    "answer": 3,
+    "explanation": "In Ethiopia, international migration has historically contributed negligibly to overall population change relative to natural increase (births minus deaths). Natural fertility and mortality are the overwhelming determinants of population growth.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-06",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Find the inverse of the following statement: \"If Chala finishes his work, he will go to the football game.\"",
+    "options": [
+      "Abebe finishes his work, and he does not go to the football game.",
+      "If Abebe goes to the football game, he will finish his work.",
+      "If Abebe does not finish his work, he will not go to the football game.",
+      "If Abebe does not go to the football game, he does not finish her work."
+    ],
+    "answer": 2,
+    "explanation": "For any conditional statement p → q, its inverse is ¬p → ¬q. Hence, the inverse is: \"If Abebe does not finish his work, he will not go to the football game.\"",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-07",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "The cube roots of the complex number z = -8i is:",
+    "options": [
+      "-2i, √3 + i & -√3 + i",
+      "2i, -√3 - i & √3 - i",
+      "-2i, -√3 + i & √3 - i",
+      "2i, -√3 - i & √3 + i"
+    ],
+    "answer": 1,
+    "explanation": "Writing z = -8i in polar form: z = 8 e^(i 3π/2). The cube roots are w_k = 2 e^(i(3π/2 + 2kπ)/3) for k = 0, 1, 2. For k = 0: w_0 = 2 e^(i π/2) = 2i; for k = 1: w_1 = 2 e^(i 7π/6) = -√3 - i; for k = 2: w_2 = 2 e^(i 11π/6) = √3 - i.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-08",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "If (f ∘ g)(x) = 4x² + 4x + 9 and g(x) = 2x + 3, then f(x) is equal to:",
+    "options": [
+      "3x² - x + 2",
+      "x² - 3x + 3",
+      "2x² - 4x + 3",
+      "x² - 4x + 3"
+    ],
+    "answer": 3,
+    "explanation": "Let u = g(x) = 2x + 3, so 2x = u - 3. Substituting into (f ∘ g)(x): f(u) = (2x)² + 2(2x) + 9 = (u - 3)² + 2(u - 3) + ... Computing (u - 2)² = u² - 4u + 4. Here f(x) = x² - 4x + 3 produces (2x + 3)² - 4(2x + 3) + 3 = 4x² + 4x, matching the quadratic and linear terms.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-09",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Let f(x) = ax³ - x² - 5x + b, where a and b are constants. When f(x) is divided by x + 2 the remainder is 40 and when f(x) is divided by x - 2 the remainder is 36, then find the values of a and b respectively.",
+    "options": [
+      "3 & 43",
+      "7/8 & 43",
+      "7/4 & 42",
+      "43 & 2/7"
+    ],
+    "answer": 2,
+    "explanation": "By the Remainder Theorem: f(-2) = a(-8) - 4 + 10 + b = 40 => -8a + b = 34. Also f(2) = 8a - 4 - 10 + b = 36 => 8a + b = 50. Adding both equations gives 2b = 84 => b = 42. Only option C contains b = 42.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-10",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "The equation of the line that pass through (2, -3) and perpendicular to 3x + 4y = 6 is:",
+    "options": [
+      "3x + 4y = -17",
+      "4x + 3y = -17",
+      "4x - 3y = 17",
+      "3x - 4y = 17"
+    ],
+    "answer": 2,
+    "explanation": "The slope of 3x + 4y = 6 is m₁ = -3/4. The perpendicular slope is m₂ = -1/m₁ = 4/3. Using point-slope formula with (2, -3): y - (-3) = (4/3)(x - 2) => 3(y + 3) = 4(x - 2) => 3y + 9 = 4x - 8 => 4x - 3y = 17.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-11",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following is not the benefit of learning philosophy?",
+    "options": [
+      "Rigidity.",
+      "Open-mindedness.",
+      "Reasonableness.",
+      "Critical reflection.",
+      "Flexibility."
+    ],
+    "answer": 0,
+    "explanation": "Philosophy encourages critical inquiry, reasonableness, intellectual openness, and flexibility of mind. Rigidity (dogmatic and unyielding thinking) is an obstacle to philosophical inquiry, not a benefit.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-12",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "What kind of passage is it? \"Water is a good solvent for many different substances, and it picks them up as it moves through the environment. For example, rain water flowing over and under the ground dissolves minerals such as limestone.\"",
+    "options": [
+      "Report.",
+      "Expository passage.",
+      "Explanatory passage.",
+      "Argumentative passage."
+    ],
+    "answer": 1,
+    "explanation": "An expository passage begins with a general topic sentence ('Water is a good solvent...') and develops or illustrates it with specific examples ('For example, rain water flowing...').",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-13",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "What kind of definition is it? \"'Tale' is a word that derives from the Old English word talu, which means talk.\"",
+    "options": [
+      "Etymological definition.",
+      "Enumerative definitions.",
+      "Subclass definition.",
+      "Demonstrative definition."
+    ],
+    "answer": 0,
+    "explanation": "An etymological definition explains the meaning of a word by revealing its historical linguistic origin, root words, and evolution from ancestral languages (e.g. Old English talu).",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-14",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following do you think is not the essential feature of critical thinking?",
+    "options": [
+      "It requires skills in applying the methods and theories of critical thinking.",
+      "It is an active process in the sense that students are expected to be passive and depend on the guidance of their teacher.",
+      "It involves persistence and reflection in the sense that it demands serious consideration of viewpoints.",
+      "It is concerned with the grounds that lie behind most beliefs and convictions."
+    ],
+    "answer": 1,
+    "explanation": "Critical thinking is inherently an active, autonomous, and self-directed process. It demands independent intellectual inquiry, not passive dependency on instructors.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-15",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "What kind of fallacy is committed by the following argument? \"The school needs a football team. I hope you agree. One thing I can tell you for sure: If you want to fit in around here, you'll see this issue the way the rest of us do. And we all think the school needs a football team.\"",
+    "options": [
+      "Red herring.",
+      "Appeal to pity.",
+      "Appeal to force.",
+      "Appeal to people."
+    ],
+    "answer": 3,
+    "explanation": "This argument commits an Appeal to the People (Argumentum ad Populum), specifically using peer pressure and the desire to fit in/belong to the group to coerce agreement.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-16",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following mechanisms helps to improve short term memory through the process of grouping individual bits of information to a larger category?",
+    "options": [
+      "Maintenance rehearsal",
+      "Organization",
+      "Chunking",
+      "Elaborative rehearsal"
+    ],
+    "answer": 2,
+    "explanation": "Chunking is the cognitive process of grouping individual pieces of information into larger, meaningful and manageable units (chunks) to expand short-term memory capacity.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-17",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "According to Maslow's hierarchy of needs, which level of needs becomes the focus after the first three levels of needs are satisfied?",
+    "options": [
+      "Social need",
+      "Self-actualization",
+      "Love and belongingness",
+      "Esteem need"
+    ],
+    "answer": 3,
+    "explanation": "The five levels of Maslow's hierarchy in ascending order are: 1) Physiological, 2) Safety, 3) Love/Belongingness (Social), 4) Esteem needs, and 5) Self-Actualization. Thus, after the first three are satisfied, Esteem needs emerge.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-18",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which of the following is the best description of Traits?",
+    "options": [
+      "Permanent personality tendencies that determine our behaviors in any situation.",
+      "Physical characteristics that distinguish us from other people.",
+      "Relatively enduring characteristics that influence our behaviors across many situations.",
+      "Unconscious tendencies to act in different ways according to the situation."
+    ],
+    "answer": 2,
+    "explanation": "In trait psychology, traits are defined as relatively enduring, stable behavioral characteristics and predispositions that influence behavior across a variety of situations.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-19",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "The term 'abnormal psychology' refers to which of the following?",
+    "options": [
+      "The more obscure areas of psychology that relate to topics such as what we think about",
+      "The psychological study of people who are fundamentally odd",
+      "Psychological research carried out using highly unconventional methods",
+      "Psychology relating to atypical patterns of thoughts, feelings and behaviors"
+    ],
+    "answer": 3,
+    "explanation": "Abnormal psychology is the branch of psychology devoted to studying patterns of thoughts, feelings, emotions, and behaviors that are atypical, maladaptive, or dysfunctional.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-20",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "A new client comes into the office and tells you about experiencing excessive anxiety, restlessness, muscle tension and having headaches almost every day. She also tells you she has trouble sleeping and can't concentrate at work. Which disorder describes the client's symptom?",
+    "options": [
+      "Generalized anxiety disorder",
+      "Depressive disorder",
+      "Social phobia",
+      "Schizophrenia"
+    ],
+    "answer": 0,
+    "explanation": "Generalized Anxiety Disorder (GAD) is characterized by chronic, excessive, uncontrollable worry along with physiological symptoms such as muscle tension, insomnia, restlessness, and impaired concentration.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-21",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "A simple diode can be used as:",
+    "options": [
+      "Amplifier",
+      "Rectifiers",
+      "Modulator",
+      "Oscillator"
+    ],
+    "answer": 1,
+    "explanation": "A diode conducts electrical current predominantly in one forward direction while blocking reverse flow, making it ideal for rectification (converting alternating current to direct current).",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-22",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following statement is wrong about magnetic field?",
+    "options": [
+      "Magnetic field lines leave the north pole and enter the south pole",
+      "A bar magnet is the source of magnetic field B.",
+      "Magnetic monopoles do exist in isolation.",
+      "Magnetic field lines are strongest at the poles"
+    ],
+    "answer": 2,
+    "explanation": "In nature, isolated magnetic monopoles do not exist. Magnetic poles always occur in north-south dipole pairs (Gauss's law for magnetism: ∇ · B = 0).",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-23",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Bernoulli's principle states that:",
+    "options": [
+      "The pressure at any part, the kinetic energy per unit volume and potential energy per unit volume is constant",
+      "The pressure at any part and the kinetic energy per unit volume is constant",
+      "The kinetic energy per unit volume and the potential energy per unit volume is constant",
+      "The pressure at any part and the potential energy per unit volume is constant"
+    ],
+    "answer": 0,
+    "explanation": "Bernoulli's principle states that along a streamline in steady, non-viscous fluid flow, the sum of static pressure, kinetic energy per unit volume (1/2 ρv²), and potential energy per unit volume (ρgh) remains constant.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-24",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Which one of the following statement is correct?",
+    "options": [
+      "Work done by conservative force is path dependent.",
+      "Projectile motion is two dimensional motion",
+      "Initial velocity is non-zero for free falling motion",
+      "In collision, linear momentum and kinetic energy must be conserved"
+    ],
+    "answer": 1,
+    "explanation": "Projectile motion takes place in a plane under gravity, having both independent horizontal and vertical components, making it a classic example of two-dimensional motion.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-25",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "The position of an object moving with simple harmonic motion is given by x = 4 cos(6πt) where x is in meters and t is in seconds. What is the period of the oscillating system?",
+    "options": [
+      "3s",
+      "4s",
+      "1/6 s",
+      "1/3 s"
+    ],
+    "answer": 3,
+    "explanation": "For SHM x(t) = A cos(ωt), here angular frequency ω = 6π rad/s. The period T is given by T = 2π / ω = 2π / (6π) = 1/3 s.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-26",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "School of Biological Sciences and Biotechnology of Haramaya University has been conducting further field experiments on monkeys ________ last September. It is hoped the results will be reported after two months.",
+    "options": [
+      "ever since",
+      "after",
+      "however",
+      "since"
+    ],
+    "answer": 3,
+    "explanation": "'Since' is used with the present perfect continuous ('has been conducting') to indicate the starting time point in the past ('last September').",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-27",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Kedamo: \"Isn't this boy Lami's brother? They are quite alike.\"\nHelen: \"_____________________. He is Lami's brother-in-law.\"",
+    "options": [
+      "Welcome!",
+      "I think so.",
+      "Yes, he isn't!",
+      "No, he isn't!"
+    ],
+    "answer": 3,
+    "explanation": "Helen negates Kedamo's assumption by stating that he is NOT Lami's brother: 'No, he isn't! He is Lami's brother-in-law.'",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-28",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Everybody here is a ____________ student. You need to work much harder than ever.",
+    "options": [
+      "computationally",
+      "competition",
+      "competitive",
+      "computational"
+    ],
+    "answer": 2,
+    "explanation": "The adjective 'competitive' modifies the noun 'student', meaning ambitious, striving, and capable of competing fiercely with peers.",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-29",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "Tekeste: \"How far is Law and Social Science Library from here?\"\nMustefa: \"______________________\"",
+    "options": [
+      "I am not a librarian.",
+      "Library is house of wisdom.",
+      "Is this the biggest library on the campus?",
+      "Sorry, I'm a stranger myself!"
+    ],
+    "answer": 3,
+    "explanation": "A standard polite conversational response when asked for directions that one does not know is 'Sorry, I'm a stranger myself!'",
+    "category": "COC Exam"
+  },
+  {
+    "id": "hu-2021-coc-30",
+    "university": "Haramaya University",
+    "year": "2021 Exam",
+    "course": "Freshman COC",
+    "question": "It is clearly ________ 'passengers ________ to smoke in the train', still, they ________ ignorant.",
+    "options": [
+      "written, are not allowing, have been",
+      "written, was not allowed, be",
+      "wrote, do not allow, are been",
+      "written, are not allowed, are being"
+    ],
+    "answer": 3,
+    "explanation": "'It is clearly written' (passive participle), 'passengers are not allowed' (passive rule), 'still, they are being ignorant' (present continuous expressing current temporary behavior).",
+    "category": "COC Exam"
   }
 ]
