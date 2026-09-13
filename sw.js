@@ -1,4 +1,4 @@
-const CACHE_NAME = 'nanova-core-v13';
+const CACHE_NAME = 'nanova-core-v15';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -49,8 +49,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Handle data or external API requests (e.g. GitHub raw, Supabase REST)
-  if (requestUrl.pathname.includes('/data/') || requestUrl.hostname.includes('github') || requestUrl.hostname.includes('supabase')) {
+  // Handle data or external API requests (e.g. GitHub raw, jsDelivr CDN, Supabase REST)
+  if (requestUrl.pathname.includes('/data/') || requestUrl.hostname.includes('github') || requestUrl.hostname.includes('jsdelivr') || requestUrl.hostname.includes('supabase')) {
     event.respondWith(
       caches.open(CACHE_NAME).then((cache) => {
         return fetch(event.request)

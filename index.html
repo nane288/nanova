@@ -15,6 +15,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="stylesheet" href="styles.css" />
+  <!-- LocalForage Offline Storage Fallback -->
+  <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
   <!-- Firebase App & Auth SDK (v10 Compat for robust vanilla PWA) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -105,8 +107,36 @@
         </button>
       </div>
 
-      <!-- Filter & Mode Controls Card -->
-      <div class="white-card mb-6 space-y-4">
+      <!-- Guided Exploration Header Banner -->
+      <div id="guidedFlowHeader" class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 text-white shadow-md">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-2xl bg-white text-[#0052fe] flex items-center justify-center font-bold shadow-md flex-shrink-0">
+            <i data-lucide="compass" class="w-5 h-5 text-[#0052fe]"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="text-xs font-extrabold tracking-wider uppercase text-blue-200">Campus Guided Explorer</span>
+              <span id="activeUnivBadge" class="px-2.5 py-0.5 rounded-full bg-white text-[#0052fe] font-black text-xs shadow-xs">Haramaya University</span>
+            </div>
+            <p class="text-xs text-white/80 font-sans mt-0.5">Explore subjects step-by-step: <b>Subject</b> → <b>Exam Type</b> → <b>Year</b> → <b>Practice</b></p>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2 self-end sm:self-center flex-shrink-0">
+          <button id="toggleClassicFilterBtn" onclick="NanovaApp.toggleClassicFilterMode()"
+            class="px-3.5 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white text-xs font-bold transition flex items-center space-x-1.5 border border-white/20">
+            <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-blue-300"></i>
+            <span id="classicFilterBtnText">Advanced Search / Filter</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Guided Progressive Steps Container (Step 1: Subjects, Step 2: Mid/Final, Step 3: Year) -->
+      <div id="guidedExplorationContainer" class="space-y-6 mb-6">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Filter & Mode Controls Card (Collapsible) -->
+      <div id="classicFilterCard" class="white-card mb-6 space-y-4 hidden">
         <!-- Top Row: Mode Switcher & Live Timer & Search -->
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <!-- Mode & Status Quick Filters -->
@@ -174,6 +204,7 @@
             <label class="filter-label">SUBJECT / COURSE</label>
             <select id="courseSelect" class="custom-select" onchange="NanovaApp.onFilterChange()">
               <option value="ALL">All Subjects</option>
+              <option value="Freshman COC">Freshman COC</option>
               <option value="General Psychology">General Psychology</option>
               <option value="General Physics">General Physics</option>
               <option value="Applied Mathematics I">Applied Mathematics I</option>
@@ -182,6 +213,8 @@
               <option value="Moral and Civics Education">Civics & Ethics</option>
               <option value="Emerging Technologies">Emerging Technologies</option>
               <option value="Geography of Ethiopia and the Horn">Geography of Ethiopia</option>
+              <option value="Global Trends">Global Trends</option>
+              <option value="Social Anthropology">Social Anthropology</option>
             </select>
           </div>
 
@@ -377,6 +410,12 @@
             </button>
           </div>
         </div>
+      </div>
+
+      <!-- Active Loading Spinner for Community Feed -->
+      <div id="communityFeedSpinner" class="hidden text-center py-8">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-white/80 border-t-[#0052fe]"></div>
+        <p class="text-xs text-white/80 mt-2 font-semibold">Loading live announcements...</p>
       </div>
 
       <!-- Posts List Feed Container -->
@@ -613,6 +652,11 @@
             <i data-lucide="building-2" class="w-4 h-4"></i>
             <span>Universities</span>
           </button>
+          <button id="adminSubNav-subjects" onclick="NanovaApp.switchAdminSubTab('subjects')"
+            class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+            <span>Subjects Visibility</span>
+          </button>
           <button id="adminSubNav-posts" onclick="NanovaApp.switchAdminSubTab('posts')"
             class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
             <i data-lucide="megaphone" class="w-4 h-4"></i>
@@ -627,6 +671,11 @@
             class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
             <i data-lucide="settings" class="w-4 h-4"></i>
             <span>System & Cloud</span>
+          </button>
+          <button id="adminSubNav-stats" onclick="NanovaApp.switchAdminSubTab('stats')"
+            class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
+            <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+            <span>Statistics</span>
           </button>
         </div>
 
@@ -653,6 +702,7 @@
               <select id="adminQuestionCourseFilter" onchange="NanovaApp.filterAdminQuestions()"
                 class="custom-select text-xs font-semibold">
                 <option value="ALL">All Subjects</option>
+                <option value="Freshman COC">Freshman COC</option>
                 <option value="General Psychology">General Psychology</option>
                 <option value="General Physics">General Physics</option>
                 <option value="Applied Mathematics I">Applied Mathematics I</option>
@@ -660,6 +710,9 @@
                 <option value="Communicative English">Communicative English</option>
                 <option value="Emerging Technologies">Emerging Technologies</option>
                 <option value="Geography of Ethiopia">Geography of Ethiopia</option>
+                <option value="Moral and Civics Education">Moral and Civics Education</option>
+                <option value="Global Trends">Global Trends</option>
+                <option value="Social Anthropology">Social Anthropology</option>
               </select>
             </div>
 
@@ -738,6 +791,25 @@
             </div>
 
             <div id="adminUniversitiesListContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB: SUBJECTS VISIBILITY MANAGER -->
+        <div id="adminSection-subjects" class="hidden space-y-4">
+          <div class="white-card">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="eye" class="w-5 h-5 text-[#0052fe]"></i>
+                  <span>Curriculum Subjects Visibility</span>
+                </h3>
+                <p class="text-xs text-slate-500">Toggle which subjects appear for students. Hidden subjects are silently omitted from the student exploration view.</p>
+              </div>
+            </div>
+
+            <div id="adminSubjectsVisibilityList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <!-- Rendered via JS -->
             </div>
           </div>
@@ -888,6 +960,182 @@
             </div>
           </div>
         </div>
+
+        <!-- SUBTAB 6: STATISTICS & COVERAGE ANALYTICS -->
+        <div id="adminSection-stats" class="hidden space-y-5">
+
+          <!-- Overview KPI Row -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3" id="statsOverviewRow">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Subject × Year Coverage Matrix with University Breakdown -->
+          <div class="white-card">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
+              <div>
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
+                    <i data-lucide="table" class="w-4 h-4"></i>
+                  </div>
+                  <h3 class="text-base font-extrabold text-slate-900">Coverage Matrix & University Breakdown</h3>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">
+                  <span class="inline-block w-2.5 h-2.5 rounded bg-emerald-500 mr-1 align-middle"></span>Green = Available &nbsp;•&nbsp;
+                  <span class="inline-block w-2.5 h-2.5 rounded bg-amber-500 mr-1 align-middle"></span>Amber = Low (&lt;20) &nbsp;•&nbsp;
+                  <span class="inline-block w-2.5 h-2.5 rounded bg-rose-500 mr-1 align-middle"></span>Red = Missing &nbsp;•&nbsp;
+                  <span class="inline-block px-1.5 py-0.5 rounded bg-blue-100 text-blue-800 text-[10px] font-black mr-1">M: Mid</span>
+                  <span class="inline-block px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-black mr-1">F: Final</span>
+                  <span class="text-slate-400">💡 Click any cell to inspect Mid/Final split or add questions!</span>
+                </p>
+              </div>
+
+              <!-- Matrix View Switcher Buttons -->
+              <div class="flex items-center gap-1.5 p-1 bg-slate-100 rounded-2xl self-start lg:self-auto overflow-x-auto max-w-full">
+                <button type="button" id="statsViewBtn-subYear" onclick="NanovaApp.setStatsMatrixView('subject-year')"
+                  class="px-3 py-1.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-900 shadow-sm whitespace-nowrap">
+                  Subject × Year
+                </button>
+                <button type="button" id="statsViewBtn-univSubject" onclick="NanovaApp.setStatsMatrixView('univ-subject')"
+                  class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                  University × Subject
+                </button>
+                <button type="button" id="statsViewBtn-univYear" onclick="NanovaApp.setStatsMatrixView('univ-year')"
+                  class="px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 whitespace-nowrap">
+                  University × Year
+                </button>
+              </div>
+            </div>
+
+            <!-- University & Category Filter Options Toolbar -->
+            <div id="statsMatrixToolbar" class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4 p-3 bg-slate-50 rounded-2xl border border-slate-100">
+              <div class="flex flex-wrap items-center gap-3">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-extrabold text-slate-700 flex items-center gap-1.5">
+                    <i data-lucide="building-2" class="w-3.5 h-3.5 text-slate-500"></i>
+                    <span>Campus:</span>
+                  </span>
+                  <select id="statsUnivFilter" onchange="NanovaApp.onStatsUnivFilterChange(this.value)"
+                    class="custom-select text-xs font-bold py-1.5 px-2.5 min-w-[170px]">
+                    <option value="ALL">All Universities (Combined)</option>
+                    <!-- Populated by JS -->
+                  </select>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-extrabold text-slate-700 flex items-center gap-1.5">
+                    <i data-lucide="layers" class="w-3.5 h-3.5 text-purple-600"></i>
+                    <span>Exam Type:</span>
+                  </span>
+                  <select id="statsCategoryFilter" onchange="NanovaApp.onStatsCategoryFilterChange(this.value)"
+                    class="custom-select text-xs font-bold py-1.5 px-2.5 min-w-[170px]">
+                    <option value="ALL">All Types (Mid + Final + COC)</option>
+                    <option value="Mid Exam">Mid Exams Only</option>
+                    <option value="Final Exam">Final Exams Only</option>
+                    <option value="COC Exam">COC Exams Only</option>
+                    <option value="Stream Selection">Stream Selection Only</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Sub-row toggles & shortcuts -->
+              <div class="flex items-center gap-2 self-start lg:self-auto">
+                <button type="button" id="statsToggleUnivSubRowsBtn" onclick="NanovaApp.toggleAllStatsUnivRows()"
+                  class="px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-xs font-bold rounded-xl transition flex items-center gap-1.5 shadow-2xs">
+                  <i data-lucide="list-tree" class="w-3.5 h-3.5 text-blue-600"></i>
+                  <span id="statsToggleUnivSubRowsText">Expand University Rows</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Matrix Scrollable Container -->
+            <div class="overflow-x-auto -mx-1 border border-slate-100 rounded-2xl">
+              <div id="statsCoverageMatrix" class="min-w-max">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- University Readiness & Content Scorecards -->
+          <div class="white-card">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 mb-4">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="award" class="w-5 h-5 text-emerald-600"></i>
+                  <span>University Content Readiness Scorecards</span>
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">Track how complete each university's exam library is across subjects and years.</p>
+              </div>
+              <span class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 whitespace-nowrap self-start sm:self-auto">Campus Health</span>
+            </div>
+            <div id="statsUnivScorecards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Two column: Subject Bars + Category Breakdown -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+            <!-- Subject Question Volume -->
+            <div class="white-card">
+              <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 mb-4">
+                <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
+                <span>Questions per Subject</span>
+              </h3>
+              <div id="statsSubjectBars" class="space-y-3">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Category Distribution -->
+            <div class="white-card">
+              <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 mb-4">
+                <i data-lucide="layers" class="w-5 h-5 text-purple-600"></i>
+                <span>Category Distribution</span>
+              </h3>
+              <div id="statsCategoryBars" class="space-y-3">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- University Distribution -->
+          <div class="white-card">
+            <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2 mb-4">
+              <i data-lucide="building-2" class="w-5 h-5 text-emerald-600"></i>
+              <span>Questions by University</span>
+            </h3>
+            <div id="statsUniversityBars" class="space-y-3">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Actionable Gap Priority Manager -->
+          <div class="white-card">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 mb-4">
+              <div>
+                <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                  <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-500"></i>
+                  <span>Actionable Gap Priority Manager</span>
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">High-priority missing curriculum targets. Click <strong>Add Question</strong> to immediately pre-fill and resolve gaps.</p>
+              </div>
+              <div class="flex items-center gap-2 self-start sm:self-auto">
+                <select id="statsGapUnivFilter" onchange="NanovaApp.onStatsGapFilterChange()" class="custom-select text-xs font-bold py-1 px-2.5">
+                  <option value="ALL">All Gaps (Missing Years & Exams)</option>
+                  <option value="MISSING_FINAL">Missing Final Exams</option>
+                  <option value="MISSING_MID">Missing Mid Exams</option>
+                  <option value="CRITICAL">Critical (≥4 years missing)</option>
+                  <option value="HIGH">High (2-3 years missing)</option>
+                </select>
+              </div>
+            </div>
+            <div id="statsMissingAlerts" class="space-y-2.5">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+        </div>
+        <!-- END adminSection-stats -->
 
       </div>
     </div>
@@ -1141,6 +1389,7 @@
           <div>
             <label class="filter-label">COURSE / SUBJECT</label>
             <select id="newQCourse" class="custom-select text-xs font-bold" required>
+              <option value="Freshman COC">Freshman COC</option>
               <option value="General Psychology">General Psychology</option>
               <option value="General Physics">General Physics</option>
               <option value="Applied Mathematics I">Applied Mathematics I</option>
@@ -1149,6 +1398,8 @@
               <option value="Emerging Technologies">Emerging Technologies</option>
               <option value="Geography of Ethiopia and the Horn">Geography of Ethiopia</option>
               <option value="Moral and Civics Education">Moral and Civics Education</option>
+              <option value="Global Trends">Global Trends</option>
+              <option value="Social Anthropology">Social Anthropology</option>
               <option value="General Law">General Law</option>
               <option value="English for Law">English for Law</option>
             </select>
@@ -1175,6 +1426,7 @@
               <option value="2022 Exam">2022 Exam</option>
               <option value="2021 Exam">2021 Exam</option>
               <option value="2020 Exam">2020 Exam</option>
+              <option value="Stream Selection Exam">Stream Selection Exam</option>
             </select>
           </div>
         </div>
@@ -1299,6 +1551,86 @@
             class="px-5 py-2 bg-black hover:bg-slate-800 text-white font-extrabold text-xs rounded-xl shadow transition flex items-center space-x-1.5">
             <i data-lucide="send" class="w-3.5 h-3.5"></i>
             <span>Post Comment</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Stats Matrix Cell Inspector & Management Modal -->
+  <div id="statsCellModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl animate-fade-in border border-slate-100 flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4 flex-shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-blue-50 text-[#0052fe] flex items-center justify-center flex-shrink-0">
+            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 id="statsCellModalTitle" class="text-base font-extrabold text-slate-900 leading-tight">Cell Coverage Breakdown</h3>
+            <p id="statsCellModalSub" class="text-xs text-slate-500 font-medium mt-0.5">Detailed university breakdown & management</p>
+          </div>
+        </div>
+        <button onclick="NanovaApp.closeStatsCellModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Cell content details body -->
+      <div id="statsCellModalBody" class="flex-grow overflow-y-auto space-y-3.5 pr-1 mb-4 text-xs">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Cell action footer buttons -->
+      <div id="statsCellModalFooter" class="flex-shrink-0 flex items-center justify-end gap-2 border-t border-slate-100 pt-3">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Community Post Modal (Admin Only) -->
+  <div id="editPostModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl animate-fade-in border border-slate-100 flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4 flex-shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
+            <i data-lucide="edit-3" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900 leading-tight">Edit Community Post</h3>
+            <p class="text-xs text-slate-500 font-medium">Update announcement text, video, or image</p>
+          </div>
+        </div>
+        <button type="button" onclick="NanovaApp.closeEditPostModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="editPostForm" onsubmit="NanovaApp.saveEditedPost(event)" class="space-y-3.5 flex-grow overflow-y-auto pr-1">
+        <input type="hidden" id="editPostId" value="" />
+        <div>
+          <label class="filter-label">ANNOUNCEMENT TEXT</label>
+          <textarea id="editPostContent" class="post-textarea text-xs" rows="4" placeholder="Announcement content..." required></textarea>
+        </div>
+        <div>
+          <label class="filter-label">AUTHOR / SENDER NAME</label>
+          <input type="text" id="editPostAuthor" class="custom-select text-xs font-semibold" placeholder="e.g. Campus Administrator" />
+        </div>
+        <div>
+          <label class="filter-label">YOUTUBE LECTURE VIDEO URL (Optional)</label>
+          <input type="url" id="editPostYoutube" class="custom-select text-xs font-semibold" placeholder="https://www.youtube.com/watch?v=..." />
+        </div>
+        <div>
+          <label class="filter-label">ATTACHMENT IMAGE URL (Optional)</label>
+          <input type="url" id="editPostImage" class="custom-select text-xs font-semibold" placeholder="https://images.unsplash.com/..." />
+        </div>
+
+        <div class="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+          <button type="button" onclick="NanovaApp.closeEditPostModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-bold text-xs hover:bg-slate-50 transition">
+            Cancel
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs shadow-md transition flex items-center space-x-1.5">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Save Changes</span>
           </button>
         </div>
       </form>

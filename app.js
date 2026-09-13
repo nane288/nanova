@@ -45,13 +45,24 @@
     console.warn('[Firebase] Init notice:', err.message);
   }
 
-  /* ── INDEXEDDB PERSISTENCE (OFFLINE EXAM ENGINE) ─── */
+  /* ── INDEXEDDB & LOCALFORAGE PERSISTENCE (OFFLINE EXAM ENGINE) ─── */
   const NanovaDB = {
-    dbName: 'NanovaBoardDB_v4',
-    version: 4,
+    dbName: 'NanovaBoardDB_v5',
+    version: 5,
     db: null,
 
     async init() {
+      if (window.localforage) {
+        try {
+          window.localforage.config({
+            name: 'NanovaBoardDB_v5',
+            storeName: 'offline_cache',
+            description: 'Nanova offline questions and cache storage'
+          });
+        } catch (e) {
+          console.warn('[localforage config]', e);
+        }
+      }
       return new Promise((resolve, reject) => {
         const req = indexedDB.open(this.dbName, this.version);
         req.onupgradeneeded = (e) => {
@@ -59,6 +70,7 @@
           if (!db.objectStoreNames.contains('exams')) db.createObjectStore('exams', { keyPath: 'id' });
           if (!db.objectStoreNames.contains('posts')) db.createObjectStore('posts', { keyPath: 'id' });
           if (!db.objectStoreNames.contains('universities')) db.createObjectStore('universities', { keyPath: 'id' });
+          if (!db.objectStoreNames.contains('offline_cache')) db.createObjectStore('offline_cache');
         };
         req.onsuccess = (e) => { this.db = e.target.result; resolve(this.db); };
         req.onerror = (e) => reject(e.target.error);
@@ -82,6 +94,106 @@
         req.onsuccess = () => resolve(req.result);
         req.onerror = (e) => reject(e.target.error);
       });
+    },
+    async setCache(key, val) {
+      // 1. Try localforage
+      if (window.localforage) {
+        try {
+          await window.localforage.setItem(key, val);
+        } catch (e) {
+          console.warn('[localforage setCache fallback]', e);
+        }
+      }
+      // 2. Try IndexedDB offline_cache
+      try {
+        if (!this.db) await this.init();
+        await new Promise((resolve, reject) => {
+          const tx = this.db.transaction('offline_cache', 'readwrite');
+          const st = tx.objectStore('offline_cache');
+          st.put(val, key);
+          tx.oncomplete = resolve;
+          tx.onerror = (e) => reject(e.target.error);
+        });
+      } catch (err) {
+        console.warn('[NanovaDB setCache fallback]', err);
+      }
+      try {
+        if (key === 'offline_questions') {
+          localStorage.setItem('nanova_has_offline_questions', '1');
+        }
+      } catch {}
+    },
+    async getCache(key) {
+      // 1. Try localforage
+      if (window.localforage) {
+        try {
+          const lfVal = await window.localforage.getItem(key);
+          if (lfVal !== null && lfVal !== undefined) return lfVal;
+        } catch (e) {
+          console.warn('[localforage getCache fallback]', e);
+        }
+      }
+      // 2. Try IndexedDB offline_cache
+      try {
+        if (!this.db) await this.init();
+        return await new Promise((resolve, reject) => {
+          const tx = this.db.transaction('offline_cache', 'readonly');
+          const req = tx.objectStore('offline_cache').get(key);
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = (e) => reject(e.target.error);
+        });
+      } catch (err) {
+        console.warn('[NanovaDB getCache fallback]', err);
+        return null;
+      }
+    },
+    async getOfflineQuestions() {
+      // 1. Check localforage under 'offline_questions'
+      if (window.localforage) {
+        try {
+          const lf = await window.localforage.getItem('offline_questions');
+          if (lf && Array.isArray(lf) && lf.length) return lf;
+        } catch (e) {
+          console.warn('[localforage getOfflineQuestions]', e);
+        }
+      }
+
+      // 2. Check offline_cache objectStore in IndexedDB
+      const cached = await this.getCache('offline_questions');
+      if (cached && Array.isArray(cached) && cached.length) return cached;
+
+      // 3. Check exams objectStore in IndexedDB
+      try {
+        const exams = await this.getAll('exams');
+        if (exams && Array.isArray(exams) && exams.length) return exams;
+      } catch {}
+
+      // 4. Check localStorage fallback
+      try {
+        const lq = localStorage.getItem('offline_questions');
+        if (lq) {
+          const parsed = JSON.parse(lq);
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        }
+      } catch {}
+
+      return null;
+    },
+    async saveOfflineQuestions(questions) {
+      if (!Array.isArray(questions) || !questions.length) return;
+      if (window.localforage) {
+        try {
+          await window.localforage.setItem('offline_questions', questions);
+        } catch (e) {
+          console.warn('[localforage saveOfflineQuestions]', e);
+        }
+      }
+      await this.setCache('offline_questions', questions);
+      await this.saveAll('exams', questions);
+      try {
+        localStorage.setItem('nanova_has_offline_questions', '1');
+        localStorage.setItem('nanova_offline_questions_count', String(questions.length));
+      } catch {}
     }
   };
 
@@ -196,6 +308,127 @@
     }
   ];
 
+  /* ── SUBJECTS CATALOG (RECTANGULAR VISUAL CARDS) ───── */
+  const SUBJECTS_CATALOG = [
+    {
+      id: 'sub_psy',
+      name: 'General Psychology',
+      shortName: 'General Psychology',
+      image: 'https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&auto=format&fit=crop&q=80',
+      description: 'Human cognition, memory, learning, personality & motivation.',
+      icon: 'brain',
+      accentColor: 'blue'
+    },
+    {
+      id: 'sub_math',
+      name: 'Applied Mathematics I',
+      shortName: 'Applied Math I',
+      image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&auto=format&fit=crop&q=80',
+      description: 'Calculus, limits, derivatives, integrals & real functions.',
+      icon: 'calculator',
+      accentColor: 'indigo'
+    },
+    {
+      id: 'sub_phys',
+      name: 'General Physics',
+      shortName: 'General Physics',
+      image: 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=800&auto=format&fit=crop&q=80',
+      description: 'Classical mechanics, kinematics, vectors & thermodynamics.',
+      icon: 'atom',
+      accentColor: 'sky'
+    },
+    {
+      id: 'sub_logic',
+      name: 'Logic and Critical Thinking',
+      shortName: 'Logic & CT',
+      image: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=800&auto=format&fit=crop&q=80',
+      description: 'Arguments, formal fallacies, categorical syllogisms & deduction.',
+      icon: 'lightbulb',
+      accentColor: 'amber'
+    },
+    {
+      id: 'sub_eng',
+      name: 'Communicative English',
+      shortName: 'Communicative English',
+      image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&auto=format&fit=crop&q=80',
+      description: 'Reading comprehension, academic grammar, tenses & vocabulary.',
+      icon: 'book-open',
+      accentColor: 'emerald'
+    },
+    {
+      id: 'sub_geo',
+      name: 'Geography of Ethiopia and the Horn',
+      shortName: 'Geography of Ethiopia',
+      image: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&auto=format&fit=crop&q=80',
+      description: 'Topography, drainage basins, climate, population & agro-ecology.',
+      icon: 'map-pin',
+      accentColor: 'teal'
+    },
+    {
+      id: 'sub_coc',
+      name: 'Freshman COC',
+      shortName: 'Freshman COC Exam',
+      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
+      description: 'Integrated multi-course evaluation & stream readiness certification.',
+      icon: 'award',
+      accentColor: 'purple'
+    },
+    {
+      id: 'sub_civ',
+      name: 'Moral and Civics Education',
+      shortName: 'Civics & Ethics',
+      image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&auto=format&fit=crop&q=80',
+      description: 'Constitutional values, moral reasoning, ethics & citizenship.',
+      icon: 'scale',
+      accentColor: 'rose'
+    },
+    {
+      id: 'sub_tech',
+      name: 'Emerging Technologies',
+      shortName: 'Emerging Tech',
+      image: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
+      description: 'Artificial intelligence, IoT, big data, blockchain & cloud computing.',
+      icon: 'cpu',
+      accentColor: 'violet'
+    },
+    {
+      id: 'sub_glo',
+      name: 'Global Trends',
+      shortName: 'Global Trends',
+      image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=80',
+      description: 'International relations, global political economy & geopolitics.',
+      icon: 'globe',
+      accentColor: 'cyan'
+    },
+    {
+      id: 'sub_anth',
+      name: 'Social Anthropology',
+      shortName: 'Social Anthropology',
+      image: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=800&auto=format&fit=crop&q=80',
+      description: 'Human culture, ethnography, marriage systems & cultural diversity.',
+      icon: 'users',
+      accentColor: 'yellow'
+    },
+    {
+      id: 'sub_law',
+      name: 'General Law',
+      shortName: 'General Law',
+      image: 'https://images.unsplash.com/photo-1505664194779-8beaceb93744?w=800&auto=format&fit=crop&q=80',
+      description: 'Legal concepts, jurisprudence, contracts & constitutional principles.',
+      icon: 'shield',
+      accentColor: 'slate'
+    },
+    {
+      id: 'sub_elaw',
+      name: 'English for Law',
+      shortName: 'English for Law',
+      image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80',
+      description: 'Legal reasoning, case briefs, statutory drafting & legal terminology.',
+      icon: 'file-text',
+      accentColor: 'orange'
+    }
+  ];
+
   /* ── APPLICATION STATE ─────────────────────────────── */
   const State = {
     profile: { name: 'Student', university: 'Haramaya University', stream: 'Natural Science', email: '' },
@@ -224,6 +457,15 @@
     examStartTime: null,
     timerInterval: null,
     universities: [],
+    hiddenUniversities: JSON.parse(localStorage.getItem('nanova_hidden_universities') || '["Addis Ababa University", "Adama Science & Technology University (ASTU)", "Jimma University", "Bahir Dar University", "Hawassa University", "Arba Minch University", "AASTU", "ASTU"]'),
+    hiddenSubjects: JSON.parse(localStorage.getItem('nanova_hidden_subjects') || '[]'),
+    guidedFlow: {
+      active: true,
+      university: 'Haramaya University',
+      subject: null,
+      category: null,
+      year: null
+    },
     posts: [],
     paymentRequests: [],
     registeredUsers: [],
@@ -235,12 +477,107 @@
       year: 'ALL',
       category: 'ALL'
     },
-    hasAppliedFilters: false
+    hasAppliedFilters: false,
+    neverDownloadedQuestionsOffline: false
   };
+
+  /* ── PERSISTENT STORAGE & OFFLINE RESILIENCE ───────── */
+  async function initStoragePersistence() {
+    if (navigator.storage && navigator.storage.persist) {
+      try {
+        const isPersisted = navigator.storage.persisted ? await navigator.storage.persisted() : false;
+        if (!isPersisted) {
+          const granted = await navigator.storage.persist();
+          console.log('[Nanova Storage] Storage persistence requested, granted:', granted);
+        } else {
+          console.log('[Nanova Storage] Storage already marked as persistent.');
+        }
+      } catch (err) {
+        console.warn('[Nanova Storage] Storage persistence notice:', err);
+      }
+    }
+  }
+
+  function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((reg) => {
+          console.log('[Nanova SW] Service worker active with scope:', reg.scope);
+        }).catch((err) => {
+          console.warn('[Nanova SW] Service worker registration failed:', err);
+        });
+      });
+    }
+  }
+
+  function setupNetworkListeners() {
+    window.addEventListener('online', () => {
+      console.log('[Nanova Network] Back online.');
+      const banner = document.getElementById('offlineBanner');
+      if (banner) banner.classList.add('hidden');
+      handleNetworkOnline();
+    });
+
+    window.addEventListener('offline', () => {
+      console.log('[Nanova Network] Connection lost. Offline mode active.');
+      const banner = document.getElementById('offlineBanner');
+      if (banner) banner.classList.remove('hidden');
+      handleNetworkOffline();
+    });
+
+    // Check initial online status
+    if (!navigator.onLine) {
+      const banner = document.getElementById('offlineBanner');
+      if (banner) banner.classList.remove('hidden');
+    }
+  }
+
+  async function handleNetworkOnline() {
+    // 1. Re-enable community inputs
+    updateCommunityInputsOfflineState(false);
+
+    // 2. Seamlessly re-fetch live community posts from Firebase
+    await loadPostsFromFirebase();
+
+    // 3. If question bank was missing offline, automatically download it
+    if (!State.questions.length || State.neverDownloadedQuestionsOffline) {
+      await loadExamsData();
+      applyFilters();
+      renderGuidedExploration();
+      renderBoardQuestionsPage();
+    }
+
+    // 4. Update UI
+    renderCommunityPosts();
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function handleNetworkOffline() {
+    // 1. Stop any active loading spinners immediately
+    const spinner = document.getElementById('communityFeedSpinner');
+    if (spinner) spinner.classList.add('hidden');
+
+    // 2. Disable input fields (composer and comments)
+    updateCommunityInputsOfflineState(true);
+
+    // 3. Re-render community posts in offline mode (cached posts + subtle banner, or empty state)
+    renderCommunityPosts();
+
+    // 4. If questions were not cached, refresh exam board warning
+    if (!State.questions.length) {
+      renderBoardQuestionsPage();
+      renderGuidedExploration();
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
 
   /* ── INITIALIZATION ────────────────────────────────── */
   async function initApp() {
     loadSavedLocalState();
+    initStoragePersistence();
+    setupNetworkListeners();
+    registerServiceWorker();
+
     await NanovaDB.init().catch(console.warn);
     await loadExamsData();
     await loadUniversities();
@@ -253,8 +590,10 @@
     renderCommunityPosts();
     updateAdminUI();
     updateCounterBadges();
+    updateUniversitySelectDropdown();
+    renderGuidedExploration();
     if (window.lucide) window.lucide.createIcons();
-    console.log('[Nanova] Engine Initialized with 10-Question Pagination & 3 Payment Options (Telebirr, CBE, E-Birr)');
+    console.log('[Nanova] Engine Initialized with Offline Caching & Resilient Feed');
   }
 
   function loadSavedLocalState() {
@@ -265,6 +604,10 @@
       if (ans) State.userAnswers = JSON.parse(ans);
       const savedPay = localStorage.getItem('nanova_payment_settings');
       if (savedPay) Object.assign(State.paymentSettings, JSON.parse(savedPay));
+      const hiddenU = localStorage.getItem('nanova_hidden_universities');
+      if (hiddenU) State.hiddenUniversities = JSON.parse(hiddenU);
+      const hiddenS = localStorage.getItem('nanova_hidden_subjects');
+      if (hiddenS) State.hiddenSubjects = JSON.parse(hiddenS);
     } catch {}
     updateProfileUI();
   }
@@ -522,67 +865,160 @@
     if (window.lucide) window.lucide.createIcons();
   }
 
-  /* ── DATA FETCHING (EXAMS STAY ON JSON) ─────────────── */
-  async function loadExamsData() {
-    try {
-      const resp = await fetch('./data/exams.json');
-      if (resp.ok) {
-        let text = await resp.text();
-        if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
-        const data = JSON.parse(text);
+  /* ── DATA FETCHING & OFFLINE CACHING ────────────────── */
+  const GITHUB_EXAMS_URL = 'https://raw.githubusercontent.com/nane288/nanova/main/data/exams.json';
+  const JSDELIVR_EXAMS_URL = 'https://cdn.jsdelivr.net/gh/nane288/nanova@main/data/exams.json';
+  const LOCAL_EXAMS_URL = './data/exams.json';
 
-        let allQs = [];
-        if (Array.isArray(data)) {
-          data.forEach((item, idx) => {
-            if (item.questions && Array.isArray(item.questions)) {
-              item.questions.forEach((q, qIdx) => {
-                allQs.push({
-                  id: item.id + '_q' + qIdx,
-                  examId: item.id,
-                  course: item.course,
-                  university: item.university,
-                  year: (item.year ? (item.year + '').includes('Exam') ? item.year : item.year + ' Exam' : '2024 Exam'),
-                  category: q.category || item.category || 'Mid Exam',
-                  question: q.question,
-                  options: q.options ? (typeof q.options[0] === 'object' ? q.options.map(o => o.text) : q.options) : [],
-                  answer: typeof q.answer === 'number' ? q.answer : (q.correctOption === 'B' ? 1 : q.correctOption === 'C' ? 2 : q.correctOption === 'D' ? 3 : 0),
-                  explanation: q.explanation || 'Detailed university solution provided.'
-                });
-              });
-            } else if (item.question && item.options) {
-              const optTexts = typeof item.options[0] === 'object' ? item.options.map(o => o.text) : item.options;
-              const ansIdx = typeof item.answer === 'number' ? item.answer : (item.correctOption === 'B' ? 1 : item.correctOption === 'C' ? 2 : item.correctOption === 'D' ? 3 : 0);
-              allQs.push({
-                id: item.id || ('q_' + idx),
-                course: item.course || 'Freshman Course',
-                university: item.university || 'General University',
-                year: (item.year ? (item.year + '').includes('Exam') ? item.year : item.year + ' Exam' : '2024 Exam'),
-                category: item.category || 'Mid Exam',
-                question: item.question,
-                options: optTexts,
-                answer: ansIdx,
-                explanation: item.explanation || 'Detailed university solution provided.'
-              });
-            }
+  function parseRawExamsJson(data) {
+    let allQs = [];
+    if (!data || !Array.isArray(data)) return allQs;
+
+    data.forEach((item, idx) => {
+      if (item.questions && Array.isArray(item.questions)) {
+        item.questions.forEach((q, qIdx) => {
+          allQs.push({
+            id: item.id + '_q' + qIdx,
+            examId: item.id,
+            course: item.course,
+            university: item.university,
+            year: (item.year ? (item.year + '').includes('Exam') ? item.year : item.year + ' Exam' : '2024 Exam'),
+            category: q.category || item.category || 'Mid Exam',
+            question: q.question,
+            options: q.options ? (typeof q.options[0] === 'object' ? q.options.map(o => o.text) : q.options) : [],
+            answer: typeof q.answer === 'number' ? q.answer : (q.correctOption === 'B' ? 1 : q.correctOption === 'C' ? 2 : q.correctOption === 'D' ? 3 : 0),
+            explanation: q.explanation || 'Detailed university solution provided.'
           });
-        }
+        });
+      } else if (item.question && item.options) {
+        const optTexts = typeof item.options[0] === 'object' ? item.options.map(o => o.text) : item.options;
+        const ansIdx = typeof item.answer === 'number' ? item.answer : (item.correctOption === 'B' ? 1 : item.correctOption === 'C' ? 2 : item.correctOption === 'D' ? 3 : 0);
+        allQs.push({
+          id: item.id || ('q_' + idx),
+          course: item.course || 'Freshman Course',
+          university: item.university || 'General University',
+          year: (item.year ? (item.year + '').includes('Exam') ? item.year : item.year + ' Exam' : '2024 Exam'),
+          category: item.category || 'Mid Exam',
+          question: item.question,
+          options: optTexts,
+          answer: ansIdx,
+          explanation: item.explanation || 'Detailed university solution provided.'
+        });
+      }
+    });
+    return allQs;
+  }
 
-        if (allQs.length) {
-          State.questions = allQs;
-          NanovaDB.saveAll('exams', allQs).catch(console.warn);
+  async function fetchAndCacheQuestionBank() {
+    const urls = [LOCAL_EXAMS_URL, JSDELIVR_EXAMS_URL, GITHUB_EXAMS_URL];
+    for (const url of urls) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 9000);
+        const resp = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (resp.ok) {
+          let text = await resp.text();
+          if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+          const raw = JSON.parse(text);
+          const allQs = parseRawExamsJson(raw);
+          if (allQs.length) {
+            await NanovaDB.saveOfflineQuestions(allQs);
+            State.neverDownloadedQuestionsOffline = false;
+            console.log('[Nanova] Fetched & cached ' + allQs.length + ' questions from: ' + url);
+            return allQs;
+          }
+        }
+      } catch (err) {
+        console.warn('[Nanova] Failed fetching question bank from ' + url + ':', err.message);
+      }
+    }
+    return null;
+  }
+
+  async function refreshQuestionBankInBackground() {
+    try {
+      const urls = [LOCAL_EXAMS_URL, JSDELIVR_EXAMS_URL, GITHUB_EXAMS_URL];
+      for (const url of urls) {
+        try {
+          const resp = await fetch(url, { cache: 'no-cache' });
+          if (resp.ok) {
+            let text = await resp.text();
+            if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+            const raw = JSON.parse(text);
+            const allQs = parseRawExamsJson(raw);
+            if (allQs.length && allQs.length >= State.questions.length) {
+              await NanovaDB.saveOfflineQuestions(allQs);
+              State.questions = allQs;
+              console.log('[Nanova] Question bank updated in background (' + allQs.length + ' questions).');
+              break;
+            }
+          }
+        } catch {}
+      }
+    } catch {}
+  }
+
+  async function retryQuestionBankDownload() {
+    if (!navigator.onLine) {
+      alert('You are still offline. Please connect to Wi-Fi or mobile data and try again.');
+      return;
+    }
+    const downloaded = await fetchAndCacheQuestionBank();
+    if (downloaded && downloaded.length) {
+      State.questions = downloaded;
+      applyFilters();
+      renderGuidedExploration();
+      renderBoardQuestionsPage();
+      alert('✅ Question bank downloaded successfully (' + downloaded.length + ' questions available offline)!');
+    } else {
+      alert('Failed to download question bank. Please check your internet connection.');
+    }
+  }
+
+  async function loadExamsData() {
+    const isOnline = navigator.onLine;
+
+    // 1. Check if the question bank is already stored locally under 'offline_questions'
+    let cached = null;
+    try {
+      cached = await NanovaDB.getOfflineQuestions();
+    } catch (err) {
+      console.warn('[Nanova] DB getOfflineQuestions error:', err);
+    }
+
+    if (isOnline) {
+      if (cached && Array.isArray(cached) && cached.length) {
+        // Stored locally -> load instantly and refresh quietly in background
+        State.questions = cached;
+        State.neverDownloadedQuestionsOffline = false;
+        refreshQuestionBankInBackground();
+      } else {
+        // Missing and online -> fetch JSON from Local/jsDelivr/GitHub and store in IndexedDB
+        console.log('[Nanova] Question bank missing locally. Downloading from remote repository...');
+        const downloaded = await fetchAndCacheQuestionBank();
+        if (downloaded && downloaded.length) {
+          State.questions = downloaded;
+          State.neverDownloadedQuestionsOffline = false;
+        } else {
+          State.questions = DEFAULT_QUESTIONS;
         }
       }
-    } catch (e) {
-      console.warn('[Nanova] JSON fetch error, checking offline DB:', e);
-      try {
-        const cached = await NanovaDB.getAll('exams');
-        if (cached && cached.length) State.questions = cached;
-      } catch (err) {
-        console.warn('[Nanova] DB error:', err);
+    } else {
+      // Offline mode
+      if (cached && Array.isArray(cached) && cached.length) {
+        State.questions = cached;
+        State.neverDownloadedQuestionsOffline = false;
+        console.log('[Nanova] Offline mode: loaded ' + cached.length + ' questions from local storage.');
+      } else {
+        // User is offline and has NEVER downloaded the question bank before
+        State.questions = [];
+        State.neverDownloadedQuestionsOffline = true;
+        console.warn('[Nanova] Offline: question bank has never been downloaded before.');
       }
     }
 
-    if (!State.questions.length) {
+    if (!State.questions.length && !State.neverDownloadedQuestionsOffline) {
       State.questions = DEFAULT_QUESTIONS;
     }
   }
@@ -600,15 +1036,54 @@
     }
   }
 
-  /* ── COMMUNITY FEED (FIREBASE HANDLED) ─────────────── */
+  /* ── COMMUNITY FEED (FIREBASE & OFFLINE RESILIENT) ───── */
   async function loadPostsFromFirebase() {
+    const isOnline = navigator.onLine;
+
+    // If offline: load cached posts immediately without hanging on network
+    if (!isOnline) {
+      console.log('[Nanova Community] Offline: Loading cached posts.');
+      const spinner = document.getElementById('communityFeedSpinner');
+      if (spinner) spinner.classList.add('hidden');
+
+      try {
+        const cached = await NanovaDB.getAll('posts');
+        if (cached && Array.isArray(cached) && cached.length) {
+          State.posts = cached.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        } else {
+          const localStr = localStorage.getItem('nanova_cached_posts');
+          if (localStr) {
+            State.posts = JSON.parse(localStr);
+          } else {
+            State.posts = [];
+          }
+        }
+      } catch (err) {
+        console.warn('[Nanova Community] Failed reading cached posts:', err);
+        State.posts = [];
+      }
+      renderCommunityPosts();
+      return;
+    }
+
+    // If online: show spinner if feed is currently empty
+    const spinner = document.getElementById('communityFeedSpinner');
+    if (spinner && (!State.posts || !State.posts.length)) {
+      spinner.classList.remove('hidden');
+    }
+
+    // If online: fetch from Firebase Realtime Database
     if (firebaseDb) {
       try {
         const postsRef = firebaseDb.ref('posts');
         postsRef.on('value', (snap) => {
+          if (spinner) spinner.classList.add('hidden');
           const val = snap.val();
           if (val) {
             State.posts = Object.values(val).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            // Cache to IndexedDB & localStorage for offline use
+            NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+            try { localStorage.setItem('nanova_cached_posts', JSON.stringify(State.posts)); } catch {}
           } else {
             loadFallbackAnnouncements();
           }
@@ -618,9 +1093,11 @@
         return;
       } catch (e) {
         console.warn('[Firebase RTDB Posts]', e);
+        if (spinner) spinner.classList.add('hidden');
       }
     }
     await loadFallbackAnnouncements();
+    if (spinner) spinner.classList.add('hidden');
   }
 
   async function loadFallbackAnnouncements() {
@@ -642,6 +1119,8 @@
             isLiked: false,
             timestamp: Date.now()
           }));
+          NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+          try { localStorage.setItem('nanova_cached_posts', JSON.stringify(State.posts)); } catch {}
         }
       } else {
         State.posts = DEFAULT_POSTS;
@@ -652,8 +1131,21 @@
     renderCommunityPosts();
   }
 
+  async function retryCommunityFeed() {
+    if (!navigator.onLine) {
+      alert('Still offline. Please connect to the internet and try again.');
+      return;
+    }
+    await loadPostsFromFirebase();
+    renderCommunityPosts();
+  }
+
   function publishCommunityPost(e) {
     if (e && e.preventDefault) e.preventDefault();
+    if (!navigator.onLine) {
+      alert('You are currently offline. Broadcasting announcements requires an active internet connection.');
+      return;
+    }
     if (!State.isAdmin) {
       alert('Only verified Firebase Administrators can publish announcements.');
       return;
@@ -710,6 +1202,103 @@
     if (input) input.value = '';
     if (ytInput) ytInput.value = '';
     if (imgInput) imgInput.value = '';
+  }
+
+  function openEditPostModal(postId) {
+    if (!State.isAdmin) {
+      alert('Only administrators can edit community feed posts.');
+      return;
+    }
+
+    const post = State.posts.find((p) => p.id === postId);
+    if (!post) {
+      alert('Post not found.');
+      return;
+    }
+
+    const modal = document.getElementById('editPostModal');
+    const idInput = document.getElementById('editPostId');
+    const contentInput = document.getElementById('editPostContent');
+    const authorInput = document.getElementById('editPostAuthor');
+    const ytInput = document.getElementById('editPostYoutube');
+    const imgInput = document.getElementById('editPostImage');
+
+    if (!modal) return;
+
+    if (idInput) idInput.value = post.id;
+    if (contentInput) contentInput.value = post.content || '';
+    if (authorInput) authorInput.value = post.author || '';
+    if (ytInput) ytInput.value = post.youtubeUrl || '';
+    if (imgInput) imgInput.value = post.imageUrl || '';
+
+    modal.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function closeEditPostModal() {
+    const modal = document.getElementById('editPostModal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function saveEditedPost(event) {
+    if (event && event.preventDefault) event.preventDefault();
+
+    if (!State.isAdmin) {
+      alert('Only administrators can edit community feed posts.');
+      return;
+    }
+
+    const idInput = document.getElementById('editPostId');
+    const contentInput = document.getElementById('editPostContent');
+    const authorInput = document.getElementById('editPostAuthor');
+    const ytInput = document.getElementById('editPostYoutube');
+    const imgInput = document.getElementById('editPostImage');
+
+    const postId = idInput ? idInput.value : '';
+    const newContent = (contentInput?.value || '').trim();
+    const newAuthor = (authorInput?.value || '').trim();
+    const newYoutube = (ytInput?.value || '').trim();
+    const newImage = (imgInput?.value || '').trim();
+
+    if (!postId) return;
+    if (!newContent && !newYoutube && !newImage) {
+      alert('Please enter announcement text or media.');
+      return;
+    }
+
+    const post = State.posts.find((p) => p.id === postId);
+    if (!post) {
+      alert('Post not found.');
+      return;
+    }
+
+    post.content = newContent || 'Campus Announcement';
+    if (newAuthor) post.author = newAuthor;
+    post.youtubeUrl = newYoutube;
+    post.imageUrl = newImage;
+    post.editedAt = Date.now();
+
+    const updatePayload = {
+      content: post.content,
+      author: post.author,
+      youtubeUrl: post.youtubeUrl,
+      imageUrl: post.imageUrl,
+      editedAt: post.editedAt
+    };
+
+    if (firebaseDb) {
+      firebaseDb.ref('posts/' + postId).update(updatePayload).then(() => {
+        alert('✅ Community post updated successfully in Firebase!');
+      }).catch((err) => {
+        console.warn('Firebase update failed, keeping local change:', err);
+      });
+    }
+
+    NanovaDB.saveAll('posts', State.posts).catch(console.warn);
+    renderCommunityPosts();
+    renderAdminPostsList();
+    closeEditPostModal();
+    alert('✅ Post updated successfully!');
   }
 
   function deletePost(postId) {
@@ -1205,8 +1794,37 @@
     const container = document.getElementById('boardQuestionsListContainer');
     if (!container) return;
 
-    // If user has not clicked OK yet, show instructional prompt
+    // Clean warning only if the user is offline and has never downloaded the question bank before
+    if (State.neverDownloadedQuestionsOffline || (!navigator.onLine && (!State.questions || !State.questions.length))) {
+      container.innerHTML = `
+        <div class="white-card text-center py-12 px-6 space-y-3 border border-amber-200 bg-amber-50/50 shadow-sm animate-fade-in">
+          <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto mb-2 shadow-inner">
+            <i data-lucide="wifi-off" class="w-8 h-8"></i>
+          </div>
+          <h4 class="text-base font-extrabold text-slate-800">Offline Question Bank Missing</h4>
+          <p class="text-xs text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
+            You are currently offline and have not downloaded the question bank before. Please connect to the internet once to download questions for offline use.
+          </p>
+          <button onclick="NanovaApp.retryQuestionBankDownload()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition inline-flex items-center gap-2 mt-2 shadow-md">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            <span>Retry Download</span>
+          </button>
+        </div>
+      `;
+      const paginationBar = document.getElementById('boardPaginationBar');
+      if (paginationBar) paginationBar.classList.add('hidden');
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
+
+    // If user has not selected an exam yet, show prompt or let guided flow guide them
     if (!State.hasAppliedFilters) {
+      if (State.guidedFlow.active) {
+        container.innerHTML = '';
+        const paginationBar = document.getElementById('boardPaginationBar');
+        if (paginationBar) paginationBar.classList.add('hidden');
+        return;
+      }
       container.innerHTML = `
         <div class="white-card text-center py-12 px-6 border border-blue-100 shadow-md">
           <div class="w-16 h-16 rounded-3xl bg-blue-50 text-[#0052fe] flex items-center justify-center mx-auto mb-4 border border-blue-200/60 shadow-sm">
@@ -1260,13 +1878,58 @@
       }
     }
 
+    const answeredCount = State.filteredQuestions.filter(q => State.userAnswers[q.id] !== undefined).length;
+    const correctCount = State.filteredQuestions.filter(q => State.userAnswers[q.id] === q.answer).length;
+    const progressPercent = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+    const accuracyPercent = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
+
+    const progressTrackerHtml = `
+      <div class="exam-progress-tracker animate-slide-up">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center border border-blue-200/80 shadow-sm flex-shrink-0">
+              <i data-lucide="activity" class="w-4.5 h-4.5 text-[#0052fe]"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <span class="text-xs font-black text-slate-800 font-heading tracking-tight">Live Exam Completion</span>
+                <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 uppercase tracking-wider">${progressPercent}% Done</span>
+              </div>
+              <p class="text-[11px] text-slate-500 font-sans">
+                ${answeredCount} of ${totalQuestions} questions answered • Page ${State.currentPage} of ${totalPages}
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            ${!navigator.onLine ? `
+            <span class="stats-counter-pill bg-emerald-50 text-emerald-700 border-emerald-200" title="Offline Mode Active">
+              <i data-lucide="hard-drive" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Offline Active</span>
+            </span>
+            ` : ''}
+            <span class="stats-counter-pill" title="Answered Questions">
+              <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span><b>${answeredCount}</b> / ${totalQuestions}</span>
+            </span>
+            <span class="stats-counter-pill" title="Score Accuracy">
+              <i data-lucide="target" class="w-3.5 h-3.5 text-blue-600"></i>
+              <span>Accuracy: <b>${accuracyPercent}%</b></span>
+            </span>
+          </div>
+        </div>
+        <div class="progress-bar-rail">
+          <div class="progress-bar-fill" style="width: ${progressPercent}%;"></div>
+        </div>
+      </div>
+    `;
+
     const startIndex = (State.currentPage - 1) * State.pageSize;
     const endIndex = Math.min(startIndex + State.pageSize, totalQuestions);
     const pageQuestions = State.filteredQuestions.slice(startIndex, endIndex);
 
     const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-    container.innerHTML = pageQuestions.map((q, localIdx) => {
+    const questionsListHtml = pageQuestions.map((q, localIdx) => {
       const globalNumber = startIndex + localIdx + 1;
       const isMissedMode = State.activeQuickFilter === 'incorrect';
       const isAnsweredMode = State.activeQuickFilter === 'answered';
@@ -1290,17 +1953,19 @@
       }).join('');
 
       const explanationHtml = (answered !== undefined && q.explanation) ? `
-        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 mt-4 text-sm text-slate-800 animate-fade-in">
-          <div class="flex items-center space-x-2 text-blue-800 font-bold mb-1.5">
-            <i data-lucide="check-circle" class="w-4 h-4 text-blue-600"></i>
-            <span>Detailed Solution & Explanation</span>
+        <div class="solution-card">
+          <div class="flex items-center space-x-2 text-blue-900 font-bold mb-1.5 font-sans">
+            <div class="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+            </div>
+            <span class="text-xs tracking-wide uppercase font-extrabold text-blue-900">Detailed Solution & Explanation</span>
           </div>
-          <p class="leading-relaxed text-slate-700">${escapeHtml(q.explanation)}</p>
+          <p class="explanation-text">${escapeHtml(q.explanation)}</p>
         </div>
       ` : '';
 
       return `
-        <div class="white-card border border-slate-100 shadow-md hover:shadow-lg transition space-y-4" id="q_card_${escapeAttr(q.id)}">
+        <div class="white-card border border-slate-100 shadow-md hover:shadow-lg transition space-y-4 animate-slide-up" id="q_card_${escapeAttr(q.id)}">
           <!-- Question Header Tag & Meta -->
           <div class="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-slate-100">
             <div class="flex flex-wrap items-center gap-2">
@@ -1352,6 +2017,8 @@
         </div>
       `;
     }).join('');
+
+    container.innerHTML = progressTrackerHtml + questionsListHtml;
 
     updatePaginationControls(startIndex, endIndex, totalQuestions);
     updateBookmarkBadge();
@@ -1498,24 +2165,39 @@
       return;
     }
 
-    grid.innerHTML = State.universities.map((u) => {
+    const visibleUnivs = State.universities.filter(u => {
+      if (State.isAdmin) return true;
+      return !State.hiddenUniversities.includes(u.name);
+    });
+
+    if (!visibleUnivs.length) {
+      grid.innerHTML = '<div class="white-card col-span-full text-center text-slate-400 py-10">All universities are currently hidden or under curriculum preparation.</div>';
+      return;
+    }
+
+    grid.innerHTML = visibleUnivs.map((u) => {
       const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80';
       const imgSrc = (u.image && /^https?:\/\/.+/i.test(u.image.trim())) ? sanitizeUrl(u.image) : fallbackImg;
       const safeWebsite = sanitizeUrl(u.website);
       const safeTelegram = sanitizeUrl(u.telegram);
+      const isHidden = State.hiddenUniversities.includes(u.name);
 
-      return '<div class="univ-card">' +
+      return '<div class="univ-card ' + (isHidden ? 'ring-2 ring-amber-400 opacity-85' : '') + '">' +
         '<div class="relative">' +
           '<img src="' + imgSrc + '" alt="' + escapeHtml(u.name) + '" class="univ-card-image" onerror="this.src=\'' + fallbackImg + '\'" />' +
           (u.location ? '<span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">' + escapeHtml(u.location) + '</span>' : '') +
           (State.isAdmin ? '<div class="absolute top-2 right-2 flex space-x-1">' +
+            '<button onclick="NanovaApp.toggleUniversityVisibility(\'' + escapeAttr(u.name) + '\')" class="p-1.5 rounded-lg ' + (isHidden ? 'bg-amber-500 text-white' : 'bg-emerald-600 text-white') + ' shadow transition" title="' + (isHidden ? 'Hidden from Students - Click to Unhide' : 'Visible to Students - Click to Hide') + '"><i data-lucide="' + (isHidden ? 'eye-off' : 'eye') + '" class="w-3.5 h-3.5"></i></button>' +
             '<button onclick="NanovaApp.editUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-white/90 text-slate-700 hover:bg-white shadow transition" title="Edit"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>' +
             '<button onclick="NanovaApp.deleteUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 shadow transition" title="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
           '</div>' : '') +
         '</div>' +
         '<div class="univ-card-body">' +
           '<div>' +
-            '<h3 class="font-extrabold text-slate-900 text-base mb-1.5">' + escapeHtml(u.name) + '</h3>' +
+            '<div class="flex items-center justify-between mb-1.5">' +
+              '<h3 class="font-extrabold text-slate-900 text-base">' + escapeHtml(u.name) + '</h3>' +
+              (isHidden ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-[9px] uppercase tracking-wider">Hidden</span>' : '') +
+            '</div>' +
             '<p class="text-xs text-slate-500 font-medium leading-relaxed mb-4">' + escapeHtml(u.description || 'Official Ethiopian higher education campus details.') + '</p>' +
           '</div>' +
           '<div class="flex items-center justify-between pt-3 border-t border-slate-100 gap-2">' +
@@ -1604,6 +2286,457 @@
     }
   }
 
+  /* ── GUIDED EXAM EXPLORATION & VISIBILITY CONTROLS ─── */
+
+  function toggleUniversityVisibility(univName) {
+    if (!State.isAdmin) return;
+    const idx = State.hiddenUniversities.indexOf(univName);
+    if (idx >= 0) {
+      State.hiddenUniversities.splice(idx, 1);
+    } else {
+      State.hiddenUniversities.push(univName);
+    }
+    localStorage.setItem('nanova_hidden_universities', JSON.stringify(State.hiddenUniversities));
+    renderUniversities();
+    renderAdminUniversitiesList();
+    updateUniversitySelectDropdown();
+    renderGuidedExploration();
+  }
+
+  function toggleSubjectVisibility(subjectName) {
+    if (!State.isAdmin) return;
+    const idx = State.hiddenSubjects.indexOf(subjectName);
+    if (idx >= 0) {
+      State.hiddenSubjects.splice(idx, 1);
+    } else {
+      State.hiddenSubjects.push(subjectName);
+    }
+    localStorage.setItem('nanova_hidden_subjects', JSON.stringify(State.hiddenSubjects));
+    renderAdminSubjectsVisibilityList();
+    renderGuidedExploration();
+  }
+
+  function updateUniversitySelectDropdown() {
+    const sel = document.getElementById('universitySelect');
+    if (!sel) return;
+    const visibleUnivs = State.universities.filter(u =>
+      State.isAdmin || !State.hiddenUniversities.includes(u.name)
+    );
+    const firstChild = sel.querySelector('option[value="ALL"]');
+    // Remove all except "ALL"
+    Array.from(sel.options).forEach(opt => {
+      if (opt.value !== 'ALL') opt.remove();
+    });
+    visibleUnivs.forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u.name;
+      opt.textContent = u.name;
+      sel.appendChild(opt);
+    });
+  }
+
+  function renderAdminSubjectsVisibilityList() {
+    const container = document.getElementById('adminSubjectsVisibilityList');
+    if (!container) return;
+
+    container.innerHTML = SUBJECTS_CATALOG.map(sub => {
+      const isHidden = State.hiddenSubjects.includes(sub.name);
+      const qCount = (State.questions || []).filter(q => q.course === sub.name).length;
+      return `
+        <div class="p-4 rounded-2xl bg-slate-50 border ${isHidden ? 'border-amber-300' : 'border-slate-200'} flex items-center justify-between gap-3">
+          <div class="flex items-center space-x-3">
+            <img src="${sub.image}" alt="${escapeHtml(sub.name)}" class="w-12 h-12 rounded-xl object-cover border border-slate-200 flex-shrink-0" onerror="this.src='https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=200'" />
+            <div>
+              <p class="font-extrabold text-xs text-slate-900">${escapeHtml(sub.name)}</p>
+              <p class="text-[11px] text-slate-500 mt-0.5">${qCount} questions available</p>
+            </div>
+          </div>
+          <button onclick="NanovaApp.toggleSubjectVisibility('${escapeAttr(sub.name)}')"
+            class="visibility-toggle-btn ${isHidden ? 'hidden-mode' : 'visible'} flex-shrink-0">
+            <i data-lucide="${isHidden ? 'eye-off' : 'eye'}" class="w-3.5 h-3.5"></i>
+            ${isHidden ? 'Hidden' : 'Visible'}
+          </button>
+        </div>
+      `;
+    }).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function renderGuidedExploration() {
+    const container = document.getElementById('guidedExplorationContainer');
+    if (!container) return;
+
+    const gf = State.guidedFlow;
+
+    // If guided flow is disabled (classic mode), clear container
+    if (!gf.active) {
+      container.innerHTML = '';
+      return;
+    }
+
+    const activeUniv = gf.university || 'Haramaya University';
+    const badge = document.getElementById('activeUnivBadge');
+    if (badge) badge.textContent = activeUniv;
+
+    // Step 1: Subject not chosen yet → show subject cards
+    if (!gf.subject) {
+      container.innerHTML = _buildSubjectCardsHtml(activeUniv);
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
+
+    // Step 2: Category not chosen yet → show mid/final chooser
+    if (!gf.category) {
+      container.innerHTML = _buildCategoryChooserHtml(activeUniv, gf.subject);
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
+
+    // Step 3: Year not chosen yet → show year pills
+    if (!gf.year) {
+      container.innerHTML = _buildYearChooserHtml(activeUniv, gf.subject, gf.category);
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
+
+    // Step 4: All chosen → clear guided container, show breadcrumb, load questions
+    container.innerHTML = _buildBreadcrumbBarHtml(activeUniv, gf.subject, gf.category, gf.year);
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function _buildSubjectCardsHtml(activeUniv) {
+    // Show clean warning only if user is offline and has never downloaded question bank
+    if (State.neverDownloadedQuestionsOffline || (!navigator.onLine && (!State.questions || !State.questions.length))) {
+      return `
+        <div class="white-card text-center py-12 px-6 space-y-3 border border-amber-200 bg-amber-50/50 shadow-sm animate-fade-in">
+          <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto mb-2 shadow-inner">
+            <i data-lucide="wifi-off" class="w-8 h-8"></i>
+          </div>
+          <h4 class="text-base font-extrabold text-slate-800">You Are Currently Offline</h4>
+          <p class="text-xs text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
+            The freshman question bank has not been downloaded to your device yet. Please connect to the internet once so Nanova can automatically download and store the complete question bank locally for offline practice.
+          </p>
+          <button onclick="NanovaApp.retryQuestionBankDownload()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition inline-flex items-center gap-2 mt-2 shadow-md">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            <span>Retry Download</span>
+          </button>
+        </div>
+      `;
+    }
+
+    const visibleSubjects = SUBJECTS_CATALOG.filter(s =>
+      State.isAdmin || !State.hiddenSubjects.includes(s.name)
+    );
+
+    if (!visibleSubjects.length) {
+      return `<div class="white-card text-center py-10 text-slate-400 font-medium text-sm">No subjects are currently available.</div>`;
+    }
+
+    const univQuestions = (State.questions || []).filter(q => q.university === activeUniv);
+
+    const cards = visibleSubjects.map(sub => {
+      const qCount = univQuestions.filter(q => q.course === sub.name).length;
+      const accentClasses = {
+        blue: 'bg-blue-100 text-blue-700', indigo: 'bg-indigo-100 text-indigo-700',
+        sky: 'bg-sky-100 text-sky-700', amber: 'bg-amber-100 text-amber-700',
+        emerald: 'bg-emerald-100 text-emerald-700', teal: 'bg-teal-100 text-teal-700',
+        purple: 'bg-purple-100 text-purple-700', rose: 'bg-rose-100 text-rose-700',
+        violet: 'bg-violet-100 text-violet-700', cyan: 'bg-cyan-100 text-cyan-700',
+        yellow: 'bg-yellow-100 text-yellow-700', slate: 'bg-slate-200 text-slate-700',
+        orange: 'bg-orange-100 text-orange-700'
+      };
+      const pill = accentClasses[sub.accentColor] || 'bg-blue-100 text-blue-700';
+      return `
+        <div class="subject-rect-card animate-slide-up" onclick="NanovaApp.chooseGuidedSubject('${escapeAttr(sub.name)}')">
+          <div class="subject-rect-img-wrapper">
+            <img class="subject-rect-img" src="${sub.image}" alt="${escapeHtml(sub.name)}"
+              onerror="this.src='https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400'" />
+          </div>
+          <div class="subject-rect-content">
+            <div>
+              <p class="subject-rect-title">${escapeHtml(sub.name)}</p>
+              <p class="text-xs text-slate-500 font-medium mt-1 leading-relaxed">${escapeHtml(sub.description)}</p>
+            </div>
+            <div class="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100">
+              <span class="subject-badge-pill ${pill}">
+                <i data-lucide="${sub.icon}" class="w-3 h-3"></i>
+                ${sub.shortName}
+              </span>
+              <span class="text-[11px] font-extrabold ${qCount > 0 ? 'text-emerald-700 bg-emerald-50' : 'text-slate-400 bg-slate-100'} px-2.5 py-1 rounded-lg">
+                ${qCount > 0 ? qCount + ' Q' : 'Coming Soon'}
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-black text-white flex items-center gap-2">
+              <i data-lucide="layers" class="w-4 h-4 text-blue-200"></i>
+              Step 1: Choose Your Subject
+            </h2>
+            <p class="text-xs text-white/70 mt-0.5">Select the course you want to practice for ${escapeHtml(activeUniv)}</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 gap-3">
+          ${cards}
+        </div>
+      </div>
+    `;
+  }
+
+  function _buildCategoryChooserHtml(activeUniv, subject) {
+    const subjectQuestions = (State.questions || []).filter(q =>
+      q.university === activeUniv && q.course === subject
+    );
+    const midCount = subjectQuestions.filter(q => q.category === 'Mid Exam').length;
+    const finalCount = subjectQuestions.filter(q => q.category === 'Final Exam').length;
+    const cocCount = subjectQuestions.filter(q => q.category === 'COC Exam').length;
+
+    const midCard = `
+      <div class="exam-type-card ${midCount === 0 ? 'opacity-60' : ''}" onclick="NanovaApp.chooseGuidedCategory('Mid Exam')">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-transparent opacity-60 rounded-xl pointer-events-none"></div>
+        <div class="relative">
+          <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center mb-3">
+            <i data-lucide="book-marked" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-base font-black text-slate-900">Mid Exam</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Mid-semester questions from past exams</p>
+          <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[11px] font-extrabold ${midCount > 0 ? 'text-blue-700 bg-blue-50' : 'text-slate-400 bg-slate-100'} px-2.5 py-1 rounded-lg">
+              ${midCount > 0 ? midCount + ' Questions' : 'No questions yet'}
+            </span>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-blue-400"></i>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const finalCard = `
+      <div class="exam-type-card ${finalCount === 0 ? 'opacity-60' : ''}" onclick="NanovaApp.chooseGuidedCategory('Final Exam')">
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-50 to-transparent opacity-60 rounded-xl pointer-events-none"></div>
+        <div class="relative">
+          <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center mb-3">
+            <i data-lucide="award" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-base font-black text-slate-900">Final Exam</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">End-of-semester comprehensive final exams</p>
+          <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[11px] font-extrabold ${finalCount > 0 ? 'text-indigo-700 bg-indigo-50' : 'text-slate-400 bg-slate-100'} px-2.5 py-1 rounded-lg">
+              ${finalCount > 0 ? finalCount + ' Questions' : 'No questions yet'}
+            </span>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-indigo-400"></i>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const cocCard = cocCount > 0 ? `
+      <div class="exam-type-card" onclick="NanovaApp.chooseGuidedCategory('COC Exam')">
+        <div class="absolute inset-0 bg-gradient-to-br from-purple-50 to-transparent opacity-60 rounded-xl pointer-events-none"></div>
+        <div class="relative">
+          <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center mb-3">
+            <i data-lucide="star" class="w-6 h-6"></i>
+          </div>
+          <h3 class="text-base font-black text-slate-900">COC Exam</h3>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Certificate of Competency readiness exam</p>
+          <div class="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[11px] font-extrabold text-purple-700 bg-purple-50 px-2.5 py-1 rounded-lg">
+              ${cocCount} Questions
+            </span>
+            <i data-lucide="arrow-right" class="w-4 h-4 text-purple-400"></i>
+          </div>
+        </div>
+      </div>
+    ` : '';
+
+    return `
+      <div class="animate-slide-up">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-black text-white flex items-center gap-2">
+              <i data-lucide="layers" class="w-4 h-4 text-blue-200"></i>
+              Step 2: Choose Exam Type
+            </h2>
+            <p class="text-xs text-white/70 mt-0.5">${escapeHtml(subject)} · ${escapeHtml(activeUniv)}</p>
+          </div>
+          <button onclick="NanovaApp.resetGuidedFlow()" class="px-3 py-1.5 rounded-xl bg-black/30 hover:bg-black/50 text-white text-xs font-bold flex items-center gap-1.5 transition border border-white/20">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
+          </button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 ${cocCount > 0 ? 'lg:grid-cols-3' : ''} gap-4">
+          ${midCard}
+          ${finalCard}
+          ${cocCard}
+        </div>
+      </div>
+    `;
+  }
+
+  function _buildYearChooserHtml(activeUniv, subject, category) {
+    const subjectCatQuestions = (State.questions || []).filter(q =>
+      q.university === activeUniv && q.course === subject && q.category === category
+    );
+
+    // Extract and deduplicate years, sorted desc
+    const years = [...new Set(subjectCatQuestions.map(q => q.year || ''))].filter(Boolean);
+    years.sort((a, b) => {
+      const numA = parseInt(a.match(/\d+/)?.[0] || '0');
+      const numB = parseInt(b.match(/\d+/)?.[0] || '0');
+      return numB - numA;
+    });
+
+    if (!years.length) {
+      return `
+        <div class="animate-slide-up">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-black text-white flex items-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-blue-200"></i>
+              Step 3: Choose Year
+            </h2>
+            <button onclick="NanovaApp.chooseGuidedSubject('${escapeAttr(subject)}')" class="px-3 py-1.5 rounded-xl bg-black/30 hover:bg-black/50 text-white text-xs font-bold flex items-center gap-1.5 transition border border-white/20">
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
+            </button>
+          </div>
+          <div class="white-card text-center py-10">
+            <i data-lucide="inbox" class="w-8 h-8 text-slate-300 mx-auto mb-3"></i>
+            <p class="text-sm font-bold text-slate-600">No ${escapeHtml(category)} questions yet</p>
+            <p class="text-xs text-slate-400 mt-1">Check back soon as we add more ${escapeHtml(subject)} exams.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    const pills = years.map(yr => {
+      const count = subjectCatQuestions.filter(q => q.year === yr).length;
+      return `
+        <div class="year-pill-card" onclick="NanovaApp.chooseGuidedYear('${escapeAttr(yr)}')">
+          <p class="font-black text-slate-900 text-sm">${escapeHtml(yr)}</p>
+          <p class="text-[11px] text-slate-500 font-medium mt-1">${count} question${count !== 1 ? 's' : ''}</p>
+          <i data-lucide="arrow-right" class="w-4 h-4 text-[#0052fe] mx-auto mt-2"></i>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="animate-slide-up">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-base font-black text-white flex items-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-blue-200"></i>
+              Step 3: Choose Exam Year
+            </h2>
+            <p class="text-xs text-white/70 mt-0.5">${escapeHtml(subject)} · ${escapeHtml(category)}</p>
+          </div>
+          <button onclick="NanovaApp.chooseGuidedSubject('${escapeAttr(subject)}')" class="px-3 py-1.5 rounded-xl bg-black/30 hover:bg-black/50 text-white text-xs font-bold flex items-center gap-1.5 transition border border-white/20">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
+          </button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          ${pills}
+        </div>
+      </div>
+    `;
+  }
+
+  function _buildBreadcrumbBarHtml(activeUniv, subject, category, year) {
+    return `
+      <div class="guided-step-bar animate-slide-up">
+        <div class="flex flex-wrap items-center gap-1.5 text-xs font-bold text-slate-700">
+          <span class="text-[#0052fe] font-extrabold">${escapeHtml(activeUniv)}</span>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span>${escapeHtml(subject)}</span>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span class="${category === 'Mid Exam' ? 'text-blue-600' : category === 'COC Exam' ? 'text-purple-600' : 'text-indigo-600'}">${escapeHtml(category)}</span>
+          <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          <span class="text-emerald-600 font-extrabold">${escapeHtml(year)}</span>
+        </div>
+        <div class="flex items-center gap-2 flex-shrink-0">
+          <button onclick="NanovaApp.resetGuidedFlow()"
+            class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            Change Subject
+          </button>
+          <button onclick="NanovaApp.chooseGuidedSubject('${escapeAttr(subject)}')"
+            class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#0052fe] text-xs font-extrabold rounded-xl transition flex items-center gap-1.5">
+            <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
+            Change Year
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function chooseGuidedSubject(subjectName) {
+    State.guidedFlow.subject = subjectName;
+    State.guidedFlow.category = null;
+    State.guidedFlow.year = null;
+    // Reset filters to show the selected subject for the active university
+    State.filters.course = subjectName;
+    State.filters.university = State.guidedFlow.university || 'Haramaya University';
+    State.filters.year = 'ALL';
+    State.filters.category = 'ALL';
+    State.hasAppliedFilters = false;
+    renderGuidedExploration();
+  }
+
+  function chooseGuidedCategory(categoryName) {
+    State.guidedFlow.category = categoryName;
+    State.guidedFlow.year = null;
+    State.filters.category = categoryName;
+    State.hasAppliedFilters = false;
+    renderGuidedExploration();
+  }
+
+  function chooseGuidedYear(yearName) {
+    State.guidedFlow.year = yearName;
+    State.filters.course = State.guidedFlow.subject || 'ALL';
+    State.filters.university = State.guidedFlow.university || 'ALL';
+    State.filters.category = State.guidedFlow.category || 'ALL';
+    State.filters.year = yearName;
+    State.hasAppliedFilters = true;
+    renderGuidedExploration();
+    applyFilters();
+  }
+
+  function changeGuidedUniversity(univName) {
+    State.guidedFlow.university = univName;
+    State.guidedFlow.subject = null;
+    State.guidedFlow.category = null;
+    State.guidedFlow.year = null;
+    State.hasAppliedFilters = false;
+    const badge = document.getElementById('activeUnivBadge');
+    if (badge) badge.textContent = univName;
+    renderGuidedExploration();
+  }
+
+  function resetGuidedFlow() {
+    State.guidedFlow.subject = null;
+    State.guidedFlow.category = null;
+    State.guidedFlow.year = null;
+    State.hasAppliedFilters = false;
+    State.filters.course = 'ALL';
+    State.filters.university = 'ALL';
+    State.filters.year = 'ALL';
+    State.filters.category = 'ALL';
+    renderGuidedExploration();
+    renderBoardQuestionsPage();
+  }
+
+  function toggleClassicFilterMode() {
+    const filterCard = document.getElementById('classicFilterCard');
+    const btnText = document.getElementById('classicFilterBtnText');
+    if (!filterCard) return;
+    const isHidden = filterCard.classList.contains('hidden');
+    filterCard.classList.toggle('hidden', !isHidden);
+    if (btnText) btnText.textContent = isHidden ? 'Hide Filters' : 'Advanced Search / Filter';
+  }
+
   /* ── SECURITY & SANITIZATION HELPERS ─────────────── */
   function sanitizeUrl(url) {
     if (!url || typeof url !== 'string') return '#';
@@ -1652,17 +2785,134 @@
     return null;
   }
 
+  /* ── COMMUNITY INPUTS OFFLINE STATE ────────────────── */
+  function updateCommunityInputsOfflineState(isOffline) {
+    // 1. Composer inputs (Admin view)
+    const postContent = document.getElementById('postInputContent');
+    const postYt = document.getElementById('postYoutubeUrl');
+    const postImg = document.getElementById('postImageUrl');
+    const publishBtn = document.querySelector('.btn-publish');
+
+    if (postContent) {
+      postContent.disabled = isOffline;
+      if (isOffline) {
+        postContent.placeholder = 'Offline mode: Reconnect to internet to broadcast announcements.';
+      } else {
+        postContent.placeholder = 'Broadcast official announcements, study guides, or freshman exam tips...';
+      }
+    }
+    if (postYt) postYt.disabled = isOffline;
+    if (postImg) postImg.disabled = isOffline;
+    if (publishBtn) {
+      publishBtn.disabled = isOffline;
+      if (isOffline) {
+        publishBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        publishBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+    }
+
+    // Admin section inputs
+    const adminPostContent = document.getElementById('adminPostContentInput');
+    const adminPostYt = document.getElementById('adminPostYoutubeInput');
+    const adminPostImg = document.getElementById('adminPostImageInput');
+    const adminPostPublishBtn = document.getElementById('adminPostPublishBtn');
+    if (adminPostContent) adminPostContent.disabled = isOffline;
+    if (adminPostYt) adminPostYt.disabled = isOffline;
+    if (adminPostImg) adminPostImg.disabled = isOffline;
+    if (adminPostPublishBtn) {
+      adminPostPublishBtn.disabled = isOffline;
+      if (isOffline) adminPostPublishBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      else adminPostPublishBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+
+    const adminComposerView = document.getElementById('adminComposerView');
+    if (adminComposerView) {
+      let notice = document.getElementById('composerOfflineNotice');
+      if (isOffline) {
+        if (!notice) {
+          notice = document.createElement('div');
+          notice.id = 'composerOfflineNotice';
+          notice.className = 'p-2.5 mb-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold flex items-center gap-2 animate-fade-in';
+          notice.innerHTML = '<i data-lucide="wifi-off" class="w-4 h-4 text-amber-600 flex-shrink-0"></i><span>Announcement posting is disabled while offline.</span>';
+          adminComposerView.prepend(notice);
+        }
+      } else if (notice) {
+        notice.remove();
+      }
+    }
+
+    // 2. Comments input & submit in comments modal
+    const commentInput = document.getElementById('newCommentInput');
+    const commentSubmitBtn = document.querySelector('#commentModal button[type="submit"]');
+    if (commentInput) {
+      commentInput.disabled = isOffline;
+      if (isOffline) {
+        commentInput.placeholder = 'Commenting is disabled while offline.';
+      } else {
+        commentInput.placeholder = 'Write a comment or question...';
+      }
+    }
+    if (commentSubmitBtn) {
+      commentSubmitBtn.disabled = isOffline;
+      if (isOffline) {
+        commentSubmitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      } else {
+        commentSubmitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+    }
+  }
+
   /* ── COMMUNITY FEED RENDERING ──────────────────────── */
   function renderCommunityPosts() {
     const container = document.getElementById('communityPostsContainer');
     if (!container) return;
 
-    if (!State.posts.length) {
-      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No official announcements yet.</div>';
+    // Stop any active loading spinners immediately
+    const spinner = document.getElementById('communityFeedSpinner');
+    if (spinner) spinner.classList.add('hidden');
+
+    const isOffline = !navigator.onLine;
+
+    // If offline and no cached posts exist:
+    if (isOffline && (!State.posts || !State.posts.length)) {
+      container.innerHTML = `
+        <div class="white-card text-center py-14 px-6 space-y-3 border border-slate-200 shadow-sm animate-fade-in">
+          <div class="w-16 h-16 rounded-3xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-2 shadow-inner">
+            <i data-lucide="wifi-off" class="w-8 h-8"></i>
+          </div>
+          <h4 class="text-base font-extrabold text-slate-800">Internet Connection Required</h4>
+          <p class="text-xs text-slate-500 max-w-sm mx-auto font-medium leading-relaxed">
+            The Community Feed requires an active internet connection.
+          </p>
+          <button onclick="NanovaApp.retryCommunityFeed()" class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs transition inline-flex items-center gap-2 mt-2 shadow-md">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+            <span>Retry Connection</span>
+          </button>
+        </div>
+      `;
+      updateCommunityInputsOfflineState(true);
+      if (window.lucide) window.lucide.createIcons();
       return;
     }
 
-    container.innerHTML = State.posts.map((post) => {
+    if (!State.posts.length) {
+      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No official announcements yet.</div>';
+      updateCommunityInputsOfflineState(isOffline);
+      return;
+    }
+
+    const offlineBannerHtml = isOffline
+      ? `<div id="offlinePostsBanner" class="p-3 mb-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between text-amber-900 text-xs font-bold animate-fade-in shadow-sm">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="wifi-off" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+            <span>You are offline. Showing cached posts.</span>
+          </div>
+          <span class="text-[10px] text-amber-700 bg-amber-100 border border-amber-200 px-2.5 py-0.5 rounded-full font-extrabold">Cached View</span>
+        </div>`
+      : '';
+
+    const postsHtml = State.posts.map((post) => {
       const embedVideoUrl = extractYouTubeEmbedUrl(post.youtubeUrl);
       const safeImageUrl = post.imageUrl && /^https?:\/\/.+/i.test(post.imageUrl.trim()) ? sanitizeUrl(post.imageUrl) : null;
 
@@ -1679,7 +2929,10 @@
                 '<span class="text-xs text-slate-400 font-medium">' + escapeHtml(post.date || 'Official Notice') + '</span>' +
               '</div>' +
             '</div>' +
-            '<button onclick="NanovaApp.deletePost(\'' + escapeAttr(post.id) + '\')" class="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg transition" title="Delete Post"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+            '<div class="flex items-center space-x-1">' +
+              '<button onclick="NanovaApp.openEditPostModal(\'' + escapeAttr(post.id) + '\')" class="text-slate-400 hover:text-[#0052fe] p-1.5 rounded-lg transition" title="Edit Post"><i data-lucide="edit-3" class="w-4 h-4"></i></button>' +
+              '<button onclick="NanovaApp.deletePost(\'' + escapeAttr(post.id) + '\')" class="text-slate-400 hover:text-rose-500 p-1.5 rounded-lg transition" title="Delete Post"><i data-lucide="trash-2" class="w-4 h-4"></i></button>' +
+            '</div>' +
           '</div>'
         : '<div class="flex items-center mb-3 space-x-2">' +
             '<span class="px-2 py-0.5 rounded-full bg-[#0052fe]/10 text-[#0052fe] text-[11px] font-extrabold tracking-wide flex items-center gap-1">' +
@@ -1716,6 +2969,8 @@
       '</div>';
     }).join('');
 
+    container.innerHTML = offlineBannerHtml + postsHtml;
+    updateCommunityInputsOfflineState(isOffline);
     if (window.lucide) window.lucide.createIcons();
   }
 
@@ -1841,7 +3096,7 @@
     renderQuestionModalOptions(currentInputs, selected);
   }
 
-  function openAddQuestionModal() {
+  function openAddQuestionModal(defaults = {}) {
     if (!State.isAdmin) return;
     const editIdInput = document.getElementById('newQEditId');
     if (editIdInput) editIdInput.value = '';
@@ -1855,6 +3110,25 @@
 
     const form = document.getElementById('addQuestionForm');
     if (form) form.reset();
+
+    if (defaults && typeof defaults === 'object') {
+      if (defaults.course) {
+        const el = document.getElementById('newQCourse');
+        if (el) el.value = defaults.course;
+      }
+      if (defaults.university || defaults.univ) {
+        const el = document.getElementById('newQUniv');
+        if (el) el.value = defaults.university || defaults.univ;
+      }
+      if (defaults.year) {
+        const el = document.getElementById('newQYear');
+        if (el) el.value = defaults.year;
+      }
+      if (defaults.category) {
+        const el = document.getElementById('newQCategory');
+        if (el) el.value = defaults.category;
+      }
+    }
 
     renderQuestionModalOptions(['', '', '', ''], 0);
     document.getElementById('questionModal')?.classList.remove('hidden');
@@ -2013,7 +3287,7 @@
 
   function switchAdminSubTab(tabId) {
     currentAdminSubTab = tabId;
-    const subtabs = ['questions', 'requests', 'universities', 'posts', 'payment', 'system'];
+    const subtabs = ['questions', 'requests', 'universities', 'subjects', 'posts', 'payment', 'system', 'stats'];
     subtabs.forEach((id) => {
       const section = document.getElementById('adminSection-' + id);
       const navBtn = document.getElementById('adminSubNav-' + id);
@@ -2050,10 +3324,1079 @@
 
     renderAdminQuestionsList();
     renderAdminUniversitiesList();
+    renderAdminSubjectsVisibilityList();
     renderAdminPostsList();
     renderAdminPaymentRequests();
     renderAdminUsersList();
+    renderAdminStats();
 
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  /* ── ADMIN STATISTICS & COVERAGE ANALYTICS ──────────── */
+  let _currentStatsView = 'subject-year';
+  let _currentStatsCategory = 'ALL';
+  let _statsUnivRowsExpanded = false;
+  let _statsData = null;
+
+  function renderAdminStats() {
+    const questions = State.questions || [];
+    const total = questions.length;
+
+    // ── Precompute multidimensional breakdowns ────────────
+    const byCourse = {};
+    const courseYearsMap = {};
+    const byCategory = {};
+    const byUniversity = {};
+    const courseUnivYearMap = {};
+    const univCourseMap = {};
+    const univYearMap = {};
+    const catByCourseUnivYear = {};
+    const courseYearCatMap = {};
+    const univCourseCatMap = {};
+    const univYearCatMap = {};
+
+    questions.forEach((q) => {
+      const course = q.course || 'Unknown';
+      const year   = q.year   || 'Unknown';
+      const cat    = q.category || 'Unknown';
+      const univ   = q.university || 'General / Unknown';
+
+      byCourse[course]   = (byCourse[course]   || 0) + 1;
+      byCategory[cat]    = (byCategory[cat]    || 0) + 1;
+      byUniversity[univ] = (byUniversity[univ] || 0) + 1;
+
+      if (!courseYearsMap[course]) courseYearsMap[course] = {};
+      courseYearsMap[course][year] = (courseYearsMap[course][year] || 0) + 1;
+
+      if (!courseUnivYearMap[course]) courseUnivYearMap[course] = {};
+      if (!courseUnivYearMap[course][univ]) courseUnivYearMap[course][univ] = {};
+      courseUnivYearMap[course][univ][year] = (courseUnivYearMap[course][univ][year] || 0) + 1;
+
+      if (!univCourseMap[univ]) univCourseMap[univ] = {};
+      univCourseMap[univ][course] = (univCourseMap[univ][course] || 0) + 1;
+
+      if (!univYearMap[univ]) univYearMap[univ] = {};
+      univYearMap[univ][year] = (univYearMap[univ][year] || 0) + 1;
+
+      if (!catByCourseUnivYear[course]) catByCourseUnivYear[course] = {};
+      if (!catByCourseUnivYear[course][univ]) catByCourseUnivYear[course][univ] = {};
+      if (!catByCourseUnivYear[course][univ][year]) catByCourseUnivYear[course][univ][year] = {};
+      catByCourseUnivYear[course][univ][year][cat] = (catByCourseUnivYear[course][univ][year][cat] || 0) + 1;
+
+      if (!courseYearCatMap[course]) courseYearCatMap[course] = {};
+      if (!courseYearCatMap[course][year]) courseYearCatMap[course][year] = {};
+      courseYearCatMap[course][year][cat] = (courseYearCatMap[course][year][cat] || 0) + 1;
+
+      if (!univCourseCatMap[univ]) univCourseCatMap[univ] = {};
+      if (!univCourseCatMap[univ][course]) univCourseCatMap[univ][course] = {};
+      univCourseCatMap[univ][course][cat] = (univCourseCatMap[univ][course][cat] || 0) + 1;
+
+      if (!univYearCatMap[univ]) univYearCatMap[univ] = {};
+      if (!univYearCatMap[univ][year]) univYearCatMap[univ][year] = {};
+      univYearCatMap[univ][year][cat] = (univYearCatMap[univ][year][cat] || 0) + 1;
+    });
+
+    const ALL_YEARS = ['2020 Exam','2021 Exam','2022 Exam','2023 Exam','2024 Exam','2025 Exam','Stream Selection Exam'];
+    const allSubjects = Object.keys(byCourse).sort((a, b) => byCourse[b] - byCourse[a]);
+    const allUnivs = Object.keys(byUniversity).sort((a, b) => byUniversity[b] - byUniversity[a]);
+
+    const totalMidQs   = byCategory['Mid Exam'] || 0;
+    const totalFinalQs = byCategory['Final Exam'] || 0;
+    const totalCocQs   = byCategory['COC Exam'] || 0;
+    const totalOtherQs = (byCategory['Stream Selection'] || 0) + (byCategory['Entrance Exam'] || 0);
+
+    _statsData = {
+      questions,
+      total,
+      byCourse,
+      courseYearsMap,
+      byCategory,
+      byUniversity,
+      courseUnivYearMap,
+      univCourseMap,
+      univYearMap,
+      catByCourseUnivYear,
+      courseYearCatMap,
+      univCourseCatMap,
+      univYearCatMap,
+      totalMidQs,
+      totalFinalQs,
+      totalCocQs,
+      ALL_YEARS,
+      allSubjects,
+      allUnivs
+    };
+
+    // Populate university filter dropdown
+    const univFilterSelect = document.getElementById('statsUnivFilter');
+    if (univFilterSelect) {
+      const curVal = univFilterSelect.value || 'ALL';
+      let optionsHtml = '<option value="ALL">All Universities (Combined)</option>';
+      allUnivs.forEach(u => {
+        optionsHtml += `<option value="${escapeAttr(u)}">${escapeHtml(u)} (${byUniversity[u]} Qs)</option>`;
+      });
+      univFilterSelect.innerHTML = optionsHtml;
+      if (allUnivs.includes(curVal) || curVal === 'ALL') {
+        univFilterSelect.value = curVal;
+      }
+    }
+
+    // Synchronize category filter dropdown
+    const catFilterSelect = document.getElementById('statsCategoryFilter');
+    if (catFilterSelect && _currentStatsCategory) {
+      catFilterSelect.value = _currentStatsCategory;
+    }
+
+    // User & overall completion stats
+    const users      = State.registeredUsers || [];
+    const paidUsers  = users.filter(u => u.isPaid || u.role === 'admin').length;
+    const totalUsers = users.length;
+    const pendingReqs = (State.paymentRequests || []).filter(r => r.status === 'pending').length;
+
+    const subjectsWithGaps = allSubjects.filter(course => {
+      const avail = courseYearsMap[course] || {};
+      return ALL_YEARS.filter(y => !avail[y]).length >= 2;
+    }).length;
+
+    // Overall matrix completion rate
+    let totalPossibleCells = allSubjects.length * ALL_YEARS.length;
+    let filledCells = 0;
+    allSubjects.forEach(c => {
+      const yrs = courseYearsMap[c] || {};
+      ALL_YEARS.forEach(y => { if (yrs[y] > 0) filledCells++; });
+    });
+    const completionPct = totalPossibleCells > 0 ? Math.round((filledCells / totalPossibleCells) * 100) : 0;
+
+    // ─────────────────────────────────────────────────────
+    // 1. OVERVIEW KPI CARDS (8 cards featuring Mid & Final)
+    // ─────────────────────────────────────────────────────
+    const overviewRow = document.getElementById('statsOverviewRow');
+    if (overviewRow) {
+      const cards = [
+        { label: 'Total Questions',   value: total,               icon: 'help-circle',    color: 'blue',    sub: 'In exam bank' },
+        { label: 'Mid Exam Qs',       value: totalMidQs,          icon: 'book-marked',    color: 'sky',     sub: 'Mid-term coverage' },
+        { label: 'Final Exam Qs',     value: totalFinalQs,        icon: 'award',          color: 'indigo',  sub: 'Final exam coverage' },
+        { label: 'COC & Other Qs',    value: totalCocQs + totalOtherQs, icon: 'layers',   color: 'purple',  sub: 'COC & stream selection' },
+        { label: 'Subjects Covered',  value: allSubjects.length,  icon: 'book-open',      color: 'teal',    sub: 'Unique courses' },
+        { label: 'Universities',      value: allUnivs.length,     icon: 'building-2',     color: 'emerald', sub: 'Active campuses' },
+        { label: 'Curriculum Fill',   value: completionPct + '%', icon: 'check-circle-2', color: 'green',   sub: `${filledCells}/${totalPossibleCells} cohort slots` },
+        { label: 'Subjects w/ Gaps',  value: subjectsWithGaps,    icon: 'alert-triangle', color: 'rose',    sub: 'Missing ≥2 years' },
+      ];
+      const colorMap = {
+        blue: 'bg-blue-50 text-[#0052fe]', sky: 'bg-sky-50 text-sky-600',
+        indigo: 'bg-indigo-50 text-indigo-600', purple: 'bg-purple-50 text-purple-600',
+        teal: 'bg-teal-50 text-teal-600', emerald: 'bg-emerald-50 text-emerald-600',
+        green: 'bg-emerald-50 text-emerald-700', rose: 'bg-rose-50 text-rose-600'
+      };
+      overviewRow.innerHTML = cards.map(card => `
+        <div class="white-card p-4 border border-slate-100 hover:shadow-md transition">
+          <div class="flex items-center justify-between mb-2">
+            <div class="w-9 h-9 rounded-xl ${colorMap[card.color]} flex items-center justify-center">
+              <i data-lucide="${card.icon}" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="text-2xl font-black text-slate-900">${card.value}</div>
+          <p class="text-[11px] font-bold text-slate-700 mt-0.5">${card.label}</p>
+          <p class="text-[10px] font-medium text-slate-400 mt-0.5">${card.sub}</p>
+        </div>
+      `).join('');
+    }
+
+    // ─────────────────────────────────────────────────────
+    // 2. COVERAGE MATRIX
+    // ─────────────────────────────────────────────────────
+    _renderStatsMatrix(
+      _currentStatsView,
+      univFilterSelect ? univFilterSelect.value : 'ALL',
+      catFilterSelect ? catFilterSelect.value : _currentStatsCategory
+    );
+
+    // ─────────────────────────────────────────────────────
+    // 3. UNIVERSITY READINESS SCORECARDS
+    // ─────────────────────────────────────────────────────
+    _renderUnivScorecards(allUnivs, allSubjects, ALL_YEARS, courseUnivYearMap, byUniversity);
+
+    // ─────────────────────────────────────────────────────
+    // 4. SUBJECT BARS (questions per course)
+    // ─────────────────────────────────────────────────────
+    const subjectBars = document.getElementById('statsSubjectBars');
+    if (subjectBars && total > 0) {
+      const maxCourse = Math.max(...Object.values(byCourse));
+      subjectBars.innerHTML = allSubjects.map((course, i) => {
+        const count = byCourse[course];
+        const pct   = Math.round((count / maxCourse) * 100);
+        const short = course.replace('Geography of Ethiopia and the Horn','Geography of Ethiopia').replace('Logic and Critical Thinking','Logic & CT').replace('Moral and Civics Education','Civics & Ethics').replace('Applied Mathematics I','Applied Math I');
+        const gradients = [
+          'from-blue-500 to-indigo-600','from-indigo-500 to-purple-600','from-purple-500 to-pink-500',
+          'from-emerald-500 to-teal-600','from-teal-500 to-cyan-600','from-amber-500 to-orange-500',
+          'from-rose-500 to-pink-600','from-sky-500 to-blue-600','from-violet-500 to-purple-600',
+          'from-green-500 to-emerald-600','from-cyan-500 to-sky-600'
+        ];
+        const grad = gradients[i % gradients.length];
+        return `
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold text-slate-700 truncate max-w-[200px]" title="${escapeHtml(course)}">${escapeHtml(short)}</span>
+              <span class="text-xs font-extrabold text-slate-900 ml-2 flex-shrink-0">${count} <span class="text-slate-400 font-normal text-[10px]">Qs</span></span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+              <div class="h-2.5 rounded-full bg-gradient-to-r ${grad} transition-all duration-700" style="width:${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ─────────────────────────────────────────────────────
+    // 5. CATEGORY BREAKDOWN BARS
+    // ─────────────────────────────────────────────────────
+    const catBars = document.getElementById('statsCategoryBars');
+    if (catBars && total > 0) {
+      const sortedCats = Object.entries(byCategory).sort((a,b) => b[1]-a[1]);
+      const maxCat = sortedCats[0]?.[1] || 1;
+      const catColors = {
+        'Mid Exam':          'from-blue-500 to-blue-600',
+        'Final Exam':        'from-indigo-500 to-indigo-700',
+        'COC Exam':          'from-purple-500 to-purple-700',
+        'Stream Selection':  'from-amber-500 to-orange-500',
+        'Entrance Exam':     'from-emerald-500 to-teal-600',
+        'Unknown':           'from-slate-400 to-slate-500',
+      };
+      catBars.innerHTML = sortedCats.map(([cat, count]) => {
+        const pct  = Math.round((count / maxCat) * 100);
+        const pctTotal = Math.round((count / total) * 100);
+        const grad = catColors[cat] || 'from-slate-400 to-slate-600';
+        return `
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold text-slate-700">${escapeHtml(cat)}</span>
+              <span class="text-xs font-extrabold text-slate-900 ml-2">${count} <span class="text-slate-400 font-normal text-[10px]">(${pctTotal}%)</span></span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+              <div class="h-2.5 rounded-full bg-gradient-to-r ${grad} transition-all duration-700" style="width:${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ─────────────────────────────────────────────────────
+    // 6. UNIVERSITY DISTRIBUTION BARS
+    // ─────────────────────────────────────────────────────
+    const univBars = document.getElementById('statsUniversityBars');
+    if (univBars && total > 0) {
+      const sortedUnivs = Object.entries(byUniversity).sort((a,b) => b[1]-a[1]);
+      const maxUniv = sortedUnivs[0]?.[1] || 1;
+      const univColors = [
+        'from-emerald-500 to-teal-600','from-sky-500 to-blue-600','from-violet-500 to-purple-600',
+        'from-amber-500 to-orange-500','from-rose-500 to-pink-500','from-cyan-500 to-sky-500',
+        'from-indigo-500 to-blue-600','from-teal-500 to-emerald-600'
+      ];
+      univBars.innerHTML = sortedUnivs.map(([univ, count], i) => {
+        const pct  = Math.round((count / maxUniv) * 100);
+        const pctTotal = Math.round((count / total) * 100);
+        const grad = univColors[i % univColors.length];
+        return `
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-bold text-slate-700 truncate max-w-[240px]" title="${escapeHtml(univ)}">${escapeHtml(univ)}</span>
+              <span class="text-xs font-extrabold text-slate-900 ml-2 flex-shrink-0">${count} <span class="text-slate-400 font-normal text-[10px]">(${pctTotal}%)</span></span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+              <div class="h-2.5 rounded-full bg-gradient-to-r ${grad} transition-all duration-700" style="width:${pct}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ─────────────────────────────────────────────────────
+    // 7. ACTIONABLE GAP PRIORITY MANAGER
+    // ─────────────────────────────────────────────────────
+    const gapFilter = document.getElementById('statsGapUnivFilter')?.value || 'ALL';
+    _renderGapManager(gapFilter);
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  /* ── ADMIN STATS HELPER MODULES & INTERACTIVE HANDLERS ── */
+  function _getShortCourseName(course) {
+    if (!course) return 'Unknown';
+    return course
+      .replace('Geography of Ethiopia and the Horn', 'Geography')
+      .replace('Logic and Critical Thinking', 'Logic & CT')
+      .replace('Moral and Civics Education', 'Civics')
+      .replace('Communicative English', 'Comm. English')
+      .replace('Emerging Technologies', 'Emerg. Tech')
+      .replace('Applied Mathematics I', 'Applied Math I')
+      .replace('General Chemistry', 'Chemistry')
+      .replace('General Physics', 'Physics')
+      .replace('General Psychology', 'Psychology')
+      .replace('Global Trends', 'Global Trends')
+      .replace('Critical Thinking', 'Critical Thinking');
+  }
+
+  function _getMatrixCellBadge(count, isSubrow, course, yr, univ, catFilter) {
+    const cAttr = escapeAttr(course);
+    const yAttr = escapeAttr(yr);
+    const uAttr = escapeAttr(univ);
+    const filter = catFilter || 'ALL';
+
+    // If a specific exam type is selected (e.g. Mid Exam, Final Exam)
+    if (filter !== 'ALL') {
+      if (count === 0) {
+        if (isSubrow) {
+          return '<span class="text-slate-300 text-[10px] font-medium">—</span>';
+        }
+        return `<button type="button" onclick="NanovaApp.inspectStatsCell('${cAttr}', '${yAttr}', '${uAttr}')" class="px-2 py-0.5 rounded-md bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold text-[10px] whitespace-nowrap transition cursor-pointer shadow-2xs hover:scale-105" title="0 ${escapeHtml(filter)} Questions - Click to inspect / add">Missing ${escapeHtml(filter.replace(' Exam',''))}</button>`;
+      }
+      const bg = count >= 20 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+      return `<button type="button" onclick="NanovaApp.inspectStatsCell('${cAttr}', '${yAttr}', '${uAttr}')" class="px-2.5 py-1 rounded-lg ${bg} font-extrabold text-[11px] transition cursor-pointer shadow-2xs hover:scale-105" title="${count} ${escapeHtml(filter)} Questions - Click to inspect">${count}</button>`;
+    }
+
+    // Combined View (All Exam Types) -> Show Total + Mid/Final split
+    let midCount = 0;
+    let finalCount = 0;
+    if (_statsData && _statsData.catByCourseUnivYear && course && yr) {
+      if (univ === 'ALL') {
+        const univMap = _statsData.catByCourseUnivYear[course] || {};
+        Object.keys(univMap).forEach(u => {
+          const yrMap = univMap[u]?.[yr] || {};
+          midCount += yrMap['Mid Exam'] || 0;
+          finalCount += yrMap['Final Exam'] || 0;
+        });
+      } else {
+        const yrMap = _statsData.catByCourseUnivYear[course]?.[univ]?.[yr] || {};
+        midCount = yrMap['Mid Exam'] || 0;
+        finalCount = yrMap['Final Exam'] || 0;
+      }
+    }
+
+    if (count === 0) {
+      if (isSubrow) {
+        return '<span class="text-slate-300 text-[10px] font-medium">—</span>';
+      }
+      return `<button type="button" onclick="NanovaApp.inspectStatsCell('${cAttr}', '${yAttr}', '${uAttr}')" class="px-2 py-0.5 rounded-md bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold text-[10px] whitespace-nowrap transition cursor-pointer shadow-2xs hover:scale-105" title="0 Questions - Click to inspect / add">Missing</button>`;
+    }
+
+    if (isSubrow) {
+      return `<button type="button" onclick="NanovaApp.inspectStatsCell('${cAttr}', '${yAttr}', '${uAttr}')" class="px-2 py-0.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-[10px] transition" title="${count} total (Mid: ${midCount}, Final: ${finalCount})">${count}</button>`;
+    }
+
+    const totalBg = count >= 20 ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+    return `
+      <button type="button" onclick="NanovaApp.inspectStatsCell('${cAttr}', '${yAttr}', '${uAttr}')"
+        class="inline-flex flex-col items-center justify-center p-1 rounded-xl transition hover:bg-blue-50/70 hover:shadow-xs cursor-pointer group mx-auto"
+        title="${escapeHtml(course)} (${escapeHtml(yr)}): ${count} total Qs (Mid: ${midCount}, Final: ${finalCount})">
+        <span class="px-2 py-0.5 rounded-lg ${totalBg} font-extrabold text-[11px] mb-0.5 group-hover:scale-105 transition">
+          ${count}
+        </span>
+        <span class="flex items-center gap-1 text-[9px] font-bold leading-none">
+          <span class="px-1 py-0.5 rounded ${midCount > 0 ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700 font-black'}" title="Mid Exam: ${midCount}">${midCount > 0 ? 'M:' + midCount : 'M:0 ⚠️'}</span>
+          <span class="px-1 py-0.5 rounded ${finalCount > 0 ? 'bg-indigo-100 text-indigo-700' : 'bg-rose-100 text-rose-700 font-black'}" title="Final Exam: ${finalCount}">${finalCount > 0 ? 'F:' + finalCount : 'F:0 ⚠️'}</span>
+        </span>
+      </button>
+    `;
+  }
+
+  function _renderStatsMatrix(viewMode, univFilter, catFilter) {
+    const matrix = document.getElementById('statsCoverageMatrix');
+    if (!matrix || !_statsData) return;
+
+    const currentCat = catFilter || _currentStatsCategory || 'ALL';
+    const { ALL_YEARS, allSubjects, allUnivs, byCourse, byUniversity, courseYearsMap, courseUnivYearMap, univCourseMap, univYearMap, courseYearCatMap, univCourseCatMap, univYearCatMap } = _statsData;
+    const thStyle = 'px-3 py-2 text-[10px] font-extrabold text-slate-500 uppercase tracking-wide text-center whitespace-nowrap';
+    const tdBase  = 'px-2 py-2 text-center';
+
+    // Toggle subrows toolbar button visibility based on view
+    const subRowsBtn = document.getElementById('statsToggleUnivSubRowsBtn');
+    if (subRowsBtn) {
+      if (viewMode === 'subject-year' && (univFilter === 'ALL' || !univFilter)) {
+        subRowsBtn.classList.remove('hidden');
+      } else {
+        subRowsBtn.classList.add('hidden');
+      }
+    }
+
+    let html = '<table class="w-full text-xs border-collapse">';
+
+    // ─────────────────────────────────────────────
+    // VIEW 1: SUBJECT × YEAR (Canonical with university subrows)
+    // ─────────────────────────────────────────────
+    if (viewMode === 'subject-year') {
+      html += '<thead><tr>';
+      html += `<th class="${thStyle} text-left sticky left-0 bg-white z-10 min-w-[190px]">Subject / Campus</th>`;
+      html += `<th class="${thStyle} bg-slate-50 min-w-[55px]">Total</th>`;
+      ALL_YEARS.forEach(yr => {
+        const label = yr.replace(' Exam', '').replace('Stream Selection', 'Stream');
+        html += `<th class="${thStyle} min-w-[58px]">${escapeHtml(label)}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      allSubjects.forEach((course, rowIdx) => {
+        const rowBg = rowIdx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60';
+        const shortName = _getShortCourseName(course);
+
+        // Get universities offering this course
+        const univMapForCourse = courseUnivYearMap[course] || {};
+        const courseUnivList = Object.keys(univMapForCourse).sort((a, b) => {
+          const totA = Object.values(univMapForCourse[a]).reduce((acc, v) => acc + v, 0);
+          const totB = Object.values(univMapForCourse[b]).reduce((acc, v) => acc + v, 0);
+          return totB - totA;
+        });
+
+        if (univFilter === 'ALL' || !univFilter) {
+          let rowTotal = 0;
+          if (currentCat === 'ALL') {
+            rowTotal = byCourse[course] || 0;
+          } else {
+            rowTotal = Object.values(courseYearCatMap[course] || {}).reduce((acc, yObj) => acc + (yObj[currentCat] || 0), 0);
+          }
+
+          // Main Subject Row
+          html += `<tr class="${rowBg} hover:bg-blue-50/30 transition border-b border-slate-100">`;
+          html += `
+            <td class="px-3 py-2.5 sticky left-0 ${rowBg} z-10 font-bold text-slate-800 text-[11px] border-r border-slate-100 flex items-center justify-between gap-1">
+              <span class="truncate max-w-[160px]" title="${escapeHtml(course)}">${escapeHtml(shortName)}</span>
+              ${courseUnivList.length > 0 ? `
+                <button type="button" onclick="NanovaApp.toggleStatsUnivRow('${rowIdx}', '${escapeAttr(course)}', this)"
+                  class="stats-univ-row-chevron p-1 rounded-md hover:bg-slate-200/80 text-slate-400 hover:text-slate-700 transition"
+                  title="Toggle ${courseUnivList.length} university sub-rows">
+                  <i data-lucide="${_statsUnivRowsExpanded ? 'chevron-down' : 'chevron-right'}" class="w-3.5 h-3.5"></i>
+                </button>
+              ` : ''}
+            </td>
+          `;
+          html += `<td class="${tdBase}"><span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-900 font-extrabold text-[11px]">${rowTotal}</span></td>`;
+
+          ALL_YEARS.forEach(yr => {
+            let count = 0;
+            if (currentCat === 'ALL') {
+              count = courseYearsMap[course]?.[yr] || 0;
+            } else {
+              count = courseYearCatMap[course]?.[yr]?.[currentCat] || 0;
+            }
+            html += `<td class="${tdBase}">${_getMatrixCellBadge(count, false, course, yr, 'ALL', currentCat)}</td>`;
+          });
+          html += '</tr>';
+
+          // University Sub-Rows
+          courseUnivList.forEach((u) => {
+            const uYrs = univMapForCourse[u] || {};
+            let uTotal = 0;
+            if (currentCat === 'ALL') {
+              uTotal = Object.values(uYrs).reduce((acc, v) => acc + v, 0);
+            } else {
+              uTotal = Object.values(courseUnivYearCatMap[course]?.[u] || {}).reduce((acc, yObj) => acc + (yObj[currentCat] || 0), 0);
+            }
+            const subRowHidden = _statsUnivRowsExpanded ? '' : 'hidden';
+
+            html += `<tr class="stats-univ-subrow stats-univ-subrow-${rowIdx} ${subRowHidden} bg-slate-50/80 hover:bg-blue-50/40 transition border-b border-slate-100 text-slate-600">`;
+            html += `
+              <td class="px-3 py-1.5 pl-6 sticky left-0 bg-slate-50/90 z-10 text-[10px] font-bold text-slate-600 border-r border-slate-100 truncate max-w-[190px]" title="${escapeHtml(u)}">
+                <span class="text-blue-500 mr-1 font-mono">↳</span>${escapeHtml(u)}
+              </td>
+            `;
+            html += `<td class="${tdBase}"><span class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 font-bold text-[10px]">${uTotal}</span></td>`;
+
+            ALL_YEARS.forEach(yr => {
+              let uCount = 0;
+              if (currentCat === 'ALL') {
+                uCount = uYrs[yr] || 0;
+              } else {
+                uCount = courseUnivYearCatMap[course]?.[u]?.[yr]?.[currentCat] || 0;
+              }
+              html += `<td class="${tdBase}">${_getMatrixCellBadge(uCount, true, course, yr, u, currentCat)}</td>`;
+            });
+            html += '</tr>';
+          });
+
+        } else {
+          // Specific university filtered
+          const uYrs = univMapForCourse[univFilter] || {};
+          let uTotal = 0;
+          if (currentCat === 'ALL') {
+            uTotal = Object.values(uYrs).reduce((acc, v) => acc + v, 0);
+          } else {
+            uTotal = Object.values(courseUnivYearCatMap[course]?.[univFilter] || {}).reduce((acc, yObj) => acc + (yObj[currentCat] || 0), 0);
+          }
+
+          html += `<tr class="${rowBg} hover:bg-blue-50/30 transition border-b border-slate-100">`;
+          html += `<td class="px-3 py-2.5 sticky left-0 ${rowBg} z-10 font-bold text-slate-800 text-[11px] border-r border-slate-100 truncate max-w-[190px]" title="${escapeHtml(course)}">${escapeHtml(shortName)}</td>`;
+          html += `<td class="${tdBase}"><span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-900 font-extrabold text-[11px]">${uTotal}</span></td>`;
+
+          ALL_YEARS.forEach(yr => {
+            let uCount = 0;
+            if (currentCat === 'ALL') {
+              uCount = uYrs[yr] || 0;
+            } else {
+              uCount = courseUnivYearCatMap[course]?.[univFilter]?.[yr]?.[currentCat] || 0;
+            }
+            html += `<td class="${tdBase}">${_getMatrixCellBadge(uCount, false, course, yr, univFilter, currentCat)}</td>`;
+          });
+          html += '</tr>';
+        }
+      });
+      html += '</tbody></table>';
+
+    // ─────────────────────────────────────────────
+    // VIEW 2: UNIVERSITY × SUBJECT
+    // ─────────────────────────────────────────────
+    } else if (viewMode === 'univ-subject') {
+      html += '<thead><tr>';
+      html += `<th class="${thStyle} text-left sticky left-0 bg-white z-10 min-w-[180px]">University</th>`;
+      html += `<th class="${thStyle} bg-slate-50 min-w-[55px]">Total</th>`;
+      allSubjects.forEach(c => {
+        const short = _getShortCourseName(c);
+        html += `<th class="${thStyle} min-w-[70px]" title="${escapeHtml(c)}">${escapeHtml(short)}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      allUnivs.forEach((u, rowIdx) => {
+        const rowBg = rowIdx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60';
+        let uTotal = 0;
+        if (currentCat === 'ALL') {
+          uTotal = byUniversity[u] || 0;
+        } else {
+          uTotal = Object.values(univCourseCatMap[u] || {}).reduce((acc, cObj) => acc + (cObj[currentCat] || 0), 0);
+        }
+
+        html += `<tr class="${rowBg} hover:bg-blue-50/30 transition border-b border-slate-100">`;
+        html += `<td class="px-3 py-2.5 sticky left-0 ${rowBg} z-10 font-extrabold text-slate-800 text-[11px] border-r border-slate-100 truncate max-w-[180px]" title="${escapeHtml(u)}">${escapeHtml(u)}</td>`;
+        html += `<td class="${tdBase}"><span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-900 font-extrabold text-[11px]">${uTotal}</span></td>`;
+
+        allSubjects.forEach(c => {
+          let count = 0;
+          if (currentCat === 'ALL') {
+            count = univCourseMap[u]?.[c] || 0;
+          } else {
+            count = univCourseCatMap[u]?.[c]?.[currentCat] || 0;
+          }
+          html += `<td class="${tdBase}">${_getMatrixCellBadge(count, false, c, 'ALL', u, currentCat)}</td>`;
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+
+    // ─────────────────────────────────────────────
+    // VIEW 3: UNIVERSITY × YEAR
+    // ─────────────────────────────────────────────
+    } else if (viewMode === 'univ-year') {
+      html += '<thead><tr>';
+      html += `<th class="${thStyle} text-left sticky left-0 bg-white z-10 min-w-[180px]">University</th>`;
+      html += `<th class="${thStyle} bg-slate-50 min-w-[55px]">Total</th>`;
+      ALL_YEARS.forEach(yr => {
+        const label = yr.replace(' Exam', '').replace('Stream Selection', 'Stream');
+        html += `<th class="${thStyle} min-w-[58px]">${escapeHtml(label)}</th>`;
+      });
+      html += '</tr></thead><tbody>';
+
+      allUnivs.forEach((u, rowIdx) => {
+        const rowBg = rowIdx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60';
+        let uTotal = 0;
+        if (currentCat === 'ALL') {
+          uTotal = byUniversity[u] || 0;
+        } else {
+          uTotal = Object.values(univYearCatMap[u] || {}).reduce((acc, yObj) => acc + (yObj[currentCat] || 0), 0);
+        }
+
+        html += `<tr class="${rowBg} hover:bg-blue-50/30 transition border-b border-slate-100">`;
+        html += `<td class="px-3 py-2.5 sticky left-0 ${rowBg} z-10 font-extrabold text-slate-800 text-[11px] border-r border-slate-100 truncate max-w-[180px]" title="${escapeHtml(u)}">${escapeHtml(u)}</td>`;
+        html += `<td class="${tdBase}"><span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-900 font-extrabold text-[11px]">${uTotal}</span></td>`;
+
+        ALL_YEARS.forEach(yr => {
+          let count = 0;
+          if (currentCat === 'ALL') {
+            count = univYearMap[u]?.[yr] || 0;
+          } else {
+            count = univYearCatMap[u]?.[yr]?.[currentCat] || 0;
+          }
+          html += `<td class="${tdBase}">${_getMatrixCellBadge(count, false, 'ALL', yr, u, currentCat)}</td>`;
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+    }
+
+    matrix.innerHTML = html;
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function _renderUnivScorecards(allUnivs, allSubjects, ALL_YEARS, courseUnivYearMap, byUniversity) {
+    const container = document.getElementById('statsUnivScorecards');
+    if (!container) return;
+
+    if (!allUnivs.length) {
+      container.innerHTML = '<div class="col-span-full p-4 text-center text-xs text-slate-400">No university data found.</div>';
+      return;
+    }
+
+    container.innerHTML = allUnivs.map(u => {
+      const totalQ = byUniversity[u] || 0;
+      // Count distinct subjects covered by this university
+      const coveredSubjects = allSubjects.filter(c => courseUnivYearMap[c]?.[u] && Object.values(courseUnivYearMap[c][u]).some(v => v > 0));
+      const missingSubjects = allSubjects.filter(c => !coveredSubjects.includes(c));
+      const subjPct = Math.round((coveredSubjects.length / allSubjects.length) * 100);
+
+      const isHigh = subjPct >= 70;
+      const isMedium = subjPct >= 30;
+      const badgeColor = isHigh ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : isMedium ? 'bg-amber-100 text-amber-800 border-amber-200' : 'bg-rose-100 text-rose-800 border-rose-200';
+      const barColor = isHigh ? 'bg-emerald-500' : isMedium ? 'bg-amber-500' : 'bg-rose-500';
+      const statusText = isHigh ? 'High Coverage' : isMedium ? 'Partial' : 'Needs Content';
+
+      const missingPreview = missingSubjects.slice(0, 2).map(c => _getShortCourseName(c)).join(', ');
+      const moreMissing = missingSubjects.length > 2 ? ` +${missingSubjects.length - 2} more` : '';
+
+      return `
+        <div onclick="NanovaApp.onStatsUnivFilterChange('${escapeAttr(u)}')" class="p-3.5 rounded-2xl border border-slate-100 bg-white hover:border-blue-300 hover:shadow-md transition cursor-pointer flex flex-col justify-between group">
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <h4 class="font-black text-slate-900 text-xs leading-snug group-hover:text-blue-600 transition truncate" title="${escapeHtml(u)}">${escapeHtml(u)}</h4>
+              <span class="px-2 py-0.5 rounded-md border ${badgeColor} text-[9px] font-black uppercase whitespace-nowrap">${statusText}</span>
+            </div>
+            <div class="flex items-center justify-between text-[11px] mb-1.5">
+              <span class="text-slate-500 font-medium">Curriculum Fill</span>
+              <span class="font-extrabold text-slate-900">${coveredSubjects.length}/${allSubjects.length} subjects (${subjPct}%)</span>
+            </div>
+            <div class="w-full bg-slate-100 rounded-full h-1.5 mb-3 overflow-hidden">
+              <div class="h-1.5 rounded-full ${barColor} transition-all duration-500" style="width: ${subjPct}%"></div>
+            </div>
+          </div>
+          <div class="pt-2.5 border-t border-slate-50 flex items-center justify-between text-[10px]">
+            <span class="font-bold text-slate-600">${totalQ} Total Qs</span>
+            <span class="text-slate-400 font-medium truncate max-w-[140px]" title="Missing: ${missingPreview}${moreMissing}">
+              ${missingSubjects.length > 0 ? `Missing: ${missingPreview}${moreMissing}` : 'Full coverage!'}
+            </span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function _renderGapManager(filterLevel) {
+    const container = document.getElementById('statsMissingAlerts');
+    if (!container || !_statsData) return;
+
+    const { allSubjects, courseYearsMap, courseYearCatMap, byCourse, ALL_YEARS } = _statsData;
+    const filter = filterLevel || 'ALL';
+    let alertItems = [];
+
+    allSubjects.forEach(course => {
+      const yearCounts = courseYearsMap[course] || {};
+      const yearCats = courseYearCatMap[course] || {};
+
+      // 1. Missing Entire Cohort Years
+      const missingYears = ALL_YEARS.filter(y => !yearCounts[y]);
+      if (missingYears.length > 0 && (filter === 'ALL' || filter === 'CRITICAL' || filter === 'HIGH')) {
+        const urgency = missingYears.length >= 4 ? 'CRITICAL' : missingYears.length >= 2 ? 'HIGH' : 'MEDIUM';
+        if (filter === 'ALL' || filter === urgency) {
+          alertItems.push({
+            type: 'COHORT_MISSING',
+            course,
+            title: `${_getShortCourseName(course)} — Full Year Missing`,
+            desc: `${missingYears.length} year${missingYears.length > 1 ? 's' : ''} missing: ${missingYears.map(y => y.replace(' Exam','')).join(', ')}`,
+            missingYears,
+            targetYear: missingYears[0] || '2024 Exam',
+            targetCategory: 'Mid Exam',
+            badge: urgency,
+            badgeClass: urgency === 'CRITICAL' ? 'bg-rose-100 text-rose-700' : 'bg-amber-100 text-amber-700',
+            borderClass: urgency === 'CRITICAL' ? 'border-rose-200 bg-rose-50/70' : 'border-amber-200 bg-amber-50/70',
+            icon: urgency === 'CRITICAL' ? 'alert-octagon' : 'alert-triangle',
+            iconColor: urgency === 'CRITICAL' ? 'text-rose-700' : 'text-amber-700',
+            existingCount: byCourse[course] || 0
+          });
+        }
+      }
+
+      // 2. Specific Missing Final Exam Gaps (has Mid but 0 Final)
+      if (filter === 'ALL' || filter === 'MISSING_FINAL') {
+        ALL_YEARS.forEach(y => {
+          const cats = yearCats[y];
+          if (cats && cats['Mid Exam'] && !cats['Final Exam']) {
+            alertItems.push({
+              type: 'FINAL_MISSING',
+              course,
+              title: `${_getShortCourseName(course)} (${y.replace(' Exam','')}) — Missing Final Exam`,
+              desc: `Has ${cats['Mid Exam']} Mid questions, but Final Exam is completely missing for this cohort.`,
+              targetYear: y,
+              targetCategory: 'Final Exam',
+              badge: 'MISSING FINAL',
+              badgeClass: 'bg-indigo-100 text-indigo-800',
+              borderClass: 'border-indigo-200 bg-indigo-50/60',
+              icon: 'award',
+              iconColor: 'text-indigo-700',
+              existingCount: cats['Mid Exam']
+            });
+          }
+        });
+      }
+
+      // 3. Specific Missing Mid Exam Gaps (has Final but 0 Mid)
+      if (filter === 'ALL' || filter === 'MISSING_MID') {
+        ALL_YEARS.forEach(y => {
+          const cats = yearCats[y];
+          if (cats && cats['Final Exam'] && !cats['Mid Exam']) {
+            alertItems.push({
+              type: 'MID_MISSING',
+              course,
+              title: `${_getShortCourseName(course)} (${y.replace(' Exam','')}) — Missing Mid Exam`,
+              desc: `Has ${cats['Final Exam']} Final questions, but Mid Exam is completely missing for this cohort.`,
+              targetYear: y,
+              targetCategory: 'Mid Exam',
+              badge: 'MISSING MID',
+              badgeClass: 'bg-blue-100 text-blue-800',
+              borderClass: 'border-blue-200 bg-blue-50/60',
+              icon: 'book-marked',
+              iconColor: 'text-blue-700',
+              existingCount: cats['Final Exam']
+            });
+          }
+        });
+      }
+    });
+
+    if (!alertItems.length) {
+      container.innerHTML = '<div class="p-6 text-center text-emerald-600 font-bold text-sm flex items-center justify-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> No missing curriculum targets in this priority filter!</div>';
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
+
+    container.innerHTML = alertItems.map((item) => {
+      const btnLabel = item.targetCategory === 'Final Exam' ? 'Add Final Exam' : item.targetCategory === 'Mid Exam' ? 'Add Mid Exam' : 'Add Question';
+      return `
+        <div class="p-3.5 rounded-2xl border ${item.borderClass} flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl ${item.badgeClass} flex items-center justify-center flex-shrink-0 mt-0.5">
+              <i data-lucide="${item.icon}" class="w-4 h-4 ${item.iconColor}"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <p class="font-extrabold text-slate-900 text-xs">${escapeHtml(item.title)}</p>
+                <span class="px-2 py-0.5 rounded-full ${item.badgeClass} font-black text-[9px] uppercase tracking-wider">${item.badge}</span>
+              </div>
+              <p class="text-[11px] ${item.iconColor} font-medium mt-0.5">${escapeHtml(item.desc)}</p>
+            </div>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 flex-shrink-0 self-end md:self-center">
+            <span class="px-2.5 py-1 rounded-lg bg-white/80 border border-slate-200 text-slate-700 text-[10px] font-extrabold shadow-2xs">${item.existingCount} Qs existing</span>
+            <button type="button" onclick="NanovaApp.inspectStatsCell('${escapeAttr(item.course)}', '${escapeAttr(item.targetYear)}', 'ALL')"
+              class="px-2.5 py-1 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-[11px] font-bold rounded-xl transition shadow-2xs">
+              Inspect Gap
+            </button>
+            <button type="button" class="stats-gap-add-btn px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-extrabold rounded-xl transition shadow-2xs flex items-center gap-1"
+              data-course="${escapeAttr(item.course)}" data-year="${escapeAttr(item.targetYear)}" data-category="${escapeAttr(item.targetCategory)}">
+              <i data-lucide="plus" class="w-3 h-3"></i>
+              <span>${btnLabel}</span>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    container.querySelectorAll('.stats-gap-add-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const course = btn.getAttribute('data-course');
+        const year = btn.getAttribute('data-year');
+        const category = btn.getAttribute('data-category');
+        openAddQuestionModal({ course, year, category });
+      });
+    });
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function setStatsMatrixView(viewMode) {
+    _currentStatsView = viewMode;
+    const modes = ['subYear', 'univSubject', 'univYear'];
+    const modeKeyMap = {
+      'subject-year': 'subYear',
+      'univ-subject': 'univSubject',
+      'univ-year': 'univYear'
+    };
+    modes.forEach(m => {
+      const btn = document.getElementById(`statsViewBtn-${m}`);
+      if (btn) {
+        if (modeKeyMap[viewMode] === m) {
+          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-extrabold transition bg-white text-slate-900 shadow-sm whitespace-nowrap';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition text-slate-600 hover:text-slate-900 whitespace-nowrap';
+        }
+      }
+    });
+
+    const univFilter = document.getElementById('statsUnivFilter')?.value || 'ALL';
+    _renderStatsMatrix(viewMode, univFilter, _currentStatsCategory);
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function onStatsUnivFilterChange(univValue) {
+    const sel = document.getElementById('statsUnivFilter');
+    if (sel && univValue && sel.value !== univValue) {
+      sel.value = univValue;
+    }
+    const val = univValue || (sel ? sel.value : 'ALL');
+    _renderStatsMatrix(_currentStatsView, val, _currentStatsCategory);
+    if (window.lucide) window.lucide.createIcons();
+
+    // Scroll matrix into view if called from scorecard click
+    document.getElementById('statsCoverageMatrix')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function onStatsCategoryFilterChange(catValue) {
+    _currentStatsCategory = catValue || 'ALL';
+    const sel = document.getElementById('statsCategoryFilter');
+    if (sel && catValue && sel.value !== catValue) {
+      sel.value = catValue;
+    }
+    const univFilter = document.getElementById('statsUnivFilter')?.value || 'ALL';
+    _renderStatsMatrix(_currentStatsView, univFilter, _currentStatsCategory);
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function toggleAllStatsUnivRows() {
+    _statsUnivRowsExpanded = !_statsUnivRowsExpanded;
+    const subrows = document.querySelectorAll('.stats-univ-subrow');
+    subrows.forEach(row => {
+      if (_statsUnivRowsExpanded) row.classList.remove('hidden');
+      else row.classList.add('hidden');
+    });
+
+    const textEl = document.getElementById('statsToggleUnivSubRowsText');
+    if (textEl) {
+      textEl.textContent = _statsUnivRowsExpanded ? 'Collapse University Rows' : 'Expand University Rows';
+    }
+
+    const allChevrons = document.querySelectorAll('.stats-univ-row-chevron i');
+    allChevrons.forEach(icon => {
+      icon.setAttribute('data-lucide', _statsUnivRowsExpanded ? 'chevron-down' : 'chevron-right');
+    });
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function toggleStatsUnivRow(rowIdx, course, btn) {
+    const subrows = document.querySelectorAll(`.stats-univ-subrow-${rowIdx}`);
+    let isNowExpanded = false;
+    subrows.forEach(row => {
+      row.classList.toggle('hidden');
+      if (!row.classList.contains('hidden')) isNowExpanded = true;
+    });
+
+    if (btn) {
+      const icon = btn.querySelector('i');
+      if (icon) {
+        icon.setAttribute('data-lucide', isNowExpanded ? 'chevron-down' : 'chevron-right');
+      }
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function inspectStatsCell(course, year, univ) {
+    const modal = document.getElementById('statsCellModal');
+    if (!modal) return;
+
+    const questions = State.questions || [];
+    const matches = questions.filter(q => {
+      const matchC = (!course || course === 'ALL') ? true : q.course === course;
+      const matchY = (!year || year === 'ALL') ? true : q.year === year;
+      const matchU = (!univ || univ === 'ALL') ? true : (q.university || 'General / Unknown') === univ;
+      return matchC && matchY && matchU;
+    });
+
+    const titleEl = document.getElementById('statsCellModalTitle');
+    const subEl = document.getElementById('statsCellModalSub');
+    const bodyEl = document.getElementById('statsCellModalBody');
+    const footerEl = document.getElementById('statsCellModalFooter');
+
+    const cDisplay = (!course || course === 'ALL') ? 'All Subjects' : course;
+    const yDisplay = (!year || year === 'ALL') ? 'All Years' : year;
+    const uDisplay = (!univ || univ === 'ALL') ? 'All Universities' : univ;
+
+    if (titleEl) titleEl.textContent = `${_getShortCourseName(cDisplay)} • ${yDisplay}`;
+    if (subEl) subEl.textContent = `Scope: ${uDisplay} (${matches.length} questions found)`;
+
+    // Distribution by University and Category
+    const univBreakdown = {};
+    const catBreakdown = {};
+    let midCount = 0;
+    let finalCount = 0;
+
+    matches.forEach(q => {
+      const u = q.university || 'General / Unknown';
+      const c = q.category || 'Mid Exam';
+      univBreakdown[u] = (univBreakdown[u] || 0) + 1;
+      catBreakdown[c] = (catBreakdown[c] || 0) + 1;
+      if (c === 'Mid Exam') midCount++;
+      if (c === 'Final Exam') finalCount++;
+    });
+
+    let bodyHtml = '';
+
+    // Total volume card
+    bodyHtml += `
+      <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 flex items-center justify-between">
+        <div>
+          <p class="text-[10px] uppercase font-extrabold text-slate-400">Total Cell Volume</p>
+          <p class="text-xl font-black text-slate-900">${matches.length} <span class="text-xs font-bold text-slate-500">questions</span></p>
+        </div>
+        <div class="flex flex-wrap items-center gap-1.5 justify-end">
+          <span class="px-2.5 py-1 rounded-lg bg-blue-100 text-[#0052fe] font-extrabold text-[10px]">${escapeHtml(yDisplay)}</span>
+          <span class="px-2.5 py-1 rounded-lg bg-indigo-100 text-indigo-700 font-extrabold text-[10px]">${escapeHtml(uDisplay)}</span>
+        </div>
+      </div>
+    `;
+
+    // Dedicated Mid vs Final Exam Status Cards
+    bodyHtml += `
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div class="p-3 rounded-2xl border ${midCount > 0 ? 'border-blue-200 bg-blue-50/70' : 'border-rose-200 bg-rose-50/70'} flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-black text-blue-900 flex items-center gap-1">
+                <i data-lucide="book-marked" class="w-3.5 h-3.5 text-blue-600"></i> Mid Exam
+              </span>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${midCount > 0 ? 'bg-blue-100 text-blue-800' : 'bg-rose-100 text-rose-700'}">
+                ${midCount > 0 ? midCount + ' Questions' : 'Missing Mid'}
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500">${midCount > 0 ? 'Mid exam questions uploaded and active.' : 'No Mid Exam questions yet for this cohort.'}</p>
+          </div>
+          <button type="button" class="mt-2.5 w-full py-1.5 px-2.5 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-extrabold rounded-xl transition flex items-center justify-center gap-1 shadow-2xs"
+            onclick="NanovaApp.closeStatsCellModal(); NanovaApp.openAddQuestionModal({ course: '${escapeAttr(course !== 'ALL' ? course : '')}', year: '${escapeAttr(year !== 'ALL' ? year : '')}', university: '${escapeAttr(univ !== 'ALL' ? univ : '')}', category: 'Mid Exam' })">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Mid Exam
+          </button>
+        </div>
+
+        <div class="p-3 rounded-2xl border ${finalCount > 0 ? 'border-indigo-200 bg-indigo-50/70' : 'border-rose-200 bg-rose-50/70'} flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-black text-indigo-900 flex items-center gap-1">
+                <i data-lucide="award" class="w-3.5 h-3.5 text-indigo-600"></i> Final Exam
+              </span>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${finalCount > 0 ? 'bg-indigo-100 text-indigo-800' : 'bg-rose-100 text-rose-700'}">
+                ${finalCount > 0 ? finalCount + ' Questions' : 'Missing Final'}
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-500">${finalCount > 0 ? 'Final exam questions uploaded and active.' : 'No Final Exam questions yet for this cohort.'}</p>
+          </div>
+          <button type="button" class="mt-2.5 w-full py-1.5 px-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-extrabold rounded-xl transition flex items-center justify-center gap-1 shadow-2xs"
+            onclick="NanovaApp.closeStatsCellModal(); NanovaApp.openAddQuestionModal({ course: '${escapeAttr(course !== 'ALL' ? course : '')}', year: '${escapeAttr(year !== 'ALL' ? year : '')}', university: '${escapeAttr(univ !== 'ALL' ? univ : '')}', category: 'Final Exam' })">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Final Exam
+          </button>
+        </div>
+      </div>
+    `;
+
+    if (matches.length === 0) {
+      bodyHtml += `
+        <div class="p-4 rounded-2xl border border-rose-200 bg-rose-50 text-center">
+          <div class="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-2">
+            <i data-lucide="alert-circle" class="w-4 h-4"></i>
+          </div>
+          <p class="text-xs font-black text-rose-900">Entire Cohort Missing</p>
+          <p class="text-[11px] text-rose-700 mt-0.5 leading-relaxed">Neither Mid nor Final exam questions exist yet for this slot.</p>
+        </div>
+      `;
+    } else {
+      // University Distribution
+      bodyHtml += `
+        <div>
+          <h4 class="font-extrabold text-slate-800 text-xs mb-2 flex items-center gap-1.5">
+            <i data-lucide="building-2" class="w-3.5 h-3.5 text-blue-600"></i>
+            <span>University Distribution</span>
+          </h4>
+          <div class="space-y-1.5 max-h-32 overflow-y-auto pr-1">
+      `;
+      Object.entries(univBreakdown).sort((a, b) => b[1] - a[1]).forEach(([uName, cnt]) => {
+        const pct = Math.round((cnt / matches.length) * 100);
+        bodyHtml += `
+          <div class="p-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-[11px]">
+            <span class="font-bold text-slate-700 truncate max-w-[240px]">${escapeHtml(uName)}</span>
+            <span class="font-extrabold text-slate-900">${cnt} <span class="text-slate-400 font-normal">(${pct}%)</span></span>
+          </div>
+        `;
+      });
+      bodyHtml += `</div></div>`;
+
+      // Category breakdown
+      bodyHtml += `
+        <div>
+          <h4 class="font-extrabold text-slate-800 text-xs mb-2 flex items-center gap-1.5">
+            <i data-lucide="layers" class="w-3.5 h-3.5 text-purple-600"></i>
+            <span>All Exam Categories</span>
+          </h4>
+          <div class="flex flex-wrap gap-1.5">
+      `;
+      Object.entries(catBreakdown).forEach(([cName, cnt]) => {
+        bodyHtml += `
+          <span class="px-2.5 py-1 rounded-xl bg-purple-50 text-purple-700 border border-purple-100 font-extrabold text-[10px]">
+            ${escapeHtml(cName)}: ${cnt}
+          </span>
+        `;
+      });
+      bodyHtml += `</div></div>`;
+    }
+
+    if (bodyEl) bodyEl.innerHTML = bodyHtml;
+
+    if (footerEl) {
+      const defaultsObj = {
+        course: course !== 'ALL' ? course : '',
+        year: year !== 'ALL' ? year : '',
+        university: univ !== 'ALL' ? univ : ''
+      };
+      footerEl.innerHTML = `
+        <button type="button" onclick="NanovaApp.closeStatsCellModal()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">
+          Close
+        </button>
+        ${matches.length > 0 ? `
+          <button type="button" onclick="NanovaApp.jumpToQuestionBank('${escapeAttr(course)}', '${escapeAttr(year)}')" class="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-[#0052fe] text-xs font-extrabold rounded-xl transition flex items-center gap-1.5">
+            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            <span>View Questions</span>
+          </button>
+        ` : ''}
+        <button type="button" id="statsCellModalAddBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold rounded-xl shadow transition flex items-center gap-1.5">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+          <span>Add Question Here</span>
+        </button>
+      `;
+
+      document.getElementById('statsCellModalAddBtn')?.addEventListener('click', () => {
+        closeStatsCellModal();
+        openAddQuestionModal(defaultsObj);
+      });
+    }
+
+    modal.classList.remove('hidden');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function closeStatsCellModal() {
+    document.getElementById('statsCellModal')?.classList.add('hidden');
+  }
+
+  function jumpToQuestionBank(course, year) {
+    closeStatsCellModal();
+    switchAdminSubTab('questions');
+    const courseFilter = document.getElementById('adminQuestionCourseFilter');
+    if (courseFilter && course && course !== 'ALL') {
+      courseFilter.value = course;
+    }
+    const searchInput = document.getElementById('adminQuestionSearch');
+    if (searchInput) {
+      if (year && year !== 'ALL') {
+        searchInput.value = year;
+      } else {
+        searchInput.value = '';
+      }
+    }
+    filterAdminQuestions();
+  }
+
+  function onStatsGapFilterChange() {
+    const filter = document.getElementById('statsGapUnivFilter')?.value || 'ALL';
+    _renderGapManager(filter);
     if (window.lucide) window.lucide.createIcons();
   }
 
@@ -2197,9 +4540,14 @@
             </div>
             <p class="text-xs text-slate-700 font-medium line-clamp-2">${escapeHtml(p.content)}</p>
           </div>
-          <button onclick="NanovaApp.deletePost('${p.id}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition flex-shrink-0">
-            Delete
-          </button>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="NanovaApp.openEditPostModal('${p.id}')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-[#0052fe] font-bold text-xs rounded-lg transition">
+              Edit
+            </button>
+            <button onclick="NanovaApp.deletePost('${p.id}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-lg transition">
+              Delete
+            </button>
+          </div>
         </div>
       `;
     }).join('');
@@ -2386,6 +4734,10 @@
 
   function submitComment(e) {
     if (e && e.preventDefault) e.preventDefault();
+    if (!navigator.onLine) {
+      alert('You are currently offline. Please reconnect to the internet to post comments.');
+      return;
+    }
     const input = document.getElementById('newCommentInput');
     const text = input ? input.value.trim() : '';
     if (!text || !State.activeCommentPostId) return;
@@ -2423,7 +4775,50 @@
       else btn.classList.remove('active');
     });
 
+    if (tabId === 'exams') {
+      onOpenExamScreen();
+    } else if (tabId === 'feed') {
+      onOpenCommunityFeed();
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function onOpenExamScreen() {
+    const isOnline = navigator.onLine;
+    const cached = await NanovaDB.getOfflineQuestions();
+    if (!cached || !cached.length) {
+      if (isOnline) {
+        console.log('[Nanova Exam] Checking local offline_questions: missing, downloading from remote...');
+        await loadExamsData();
+        applyFilters();
+        renderGuidedExploration();
+        renderBoardQuestionsPage();
+      } else {
+        State.neverDownloadedQuestionsOffline = true;
+        State.questions = [];
+        renderGuidedExploration();
+        renderBoardQuestionsPage();
+      }
+    } else {
+      State.neverDownloadedQuestionsOffline = false;
+      if (!State.questions || !State.questions.length) {
+        State.questions = cached;
+        applyFilters();
+        renderGuidedExploration();
+        renderBoardQuestionsPage();
+      }
+    }
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function onOpenCommunityFeed() {
+    const isOffline = !navigator.onLine;
+    const spinner = document.getElementById('communityFeedSpinner');
+    if (spinner) spinner.classList.add('hidden');
+    updateCommunityInputsOfflineState(isOffline);
+    renderCommunityPosts();
+    if (window.lucide) window.lucide.createIcons();
   }
 
   function showPaywallModal() {
@@ -2501,6 +4896,10 @@
     sharePost,
     publishCommunityPost,
     deletePost,
+    openEditPostModal,
+    closeEditPostModal,
+    saveEditedPost,
+    editPost: openEditPostModal,
     toggleLikePost,
     renderUniversities,
     openAddUnivModal,
@@ -2519,6 +4918,24 @@
     saveNewQuestion,
     switchAdminSubTab,
     renderAdminDashboard,
+    renderAdminStats,
+    setStatsMatrixView,
+    onStatsUnivFilterChange,
+    onStatsCategoryFilterChange,
+    toggleAllStatsUnivRows,
+    toggleStatsUnivRow,
+    inspectStatsCell,
+    closeStatsCellModal,
+    jumpToQuestionBank,
+    onStatsGapFilterChange,
+    toggleUniversityVisibility,
+    toggleSubjectVisibility,
+    chooseGuidedSubject,
+    chooseGuidedCategory,
+    chooseGuidedYear,
+    resetGuidedFlow,
+    toggleClassicFilterMode,
+    changeGuidedUniversity,
     filterAdminQuestions,
     deleteQuestion,
     saveAdminPaymentSettings,
@@ -2540,6 +4957,10 @@
     handleEmailAuth,
     handleGoogleSignIn,
     firebaseSignOut,
+    retryQuestionBankDownload,
+    retryCommunityFeed,
+    onOpenExamScreen,
+    onOpenCommunityFeed,
     clearCacheAndReset
   };
 
