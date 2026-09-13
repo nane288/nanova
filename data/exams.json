@@ -19691,5 +19691,781 @@
     "answer": 3,
     "explanation": "'It is clearly written' (passive participle), 'passengers are not allowed' (passive rule), 'still, they are being ignorant' (present continuous expressing current temporary behavior).",
     "category": "COC Exam"
+  },
+  {
+    "id": "psyc-hu-2025-final-01",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Incentive approach suggests that if we lack something, we will be motivated to increase it.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "The Incentive approach focuses on external rewards that pull behavior — it does not specifically state that lacking something motivates us to increase it. That description better fits Drive-Reduction theory."
+  },
+  {
+    "id": "psyc-hu-2025-final-02",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which one of the following is NOT true about the id structure of personality?",
+    "options": [
+      "Biological aspect",
+      "Conscious",
+      "Animalistic behavior",
+      "Irrational thinking"
+    ],
+    "answer": 1,
+    "explanation": "The id is unconscious, not conscious. It operates on the pleasure principle and drives animalistic, irrational, and biological urges."
+  },
+  {
+    "id": "psyc-hu-2025-final-03",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Sarah, a 28-year-old, is experiencing a major depressive episode. She is plagued by negative thoughts: 'I'm worthless,' 'I'm a failure,' and 'No one likes me.' She dwells on past mistakes and struggles to find any positives. Which perspective would MOST likely focus on Sarah's case?",
+    "options": [
+      "Cognitive perspective",
+      "Learning perspective",
+      "Biological perspective",
+      "Psychoanalytic perspective"
+    ],
+    "answer": 0,
+    "explanation": "The cognitive perspective focuses on negative, distorted thinking patterns as the root cause of psychological disorders — exactly what Sarah is experiencing with her self-defeating thoughts."
+  },
+  {
+    "id": "psyc-hu-2025-final-04",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "If I do things for the sake of satisfaction, my motivation is extrinsic motivation.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 0,
+    "explanation": "Doing something for personal satisfaction is intrinsic motivation — driven internally. Extrinsic motivation involves external rewards like money or praise."
+  },
+  {
+    "id": "psyc-hu-2025-final-05",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which approach of personality would likely agree with: \"Personality can be determined by subjective experience and the desire to grow\"?",
+    "options": [
+      "Psychoanalysis theory",
+      "Learning theory",
+      "Humanistic theory",
+      "Trait theory"
+    ],
+    "answer": 2,
+    "explanation": "Humanistic theory (Rogers, Maslow) emphasizes subjective experience, free will, and the innate desire for self-actualization and personal growth."
+  },
+  {
+    "id": "psyc-hu-2025-final-06",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "A person who scores high on the Neuroticism dimension of the Big Five is likely to be:",
+    "options": [
+      "Organized, disciplined, and responsible",
+      "Calm, secure, and self-satisfied",
+      "Anxious, insecure, and prone to emotional instability",
+      "Sociable, fun-loving, and affectionate"
+    ],
+    "answer": 2,
+    "explanation": "High Neuroticism is characterized by emotional instability, anxiety, moodiness, and irritability. Low Neuroticism reflects calmness and emotional stability."
+  },
+  {
+    "id": "psyc-hu-2025-final-07",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Mr. Teshome always thinks about joining banks but is frustrated about the burden of daily work. Which motivational conflict does this indicate?",
+    "options": [
+      "Approach-approach",
+      "Avoidance-avoidance",
+      "Multiple approach-avoidance",
+      "Approach-avoidance"
+    ],
+    "answer": 3,
+    "explanation": "Approach-avoidance conflict occurs when a single goal has both attractive (approach) and unattractive (avoidance) aspects — wanting to join banks but disliking the daily work burden."
+  },
+  {
+    "id": "psyc-hu-2025-final-08",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "According to Maslow, the real journey of human life begins with satisfying physiological needs.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 1,
+    "explanation": "Maslow's hierarchy places physiological needs (food, water, shelter) at the base — these must be met before higher-level needs can motivate behavior."
+  },
+  {
+    "id": "psyc-hu-2025-final-09",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "An individual displays no regard for the rights of others, shows no remorse when abusing others, and has a repeated problem of stealing. This person is most likely diagnosed with:",
+    "options": [
+      "Borderline",
+      "Paranoid",
+      "Antisocial",
+      "Narcissistic"
+    ],
+    "answer": 2,
+    "explanation": "Antisocial Personality Disorder is characterized by persistent disregard for others' rights, lack of remorse, deception, and repeated rule-breaking behaviors."
+  },
+  {
+    "id": "psyc-hu-2025-final-10",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Rogers believed that if the real self and ideal self are matched, anybody can achieve full functioning.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "Carl Rogers argued that congruence between a person's real self (who they actually are) and ideal self (who they want to be) leads to psychological health and full functioning."
+  },
+  {
+    "id": "psyc-hu-2025-final-11",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "As id operates according to _______, ego operates according to _______.",
+    "options": [
+      "Moral principle, reality principle",
+      "Pleasure principle, morality principle",
+      "Reality principle, pleasure principle",
+      "Pleasure principle, reality principle"
+    ],
+    "answer": 3,
+    "explanation": "The id operates on the pleasure principle (seeking immediate gratification), while the ego operates on the reality principle (mediating id impulses against real-world constraints)."
+  },
+  {
+    "id": "psyc-hu-2025-final-12",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Henry believed that irrational thinking led to psychological disorders. Henry's assumption indicates which perspective?",
+    "options": [
+      "Cognitive",
+      "Psychoanalysis",
+      "Socio-cultural",
+      "Learning"
+    ],
+    "answer": 0,
+    "explanation": "The cognitive perspective holds that irrational, distorted, or maladaptive thoughts are the primary cause of psychological disorders — consistent with Aaron Beck and Albert Ellis."
+  },
+  {
+    "id": "psyc-hu-2025-final-13",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which approach of motivation argues that the source of motivation is biological?",
+    "options": [
+      "Drive reduction",
+      "Arousal approach",
+      "Instinct approach",
+      "Incentive approach"
+    ],
+    "answer": 2,
+    "explanation": "The instinct approach proposes that motivation is rooted in innate, biologically programmed behaviors — specific patterns inherited that drive organisms toward certain actions."
+  },
+  {
+    "id": "psyc-hu-2025-final-14",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "A part of our personality which contains the sum of all the unacceptable behavior that the child has learned from parents and others in society is called:",
+    "options": [
+      "Ego",
+      "Conscience",
+      "Superego",
+      "Ego-ideal"
+    ],
+    "answer": 1,
+    "explanation": "The conscience is the part of the superego that contains internalized prohibitions — rules about what is 'bad' learned from parents and society. Violating it leads to guilt."
+  },
+  {
+    "id": "psyc-hu-2025-final-15",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "The psychoanalysis perspective is the theoretical orientation that emphasizes _______ as the determinants of personality.",
+    "options": [
+      "Biological function",
+      "Learned response",
+      "Cognitive structure",
+      "Unconscious mind"
+    ],
+    "answer": 3,
+    "explanation": "Freud's psychoanalytic theory holds that unconscious drives, desires, and conflicts — largely sexual and aggressive — are the primary determinants of personality and behavior."
+  },
+  {
+    "id": "psyc-hu-2025-final-16",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "The correct order of Maslow's hierarchy of needs from lowest to highest is:",
+    "options": [
+      "Physiological, esteem, love and belongingness, safety, self-actualization",
+      "Safety, physiological, esteem, love and belongingness, self-actualization",
+      "Physiological, safety, love and belongingness, esteem, self-actualization",
+      "Self-actualization, esteem, love and belongingness, safety, physiological"
+    ],
+    "answer": 2,
+    "explanation": "Maslow's hierarchy from base to top: Physiological → Safety → Love & Belongingness → Esteem → Self-Actualization."
+  },
+  {
+    "id": "psyc-hu-2025-final-17",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "On Saturday, Gadaa was on top of the world — optimistic and very energetic. The next day, he awoke feeling sad, worthless, and convinced that life had nothing to offer him. He may be exhibiting signs of:",
+    "options": [
+      "Bipolar disorder",
+      "Specific phobia",
+      "Dysthymia",
+      "Panic disorder"
+    ],
+    "answer": 0,
+    "explanation": "Bipolar disorder is characterized by extreme mood swings between manic episodes (elevated energy, optimism) and depressive episodes (sadness, hopelessness)."
+  },
+  {
+    "id": "psyc-hu-2025-final-18",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Michael receives a failing grade on a major exam. He tells himself, \"It's not that big of a deal. The exam was poorly written, and the professor doesn't know what he's doing. Besides, everyone else did poorly too.\" Which defense mechanism is Michael MOST likely using?",
+    "options": [
+      "Denial",
+      "Projection",
+      "Rationalization",
+      "Regression"
+    ],
+    "answer": 2,
+    "explanation": "Rationalization involves constructing logical-sounding justifications to avoid confronting the real cause. Michael is making excuses rather than accepting responsibility."
+  },
+  {
+    "id": "psyc-hu-2025-final-19",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which one of the following statements is true about the humanistic theory of personality?",
+    "options": [
+      "Unconscious mind is the shelter of all human motives",
+      "Man is naturally good",
+      "All humans possess a unique set of traits",
+      "Personality is stable"
+    ],
+    "answer": 1,
+    "explanation": "Humanistic theory assumes humans are inherently good and growth-oriented. Given the right conditions (like unconditional positive regard), people naturally move toward self-actualization."
+  },
+  {
+    "id": "psyc-hu-2025-final-20",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "According to Psychoanalysis theory, the preconscious mind is a vital part of personality.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 0,
+    "explanation": "In psychoanalytic theory, the unconscious mind is the vital, central part of personality — not the preconscious."
+  },
+  {
+    "id": "psyc-hu-2025-final-21",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Unconditional positive regard is accepting and supporting an individual regardless of their feelings, thoughts, and behaviors.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 1,
+    "explanation": "Carl Rogers defined unconditional positive regard as complete acceptance of a person without conditions — supporting them regardless of what they say, feel, or do."
+  },
+  {
+    "id": "psyc-hu-2025-final-22",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which of the following is true regarding statistical deviation in defining abnormality?",
+    "options": [
+      "It's important to consider cultural context when determining abnormality",
+      "It's the most reliable criterion for diagnosing psychological disorders",
+      "Any deviation from the average is automatically considered abnormal",
+      "It always aligns perfectly with subjective distress"
+    ],
+    "answer": 0,
+    "explanation": "Cultural context is crucial when using statistical deviation — a behavior that is statistically rare in one culture may be normal in another."
+  },
+  {
+    "id": "psyc-hu-2025-final-23",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which one of the following personality structures works as an executive and mediator?",
+    "options": [
+      "Ego",
+      "Conscience",
+      "Id",
+      "Superego"
+    ],
+    "answer": 0,
+    "explanation": "The ego is the rational, executive part of the personality that mediates between the impulsive id (pleasure principle) and the moralistic superego, operating on the reality principle."
+  },
+  {
+    "id": "psyc-hu-2025-final-24",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Tesema, 45, has a rigid morning routine — checking the stove multiple times, arranging belongings in a specific order, repeating phrases silently. Deviating causes intense anxiety. His parents were very rigid with routines. Which perspective emphasizes the connection between Tesema's rituals and parental experiences?",
+    "options": [
+      "Psychoanalytic perspective",
+      "Cognitive perspective",
+      "Learning perspective",
+      "Biological perspective"
+    ],
+    "answer": 2,
+    "explanation": "The learning (behavioral) perspective focuses on how behaviors are acquired through conditioning. Tesema's rituals likely developed through observational learning from his parents' rigid behavior patterns."
+  },
+  {
+    "id": "psyc-hu-2025-final-25",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Life skills are essential abilities that an individual learns to overcome day-to-day challenges.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 1,
+    "explanation": "Life skills — including self-awareness, critical thinking, communication, and decision-making — are learned abilities that help individuals cope with the demands and challenges of everyday life."
+  },
+  {
+    "id": "psyc-hu-2025-final-26",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "According to Carl Rogers, people will achieve healthy psychological growth towards self-actualization when:",
+    "options": [
+      "Their real self and ideal self are matched",
+      "Their good behavior is reinforced based on reasonable conditions",
+      "They are given conditional positive regard",
+      "Their real self and ideal self are mismatched"
+    ],
+    "answer": 0,
+    "explanation": "Rogers believed that congruence — alignment between the real self (who you are) and the ideal self (who you want to be) — is essential for psychological growth and self-actualization."
+  },
+  {
+    "id": "psyc-hu-2025-final-27",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "After a challenging workout, Tewabech is extremely thirsty and immediately drinks water. This alleviates her discomfort and improves her concentration. Which theory of motivation best explains this behavior?",
+    "options": [
+      "Drive-reduction theory of motivation",
+      "Instinct theory of motivation",
+      "Arousal theory of motivation",
+      "Cognitive theory of motivation"
+    ],
+    "answer": 0,
+    "explanation": "Drive-reduction theory states that biological needs (like thirst) create drives that motivate behavior to reduce them. Tewabech's thirst (drive) motivated drinking to restore equilibrium."
+  },
+  {
+    "id": "psyc-hu-2025-final-28",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "An enduring set of characteristics and behaviors that comprise a person's unique adjustment to life is called:",
+    "options": [
+      "Personality",
+      "Emotion",
+      "Motivation",
+      "Lifeskills"
+    ],
+    "answer": 0,
+    "explanation": "Personality refers to stable, enduring patterns of thoughts, feelings, and behaviors that make each individual unique and define how they interact with and adapt to the world."
+  },
+  {
+    "id": "psyc-hu-2025-final-29",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which Big Five trait best describes Bekele's emotional instability — manifested through sensitivity, self-doubt, impulsiveness, frequent relationship conflicts, and profound creativity?",
+    "options": [
+      "Neuroticism",
+      "Agreeableness",
+      "Extraversion",
+      "Openness"
+    ],
+    "answer": 0,
+    "explanation": "Neuroticism (emotional instability) is characterized by anxiety, moodiness, self-doubt, and impulsiveness. High Neuroticism individuals experience emotional volatility and relationship difficulties."
+  },
+  {
+    "id": "psyc-hu-2025-final-30",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Gemechu was hiking when he suddenly saw a large lion emerge from tall grass. His heart started racing, palms began to sweat, muscles tensed, and simultaneously he felt an intense wave of fear. Which theory of emotion describes this?",
+    "options": [
+      "Cannon-Bard theory of emotion",
+      "James-Lange theory of emotion",
+      "Schachter-Singer theory of emotion",
+      "Lazarus theory of emotion"
+    ],
+    "answer": 0,
+    "explanation": "The Cannon-Bard theory proposes that physiological arousal and the subjective experience of emotion occur simultaneously and independently — matching the simultaneous physical and emotional response."
+  },
+  {
+    "id": "psyc-hu-2025-final-31",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Cognitive therapists assume that abnormal behavior is the result of inappropriate learning.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 0,
+    "explanation": "Cognitive therapists attribute abnormal behavior to irrational, distorted thinking patterns — not inappropriate learning. That description better fits behavioral (learning) therapists."
+  },
+  {
+    "id": "psyc-hu-2025-final-32",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which one of the following is NOT a type of personality disorder?",
+    "options": [
+      "Histrionic",
+      "Antisocial",
+      "Paranoid",
+      "Panic"
+    ],
+    "answer": 3,
+    "explanation": "Panic disorder is an anxiety disorder, not a personality disorder. Histrionic, Antisocial, and Paranoid are all classified as personality disorders in the DSM."
+  },
+  {
+    "id": "psyc-hu-2025-final-33",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Facial expression is observable and differs from culture to culture. Facial expression indicates which component of emotion?",
+    "options": [
+      "Behavioral emotion",
+      "Subjective feeling",
+      "Physiological emotion",
+      "Subjective experience"
+    ],
+    "answer": 0,
+    "explanation": "Facial expressions are outwardly observable actions — making them the behavioral component of emotion. They represent the external, visible expression of internal emotional states."
+  },
+  {
+    "id": "psyc-hu-2025-final-34",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "According to incentive theory, motivation is primarily derived from:",
+    "options": [
+      "The necessity to fulfill basic biological drives",
+      "The pursuit of personal satisfaction",
+      "The pursuit of external rewards",
+      "The desire to achieve personal goals"
+    ],
+    "answer": 2,
+    "explanation": "Incentive theory proposes that external stimuli (rewards, incentives) pull behavior. People are motivated by external goals and outcomes rather than internal drives or biological needs."
+  },
+  {
+    "id": "psyc-hu-2025-final-35",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Personality is solely determined by genetics and does not change over time.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 1,
+    "explanation": "Personality is influenced by both genetics and environment. Research shows personality can and does change across the lifespan, especially in early adulthood."
+  },
+  {
+    "id": "psyc-hu-2025-final-36",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "According to the cognitive perspective, psychological problems are most likely to be associated with:",
+    "options": [
+      "Genetic factors",
+      "Inflexible and maladaptive thoughts",
+      "Unconscious conflictual beliefs",
+      "Inappropriate behavior"
+    ],
+    "answer": 1,
+    "explanation": "The cognitive perspective (Beck, Ellis) holds that psychological disorders stem from rigid, irrational, and distorted thinking patterns — 'cognitive distortions' that lead to emotional and behavioral problems."
+  },
+  {
+    "id": "psyc-hu-2025-final-37",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Specific phobia is an irrational fear of some specific object or situation.",
+    "options": [
+      "True",
+      "False"
+    ],
+    "answer": 0,
+    "explanation": "Specific phobia is characterized by an excessive, irrational, persistent fear of a particular object or situation (e.g., spiders, heights, flying) that leads to avoidance behavior."
+  },
+  {
+    "id": "psyc-hu-2025-final-38",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which one of the following describes Trait theories of personality?",
+    "options": [
+      "Identifying and measuring consistent patterns of behavior, thoughts, and feelings",
+      "Exploring how individuals learn through reinforcement and punishment",
+      "Understanding the unconscious conflicts that drive behavior",
+      "Analyzing the impact of social and cultural factors on personality development"
+    ],
+    "answer": 0,
+    "explanation": "Trait theories (Allport, Cattell, Big Five) focus on identifying, measuring, and classifying stable, enduring personality dimensions that consistently predict behavior across situations."
+  },
+  {
+    "id": "psyc-hu-2025-final-39",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "A salesman's motivation to work more and sell more to earn a bonus is an example of:",
+    "options": [
+      "Intrinsic motivation",
+      "Arousal motivation",
+      "Goal-directed motivation",
+      "Extrinsic motivation"
+    ],
+    "answer": 3,
+    "explanation": "Extrinsic motivation involves performing a behavior to earn external rewards (like a bonus, money, or praise). The salesman is driven by the external incentive of the bonus."
+  },
+  {
+    "id": "psyc-hu-2025-final-40",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "A war veteran experiences flashbacks and anxiety but cannot remember specific traumatic events from their service, leading to difficulty forming new relationships. This refers to:",
+    "options": [
+      "Displacement",
+      "Repression",
+      "Projection",
+      "Denial"
+    ],
+    "answer": 1,
+    "explanation": "Repression is the unconscious blocking of distressing thoughts, memories, or feelings from conscious awareness. The veteran's inability to remember traumatic events is a classic example."
+  },
+  {
+    "id": "psyc-hu-2025-final-41",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Cognitive therapy is a method based on identifying unconscious thoughts and emotions.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 0,
+    "explanation": "Cognitive therapy focuses on identifying and challenging conscious irrational or distorted thoughts. The psychoanalytic approach focuses on unconscious thoughts — not cognitive therapy."
+  },
+  {
+    "id": "psyc-hu-2025-final-42",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Kabe's psychiatrist feels that the cause of his depression is an imbalance in the level of dopamine. This explanation is best described as:",
+    "options": [
+      "Psychological perspective",
+      "Socio-cultural perspective",
+      "Cognitive perspective",
+      "Biological perspective"
+    ],
+    "answer": 3,
+    "explanation": "The biological perspective attributes psychological disorders to physical causes such as neurotransmitter imbalances (like dopamine), genetics, or brain structure abnormalities."
+  },
+  {
+    "id": "psyc-hu-2025-final-43",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Kebede is addicted to cigarettes and says, \"I don't smoke because I am addicted, I smoke just to enjoy with my friends.\" He is applying which ego defense mechanism?",
+    "options": [
+      "Denial",
+      "Displacement",
+      "Repression",
+      "Projection"
+    ],
+    "answer": 0,
+    "explanation": "Denial involves refusing to acknowledge a threatening reality. Kebede denies his addiction by reframing it as a social activity — refusing to accept the truth about his dependence."
+  },
+  {
+    "id": "psyc-hu-2025-final-44",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which level of Maslow's hierarchy indicates an individual who possesses protection and freedom?",
+    "options": [
+      "Safety Need",
+      "Self-actualization",
+      "Love and belongingness",
+      "Esteem need"
+    ],
+    "answer": 0,
+    "explanation": "Maslow's Safety Needs include security, stability, freedom from fear, protection, and order — addressing the need for a safe and predictable environment."
+  },
+  {
+    "id": "psyc-hu-2025-final-45",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which of the following is a key component of emotion?",
+    "options": [
+      "A fixed pattern of behavior triggered by a specific stimulus",
+      "A purely cognitive assessment of a situation",
+      "A subjective experience",
+      "A voluntary reflex"
+    ],
+    "answer": 2,
+    "explanation": "Emotion has three key components: physiological arousal, behavioral expression, and subjective experience (the personal conscious feeling of the emotion)."
+  },
+  {
+    "id": "psyc-hu-2025-final-46",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Emotion is a conscious experience that enables us to react to external stimuli.",
+    "options": [
+      "False",
+      "True"
+    ],
+    "answer": 1,
+    "explanation": "Emotions are complex conscious experiences involving subjective feelings, physiological changes, and behavioral responses that are triggered by internal or external stimuli."
+  },
+  {
+    "id": "psyc-hu-2025-final-47",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "All of the following statements about the definition of personality are correct EXCEPT:",
+    "options": [
+      "An individual's unique way of integrating the various psychological dimensions",
+      "An unpredictable set of responses to environmental stimuli",
+      "A distinctive pattern of individual's adaptation to the situations of his or her life",
+      "Personality is used as a means of explaining the stability in a person's behavior"
+    ],
+    "answer": 1,
+    "explanation": "Personality is defined by consistency and predictability in behavior, not unpredictability. A core feature of personality is its stable, enduring nature across time and situations."
+  },
+  {
+    "id": "psyc-hu-2025-final-48",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "Which component of life-skills is about an individual's trust in his/her ability?",
+    "options": [
+      "Self-esteem",
+      "Self-concept",
+      "Self-confidence",
+      "Self-awareness"
+    ],
+    "answer": 2,
+    "explanation": "Self-confidence refers to one's trust and belief in their own abilities, judgment, and capacity to succeed — distinct from self-esteem (overall self-worth) and self-awareness (knowing oneself)."
+  },
+  {
+    "id": "psyc-hu-2025-final-49",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "A mental health condition marked by enduring patterns of behavior and cognition that deviate from cultural norms, causing significant distress, is known as:",
+    "options": [
+      "Personality disorder",
+      "Anxiety disorder",
+      "Schizophrenia",
+      "Mood disorder"
+    ],
+    "answer": 0,
+    "explanation": "Personality disorders are characterized by long-standing, inflexible patterns of inner experience and behavior that deviate markedly from cultural expectations, causing impairment or distress."
+  },
+  {
+    "id": "psyc-hu-2025-final-50",
+    "university": "Haramaya University",
+    "year": "2025 Exam",
+    "course": "General Psychology",
+    "category": "Final Exam",
+    "question": "In Rogerian humanistic theory, \"unconditional positive regard\" refers to:",
+    "options": [
+      "Offering support only when a person is making progress toward self-improvement",
+      "Accepting and valuing someone only when they meet certain conditions",
+      "Providing unwavering acceptance and love to a person, regardless of their behavior",
+      "Recognizing and praising a person's positive qualities while ignoring their flaws"
+    ],
+    "answer": 2,
+    "explanation": "Rogers' unconditional positive regard means accepting and caring for a client fully, without any conditions or judgments — regardless of their actions, thoughts, or feelings."
   }
 ]
