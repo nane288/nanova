@@ -947,6 +947,12 @@
             if (allQs.length && allQs.length >= State.questions.length) {
               await NanovaDB.saveOfflineQuestions(allQs);
               State.questions = allQs;
+              applyFilters();
+              updateCounterBadges();
+              if (State.isAdmin) {
+                renderAdminDashboard();
+                renderAdminStats();
+              }
               console.log('[Nanova] Question bank updated in background (' + allQs.length + ' questions).');
               break;
             }
@@ -1494,6 +1500,7 @@
         if (pending > 0) badge.classList.remove('hidden');
         else badge.classList.add('hidden');
       }
+      renderAdminStats();
     });
 
     // Load Users
@@ -1501,6 +1508,7 @@
       const val = snap.val();
       State.registeredUsers = val ? Object.values(val) : [];
       renderAdminUsersList();
+      renderAdminStats();
     });
   }
 
@@ -2134,7 +2142,8 @@ ${escapeHtml(q.passage)}
     const search = (State.searchKeyword || '').toLowerCase().trim();
 
     // Base questions in current exam scope
-    const baseQuestions = State.questions.filter((q) => {
+    const baseQuestions = (State.questions || []).filter((q) => {
+      if (!q) return false;
       if (category === 'COC Exam') {
         if (q.category !== 'COC Exam') return false;
       } else {
@@ -2142,7 +2151,8 @@ ${escapeHtml(q.passage)}
         if (category && category !== 'ALL' && q.category !== category) return false;
       }
       if (university !== 'ALL' && q.university !== university) return false;
-      if (year !== 'ALL' && !q.year.includes(year)) return false;
+      const qYear = String(q.year || '');
+      if (year !== 'ALL' && !qYear.includes(year)) return false;
       if (search) {
         const textMatch = q.question && q.question.toLowerCase().includes(search);
         const courseMatch = q.course && q.course.toLowerCase().includes(search);
@@ -2482,6 +2492,10 @@ ${escapeHtml(q.passage)}
 
     NanovaDB.saveAll('universities', State.universities).catch(console.warn);
     renderUniversities();
+    if (State.isAdmin) {
+      renderAdminUniversitiesList();
+      renderAdminStats();
+    }
     closeUnivModal();
     alert('✅ University details saved successfully!');
   }
@@ -2492,6 +2506,8 @@ ${escapeHtml(q.passage)}
       State.universities = State.universities.filter((u) => u.id !== univId);
       NanovaDB.saveAll('universities', State.universities).catch(console.warn);
       renderUniversities();
+      renderAdminUniversitiesList();
+      renderAdminStats();
     }
   }
 
@@ -3510,6 +3526,9 @@ ${escapeHtml(q.passage)}
         }
       }
     });
+    if (tabId === 'stats') {
+      renderAdminStats();
+    }
     if (window.lucide) window.lucide.createIcons();
   }
 
@@ -3518,16 +3537,19 @@ ${escapeHtml(q.passage)}
     const uCount = State.universities ? State.universities.length : 0;
     const pCount = State.posts ? State.posts.length : 0;
     const price = State.paymentSettings.price || 50;
+    const pendingReqCount = (State.paymentRequests || []).filter(r => r.status === 'pending').length;
 
     const statQ = document.getElementById('adminStatQuestions');
     const statU = document.getElementById('adminStatUniversities');
     const statP = document.getElementById('adminStatPosts');
     const statPrice = document.getElementById('adminStatPrice');
+    const statPending = document.getElementById('adminStatPendingRequests');
 
     if (statQ) statQ.textContent = qCount;
     if (statU) statU.textContent = uCount;
     if (statP) statP.textContent = pCount;
     if (statPrice) statPrice.textContent = price + ' ETB';
+    if (statPending) statPending.textContent = pendingReqCount;
 
     renderAdminQuestionsList();
     renderAdminUniversitiesList();
@@ -4952,6 +4974,7 @@ ${escapeHtml(q.passage)}
     localStorage.setItem('nanova_bookmarks', JSON.stringify(State.bookmarks));
     renderBoardQuestionsPage();
     updateBookmarkBadge();
+    updateCounterBadges();
   }
 
   function toggleFilterMode(mode) {
