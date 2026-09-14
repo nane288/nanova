@@ -2280,8 +2280,8 @@ ${escapeHtml(q.passage)}
           '<a href="' + safeTelegram + '" target="_blank" rel="noopener noreferrer" class="btn-telegram flex-1 justify-center">' +
             '<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Telegram</span>' +
           '</a>' +
-          (hasGuide ? '<button onclick="NanovaApp.openUniversityGuide(\'' + escapeAttr(u.id) + '\')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0052fe]/10 text-[#0052fe] hover:bg-[#0052fe]/20 font-extrabold text-[11px] transition border border-[#0052fe]/20" title="Campus Guide">' +
-            '<i data-lucide="book-open" class="w-3.5 h-3.5"></i><span>Guide</span>' +
+          (hasGuide ? '<button onclick="NanovaApp.openUniversityGuide(\'' + escapeAttr(u.id) + '\')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0052fe]/10 text-[#0052fe] hover:bg-[#0052fe]/20 font-extrabold text-[11px] transition border border-[#0052fe]/20" title="Campus Info">' +
+            '<i data-lucide="info" class="w-3.5 h-3.5"></i><span>Info</span>' +
           '</button>' : '') +
         '</div>' +
       '</div>' +
