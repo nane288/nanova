@@ -2058,6 +2058,7 @@ ${escapeHtml(q.passage)}
           ${explanationHtml}
         </div>
       `;
+    }).join('');
     const bottomScoreCardHtml = totalQuestions > 0 ? `
       <div class="white-card border border-blue-200/80 bg-gradient-to-br from-blue-50/60 via-white to-indigo-50/50 p-4 sm:p-5 rounded-3xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 text-center sm:text-left">
         <div class="flex items-center space-x-3.5">
