@@ -1047,3 +1047,57 @@ body {
   color: #0052fe !important;
   font-weight: 900 !important;
 }
+
+/* Permanently suppress top offline banner — app runs silently like native mobile app */
+#offlineBanner,
+[id="offlineBanner"],
+.offline-banner-top {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+/* English Exam Reading Passages & Cloze Paragraph Cards */
+.reading-context-card {
+  position: relative;
+  background: linear-gradient(145deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1.5px solid #e2e8f0;
+  border-left: 5px solid #0052fe;
+  border-radius: 18px;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+}
+
+.passage-text-body {
+  font-family: var(--font-serif, 'Newsreader', 'Lora', Georgia, serif);
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #1e293b;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.passage-text-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.passage-text-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.passage-text-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.question-text-title {
+  white-space: pre-line !important;
+  line-height: 1.6;
+}
+
+

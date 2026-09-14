@@ -457,6 +457,7 @@
     examStartTime: null,
     timerInterval: null,
     universities: [],
+    univSearchKeyword: '',
     hiddenUniversities: JSON.parse(localStorage.getItem('nanova_hidden_universities') || '["Addis Ababa University", "Adama Science & Technology University (ASTU)", "Jimma University", "Bahir Dar University", "Hawassa University", "Arba Minch University", "AASTU", "ASTU"]'),
     hiddenSubjects: JSON.parse(localStorage.getItem('nanova_hidden_subjects') || '[]'),
     guidedFlow: {
@@ -513,23 +514,13 @@
   function setupNetworkListeners() {
     window.addEventListener('online', () => {
       console.log('[Nanova Network] Back online.');
-      const banner = document.getElementById('offlineBanner');
-      if (banner) banner.classList.add('hidden');
       handleNetworkOnline();
     });
 
     window.addEventListener('offline', () => {
-      console.log('[Nanova Network] Connection lost. Offline mode active.');
-      const banner = document.getElementById('offlineBanner');
-      if (banner) banner.classList.remove('hidden');
+      console.log('[Nanova Network] Offline — exam & study work seamlessly offline.');
       handleNetworkOffline();
     });
-
-    // Check initial online status
-    if (!navigator.onLine) {
-      const banner = document.getElementById('offlineBanner');
-      if (banner) banner.classList.remove('hidden');
-    }
   }
 
   async function handleNetworkOnline() {
@@ -553,6 +544,9 @@
   }
 
   function handleNetworkOffline() {
+    // Purge any top offline banner
+    document.querySelectorAll('#offlineBanner, .offline-banner-top').forEach(el => el.remove());
+
     // 1. Stop any active loading spinners immediately
     const spinner = document.getElementById('communityFeedSpinner');
     if (spinner) spinner.classList.add('hidden');
@@ -573,6 +567,9 @@
 
   /* ── INITIALIZATION ────────────────────────────────── */
   async function initApp() {
+    // Ensure top offline banner never appears under any circumstances
+    document.querySelectorAll('#offlineBanner, .offline-banner-top').forEach(el => el.remove());
+
     loadSavedLocalState();
     initStoragePersistence();
     setupNetworkListeners();
@@ -1025,6 +1022,21 @@
 
   async function loadUniversities() {
     try {
+      const res = await fetch('./data/university_guides.json');
+      if (res.ok) {
+        const guides = await res.json();
+        if (Array.isArray(guides) && guides.length) {
+          State.universities = guides;
+          NanovaDB.saveAll('universities', guides).catch(console.warn);
+          renderUniversities();
+          return;
+        }
+      }
+    } catch (e) {
+      console.log('Fetching university guides offline/failed, falling back to cache:', e);
+    }
+
+    try {
       const cached = await NanovaDB.getAll('universities');
       if (cached && cached.length) State.universities = cached;
       else {
@@ -1034,6 +1046,7 @@
     } catch {
       State.universities = DEFAULT_UNIVERSITIES;
     }
+    renderUniversities();
   }
 
   /* ── COMMUNITY FEED (FIREBASE & OFFLINE RESILIENT) ───── */
@@ -1794,20 +1807,20 @@
     const container = document.getElementById('boardQuestionsListContainer');
     if (!container) return;
 
-    // Clean warning only if the user is offline and has never downloaded the question bank before
+    // If the question bank was never downloaded (no questions at all) show a friendly prompt
     if (State.neverDownloadedQuestionsOffline || (!navigator.onLine && (!State.questions || !State.questions.length))) {
       container.innerHTML = `
-        <div class="white-card text-center py-12 px-6 space-y-3 border border-amber-200 bg-amber-50/50 shadow-sm animate-fade-in">
-          <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto mb-2 shadow-inner">
-            <i data-lucide="wifi-off" class="w-8 h-8"></i>
+        <div class="white-card text-center py-12 px-6 space-y-3 border border-blue-100 bg-blue-50/50 shadow-sm animate-fade-in">
+          <div class="w-16 h-16 rounded-3xl bg-blue-100 text-[#0052fe] flex items-center justify-center mx-auto mb-2 shadow-inner">
+            <i data-lucide="download-cloud" class="w-8 h-8"></i>
           </div>
-          <h4 class="text-base font-extrabold text-slate-800">Offline Question Bank Missing</h4>
+          <h4 class="text-base font-extrabold text-slate-800">Downloading Question Bank…</h4>
           <p class="text-xs text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
-            You are currently offline and have not downloaded the question bank before. Please connect to the internet once to download questions for offline use.
+            Connect to the internet once to download all exams. After that, everything works offline automatically.
           </p>
           <button onclick="NanovaApp.retryQuestionBankDownload()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition inline-flex items-center gap-2 mt-2 shadow-md">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-            <span>Retry Download</span>
+            <span>Download Now</span>
           </button>
         </div>
       `;
@@ -2002,8 +2015,24 @@
             </div>
           </div>
 
+          <!-- Reading Passage / Reference Context (if present) -->
+          ${q.passage ? `
+            <div class="reading-context-card mb-4 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-blue-50/70 via-slate-50 to-indigo-50/50 border border-blue-200/70 shadow-sm text-sm text-slate-800 font-sans">
+              <div class="flex items-center justify-between pb-2.5 mb-3 border-b border-blue-200/60 text-xs font-black uppercase tracking-wider text-[#0052fe]">
+                <div class="flex items-center space-x-2">
+                  <i data-lucide="book-open" class="w-4 h-4 text-[#0052fe]"></i>
+                  <span>Reading Passage / Reference Context</span>
+                </div>
+                <span class="text-[10px] font-bold text-blue-600 bg-blue-100/70 px-2 py-0.5 rounded-full">Reference Text</span>
+              </div>
+              <div class="passage-text-body whitespace-pre-line text-slate-800 leading-relaxed font-serif text-[13.5px] max-h-80 overflow-y-auto pr-2">
+${escapeHtml(q.passage)}
+              </div>
+            </div>
+          ` : ''}
+
           <!-- Question Prompt -->
-          <h3 class="question-text-title text-base sm:text-lg font-bold text-slate-900 leading-snug">
+          <h3 class="question-text-title text-base sm:text-lg font-bold text-slate-900 leading-snug whitespace-pre-line">
             ${escapeHtml(q.question)}
           </h3>
 
@@ -2178,43 +2207,50 @@
     grid.innerHTML = visibleUnivs.map((u) => {
       const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80';
       const imgSrc = (u.image && /^https?:\/\/.+/i.test(u.image.trim())) ? sanitizeUrl(u.image) : fallbackImg;
-      const safeWebsite = sanitizeUrl(u.website);
+      const safeWebsite  = sanitizeUrl(u.website);
       const safeTelegram = sanitizeUrl(u.telegram);
-      const isHidden = State.hiddenUniversities.includes(u.name);
-
-      return '<div class="univ-card ' + (isHidden ? 'ring-2 ring-amber-400 opacity-85' : '') + '">' +
-        '<div class="relative">' +
-          '<img src="' + imgSrc + '" alt="' + escapeHtml(u.name) + '" class="univ-card-image" onerror="this.src=\'' + fallbackImg + '\'" />' +
-          (u.location ? '<span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">' + escapeHtml(u.location) + '</span>' : '') +
-          (State.isAdmin ? '<div class="absolute top-2 right-2 flex space-x-1">' +
-            '<button onclick="NanovaApp.toggleUniversityVisibility(\'' + escapeAttr(u.name) + '\')" class="p-1.5 rounded-lg ' + (isHidden ? 'bg-amber-500 text-white' : 'bg-emerald-600 text-white') + ' shadow transition" title="' + (isHidden ? 'Hidden from Students - Click to Unhide' : 'Visible to Students - Click to Hide') + '"><i data-lucide="' + (isHidden ? 'eye-off' : 'eye') + '" class="w-3.5 h-3.5"></i></button>' +
-            '<button onclick="NanovaApp.editUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-white/90 text-slate-700 hover:bg-white shadow transition" title="Edit"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>' +
-            '<button onclick="NanovaApp.deleteUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 shadow transition" title="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
-          '</div>' : '') +
-        '</div>' +
-        '<div class="univ-card-body">' +
-          '<div>' +
-            '<div class="flex items-center justify-between mb-1.5">' +
-              '<h3 class="font-extrabold text-slate-900 text-base">' + escapeHtml(u.name) + '</h3>' +
-              (isHidden ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-[9px] uppercase tracking-wider">Hidden</span>' : '') +
-            '</div>' +
-            '<p class="text-xs text-slate-500 font-medium leading-relaxed mb-4">' + escapeHtml(u.description || 'Official Ethiopian higher education campus details.') + '</p>' +
-          '</div>' +
-          '<div class="flex items-center justify-between pt-3 border-t border-slate-100 gap-2">' +
-            '<a href="' + safeWebsite + '" target="_blank" rel="noopener noreferrer" class="btn-portal flex-1 justify-center">' +
-              '<i data-lucide="globe" class="w-3.5 h-3.5"></i>' +
-              '<span>Portal</span>' +
-            '</a>' +
-            '<a href="' + safeTelegram + '" target="_blank" rel="noopener noreferrer" class="btn-telegram flex-1 justify-center">' +
-              '<i data-lucide="send" class="w-3.5 h-3.5"></i>' +
-              '<span>Telegram</span>' +
-            '</a>' +
-          '</div>' +
-        '</div>' +
-      '</div>';
+      const isHidden  = State.hiddenUniversities.includes(u.name);
+      const hasGuide  = !!(u.details && Object.keys(u.details).length);
+      return renderUnivCard(u, imgSrc, safeWebsite, safeTelegram, isHidden, hasGuide);
     }).join('');
 
     if (window.lucide) window.lucide.createIcons();
+  }
+
+  /* helper – builds one university card HTML string */
+  function renderUnivCard(u, imgSrc, safeWebsite, safeTelegram, isHidden, hasGuide) {
+    const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80';
+    return '<div class="univ-card ' + (isHidden ? 'ring-2 ring-amber-400 opacity-85' : '') + '">' +
+      '<div class="relative">' +
+        '<img src="' + imgSrc + '" alt="' + escapeHtml(u.name) + '" class="univ-card-image" onerror="this.src=\'' + fallbackImg + '\'" />' +
+        (u.location ? '<span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold">' + escapeHtml(u.location) + '</span>' : '') +
+        (State.isAdmin ? '<div class="absolute top-2 right-2 flex space-x-1">' +
+          '<button onclick="NanovaApp.toggleUniversityVisibility(\'' + escapeAttr(u.name) + '\')" class="p-1.5 rounded-lg ' + (isHidden ? 'bg-amber-500 text-white' : 'bg-emerald-600 text-white') + ' shadow transition" title="' + (isHidden ? 'Hidden - Click to Unhide' : 'Visible - Click to Hide') + '"><i data-lucide="' + (isHidden ? 'eye-off' : 'eye') + '" class="w-3.5 h-3.5"></i></button>' +
+          '<button onclick="NanovaApp.editUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-white/90 text-slate-700 hover:bg-white shadow transition" title="Edit"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>' +
+          '<button onclick="NanovaApp.deleteUniversity(\'' + escapeAttr(u.id) + '\')" class="p-1.5 rounded-lg bg-rose-600 text-white hover:bg-rose-700 shadow transition" title="Delete"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>' +
+        '</div>' : '') +
+      '</div>' +
+      '<div class="univ-card-body">' +
+        '<div>' +
+          '<div class="flex items-center justify-between mb-1.5">' +
+            '<h3 class="font-extrabold text-slate-900 text-base">' + escapeHtml(u.name) + '</h3>' +
+            (isHidden ? '<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-[9px] uppercase tracking-wider">Hidden</span>' : '') +
+          '</div>' +
+          '<p class="text-xs text-slate-500 font-medium leading-relaxed mb-3">' + escapeHtml(u.description || 'Official Ethiopian higher education campus details.') + '</p>' +
+        '</div>' +
+        '<div class="flex items-center pt-3 border-t border-slate-100 gap-2">' +
+          '<a href="' + safeWebsite + '" target="_blank" rel="noopener noreferrer" class="btn-portal flex-1 justify-center">' +
+            '<i data-lucide="globe" class="w-3.5 h-3.5"></i><span>Portal</span>' +
+          '</a>' +
+          '<a href="' + safeTelegram + '" target="_blank" rel="noopener noreferrer" class="btn-telegram flex-1 justify-center">' +
+            '<i data-lucide="send" class="w-3.5 h-3.5"></i><span>Telegram</span>' +
+          '</a>' +
+          (hasGuide ? '<button onclick="NanovaApp.openUniversityGuide(\'' + escapeAttr(u.id) + '\')" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0052fe]/10 text-[#0052fe] hover:bg-[#0052fe]/20 font-extrabold text-[11px] transition border border-[#0052fe]/20" title="Campus Guide">' +
+            '<i data-lucide="book-open" class="w-3.5 h-3.5"></i><span>Guide</span>' +
+          '</button>' : '') +
+        '</div>' +
+      '</div>' +
+    '</div>';
   }
 
   function openAddUnivModal() {
@@ -2229,6 +2265,120 @@
   function closeUnivModal() {
     document.getElementById('univModal')?.classList.add('hidden');
   }
+
+  /* ── UNIVERSITY GUIDE MODAL (details sheet) ─────────── */
+  function openUniversityGuide(univId) {
+    const u = State.universities.find(x => x.id === univId);
+    if (!u) return;
+
+    const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80';
+    const imgSrc = (u.image && /^https?:\/\/.+/i.test(u.image.trim())) ? sanitizeUrl(u.image) : fallbackImg;
+
+    const heroImg = document.getElementById('univGuideHeroImg');
+    if (heroImg) { heroImg.src = imgSrc; heroImg.alt = u.name || ''; }
+
+    const el = (id, txt) => { const e = document.getElementById(id); if (e) e.textContent = txt || ''; };
+    el('univGuideName', u.name);
+    el('univGuideAmharicName', u.amharicName || '');
+    el('univGuideLocationText', u.location || '');
+
+    const portalBtn = document.getElementById('univGuidePortalBtn');
+    const tgBtn    = document.getElementById('univGuideTelegramBtn');
+    if (portalBtn) portalBtn.href = sanitizeUrl(u.website);
+    if (tgBtn)    tgBtn.href    = sanitizeUrl(u.telegram);
+
+    // Build the details body
+    const body = document.getElementById('univGuideBody');
+    if (body) {
+      const d = u.details || {};
+      const sections = [
+        { icon: 'map-pin',        label: 'ቦታና ትራንስፖርት',           key: 'locationTransport' },
+        { icon: 'cloud-sun',      label: 'የአየር ንብረት',               key: 'weather' },
+        { icon: 'school',         label: 'ካምፓሶችና የትምህርት ዘርፎች',  key: 'campusesAndFields' },
+        { icon: 'utensils',       label: 'ካፍቴሪያ / ምግብ ቤት',        key: 'cafeFood' },
+        { icon: 'store',          label: 'ከካምፓስ ውጭ ምግብ',          key: 'outsideFood' },
+        { icon: 'bed-double',     label: 'ዶርም / ሎከር',               key: 'dormAndLockers' },
+        { icon: 'wifi',           label: 'ውሃ፣ መብራት፣ Wi-Fi',         key: 'utilities' },
+        { icon: 'toilet',         label: 'ሽንት ቤትና ንፅህና',           key: 'sanitation' },
+        { icon: 'shield-check',   label: 'ደህንነትና ምክር',             key: 'safetyAdvice' },
+      ];
+
+      const iconColors = [
+        'text-blue-500', 'text-sky-500', 'text-violet-500',
+        'text-orange-500', 'text-amber-500', 'text-teal-500',
+        'text-cyan-500', 'text-emerald-500', 'text-rose-500'
+      ];
+
+      const descHtml = u.description
+        ? '<div class="mb-3 p-3 rounded-xl bg-blue-50 border border-blue-100 text-blue-800 text-xs font-semibold leading-relaxed">' + escapeHtml(u.description) + '</div>'
+        : '';
+
+      const sectionsHtml = sections.map((s, i) => {
+        const text = d[s.key];
+        if (!text) return '';
+        const lines = text.split('\n').map(line => '<p class="text-slate-600 text-xs leading-relaxed">' + escapeHtml(line) + '</p>').join('');
+        return '<div class="rounded-2xl border border-slate-100 bg-slate-50 p-3.5">' +
+          '<div class="flex items-center gap-2 mb-2">' +
+            '<span class="w-7 h-7 rounded-xl bg-white shadow-sm flex items-center justify-center flex-shrink-0">' +
+              '<i data-lucide="' + s.icon + '" class="w-4 h-4 ' + iconColors[i % iconColors.length] + '"></i>' +
+            '</span>' +
+            '<span class="font-extrabold text-slate-800 text-xs">' + s.label + '</span>' +
+          '</div>' +
+          '<div class="space-y-1">' + lines + '</div>' +
+        '</div>';
+      }).join('');
+
+      body.innerHTML = descHtml + sectionsHtml;
+    }
+
+    const modal = document.getElementById('universityGuideModal');
+    if (modal) modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  function closeUniversityGuide() {
+    document.getElementById('universityGuideModal')?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function onUnivSearchChange(keyword) {
+    State.univSearchKeyword = (keyword || '').toLowerCase().trim();
+    const kw = State.univSearchKeyword;
+    const grid = document.getElementById('universitiesGrid');
+    if (!grid) return;
+
+    const visibleUnivs = State.universities.filter(u => {
+      if (!State.isAdmin && State.hiddenUniversities.includes(u.name)) return false;
+      if (!kw) return true;
+      return (
+        (u.name         || '').toLowerCase().includes(kw) ||
+        (u.amharicName  || '').toLowerCase().includes(kw) ||
+        (u.location     || '').toLowerCase().includes(kw)
+      );
+    });
+
+    const badge = document.getElementById('univCountBadge');
+    if (badge) badge.textContent = visibleUnivs.length + ' Universit' + (visibleUnivs.length === 1 ? 'y' : 'ies');
+
+    if (!visibleUnivs.length) {
+      grid.innerHTML = '<div class="white-card col-span-full text-center text-slate-400 py-10">No universities match "' + escapeHtml(kw) + '".</div>';
+      return;
+    }
+
+    const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=600&auto=format&fit=crop&q=80';
+    grid.innerHTML = visibleUnivs.map(u => {
+      const imgSrc = (u.image && /^https?:\/\/.+/i.test(u.image.trim())) ? sanitizeUrl(u.image) : fallbackImg;
+      const safeWebsite  = sanitizeUrl(u.website);
+      const safeTelegram = sanitizeUrl(u.telegram);
+      const isHidden = State.hiddenUniversities.includes(u.name);
+      const hasGuide = !!(u.details && Object.keys(u.details).length);
+      return renderUnivCard(u, imgSrc, safeWebsite, safeTelegram, isHidden, hasGuide);
+    }).join('');
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
 
   function editUniversity(univId) {
     if (!State.isAdmin) return;
@@ -2406,20 +2556,20 @@
   }
 
   function _buildSubjectCardsHtml(activeUniv) {
-    // Show clean warning only if user is offline and has never downloaded question bank
+    // Only show download prompt if questions truly haven't been cached yet
     if (State.neverDownloadedQuestionsOffline || (!navigator.onLine && (!State.questions || !State.questions.length))) {
       return `
-        <div class="white-card text-center py-12 px-6 space-y-3 border border-amber-200 bg-amber-50/50 shadow-sm animate-fade-in">
-          <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-700 flex items-center justify-center mx-auto mb-2 shadow-inner">
-            <i data-lucide="wifi-off" class="w-8 h-8"></i>
+        <div class="white-card text-center py-12 px-6 space-y-3 border border-blue-100 bg-blue-50/50 shadow-sm animate-fade-in">
+          <div class="w-16 h-16 rounded-3xl bg-blue-100 text-[#0052fe] flex items-center justify-center mx-auto mb-2 shadow-inner">
+            <i data-lucide="download-cloud" class="w-8 h-8"></i>
           </div>
-          <h4 class="text-base font-extrabold text-slate-800">You Are Currently Offline</h4>
+          <h4 class="text-base font-extrabold text-slate-800">Almost Ready!</h4>
           <p class="text-xs text-slate-600 max-w-md mx-auto font-medium leading-relaxed">
-            The freshman question bank has not been downloaded to your device yet. Please connect to the internet once so Nanova can automatically download and store the complete question bank locally for offline practice.
+            Connect to the internet once to download the question bank. After that, all exams work offline automatically — no internet needed.
           </p>
           <button onclick="NanovaApp.retryQuestionBankDownload()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs transition inline-flex items-center gap-2 mt-2 shadow-md">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-            <span>Retry Download</span>
+            <span>Download Now</span>
           </button>
         </div>
       `;
@@ -2588,7 +2738,8 @@
     years.sort((a, b) => {
       const numA = parseInt(a.match(/\d+/)?.[0] || '0');
       const numB = parseInt(b.match(/\d+/)?.[0] || '0');
-      return numB - numA;
+      if (numB !== numA) return numB - numA;
+      return a.localeCompare(b);
     });
 
     if (!years.length) {
@@ -2903,12 +3054,9 @@
     }
 
     const offlineBannerHtml = isOffline
-      ? `<div id="offlinePostsBanner" class="p-3 mb-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between text-amber-900 text-xs font-bold animate-fade-in shadow-sm">
-          <div class="flex items-center space-x-2">
-            <i data-lucide="wifi-off" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
-            <span>You are offline. Showing cached posts.</span>
-          </div>
-          <span class="text-[10px] text-amber-700 bg-amber-100 border border-amber-200 px-2.5 py-0.5 rounded-full font-extrabold">Cached View</span>
+      ? `<div id="offlinePostsBanner" class="p-3 mb-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center space-x-2 text-amber-900 text-xs font-bold animate-fade-in shadow-sm">
+          <i data-lucide="wifi-off" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+          <span>You are offline.</span>
         </div>`
       : '';
 
@@ -4628,29 +4776,111 @@
     const elapsedM = Math.floor(elapsedSecs / 60);
     const elapsedS = elapsedSecs % 60;
 
-    let grade = 'NEEDS REVIEW';
-    if (percent >= 90) grade = 'EXCELLENT (A+)';
-    else if (percent >= 80) grade = 'VERY GOOD (A)';
-    else if (percent >= 65) grade = 'GOOD (B)';
-    else if (percent >= 50) grade = 'SATISFACTORY (C)';
+    // Grade config with emoji, colour, headline, motivation
+    let grade, emoji, ringColor, headline, motivation;
+    if (percent >= 90) {
+      grade = 'A+'; emoji = '🏆'; ringColor = 'linear-gradient(135deg,#f59e0b,#f97316)';
+      headline = 'Outstanding! 🌟';
+      motivation = 'You nailed it! Top-tier performance — you are exam-ready. Keep this momentum going!';
+    } else if (percent >= 80) {
+      grade = 'A'; emoji = '🎉'; ringColor = 'linear-gradient(135deg,#22c55e,#16a34a)';
+      headline = 'Excellent Work!';
+      motivation = 'Great job! A strong performance. A little more polish and you will be unstoppable.';
+    } else if (percent >= 65) {
+      grade = 'B'; emoji = '👍'; ringColor = 'linear-gradient(135deg,#0052fe,#6366f1)';
+      headline = 'Good Job!';
+      motivation = 'Solid effort! Review the explanations for the ones you missed and you will ace the next one.';
+    } else if (percent >= 50) {
+      grade = 'C'; emoji = '💪'; ringColor = 'linear-gradient(135deg,#8b5cf6,#ec4899)';
+      headline = 'Keep Pushing!';
+      motivation = 'You are halfway there. Study the explanations carefully — every mistake is a step toward mastery.';
+    } else {
+      grade = 'D'; emoji = '📚'; ringColor = 'linear-gradient(135deg,#64748b,#475569)';
+      headline = 'Don\'t Give Up!';
+      motivation = 'This is just the beginning. Review every explanation thoroughly and try again — you\'ve got this!';
+    }
 
+    // Update modal elements
     const pElem = document.getElementById('scorecardPercent');
     const cElem = document.getElementById('scorecardCorrect');
     const tElem = document.getElementById('scorecardTime');
     const gElem = document.getElementById('scorecardGrade');
+    const emojiEl = document.getElementById('scorecardEmoji');
+    const headlineEl = document.getElementById('scorecardHeadline');
+    const motivEl = document.getElementById('scorecardMotivation');
+    const ringEl = document.getElementById('scorecardRing');
 
     if (pElem) pElem.textContent = percent + '%';
-    if (cElem) cElem.textContent = correct + ' / ' + total + ' (' + attempted + ' attempted)';
+    if (cElem) cElem.textContent = correct + '/' + total;
     if (tElem) tElem.textContent = elapsedM + 'm ' + elapsedS + 's';
-    if (gElem) gElem.textContent = grade;
+    if (gElem) { gElem.textContent = grade; }
+    if (emojiEl) emojiEl.textContent = emoji;
+    if (headlineEl) headlineEl.textContent = headline;
+    if (motivEl) motivEl.textContent = motivation;
+    if (ringEl) { ringEl.style.background = ringColor; ringEl.classList.add('scorecard-pop'); }
 
-    document.getElementById('scorecardModal')?.classList.remove('hidden');
-    if (window.lucide) window.lucide.createIcons();
+    // Show modal
+    const modal = document.getElementById('scorecardModal');
+    if (modal) modal.classList.remove('hidden');
+
+    // Fire confetti
+    if (percent >= 50) _fireConfetti();
+  }
+
+  function _fireConfetti() {
+    const canvas = document.getElementById('confettiCanvas');
+    if (!canvas) return;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext('2d');
+    const pieces = [];
+    const colors = ['#0052fe','#6366f1','#f59e0b','#22c55e','#ec4899','#f97316','#fff'];
+    for (let i = 0; i < 140; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 7 + 3,
+        d: Math.random() * 140 + 40,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        tilt: Math.random() * 10 - 10,
+        tiltAngleInc: (Math.random() * 0.07) + 0.05,
+        tiltAngle: 0
+      });
+    }
+    let angle = 0, tick = 0;
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      angle += 0.01;
+      tick++;
+      pieces.forEach((p, i) => {
+        p.tiltAngle += p.tiltAngleInc;
+        p.y += (Math.cos(angle + p.d) + 2.5 + p.r / 2);
+        p.x += Math.sin(angle);
+        p.tilt = Math.sin(p.tiltAngle) * 12;
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r / 3, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 5);
+        ctx.stroke();
+        if (p.y > canvas.height) {
+          pieces[i] = { ...p, y: -10, x: Math.random() * canvas.width };
+        }
+      });
+      if (tick < 260) requestAnimationFrame(draw);
+      else ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    draw();
   }
 
   function closeScorecardModal() {
     document.getElementById('scorecardModal')?.classList.add('hidden');
-    switchExamMode('practice');
+    // Clear confetti canvas
+    const canvas = document.getElementById('confettiCanvas');
+    if (canvas) { const ctx = canvas.getContext('2d'); ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    // Reset ring pop animation so it replays next time
+    const ringEl = document.getElementById('scorecardRing');
+    if (ringEl) { ringEl.classList.remove('scorecard-pop'); void ringEl.offsetWidth; }
   }
 
   /* ── BOOKMARK SYSTEM ───────────────────────────────── */
@@ -4961,7 +5191,10 @@
     retryCommunityFeed,
     onOpenExamScreen,
     onOpenCommunityFeed,
-    clearCacheAndReset
+    clearCacheAndReset,
+    openUniversityGuide,
+    closeUniversityGuide,
+    onUnivSearchChange
   };
 
   document.addEventListener('DOMContentLoaded', initApp);
