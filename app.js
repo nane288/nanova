@@ -1936,6 +1936,11 @@
               <i data-lucide="target" class="w-3.5 h-3.5 text-blue-600"></i>
               <span>Accuracy: <b>${accuracyPercent}%</b></span>
             </span>
+            <button onclick="NanovaApp.submitExam()"
+              class="stats-counter-pill bg-[#0052fe] hover:bg-[#0041d0] text-white border-[#0052fe] font-extrabold cursor-pointer transition shadow-xs hover:scale-105" title="View final result and detailed score">
+              <i data-lucide="award" class="w-3.5 h-3.5 text-white"></i>
+              <span>Final Result</span>
+            </button>
           </div>
         </div>
         <div class="progress-bar-rail">
@@ -2053,9 +2058,28 @@ ${escapeHtml(q.passage)}
           ${explanationHtml}
         </div>
       `;
-    }).join('');
+    const bottomScoreCardHtml = totalQuestions > 0 ? `
+      <div class="white-card border border-blue-200/80 bg-gradient-to-br from-blue-50/60 via-white to-indigo-50/50 p-4 sm:p-5 rounded-3xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 text-center sm:text-left">
+        <div class="flex items-center space-x-3.5">
+          <div class="w-11 h-11 rounded-2xl bg-blue-100 text-[#0052fe] flex items-center justify-center font-bold shadow-2xs flex-shrink-0">
+            <i data-lucide="award" class="w-5 h-5 text-[#0052fe]"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-black text-slate-900">Check Your Final Score & Result</h4>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">
+              Answered <b>${answeredCount}</b> of <b>${totalQuestions}</b> questions • Current Accuracy: <b>${accuracyPercent}%</b>
+            </p>
+          </div>
+        </div>
+        <button onclick="NanovaApp.submitExam()"
+          class="px-5 py-2.5 bg-[#0052fe] hover:bg-[#0041d0] text-white text-xs font-black rounded-2xl shadow-md transition flex items-center gap-2 flex-shrink-0 active:scale-95 cursor-pointer">
+          <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+          <span>View Final Scorecard</span>
+        </button>
+      </div>
+    ` : '';
 
-    container.innerHTML = progressTrackerHtml + questionsListHtml;
+    container.innerHTML = progressTrackerHtml + questionsListHtml + bottomScoreCardHtml;
 
     updatePaginationControls(startIndex, endIndex, totalQuestions);
     updateBookmarkBadge();
@@ -2883,19 +2907,41 @@ ${escapeHtml(q.passage)}
           <span class="text-emerald-600 font-extrabold">${escapeHtml(year)}</span>
         </div>
         <div class="flex items-center gap-2 flex-shrink-0">
-          <button onclick="NanovaApp.resetGuidedFlow()"
-            class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-            Change Subject
+          <button onclick="NanovaApp.backFromExam()"
+            class="px-3.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#0052fe] text-xs font-extrabold rounded-xl transition flex items-center gap-1.5 shadow-sm border border-blue-200 cursor-pointer" title="Back from this exam">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span>Back</span>
           </button>
-          <button onclick="NanovaApp.chooseGuidedSubject('${escapeAttr(subject)}')"
-            class="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#0052fe] text-xs font-extrabold rounded-xl transition flex items-center gap-1.5">
-            <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
-            Change Year
+          <button onclick="NanovaApp.resetGuidedFlow()"
+            class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5 cursor-pointer" title="Change Subject">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Change Subject</span>
           </button>
         </div>
       </div>
     `;
+  }
+
+  function backFromExam() {
+    if (State.guidedFlow.year && State.guidedFlow.category && State.guidedFlow.subject) {
+      State.guidedFlow.year = null;
+      State.hasAppliedFilters = false;
+      State.filters.year = 'ALL';
+      renderGuidedExploration();
+      const container = document.getElementById('boardQuestionsListContainer');
+      if (container) container.innerHTML = '';
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    } else if (State.guidedFlow.category && State.guidedFlow.subject) {
+      State.guidedFlow.category = null;
+      State.hasAppliedFilters = false;
+      renderGuidedExploration();
+      const container = document.getElementById('boardQuestionsListContainer');
+      if (container) container.innerHTML = '';
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    } else {
+      resetGuidedFlow();
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    }
   }
 
   function chooseGuidedSubject(subjectName) {
@@ -4843,16 +4889,22 @@ ${escapeHtml(q.passage)}
     const total = questions.length;
     let correct = 0;
     let attempted = 0;
+    let incorrect = 0;
 
     questions.forEach((q) => {
       const userAns = State.userAnswers[q.id];
       if (userAns !== undefined) {
         attempted++;
         if (userAns === q.answer) correct++;
+        else incorrect++;
       }
     });
 
+    const unanswered = Math.max(0, total - attempted);
     const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+    const accuracy = attempted > 0 ? Math.round((correct / attempted) * 100) : 0;
+    const isPassed = percent >= 50;
+
     const elapsedSecs = State.examStartTime ? Math.round((Date.now() - State.examStartTime) / 1000) : (1800 - State.timerSeconds);
     const elapsedM = Math.floor(elapsedSecs / 60);
     const elapsedS = elapsedSecs % 60;
@@ -4862,28 +4914,54 @@ ${escapeHtml(q.passage)}
     if (percent >= 90) {
       grade = 'A+'; emoji = '🏆'; ringColor = 'linear-gradient(135deg,#f59e0b,#f97316)';
       headline = 'Outstanding! 🌟';
-      motivation = 'You nailed it! Top-tier performance — you are exam-ready. Keep this momentum going!';
+      motivation = 'You nailed it! Top-tier performance — you are fully exam-ready. Keep this momentum going!';
     } else if (percent >= 80) {
       grade = 'A'; emoji = '🎉'; ringColor = 'linear-gradient(135deg,#22c55e,#16a34a)';
       headline = 'Excellent Work!';
-      motivation = 'Great job! A strong performance. A little more polish and you will be unstoppable.';
+      motivation = 'Great job! A very strong performance. A little more review and you will be unstoppable.';
     } else if (percent >= 65) {
       grade = 'B'; emoji = '👍'; ringColor = 'linear-gradient(135deg,#0052fe,#6366f1)';
       headline = 'Good Job!';
-      motivation = 'Solid effort! Review the explanations for the ones you missed and you will ace the next one.';
+      motivation = 'Solid effort! Review the explanations for the ones you missed and you will ace the actual test.';
     } else if (percent >= 50) {
       grade = 'C'; emoji = '💪'; ringColor = 'linear-gradient(135deg,#8b5cf6,#ec4899)';
       headline = 'Keep Pushing!';
-      motivation = 'You are halfway there. Study the explanations carefully — every mistake is a step toward mastery.';
+      motivation = 'You passed and are on the right track! Review the solutions step-by-step to boost your score.';
     } else {
       grade = 'D'; emoji = '📚'; ringColor = 'linear-gradient(135deg,#64748b,#475569)';
-      headline = 'Don\'t Give Up!';
-      motivation = 'This is just the beginning. Review every explanation thoroughly and try again — you\'ve got this!';
+      headline = 'Keep Practicing!';
+      motivation = 'Do not be discouraged! Review each explanation carefully and retry the questions to master the concepts.';
+    }
+
+    // Exam Metadata Title
+    const activeCourse = State.filters.course !== 'ALL' ? State.filters.course : (State.guidedFlow.subject || 'Freshman Examination');
+    const activeUniv = State.filters.university !== 'ALL' ? State.filters.university : (State.guidedFlow.university || 'General University');
+    const activeCat = State.filters.category !== 'ALL' ? State.filters.category : (State.guidedFlow.category || 'Exam');
+    const activeYear = State.filters.year !== 'ALL' ? State.filters.year : (State.guidedFlow.year || '');
+
+    const examMetaEl = document.getElementById('scorecardExamMeta');
+    if (examMetaEl) {
+      examMetaEl.textContent = `${activeCourse} • ${activeCat}${activeYear ? ' (' + activeYear + ')' : ''} - ${activeUniv}`;
+    }
+
+    // Status Badge
+    const statusBadge = document.getElementById('scorecardStatusBadge');
+    if (statusBadge) {
+      if (isPassed) {
+        statusBadge.className = 'mt-2 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 shadow-2xs';
+        statusBadge.innerHTML = '<i data-lucide="check-circle" class="w-3.5 h-3.5"></i><span>PASSED • ' + percent + '% SCORE</span>';
+      } else {
+        statusBadge.className = 'mt-2 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-black bg-rose-100 text-rose-800 shadow-2xs';
+        statusBadge.innerHTML = '<i data-lucide="alert-circle" class="w-3.5 h-3.5"></i><span>NEEDS PRACTICE • ' + percent + '% SCORE</span>';
+      }
     }
 
     // Update modal elements
     const pElem = document.getElementById('scorecardPercent');
     const cElem = document.getElementById('scorecardCorrect');
+    const iElem = document.getElementById('scorecardIncorrect');
+    const uElem = document.getElementById('scorecardUnanswered');
+    const aElem = document.getElementById('scorecardAccuracy');
     const tElem = document.getElementById('scorecardTime');
     const gElem = document.getElementById('scorecardGrade');
     const emojiEl = document.getElementById('scorecardEmoji');
@@ -4893,19 +4971,88 @@ ${escapeHtml(q.passage)}
 
     if (pElem) pElem.textContent = percent + '%';
     if (cElem) cElem.textContent = correct + '/' + total;
+    if (iElem) iElem.textContent = incorrect;
+    if (uElem) uElem.textContent = unanswered;
+    if (aElem) aElem.textContent = accuracy + '%';
     if (tElem) tElem.textContent = elapsedM + 'm ' + elapsedS + 's';
-    if (gElem) { gElem.textContent = grade; }
+    if (gElem) gElem.textContent = grade;
     if (emojiEl) emojiEl.textContent = emoji;
     if (headlineEl) headlineEl.textContent = headline;
     if (motivEl) motivEl.textContent = motivation;
     if (ringEl) { ringEl.style.background = ringColor; ringEl.classList.add('scorecard-pop'); }
 
+    // Question Matrix Chips
+    const qGrid = document.getElementById('scorecardQuestionsGrid');
+    if (qGrid) {
+      if (questions.length) {
+        qGrid.innerHTML = questions.map((q, idx) => {
+          const ans = State.userAnswers[q.id];
+          let chipColor = 'bg-slate-200 text-slate-700 hover:bg-slate-300';
+          let icon = '';
+          if (ans !== undefined) {
+            if (ans === q.answer) {
+              chipColor = 'bg-emerald-500 text-white hover:bg-emerald-600 shadow-2xs';
+              icon = '✓';
+            } else {
+              chipColor = 'bg-rose-500 text-white hover:bg-rose-600 shadow-2xs';
+              icon = '✗';
+            }
+          } else {
+            icon = '–';
+          }
+          const pageNum = Math.floor(idx / State.pageSize) + 1;
+          return `
+            <button onclick="NanovaApp.jumpToQuestionFromScorecard(${pageNum}, '${escapeAttr(q.id)}')"
+              class="px-2 py-1 rounded-lg text-[11px] font-black transition ${chipColor} cursor-pointer flex items-center gap-0.5"
+              title="Question ${idx + 1}: ${ans === undefined ? 'Unanswered' : (ans === q.answer ? 'Correct' : 'Incorrect')} (Click to view)">
+              <span>Q${idx + 1}</span>
+              <span class="opacity-80 text-[9px]">${icon}</span>
+            </button>
+          `;
+        }).join('');
+      } else {
+        qGrid.innerHTML = '<span class="text-slate-400 text-xs py-2">No questions in this session.</span>';
+      }
+    }
+
     // Show modal
     const modal = document.getElementById('scorecardModal');
     if (modal) modal.classList.remove('hidden');
 
+    if (window.lucide) window.lucide.createIcons();
+
     // Fire confetti
     if (percent >= 50) _fireConfetti();
+  }
+
+  function jumpToQuestionFromScorecard(pageNum, qId) {
+    closeScorecardModal();
+    if (State.currentPage !== pageNum) {
+      State.currentPage = pageNum;
+      renderBoardQuestionsPage();
+    }
+    setTimeout(() => {
+      const el = document.getElementById('q_card_' + qId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('ring-4', 'ring-blue-300');
+        setTimeout(() => el.classList.remove('ring-4', 'ring-blue-300'), 2500);
+      }
+    }, 150);
+  }
+
+  function retakeCurrentExam() {
+    const questions = State.filteredQuestions || [];
+    questions.forEach((q) => {
+      delete State.userAnswers[q.id];
+      delete State.missedRetries[q.id];
+    });
+    localStorage.setItem('nanova_board_answers', JSON.stringify(State.userAnswers));
+    closeScorecardModal();
+    State.currentPage = 1;
+    renderBoardQuestionsPage();
+    updateCounterBadges();
+    window.scrollTo({ top: 150, behavior: 'smooth' });
   }
 
   function _fireConfetti() {
@@ -5202,6 +5349,9 @@ ${escapeHtml(q.passage)}
     switchExamMode,
     submitExam,
     closeScorecardModal,
+    backFromExam,
+    jumpToQuestionFromScorecard,
+    retakeCurrentExam,
     commentOnPost,
     closeCommentModal,
     submitComment,
