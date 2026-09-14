@@ -1288,8 +1288,9 @@
   <script src="app.js"></script>
   <!-- Add / Edit University Modal (Admin Only) -->
   <div id="univModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl animate-fade-in border border-slate-100">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl animate-fade-in border border-slate-100 flex flex-col max-h-[92vh] overflow-hidden">
+      <!-- Header -->
+      <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-slate-100 flex-shrink-0">
         <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
           <i data-lucide="building-2" class="w-5 h-5 text-[#0052fe]"></i>
           <span id="univModalTitle">Add University</span>
@@ -1299,45 +1300,114 @@
         </button>
       </div>
 
-      <form id="univForm" onsubmit="NanovaApp.saveUniversity(event)" class="space-y-3.5">
-        <input type="hidden" id="univFormId" value="" />
-        <div>
-          <label class="filter-label">UNIVERSITY NAME</label>
-          <input type="text" id="univNameInput" class="custom-select text-sm font-bold"
-            placeholder="e.g. Haramaya University" required />
-        </div>
-        <div>
-          <label class="filter-label">OFFICIAL WEBSITE URL</label>
-          <input type="url" id="univWebsiteInput" class="custom-select text-sm"
-            placeholder="https://www.haramaya.edu.et" required />
-        </div>
-        <div>
-          <label class="filter-label">TELEGRAM CHANNEL / COMMUNITY URL</label>
-          <input type="url" id="univTelegramInput" class="custom-select text-sm"
-            placeholder="https://t.me/HaramayaUniversityOfficial" required />
-        </div>
-        <div>
-          <label class="filter-label">CAMPUS IMAGE URL (Zero-Storage)</label>
-          <input type="url" id="univImageInput" class="custom-select text-sm"
-            placeholder="https://images.unsplash.com/..." />
-        </div>
-        <div>
-          <label class="filter-label">LOCATION / REGION</label>
-          <input type="text" id="univLocationInput" class="custom-select text-sm"
-            placeholder="e.g. Dire Dawa / Harar, Ethiopia" />
-        </div>
+      <!-- Scrollable form body -->
+      <div class="overflow-y-auto flex-1 px-6 py-4">
+        <form id="univForm" onsubmit="NanovaApp.saveUniversity(event)" class="space-y-3.5">
+          <input type="hidden" id="univFormId" value="" />
 
-        <div class="flex space-x-3 pt-3">
-          <button type="button" onclick="NanovaApp.closeUnivModal()"
-            class="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl text-sm">
-            Cancel
-          </button>
-          <button type="submit"
-            class="flex-1 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-bold rounded-xl text-sm shadow-md">
-            Save University
-          </button>
-        </div>
-      </form>
+          <!-- Basic Info -->
+          <div>
+            <label class="filter-label">UNIVERSITY NAME</label>
+            <input type="text" id="univNameInput" class="custom-select text-sm font-bold"
+              placeholder="e.g. Haramaya University" required />
+          </div>
+          <div>
+            <label class="filter-label">AMHARIC NAME (የአማርኛ ስም)</label>
+            <input type="text" id="univAmharicNameInput" class="custom-select text-sm"
+              placeholder="e.g. ሐረማያ ዩኒቨርሲቲ" />
+          </div>
+          <div>
+            <label class="filter-label">LOCATION / REGION</label>
+            <input type="text" id="univLocationInput" class="custom-select text-sm"
+              placeholder="e.g. Dire Dawa / Harar, Ethiopia" />
+          </div>
+          <div>
+            <label class="filter-label">OFFICIAL WEBSITE URL</label>
+            <input type="url" id="univWebsiteInput" class="custom-select text-sm"
+              placeholder="https://www.haramaya.edu.et" required />
+          </div>
+          <div>
+            <label class="filter-label">TELEGRAM CHANNEL / COMMUNITY URL</label>
+            <input type="url" id="univTelegramInput" class="custom-select text-sm"
+              placeholder="https://t.me/HaramayaUniversityOfficial" required />
+          </div>
+          <div>
+            <label class="filter-label">CAMPUS IMAGE URL</label>
+            <input type="url" id="univImageInput" class="custom-select text-sm"
+              placeholder="https://images.unsplash.com/..." />
+          </div>
+          <div>
+            <label class="filter-label">SHORT DESCRIPTION</label>
+            <textarea id="univDescriptionInput" rows="2" class="custom-select text-sm resize-none"
+              placeholder="Brief overview shown on the card (Amharic or English)..."></textarea>
+          </div>
+
+          <!-- Guide Details Section -->
+          <div class="pt-3 border-t border-slate-100">
+            <p class="text-[10px] font-black text-[#0052fe] uppercase tracking-widest mb-3 flex items-center gap-1.5">
+              <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Campus Guide Details
+            </p>
+            <div class="space-y-3">
+              <div>
+                <label class="filter-label">📍 ቦታና ትራንስፖርት (Location &amp; Transport)</label>
+                <textarea id="guideLocationTransport" rows="3" class="custom-select text-sm resize-y"
+                  placeholder="How to reach the campus, nearby transport..."></textarea>
+              </div>
+              <div>
+                <label class="filter-label">🌤️ የአየር ንብረት (Weather)</label>
+                <textarea id="guideWeather" rows="2" class="custom-select text-sm resize-y"
+                  placeholder="Typical climate, rainy season, temperature range..."></textarea>
+              </div>
+              <div>
+                <label class="filter-label">🏫 ካምፓሶችና የትምህርት ዘርፎች (Campuses &amp; Fields)</label>
+                <textarea id="guideCampusesAndFields" rows="5" class="custom-select text-sm resize-y"
+                  placeholder="List of campuses, departments offered... (use • or new lines)"></textarea>
+              </div>
+              <div>
+                <label class="filter-label">🍽️ ካፍቴሪያ / ምግብ ቤት (Cafeteria Food)</label>
+                <textarea id="guideCafeFood" rows="3" class="custom-select text-sm resize-y"
+                  placeholder="Meal quality, schedule, typical menu..."></textarea>
+              </div>
+              <div>
+                <label class="filter-label">🏪 ከካምፓስ ውጭ ምግብ (Outside Food)</label>
+                <textarea id="guideOutsideFood" rows="2" class="custom-select text-sm resize-y"
+                  placeholder="Nearby restaurants, price range..."></textarea>
+              </div>
+              <div>
+                <label class="filter-label">🛏️ ዶርም / ሎከር (Dorm &amp; Lockers)</label>
+                <textarea id="guideDormAndLockers" rows="2" class="custom-select text-sm resize-y"
+                  placeholder="Dorm conditions, locker availability..."></textarea>
+              </div>
+              <div>
+                <label class="filter-label">📶 ውሃ፣ መብራት፣ Wi-Fi (Utilities)</label>
+                <textarea id="guideUtilities" rows="2" class="custom-select text-sm resize-y"
+                  placeholder="Water supply, electricity, internet access..."></textarea>
+              </div>
+              <div>
+                <label class="filter-label">🚻 ሽንት ቤትና ንፅህና (Sanitation)</label>
+                <textarea id="guideSanitation" rows="2" class="custom-select text-sm resize-y"
+                  placeholder="Toilet and hygiene situation on campus..."></textarea>
+              </div>
+              <div>
+                <label class="filter-label">🛡️ ደህንነትና ምክር (Safety Advice)</label>
+                <textarea id="guideSafetyAdvice" rows="2" class="custom-select text-sm resize-y"
+                  placeholder="Security, theft risk, religious facilities nearby..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex space-x-3 pt-3 pb-2">
+            <button type="button" onclick="NanovaApp.closeUnivModal()"
+              class="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl text-sm">
+              Cancel
+            </button>
+            <button type="submit"
+              class="flex-1 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-bold rounded-xl text-sm shadow-md">
+              Save University
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 

@@ -2384,15 +2384,29 @@ ${escapeHtml(q.passage)}
     if (!State.isAdmin) return;
     const u = State.universities.find((item) => item.id === univId);
     if (!u) return;
+    const d = u.details || {};
 
-    document.getElementById('univFormId').value = u.id;
-    document.getElementById('univNameInput').value = u.name || '';
-    document.getElementById('univWebsiteInput').value = u.website || '';
-    document.getElementById('univTelegramInput').value = u.telegram || '';
-    document.getElementById('univImageInput').value = u.image || '';
-    document.getElementById('univLocationInput').value = u.location || '';
+    const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+    setVal('univFormId',            u.id);
+    setVal('univNameInput',         u.name);
+    setVal('univAmharicNameInput',  u.amharicName);
+    setVal('univLocationInput',     u.location);
+    setVal('univWebsiteInput',      u.website);
+    setVal('univTelegramInput',     u.telegram);
+    setVal('univImageInput',        u.image);
+    setVal('univDescriptionInput',  u.description);
+    // Guide details
+    setVal('guideLocationTransport', d.locationTransport);
+    setVal('guideWeather',           d.weather);
+    setVal('guideCampusesAndFields', d.campusesAndFields);
+    setVal('guideCafeFood',          d.cafeFood);
+    setVal('guideOutsideFood',       d.outsideFood);
+    setVal('guideDormAndLockers',    d.dormAndLockers);
+    setVal('guideUtilities',         d.utilities);
+    setVal('guideSanitation',        d.sanitation);
+    setVal('guideSafetyAdvice',      d.safetyAdvice);
+
     document.getElementById('univModalTitle').textContent = 'Edit University';
-
     document.getElementById('univModal')?.classList.remove('hidden');
   }
 
@@ -2400,21 +2414,41 @@ ${escapeHtml(q.passage)}
     e.preventDefault();
     if (!State.isAdmin) return;
 
-    const id = document.getElementById('univFormId')?.value || ('univ_' + Date.now());
-    const name = document.getElementById('univNameInput')?.value.trim();
-    const website = document.getElementById('univWebsiteInput')?.value.trim();
-    const telegram = document.getElementById('univTelegramInput')?.value.trim();
-    const image = document.getElementById('univImageInput')?.value.trim();
-    const location = document.getElementById('univLocationInput')?.value.trim();
+    const gv = (id) => (document.getElementById(id)?.value || '').trim();
+
+    const id          = gv('univFormId') || ('univ_' + Date.now());
+    const name        = gv('univNameInput');
+    const amharicName = gv('univAmharicNameInput');
+    const location    = gv('univLocationInput');
+    const website     = gv('univWebsiteInput');
+    const telegram    = gv('univTelegramInput');
+    const image       = gv('univImageInput');
+    const description = gv('univDescriptionInput');
+
+    // Build details — only include non-empty fields
+    const detailsRaw = {
+      locationTransport: gv('guideLocationTransport'),
+      weather:           gv('guideWeather'),
+      campusesAndFields: gv('guideCampusesAndFields'),
+      cafeFood:          gv('guideCafeFood'),
+      outsideFood:       gv('guideOutsideFood'),
+      dormAndLockers:    gv('guideDormAndLockers'),
+      utilities:         gv('guideUtilities'),
+      sanitation:        gv('guideSanitation'),
+      safetyAdvice:      gv('guideSafetyAdvice'),
+    };
+    const details = Object.fromEntries(Object.entries(detailsRaw).filter(([, v]) => v));
 
     const univData = {
       id,
       name,
+      amharicName,
+      location,
       website,
       telegram,
       image,
-      location,
-      description: 'Campus portal and Telegram student community.'
+      description: description || 'Campus portal and Telegram student community.',
+      ...(Object.keys(details).length ? { details } : {})
     };
 
     const existingIdx = State.universities.findIndex((u) => u.id === id);
