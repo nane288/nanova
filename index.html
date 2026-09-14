@@ -378,7 +378,7 @@
           </div>
         </div>
 
-        <!-- Action buttons (Portal / Telegram) -->
+        <!-- Action buttons (Portal / Telegram / Admin Edit) -->
         <div id="univGuideActions" class="flex gap-2 px-4 pt-3 pb-2 flex-shrink-0 border-b border-slate-100">
           <a id="univGuidePortalBtn" href="#" target="_blank" rel="noopener noreferrer"
             class="btn-portal flex-1 justify-center py-2.5 text-xs font-bold">
@@ -388,6 +388,11 @@
             class="btn-telegram flex-1 justify-center py-2.5 text-xs font-bold">
             <i data-lucide="send" class="w-3.5 h-3.5"></i><span>Telegram Channel</span>
           </a>
+          <!-- Admin only Edit button — shown/hidden dynamically -->
+          <button id="univGuideEditBtn" class="hidden items-center gap-1.5 px-3 py-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 hover:bg-amber-100 font-extrabold text-xs transition"
+            onclick="NanovaApp.editUniversityFromGuide()">
+            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i><span>Edit</span>
+          </button>
         </div>
 
         <!-- Scrollable body -->

@@ -2267,9 +2267,13 @@ ${escapeHtml(q.passage)}
   }
 
   /* ── UNIVERSITY GUIDE MODAL (details sheet) ─────────── */
+  // Tracks which university is currently open in the guide modal
+  let _activeGuideUnivId = null;
+
   function openUniversityGuide(univId) {
     const u = State.universities.find(x => x.id === univId);
     if (!u) return;
+    _activeGuideUnivId = univId;
 
     const fallbackImg = 'https://images.unsplash.com/photo-1562774053-701939374585?w=800&auto=format&fit=crop&q=80';
     const imgSrc = (u.image && /^https?:\/\/.+/i.test(u.image.trim())) ? sanitizeUrl(u.image) : fallbackImg;
@@ -2286,6 +2290,18 @@ ${escapeHtml(q.passage)}
     const tgBtn    = document.getElementById('univGuideTelegramBtn');
     if (portalBtn) portalBtn.href = sanitizeUrl(u.website);
     if (tgBtn)    tgBtn.href    = sanitizeUrl(u.telegram);
+
+    // Show admin Edit button if admin
+    const editBtn = document.getElementById('univGuideEditBtn');
+    if (editBtn) {
+      if (State.isAdmin) {
+        editBtn.classList.remove('hidden');
+        editBtn.classList.add('flex');
+      } else {
+        editBtn.classList.add('hidden');
+        editBtn.classList.remove('flex');
+      }
+    }
 
     // Build the details body
     const body = document.getElementById('univGuideBody');
@@ -2340,6 +2356,15 @@ ${escapeHtml(q.passage)}
   function closeUniversityGuide() {
     document.getElementById('universityGuideModal')?.classList.add('hidden');
     document.body.style.overflow = '';
+    _activeGuideUnivId = null;
+  }
+
+  function editUniversityFromGuide() {
+    if (!State.isAdmin || !_activeGuideUnivId) return;
+    const id = _activeGuideUnivId;
+    closeUniversityGuide();
+    // Small delay so guide modal finishes closing before edit modal opens
+    setTimeout(() => editUniversity(id), 120);
   }
 
   function onUnivSearchChange(keyword) {
@@ -5228,6 +5253,7 @@ ${escapeHtml(q.passage)}
     clearCacheAndReset,
     openUniversityGuide,
     closeUniversityGuide,
+    editUniversityFromGuide,
     onUnivSearchChange
   };
 
