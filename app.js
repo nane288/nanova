@@ -672,13 +672,16 @@
               if (uData) {
                 State.isAdmin = uData.role === 'admin';
                 State.hasCurriculumAccess = State.isAdmin || isPreApproved || !!uData.hasCurriculumAccess;
+                if (uData.displayName) State.profile.name = uData.displayName;
+                if (uData.academicYear) State.profile.academicYear = uData.academicYear;
               } else {
                 // New user — initialize student profile
                 const initialData = {
                   uid: user.uid,
                   phone: phone,
                   email: user.email || '',
-                  displayName: State.profile.name,
+                  displayName: State.profile.name || 'Student',
+                  academicYear: State.profile.academicYear || '2017 E.C. (2025/2026)',
                   role: 'student',
                   hasCurriculumAccess: isPreApproved,
                   createdAt: Date.now()
@@ -744,25 +747,40 @@
   function toggleAuthMode() {
     authMode = authMode === 'signin' ? 'signup' : 'signin';
     const title = document.getElementById('authModalTitle');
+    const subtitle = document.getElementById('authModalSubtitle');
     const submitBtn = document.getElementById('authSubmitBtn');
     const togglePrompt = document.getElementById('authTogglePrompt');
     const toggleBtn = document.getElementById('authToggleBtn');
+    const signupFields = document.getElementById('authSignupFields');
+    const confirmPassContainer = document.getElementById('authConfirmPassContainer');
+    const nameInput = document.getElementById('authNameInput');
+    const confirmPassInput = document.getElementById('authConfirmPasswordInput');
 
     if (authMode === 'signup') {
-      if (title) title.textContent = 'Create Nanova Account';
+      if (title) title.textContent = 'Create Student Account';
+      if (subtitle) subtitle.textContent = 'Enter your details to register your student profile & practice.';
       if (submitBtn) submitBtn.textContent = 'Create Account';
       if (togglePrompt) togglePrompt.textContent = 'Already have an account?';
       if (toggleBtn) toggleBtn.textContent = 'Sign In';
+      if (signupFields) signupFields.classList.remove('hidden');
+      if (confirmPassContainer) confirmPassContainer.classList.remove('hidden');
+      if (nameInput) nameInput.required = true;
+      if (confirmPassInput) confirmPassInput.required = true;
     } else {
       if (title) title.textContent = 'Sign In to Nanova';
+      if (subtitle) subtitle.textContent = 'Sign in with your phone number to access your student profile & practice.';
       if (submitBtn) submitBtn.textContent = 'Sign In';
       if (togglePrompt) togglePrompt.textContent = "Don't have an account?";
       if (toggleBtn) toggleBtn.textContent = 'Create Account';
+      if (signupFields) signupFields.classList.add('hidden');
+      if (confirmPassContainer) confirmPassContainer.classList.add('hidden');
+      if (nameInput) nameInput.required = false;
+      if (confirmPassInput) confirmPassInput.required = false;
     }
   }
 
   async function handlePhoneAuth(e) {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     if (!firebaseAuth) {
       alert('Authentication service is initializing, please try again in a moment.');
       return;
@@ -773,6 +791,78 @@
     const pass = document.getElementById('authPasswordInput')?.value;
     const submitBtn = document.getElementById('authSubmitBtn');
 
+    if (authMode === 'signup') {
+      const name = document.getElementById('authNameInput')?.value.trim();
+      const academicYear = document.getElementById('authYearInput')?.value || '2017 E.C. (2025/2026)';
+      const confirmPass = document.getElementById('authConfirmPasswordInput')?.value;
+
+      if (!name) {
+        alert('Please enter your full name.');
+        document.getElementById('authNameInput')?.focus();
+        return;
+      }
+      if (!phone || phone.length < 9) {
+        alert('Please enter a valid phone number (e.g. 0911000000).');
+        document.getElementById('authPhoneInput')?.focus();
+        return;
+      }
+      if (!pass || pass.length < 6) {
+        alert('Password must be at least 6 characters.');
+        document.getElementById('authPasswordInput')?.focus();
+        return;
+      }
+      if (pass !== confirmPass) {
+        alert('❌ Passwords do not match! Please confirm your password accurately.');
+        document.getElementById('authConfirmPasswordInput')?.focus();
+        return;
+      }
+
+      const mappedEmail = `${phone}@nanova.et`;
+      if (submitBtn) { submitBtn.textContent = 'Creating Account...'; submitBtn.disabled = true; }
+
+      try {
+        const userCred = await firebaseAuth.createUserWithEmailAndPassword(mappedEmail, pass);
+        const user = userCred.user;
+        if (user) {
+          if (user.updateProfile) {
+            await user.updateProfile({ displayName: name }).catch(() => {});
+          }
+          State.profile.name = name;
+          State.profile.phone = phone;
+          State.profile.academicYear = academicYear;
+          localStorage.setItem('nanova_profile', JSON.stringify(State.profile));
+
+          if (firebaseDb) {
+            await firebaseDb.ref('users/' + user.uid).set({
+              uid: user.uid,
+              phone: phone,
+              email: mappedEmail,
+              displayName: name,
+              academicYear: academicYear,
+              role: 'student',
+              hasCurriculumAccess: false,
+              createdAt: Date.now()
+            }).catch(console.warn);
+          }
+        }
+        closeAuthModal();
+        alert('✅ Account created successfully! Welcome to Nanova, ' + name + '!');
+      } catch (err) {
+        let msg = err.message || 'Unable to create account.';
+        if (err.code === 'auth/email-already-in-use') {
+          msg = 'An account with phone number ' + phone + ' already exists. Please switch to Sign In.';
+        }
+        alert('❌ ' + msg);
+      } finally {
+        if (submitBtn) {
+          submitBtn.textContent = 'Create Account';
+          submitBtn.disabled = false;
+        }
+      }
+      return;
+    }
+
+    // SIGN IN FLOW
     if (!phone || phone.length < 9) {
       alert('Please enter a valid phone number (e.g. 0911000000).');
       return;
@@ -783,28 +873,28 @@
     }
 
     const mappedEmail = `${phone}@nanova.et`;
-    if (submitBtn) { submitBtn.textContent = 'Authenticating...'; submitBtn.disabled = true; }
+    if (submitBtn) { submitBtn.textContent = 'Signing in...'; submitBtn.disabled = true; }
 
     try {
-      if (authMode === 'signup') {
-        await firebaseAuth.createUserWithEmailAndPassword(mappedEmail, pass);
-      } else {
-        try {
-          await firebaseAuth.signInWithEmailAndPassword(mappedEmail, pass);
-        } catch (signInErr) {
-          if ((signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential') && phone === '0911000000' && pass === 'testpass123') {
-            await firebaseAuth.createUserWithEmailAndPassword(mappedEmail, pass);
-          } else {
-            throw signInErr;
-          }
+      try {
+        await firebaseAuth.signInWithEmailAndPassword(mappedEmail, pass);
+      } catch (signInErr) {
+        if ((signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential') && phone === '0911000000' && pass === 'testpass123') {
+          await firebaseAuth.createUserWithEmailAndPassword(mappedEmail, pass);
+        } else {
+          throw signInErr;
         }
       }
       closeAuthModal();
     } catch (err) {
-      alert('❌ Authentication Notice: ' + (err.message || 'Unable to authenticate. Please check your credentials.'));
+      let msg = err.message || 'Unable to authenticate. Please check your credentials.';
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        msg = 'Incorrect phone number or password. If you do not have an account yet, click "Create Account" below.';
+      }
+      alert('❌ ' + msg);
     } finally {
       if (submitBtn) {
-        submitBtn.textContent = authMode === 'signup' ? 'Create Account' : 'Sign In';
+        submitBtn.textContent = 'Sign In';
         submitBtn.disabled = false;
       }
     }

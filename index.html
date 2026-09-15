@@ -1409,8 +1409,27 @@
         </button>
       </div>
 
-      <!-- Auth Form (Phone Number + Password Only) -->
+      <!-- Auth Form (Phone Number + Password, with Name, Year, Confirm Password on Signup) -->
       <form id="firebaseAuthForm" onsubmit="NanovaApp.handlePhoneAuth(event)" class="space-y-3.5">
+        <!-- Signup Extra Fields: Full Name & Academic Year -->
+        <div id="authSignupFields" class="hidden space-y-3.5">
+          <div>
+            <label class="filter-label">FULL NAME</label>
+            <input type="text" id="authNameInput" class="custom-select text-sm font-semibold"
+              placeholder="e.g. Abebe Kebede" />
+          </div>
+          <div>
+            <label class="filter-label">ACADEMIC YEAR</label>
+            <select id="authYearInput" class="custom-select text-sm font-semibold">
+              <option value="2017 E.C. (2025/2026)">2017 E.C. (2025/2026)</option>
+              <option value="2016 E.C. (2024/2025)">2016 E.C. (2024/2025)</option>
+              <option value="2015 E.C. (2023/2024)">2015 E.C. (2023/2024)</option>
+              <option value="Remedial / Pre-Engineering">Remedial / Pre-Engineering</option>
+              <option value="Senior / Other">Senior / Other</option>
+            </select>
+          </div>
+        </div>
+
         <div>
           <label class="filter-label">PHONE NUMBER</label>
           <input type="tel" id="authPhoneInput" class="custom-select text-sm font-semibold"
@@ -1420,6 +1439,13 @@
           <label class="filter-label">PASSWORD</label>
           <input type="password" id="authPasswordInput" class="custom-select text-sm font-semibold"
             placeholder="••••••••" required minlength="6" />
+        </div>
+
+        <!-- Confirm Password (Signup only) -->
+        <div id="authConfirmPassContainer" class="hidden">
+          <label class="filter-label">CONFIRM PASSWORD</label>
+          <input type="password" id="authConfirmPasswordInput" class="custom-select text-sm font-semibold"
+            placeholder="••••••••" minlength="6" />
         </div>
 
         <button type="submit" id="authSubmitBtn"
