@@ -433,6 +433,7 @@
     pageSize: 10,
     currentPage: 1,
     curriculumPayload: null,
+    registrationInfo: null,
     exams: [],
     questions: [],
     filteredQuestions: [],
@@ -647,6 +648,7 @@
 
   function initFirebaseAuthListener() {
     if (!firebaseAuth) return;
+    syncCurriculumRegistry();
 
     firebaseAuth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -763,6 +765,7 @@
     if (!firebaseDb) return;
     firebaseDb.ref('system_config/registration_info').once('value', (snap) => {
       const info = snap.val();
+      if (info) State.registrationInfo = info;
       const card = document.getElementById('semesterRegistrationCard');
       const body = document.getElementById('registrationInfoBody');
       if (!card || !body) return;
@@ -820,11 +823,13 @@
       } else {
         setAuthMode(authMode || 'signin');
       }
+      const title = document.getElementById('authModalTitle');
       const subtitle = document.getElementById('authModalSubtitle');
-      if (subtitle) {
-        if (reason === 'next_questions') {
-          subtitle.textContent = 'Please sign in or create an account to access the next questions.';
-        } else if (authMode === 'signup') {
+      if (reason === 'next_questions') {
+        if (title) title.textContent = 'Unlock Next Questions';
+        if (subtitle) subtitle.textContent = 'Please sign in or create an account to unlock questions 11+ and access all exams.';
+      } else if (subtitle) {
+        if (authMode === 'signup') {
           subtitle.textContent = 'Register with your name, academic year, phone number & password.';
         } else {
           subtitle.textContent = 'Sign in with your phone number to access your student profile & practice.';
@@ -1675,24 +1680,30 @@
     if (existing) existing.remove();
   }
 
+  /* ── DYNAMIC IN-MEMORY CURRICULUM NOTICE CARD ──────── */
+  function removeCurriculumNotice() {
+    const existing = document.getElementById('curriculumNoticeCard');
+    if (existing) existing.remove();
+  }
+
   function renderCurriculumNoticeInMemory() {
-    const container = document.getElementById('questionsBoardContainer');
+    const container = document.getElementById('boardQuestionsListContainer');
     if (!container) return;
 
     removeCurriculumNotice();
 
     const rawPayload = State.curriculumPayload || localStorage.getItem('nanova_curriculum_payload');
     const decoded = decodePayload(rawPayload) || {
-      title: 'Academic Curriculum Verification',
-      subtitle: 'Questions 1 through 10 are open for free practice. Enter your semester authorization token to access advanced modules.',
+      title: 'Unlock All Exam Questions',
+      subtitle: 'Questions 1 through 10 are open for free practice. Unlock questions 11+ to access all past exams across AAU, Haramaya, Jimma, and ASTU.',
       ref1: 'Campus Department Office',
       ref2: 'Official Academic Telegram Desk',
-      instructions: 'Enter your verification token into the field below to validate your academic cohort access.'
+      instructions: 'Enter your verification token or payment reference into the field below to unlock full access.'
     };
 
     const card = document.createElement('div');
     card.id = 'curriculumNoticeCard';
-    card.className = 'white-card border-2 border-blue-500/30 bg-gradient-to-b from-blue-50/50 to-white shadow-xl p-6 sm:p-8 space-y-6 animate-fade-in mt-4';
+    card.className = 'white-card border-2 border-blue-500/30 bg-gradient-to-b from-blue-50/50 to-white shadow-xl p-6 sm:p-8 space-y-6 animate-fade-in my-4';
 
     const header = document.createElement('div');
     header.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-blue-100';
@@ -1700,24 +1711,74 @@
     const titleBox = document.createElement('div');
     titleBox.className = 'flex items-center space-x-3';
     titleBox.innerHTML = `
-      <div class="w-12 h-12 rounded-2xl bg-blue-100 text-[#0052fe] flex items-center justify-center flex-shrink-0 shadow-sm">
-        <i data-lucide="shield-check" class="w-6 h-6"></i>
+      <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200/80 flex items-center justify-center flex-shrink-0 shadow-xs">
+        <i data-lucide="lock" class="w-6 h-6"></i>
       </div>
       <div>
-        <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">${escapeHtml(decoded.title)}</h3>
-        <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(decoded.subtitle)}</p>
+        <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">${escapeHtml(decoded.title || 'Unlock All Exam Questions')}</h3>
+        <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(decoded.subtitle || 'Questions 1 through 10 are open for free practice. Unlock questions 11+ to access all past exams.')}</p>
       </div>
     `;
     header.appendChild(titleBox);
 
     const badge = document.createElement('span');
-    badge.className = 'px-3 py-1 rounded-full bg-blue-600 text-white text-[11px] font-extrabold self-start sm:self-center uppercase tracking-wider shadow-xs';
-    badge.textContent = 'የምዝገባ ማረጋገጫ';
+    badge.className = 'px-3 py-1.5 rounded-full bg-amber-500 text-white text-[11px] font-extrabold self-start sm:self-center uppercase tracking-wider shadow-xs flex items-center gap-1.5';
+    badge.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> <span>Unlock Required</span>';
     header.appendChild(badge);
     card.appendChild(header);
 
-    // Reference desks
-    if (decoded.ref1 || decoded.ref2) {
+    // Dynamic Payment details from Firebase system_config/registration_info
+    const regInfo = State.registrationInfo;
+    if (regInfo && (regInfo.telebirr || regInfo.cbe || regInfo.amount_am)) {
+      const regSection = document.createElement('div');
+      regSection.className = 'p-4 rounded-2xl bg-white border border-blue-100 shadow-xs space-y-3';
+
+      let payHtml = `
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-black uppercase text-slate-800 tracking-wider flex items-center gap-1.5">
+            <i data-lucide="credit-card" class="w-4 h-4 text-[#0052fe]"></i>
+            <span>Payment & Registration Options</span>
+          </span>
+          ${regInfo.amount_am ? `<span class="text-xs font-black text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">${escapeHtml(regInfo.amount_am)}</span>` : ''}
+        </div>
+      `;
+
+      payHtml += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">`;
+      if (regInfo.telebirr) {
+        payHtml += `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div>
+              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Telebirr</p>
+              <p class="text-sm font-black text-slate-900 tracking-wider font-mono">${escapeHtml(regInfo.telebirr)}</p>
+              ${regInfo.telebirr_name ? `<p class="text-[11px] text-slate-500 font-medium">${escapeHtml(regInfo.telebirr_name)}</p>` : ''}
+            </div>
+            <span class="text-[11px] font-bold px-2 py-0.5 bg-blue-100 text-blue-800 rounded-md">Telebirr</span>
+          </div>`;
+      }
+      if (regInfo.cbe) {
+        payHtml += `
+          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
+            <div>
+              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">CBE Birr</p>
+              <p class="text-sm font-black text-slate-900 tracking-wider font-mono">${escapeHtml(regInfo.cbe)}</p>
+              ${regInfo.cbe_name ? `<p class="text-[11px] text-slate-500 font-medium">${escapeHtml(regInfo.cbe_name)}</p>` : ''}
+            </div>
+            <span class="text-[11px] font-bold px-2 py-0.5 bg-purple-100 text-purple-800 rounded-md">CBE Birr</span>
+          </div>`;
+      }
+      payHtml += `</div>`;
+
+      if (regInfo.instruction_am) {
+        payHtml += `<p class="text-xs text-slate-600 leading-relaxed font-medium bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">${escapeHtml(regInfo.instruction_am)}</p>`;
+      }
+      if (regInfo.note_am) {
+        payHtml += `<p class="text-[11px] text-slate-500 leading-relaxed">${escapeHtml(regInfo.note_am)}</p>`;
+      }
+
+      regSection.innerHTML = payHtml;
+      card.appendChild(regSection);
+    } else if (decoded.ref1 || decoded.ref2) {
+      // Reference desks fallback
       const refsGrid = document.createElement('div');
       refsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3';
 
@@ -1753,11 +1814,34 @@
       card.appendChild(refsGrid);
     }
 
-    if (decoded.instructions) {
+    if (decoded.instructions && (!regInfo || !regInfo.instruction_am)) {
       const instBox = document.createElement('p');
       instBox.className = 'text-xs text-slate-600 leading-relaxed font-medium bg-blue-50/50 p-3 rounded-xl border border-blue-100';
       instBox.textContent = decoded.instructions;
       card.appendChild(instBox);
+    }
+
+    // Account prompt if student is not signed in
+    if (!State.currentUser) {
+      const authCard = document.createElement('div');
+      authCard.className = 'p-4 rounded-2xl bg-amber-50 border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3';
+      authCard.innerHTML = `
+        <div class="flex items-center space-x-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center flex-shrink-0 font-bold">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <p class="text-xs font-extrabold text-slate-900">Sign in to unlock questions</p>
+            <p class="text-[11px] text-slate-600">Register or sign in with your phone to submit your unlock reference.</p>
+          </div>
+        </div>
+        <button type="button" onclick="NanovaApp.openAuthModal('next_questions')"
+          class="px-4 py-2.5 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-sm transition flex items-center justify-center space-x-1.5 whitespace-nowrap cursor-pointer">
+          <i data-lucide="log-in" class="w-4 h-4"></i>
+          <span>Sign In / Register</span>
+        </button>
+      `;
+      card.appendChild(authCard);
     }
 
     // Token submission form
@@ -1769,14 +1853,17 @@
     };
 
     tokenForm.innerHTML = `
-      <label class="filter-label">ENTER ACADEMIC ACCESS TOKEN / REFERENCE</label>
+      <label class="filter-label flex items-center justify-between">
+        <span>ENTER UNLOCK TOKEN / PAYMENT REFERENCE</span>
+        <span class="text-[10px] text-slate-400 font-normal">Instant Authorization</span>
+      </label>
       <div class="flex flex-col sm:flex-row gap-2.5">
         <input type="text" id="academicTokenInput" class="custom-select font-mono font-bold text-xs flex-1"
-          placeholder="e.g. SEM-2026-REF or Confirmation ID" required />
+          placeholder="e.g. SEM-2026-REF or Telebirr Transaction ID" required />
         <button type="submit" id="submitAcademicTokenBtn"
-          class="px-5 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-1.5 whitespace-nowrap">
-          <i data-lucide="check-circle" class="w-4 h-4"></i>
-          <span>Verify Academic Token</span>
+          class="px-6 py-3 bg-gradient-to-r from-blue-600 to-[#0052fe] hover:from-blue-700 hover:to-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer active:scale-95">
+          <i data-lucide="unlock" class="w-4 h-4"></i>
+          <span>Unlock Questions</span>
         </button>
       </div>
     `;
@@ -1786,8 +1873,9 @@
     footer.className = 'flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-500';
     footer.innerHTML = `
       <span>Questions 1–10 remain open for free revision.</span>
-      <button type="button" onclick="NanovaApp.boardPrevPage()" class="font-extrabold text-[#0052fe] hover:underline">
-        Back to Questions 1–10
+      <button type="button" onclick="NanovaApp.restoreBoardQuestions()" class="font-extrabold text-[#0052fe] hover:underline flex items-center space-x-1 cursor-pointer">
+        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+        <span>Back to Questions 1–10</span>
       </button>
     `;
     card.appendChild(footer);
@@ -1796,6 +1884,12 @@
     container.appendChild(card);
 
     if (window.lucide) window.lucide.createIcons();
+    window.scrollTo({ top: 150, behavior: 'smooth' });
+  }
+
+  function restoreBoardQuestions() {
+    State.currentPage = 1;
+    renderBoardQuestionsPage();
     window.scrollTo({ top: 150, behavior: 'smooth' });
   }
 
@@ -2248,11 +2342,6 @@
 
     // Check access when navigating beyond Page 1 (Questions 11+)
     if (State.currentPage > 1) {
-      if (!State.currentUser) {
-        State.currentPage = 1;
-        openAuthModal('next_questions');
-        return;
-      }
       if (!hasCurriculumAccess) {
         State.currentPage = 1;
         renderCurriculumNoticeInMemory();
@@ -2475,10 +2564,19 @@ ${escapeHtml(q.passage)}
       }
     }
 
+    const hasCurriculumAccess = State.hasCurriculumAccess || State.isAdmin;
+
     if (prevBtn) prevBtn.disabled = State.currentPage <= 1;
     if (nextBtn) {
-      nextBtn.innerHTML = '<span>Next Questions</span><i data-lucide="chevron-right" class="w-4 h-4"></i>';
-      nextBtn.disabled = State.currentPage >= totalPages;
+      if (!hasCurriculumAccess && totalPages > 1 && State.currentPage === 1) {
+        nextBtn.innerHTML = '<i data-lucide="lock" class="w-4 h-4 text-amber-300"></i><span>Unlock Next Questions</span>';
+        nextBtn.className = 'px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-md transition flex items-center space-x-2 cursor-pointer';
+        nextBtn.disabled = false;
+      } else {
+        nextBtn.innerHTML = '<span>Next Questions</span><i data-lucide="chevron-right" class="w-4 h-4"></i>';
+        nextBtn.className = 'px-5 py-2.5 rounded-xl bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs shadow-md transition flex items-center space-x-2 cursor-pointer';
+        nextBtn.disabled = State.currentPage >= totalPages;
+      }
     }
     if (window.lucide) window.lucide.createIcons();
   }
@@ -2486,20 +2584,14 @@ ${escapeHtml(q.passage)}
   function boardNextPage() {
     const totalPages = Math.ceil(State.filteredQuestions.length / State.pageSize);
 
-    // 1. If not logged in -> ask to log in first
-    if (!State.currentUser) {
-      openAuthModal('next_questions');
-      return;
-    }
-
-    // 2. If logged in but without curriculum access -> dynamic in-memory verification
+    // If without curriculum access -> dynamic in-memory verification
     const hasCurriculumAccess = State.hasCurriculumAccess || State.isAdmin;
     if (!hasCurriculumAccess) {
       renderCurriculumNoticeInMemory();
       return;
     }
 
-    // 3. If access authorized -> show next questions
+    // If access authorized -> show next questions
     if (State.currentPage < totalPages) {
       State.currentPage++;
       renderBoardQuestionsPage();
@@ -5790,6 +5882,7 @@ ${escapeHtml(q.passage)}
     deleteUserAccount,
     syncCurriculumRegistry,
     submitAcademicToken,
+    restoreBoardQuestions,
     removeCurriculumNotice,
     moderatePost,
     reportPost,
