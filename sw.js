@@ -1,7 +1,8 @@
-const CACHE_NAME = 'nanova-core-v37';
+const CACHE_NAME = 'nanova-core-v38';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './privacy.html',
   './styles.css',
   './app.js',
   './manifest.json',

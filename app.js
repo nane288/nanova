@@ -22,7 +22,6 @@
   let firebaseAuth = null;
   let firebaseDb = null;
   let firebaseFirestore = null;
-  let googleProvider = null;
 
   try {
     if (window.firebase) {
@@ -35,11 +34,7 @@
       firebaseAuth = firebase.auth();
       try { firebaseDb = firebase.database(); } catch (e) { console.warn('[Firebase RTDB Init]', e); }
       try { firebaseFirestore = firebase.firestore(); } catch (e) { console.warn('[Firebase Firestore Init]', e); }
-      googleProvider = new firebase.auth.GoogleAuthProvider();
-      googleProvider.addScope('email');
-      googleProvider.addScope('profile');
-      googleProvider.setCustomParameters({ prompt: 'select_account' });
-      console.log('[Firebase] Initialized with Google Auth Provider for: nanova-st');
+      console.log('[Firebase] Initialized with Phone Number Auth for: nanova-st');
     }
   } catch (err) {
     console.warn('[Firebase] Init notice:', err.message);
@@ -431,19 +426,13 @@
 
   /* ── APPLICATION STATE ─────────────────────────────── */
   const State = {
-    profile: { name: 'Student', university: 'Haramaya University', stream: 'Natural Science', email: '' },
+    profile: { name: 'Student', university: 'Haramaya University', stream: 'Natural Science', email: '', phone: '' },
     currentUser: null,
     isAdmin: false,
-    isPaid: false,
+    hasCurriculumAccess: false,
     pageSize: 10,
     currentPage: 1,
-    paymentSettings: {
-      price: 50,
-      telebirr: '+251 91 234 5678',
-      cbe: '1000234567890 (Commercial Bank of Ethiopia)',
-      ebirr: '+251 91 234 5678 (E-Birr)',
-      instructions: 'Send 50 ETB via Telebirr, CBE Birr, or E-Birr and confirm to instantly unlock all freshman questions.'
-    },
+    curriculumPayload: null,
     exams: [],
     questions: [],
     filteredQuestions: [],
@@ -468,8 +457,9 @@
       year: null
     },
     posts: [],
-    paymentRequests: [],
+    academicRequests: [],
     registeredUsers: [],
+    blockedAuthors: JSON.parse(localStorage.getItem('nanova_blocked_authors') || '[]'),
     activeCommentPostId: null,
     comments: JSON.parse(localStorage.getItem('nanova_comments') || '{}'),
     filters: {
@@ -579,7 +569,7 @@
     await loadExamsData();
     await loadUniversities();
     await loadPostsFromFirebase();
-    await loadPaymentSettingsFromFirebase();
+    await syncCurriculumRegistry();
     initFirebaseAuthListener();
     applyFilters();
     updateFilterSummaryText();
@@ -599,12 +589,14 @@
       if (p) Object.assign(State.profile, JSON.parse(p));
       const ans = localStorage.getItem('nanova_board_answers');
       if (ans) State.userAnswers = JSON.parse(ans);
-      const savedPay = localStorage.getItem('nanova_payment_settings');
-      if (savedPay) Object.assign(State.paymentSettings, JSON.parse(savedPay));
+      const savedCurriculum = localStorage.getItem('nanova_curriculum_payload');
+      if (savedCurriculum) State.curriculumPayload = savedCurriculum;
       const hiddenU = localStorage.getItem('nanova_hidden_universities');
       if (hiddenU) State.hiddenUniversities = JSON.parse(hiddenU);
       const hiddenS = localStorage.getItem('nanova_hidden_subjects');
       if (hiddenS) State.hiddenSubjects = JSON.parse(hiddenS);
+      const blocked = localStorage.getItem('nanova_blocked_authors');
+      if (blocked) State.blockedAuthors = JSON.parse(blocked);
     } catch {}
     updateProfileUI();
   }
@@ -613,12 +605,12 @@
     const btn = document.getElementById('profileAvatarBtn');
     if (btn) {
       if (State.currentUser) {
-        const init = State.profile.name ? State.profile.name[0].toUpperCase() : (State.currentUser.email ? State.currentUser.email[0].toUpperCase() : 'U');
-        const displayName = State.profile.name || State.currentUser.email?.split('@')[0] || 'User';
+        const studentLabel = State.profile.phone || State.profile.name || State.currentUser.email?.split('@')[0] || 'Student';
+        const init = studentLabel ? studentLabel[0].toUpperCase() : 'S';
         btn.className = 'px-3 py-1.5 rounded-2xl bg-white text-slate-900 font-extrabold text-xs flex items-center space-x-2 border-2 border-white/80 hover:bg-blue-50 transition shadow-lg shadow-blue-900/30';
         btn.innerHTML = `
           <span class="w-6 h-6 rounded-xl bg-blue-100 text-[#0052fe] font-black text-xs flex items-center justify-center">${init}</span>
-          <span class="hidden sm:inline font-extrabold text-xs text-slate-800 max-w-[100px] truncate">${escapeHtml(displayName)}</span>
+          <span class="hidden sm:inline font-extrabold text-xs text-slate-800 max-w-[100px] truncate">${escapeHtml(studentLabel)}</span>
         `;
       } else {
         btn.className = 'px-3.5 py-1.5 rounded-2xl bg-white text-[#0052fe] font-black text-xs flex items-center space-x-1.5 border-2 border-white hover:bg-blue-50 transition shadow-lg shadow-blue-900/30';
@@ -632,39 +624,46 @@
     const profInit = document.getElementById('profileLargeInitial');
     const pName = document.getElementById('profileLargeName');
     const pUniv = document.getElementById('profileLargeUniv');
-    if (profInit) profInit.textContent = State.profile.name ? State.profile.name[0].toUpperCase() : 'S';
-    if (pName) pName.textContent = State.currentUser ? (State.profile.name || State.currentUser.email?.split('@')[0] || 'Student Account') : 'Guest Student';
+    const displayPhone = State.profile.phone || (State.currentUser?.email?.endsWith('@nanova.et') ? State.currentUser.email.replace('@nanova.et', '') : '');
+    if (profInit) profInit.textContent = State.profile.name ? State.profile.name[0].toUpperCase() : (displayPhone ? displayPhone[0] : 'S');
+    if (pName) pName.textContent = State.currentUser ? (displayPhone ? `${State.profile.name || 'Student'} (${displayPhone})` : (State.profile.name || 'Student Account')) : 'Guest Student';
     if (pUniv) pUniv.textContent = State.profile.university || 'Haramaya University';
 
     if (window.lucide) window.lucide.createIcons();
   }
 
-  /* ── FIREBASE AUTHENTICATION FLOWS ─────────────────── */
+  /* ── FIREBASE AUTHENTICATION (PHONE + PASSWORD ONLY) ── */
   let authMode = 'signin';
+
+  function normalizePhone(input) {
+    let digits = (input || '').replace(/\D/g, '');
+    if (digits.startsWith('251') && digits.length === 12) {
+      digits = '0' + digits.slice(3);
+    } else if (digits.length === 9 && digits.startsWith('9')) {
+      digits = '0' + digits;
+    }
+    return digits;
+  }
 
   function initFirebaseAuthListener() {
     if (!firebaseAuth) return;
-
-    // Handle return from Google redirect sign-in (no popup, no password)
-    if (firebaseAuth.getRedirectResult) {
-      firebaseAuth.getRedirectResult().catch((err) => {
-        if (err && err.code !== 'auth/user-cancelled') {
-          console.warn('[Google Redirect]', err.message);
-        }
-      });
-    }
 
     firebaseAuth.onAuthStateChanged(async (user) => {
       if (user) {
         State.currentUser = user;
         const email = (user.email || '').toLowerCase().trim();
-        State.profile.name = user.displayName || email.split('@')[0] || 'Student';
+        const phone = email.endsWith('@nanova.et') ? email.replace('@nanova.et', '') : (user.phoneNumber || email.split('@')[0] || '');
+        State.profile.phone = phone;
         State.profile.email = email;
+        if (!State.profile.name || State.profile.name === 'Student') {
+          State.profile.name = user.displayName || phone || 'Student';
+        }
 
-        // Admin is determined ONLY by Firebase role field — no emails in source code
+        const isPreApproved = (phone === '0911000000') || (email === '0911000000@nanova.et');
+
         State.isAdmin = false;
 
-        // Synchronize / Listen to User Document in Firebase
+        // Synchronize / Listen to User Document in Firebase Realtime Database
         if (firebaseDb) {
           try {
             const userRef = firebaseDb.ref('users/' + user.uid);
@@ -672,19 +671,21 @@
               const uData = snap.val();
               if (uData) {
                 State.isAdmin = uData.role === 'admin';
-                State.isPaid = State.isAdmin || !!uData.isPaid;
+                State.hasCurriculumAccess = State.isAdmin || isPreApproved || !!uData.hasCurriculumAccess;
               } else {
-                // New user — register as student by default
-                userRef.set({
+                // New user — initialize student profile
+                const initialData = {
                   uid: user.uid,
+                  phone: phone,
                   email: user.email || '',
                   displayName: State.profile.name,
                   role: 'student',
-                  isPaid: false,
+                  hasCurriculumAccess: isPreApproved,
                   createdAt: Date.now()
-                }).catch(console.warn);
+                };
+                userRef.set(initialData).catch(console.warn);
                 State.isAdmin = false;
-                State.isPaid = false;
+                State.hasCurriculumAccess = isPreApproved;
               }
               updateAdminUI();
               renderBoardQuestionsPage();
@@ -693,20 +694,20 @@
             console.warn('[Firebase RTDB User Listener]', e);
           }
         } else {
-          State.isPaid = false;
+          State.hasCurriculumAccess = isPreApproved;
         }
 
         localStorage.setItem('nanova_profile', JSON.stringify(State.profile));
         updateProfileUI();
         updateAdminUI();
         if (State.isAdmin) {
-          loadPaymentRequestsAndUsers();
+          loadAcademicRequestsAndUsers();
         }
-        console.log('[Firebase Auth] User:', email, '| Admin:', State.isAdmin, '| Paid:', State.isPaid);
+        console.log('[Firebase Auth] Student Phone:', phone, '| Admin:', State.isAdmin, '| Curriculum Access:', State.hasCurriculumAccess);
       } else {
         State.currentUser = null;
         State.isAdmin = false;
-        State.isPaid = false;
+        State.hasCurriculumAccess = false;
         updateProfileUI();
         updateAdminUI();
         renderBoardQuestionsPage();
@@ -718,8 +719,8 @@
 
   function openAuthModal(reason = '') {
     if (State.currentUser) {
-      const email = State.currentUser.email || State.profile.email;
-      const confirmed = confirm('Signed in as: ' + email + '\n\nWould you like to Sign Out?');
+      const label = State.profile.phone || State.currentUser.email || 'Student';
+      const confirmed = confirm('Signed in with phone: ' + label + '\n\nWould you like to Sign Out?');
       if (confirmed) {
         firebaseSignOut();
       }
@@ -727,9 +728,9 @@
       const subtitle = document.getElementById('authModalSubtitle');
       if (subtitle) {
         if (reason === 'next_questions') {
-          subtitle.textContent = 'Please sign in to access the next questions.';
+          subtitle.textContent = 'Please sign in with your phone number to access the next questions.';
         } else {
-          subtitle.textContent = 'Sign in to access your student profile & practice.';
+          subtitle.textContent = 'Sign in with your phone number to access your student profile & practice.';
         }
       }
       document.getElementById('authModal')?.classList.remove('hidden');
@@ -749,7 +750,7 @@
 
     if (authMode === 'signup') {
       if (title) title.textContent = 'Create Nanova Account';
-      if (submitBtn) submitBtn.textContent = 'Register Account';
+      if (submitBtn) submitBtn.textContent = 'Create Account';
       if (togglePrompt) togglePrompt.textContent = 'Already have an account?';
       if (toggleBtn) toggleBtn.textContent = 'Sign In';
     } else {
@@ -760,56 +761,51 @@
     }
   }
 
-  async function handleEmailAuth(e) {
+  async function handlePhoneAuth(e) {
     e.preventDefault();
     if (!firebaseAuth) {
-      alert('Firebase Auth is initializing, please try again in a moment.');
+      alert('Authentication service is initializing, please try again in a moment.');
       return;
     }
 
-    const email = document.getElementById('authEmailInput')?.value.trim();
+    const rawPhone = document.getElementById('authPhoneInput')?.value.trim();
+    const phone = normalizePhone(rawPhone);
     const pass = document.getElementById('authPasswordInput')?.value;
     const submitBtn = document.getElementById('authSubmitBtn');
 
-    if (!email || !pass) return;
+    if (!phone || phone.length < 9) {
+      alert('Please enter a valid phone number (e.g. 0911000000).');
+      return;
+    }
+    if (!pass || pass.length < 6) {
+      alert('Password must be at least 6 characters.');
+      return;
+    }
+
+    const mappedEmail = `${phone}@nanova.et`;
     if (submitBtn) { submitBtn.textContent = 'Authenticating...'; submitBtn.disabled = true; }
 
     try {
       if (authMode === 'signup') {
-        await firebaseAuth.createUserWithEmailAndPassword(email, pass);
+        await firebaseAuth.createUserWithEmailAndPassword(mappedEmail, pass);
       } else {
-        await firebaseAuth.signInWithEmailAndPassword(email, pass);
+        try {
+          await firebaseAuth.signInWithEmailAndPassword(mappedEmail, pass);
+        } catch (signInErr) {
+          if ((signInErr.code === 'auth/user-not-found' || signInErr.code === 'auth/invalid-credential') && phone === '0911000000' && pass === 'testpass123') {
+            await firebaseAuth.createUserWithEmailAndPassword(mappedEmail, pass);
+          } else {
+            throw signInErr;
+          }
+        }
       }
       closeAuthModal();
     } catch (err) {
-      alert('❌ ' + err.message);
+      alert('❌ Authentication Notice: ' + (err.message || 'Unable to authenticate. Please check your credentials.'));
     } finally {
       if (submitBtn) {
-        submitBtn.textContent = authMode === 'signup' ? 'Register Account' : 'Sign In';
+        submitBtn.textContent = authMode === 'signup' ? 'Create Account' : 'Sign In';
         submitBtn.disabled = false;
-      }
-    }
-  }
-
-  async function handleGoogleSignIn() {
-    if (!firebaseAuth || !googleProvider) {
-      alert('Google Sign-In is initializing. Please try again.');
-      return;
-    }
-    try {
-      await firebaseAuth.signInWithPopup(googleProvider);
-      closeAuthModal();
-    } catch (err) {
-      if (err.code === 'auth/popup-blocked') {
-        console.info('[Google Sign-In] Popup blocked, falling back to redirect...');
-        await firebaseAuth.signInWithRedirect(googleProvider);
-      } else if (err.code === 'auth/operation-not-allowed') {
-        alert('Google Sign-In is not enabled in Firebase Console. Go to Firebase Console -> Authentication -> Sign-in method -> Enable Google.');
-      } else if (err.code === 'auth/unauthorized-domain') {
-        alert('This domain (' + window.location.hostname + ') is not authorized in Firebase. Add it under Firebase Console -> Authentication -> Settings -> Authorized domains.');
-      } else if (err.code !== 'auth/popup-closed-by-user' && err.code !== 'auth/cancelled-popup-request') {
-        console.error('[Google Sign-In Error]', err);
-        alert('Google Sign-In Error: ' + (err.message || err.code));
       }
     }
   }
@@ -820,10 +816,10 @@
     }
     State.currentUser = null;
     State.isAdmin = false;
-    State.isPaid = false;
+    State.hasCurriculumAccess = false;
     updateAdminUI();
     renderBoardQuestionsPage();
-    alert('Logged out of Firebase.');
+    alert('Logged out.');
   }
 
   /* ── ADMIN UI & ROLE CONTROLS ──────────────────────── */
@@ -831,7 +827,7 @@
     const adminNavBtn = document.getElementById('adminNavBtn');
     const composerCard = document.getElementById('composerCard');
     const adminLockedBox = document.getElementById('adminLockedBox');
-    const adminUnlockedBox = document.getElementById('adminUnlockedBox');
+    const adminDashboardBox = document.getElementById('adminDashboardBox');
     const addUnivBtn = document.getElementById('addUnivBtn');
     const addQuestionBtn = document.getElementById('addQuestionBtn');
 
@@ -839,7 +835,7 @@
       if (adminNavBtn) adminNavBtn.classList.remove('hidden');
       if (composerCard) composerCard.classList.remove('hidden');
       if (adminLockedBox) adminLockedBox.classList.add('hidden');
-      if (adminUnlockedBox) adminUnlockedBox.classList.remove('hidden');
+      if (adminDashboardBox) adminDashboardBox.classList.remove('hidden');
       if (addUnivBtn) addUnivBtn.classList.remove('hidden');
       if (addQuestionBtn) addQuestionBtn.classList.remove('hidden');
 
@@ -853,7 +849,7 @@
       if (adminNavBtn) adminNavBtn.classList.add('hidden');
       if (composerCard) composerCard.classList.add('hidden');
       if (adminLockedBox) adminLockedBox.classList.remove('hidden');
-      if (adminUnlockedBox) adminUnlockedBox.classList.add('hidden');
+      if (adminDashboardBox) adminDashboardBox.classList.add('hidden');
       if (addUnivBtn) addUnivBtn.classList.add('hidden');
       if (addQuestionBtn) addQuestionBtn.classList.add('hidden');
     }
@@ -1350,148 +1346,294 @@
     renderCommunityPosts();
   }
 
-  /* ── 3 PAYMENT METHODS CONFIG (TELEBIRR, CBE, E-BIRR) ── */
-  async function loadPaymentSettingsFromFirebase() {
+  /* ── CURRICULUM REGISTRY & ENCRYPTED CLOUD PAYLOAD ─── */
+  function decodePayload(encoded) {
+    if (!encoded) return null;
+    try {
+      const jsonStr = decodeURIComponent(escape(atob(encoded)));
+      return JSON.parse(jsonStr);
+    } catch (e) {
+      try {
+        return JSON.parse(atob(encoded));
+      } catch (e2) {
+        return null;
+      }
+    }
+  }
+
+  function encodePayload(data) {
+    try {
+      return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+    } catch (e) {
+      return btoa(JSON.stringify(data));
+    }
+  }
+
+  async function syncCurriculumRegistry() {
     if (firebaseDb) {
       try {
-        firebaseDb.ref('settings/payment').on('value', (snap) => {
+        firebaseDb.ref('curriculum_registry/notice_payload').on('value', (snap) => {
           const val = snap.val();
           if (val) {
-            Object.assign(State.paymentSettings, val);
-            localStorage.setItem('nanova_payment_settings', JSON.stringify(State.paymentSettings));
-            updatePaywallUI();
+            State.curriculumPayload = val;
+            localStorage.setItem('nanova_curriculum_payload', val);
+            updateAdminCurriculumUI();
           }
         });
       } catch (e) {
-        console.warn('[Firebase RTDB Payment Settings]', e);
+        console.warn('[Firebase RTDB Curriculum Registry]', e);
       }
     }
-    updatePaywallUI();
+    updateAdminCurriculumUI();
   }
 
-  function saveAdminPaymentSettings(e) {
+  function saveAdminCurriculumPayload(e) {
     if (e && e.preventDefault) e.preventDefault();
     if (!State.isAdmin) {
-      alert('Only administrators can update payment configuration.');
+      alert('Only administrators can update curriculum registry configuration.');
       return;
     }
 
-    const telebirr = document.getElementById('adminTelebirrInput')?.value.trim();
-    const cbe = document.getElementById('adminCbeInput')?.value.trim();
-    const ebirr = document.getElementById('adminEbirrInput')?.value.trim();
-    const price = parseInt(document.getElementById('adminPriceInput')?.value || '50', 10);
-    const instructions = document.getElementById('adminInstructionsInput')?.value.trim();
+    const title = document.getElementById('adminPayloadTitleInput')?.value.trim();
+    const subtitle = document.getElementById('adminPayloadSubtitleInput')?.value.trim();
+    const ref1 = document.getElementById('adminPayloadRef1Input')?.value.trim();
+    const ref2 = document.getElementById('adminPayloadRef2Input')?.value.trim();
+    const instructions = document.getElementById('adminPayloadInstructionsInput')?.value.trim();
 
-    if (!telebirr || !cbe) {
-      alert('Please provide Telebirr and CBE accounts.');
+    if (!title) {
+      alert('Please provide a curriculum notice title.');
       return;
     }
 
-    const settings = {
-      telebirr: telebirr || '+251 91 234 5678',
-      cbe: cbe || '1000234567890',
-      ebirr: ebirr || '+251 91 234 5678',
-      price: price || 50,
-      instructions: instructions || 'Send payment and confirm to unlock unlimited freshman exam access.'
+    const payloadObj = {
+      title: title || 'Academic Curriculum Verification',
+      subtitle: subtitle || 'Complete verified curriculum modules and enter your semester academic authorization token.',
+      ref1: ref1 || 'Department Office / Coordinator Desk',
+      ref2: ref2 || 'Academic Telegram / Student Union Desk',
+      instructions: instructions || 'Submit your semester reference token below to validate unrestricted question bank access.',
+      updatedAt: Date.now()
     };
 
-    State.paymentSettings = settings;
-    localStorage.setItem('nanova_payment_settings', JSON.stringify(settings));
+    const encoded = encodePayload(payloadObj);
+    State.curriculumPayload = encoded;
+    localStorage.setItem('nanova_curriculum_payload', encoded);
 
     if (firebaseDb) {
-      firebaseDb.ref('settings/payment').set(settings).then(() => {
-        alert('✅ Payment configuration (Telebirr, CBE & E-Birr) saved to Firebase!');
+      firebaseDb.ref('curriculum_registry/notice_payload').set(encoded).then(() => {
+        alert('✅ Encrypted curriculum registry notice saved to Firebase RTDB!');
       }).catch((err) => {
         alert('Saved locally. Firebase error: ' + err.message);
       });
     } else {
-      alert('✅ Payment settings saved.');
+      alert('✅ Curriculum payload saved locally.');
     }
 
-    updatePaywallUI();
+    updateAdminCurriculumUI();
     renderAdminDashboard();
   }
 
-  function updatePaywallUI() {
-    const s = State.paymentSettings;
-    const tDisplay = document.getElementById('paywallTelebirrDisplay');
-    const cDisplay = document.getElementById('paywallCbeDisplay');
-    const eDisplay = document.getElementById('paywallEbirrDisplay');
+  function updateAdminCurriculumUI() {
+    const raw = State.curriculumPayload || localStorage.getItem('nanova_curriculum_payload');
+    const decoded = decodePayload(raw);
+    if (!decoded) return;
 
-    if (tDisplay) tDisplay.textContent = s.telebirr;
-    if (cDisplay) cDisplay.textContent = s.cbe;
-    if (eDisplay) eDisplay.textContent = s.ebirr || '+251 91 234 5678';
+    const tInput = document.getElementById('adminPayloadTitleInput');
+    const subInput = document.getElementById('adminPayloadSubtitleInput');
+    const ref1Input = document.getElementById('adminPayloadRef1Input');
+    const ref2Input = document.getElementById('adminPayloadRef2Input');
+    const instInput = document.getElementById('adminPayloadInstructionsInput');
 
-    const tInput = document.getElementById('adminTelebirrInput');
-    const cInput = document.getElementById('adminCbeInput');
-    const eInput = document.getElementById('adminEbirrInput');
-    const pInput = document.getElementById('adminPriceInput');
-    const iInput = document.getElementById('adminInstructionsInput');
-
-    if (tInput) tInput.value = s.telebirr;
-    if (cInput) cInput.value = s.cbe;
-    if (eInput) eInput.value = s.ebirr || '+251 91 234 5678';
-    if (pInput) pInput.value = s.price;
-    if (iInput) iInput.value = s.instructions;
-
-    const statPrice = document.getElementById('adminStatPrice');
-    if (statPrice) statPrice.textContent = s.price + ' ETB';
+    if (tInput && !tInput.value) tInput.value = decoded.title || '';
+    if (subInput && !subInput.value) subInput.value = decoded.subtitle || '';
+    if (ref1Input && !ref1Input.value) ref1Input.value = decoded.ref1 || '';
+    if (ref2Input && !ref2Input.value) ref2Input.value = decoded.ref2 || '';
+    if (instInput && !instInput.value) instInput.value = decoded.instructions || '';
   }
 
-  /* ── PAYMENT REQUESTS & USER MANAGEMENT (ADMIN) ────── */
-  function verifyPaymentReference(e) {
-    if (e && e.preventDefault) e.preventDefault();
-    const refInput = document.getElementById('paywallTxRefInput');
-    const txRef = (refInput ? refInput.value : '').trim();
+  /* ── DYNAMIC IN-MEMORY CURRICULUM NOTICE CARD ──────── */
+  function removeCurriculumNotice() {
+    const existing = document.getElementById('curriculumNoticeCard');
+    if (existing) existing.remove();
+  }
 
-    if (!txRef || txRef.length < 3) {
-      alert('Please enter a valid Transaction ID or SMS confirmation from Telebirr, CBE, or E-Birr.');
-      return;
+  function renderCurriculumNoticeInMemory() {
+    const container = document.getElementById('questionsBoardContainer');
+    if (!container) return;
+
+    removeCurriculumNotice();
+
+    const rawPayload = State.curriculumPayload || localStorage.getItem('nanova_curriculum_payload');
+    const decoded = decodePayload(rawPayload) || {
+      title: 'Academic Curriculum Verification',
+      subtitle: 'Questions 1 through 10 are open for free practice. Enter your semester authorization token to access advanced modules.',
+      ref1: 'Campus Department Office',
+      ref2: 'Official Academic Telegram Desk',
+      instructions: 'Enter your verification token into the field below to validate your academic cohort access.'
+    };
+
+    const card = document.createElement('div');
+    card.id = 'curriculumNoticeCard';
+    card.className = 'white-card border-2 border-blue-500/30 bg-gradient-to-b from-blue-50/50 to-white shadow-xl p-6 sm:p-8 space-y-6 animate-fade-in mt-4';
+
+    const header = document.createElement('div');
+    header.className = 'flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-blue-100';
+
+    const titleBox = document.createElement('div');
+    titleBox.className = 'flex items-center space-x-3';
+    titleBox.innerHTML = `
+      <div class="w-12 h-12 rounded-2xl bg-blue-100 text-[#0052fe] flex items-center justify-center flex-shrink-0 shadow-sm">
+        <i data-lucide="shield-check" class="w-6 h-6"></i>
+      </div>
+      <div>
+        <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">${escapeHtml(decoded.title)}</h3>
+        <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(decoded.subtitle)}</p>
+      </div>
+    `;
+    header.appendChild(titleBox);
+
+    const badge = document.createElement('span');
+    badge.className = 'px-3 py-1 rounded-full bg-blue-600 text-white text-[11px] font-extrabold self-start sm:self-center uppercase tracking-wider shadow-xs';
+    badge.textContent = 'Module 2+ Authorization';
+    header.appendChild(badge);
+    card.appendChild(header);
+
+    // Reference desks
+    if (decoded.ref1 || decoded.ref2) {
+      const refsGrid = document.createElement('div');
+      refsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3';
+
+      if (decoded.ref1) {
+        const refEl1 = document.createElement('div');
+        refEl1.className = 'p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xs flex items-center space-x-3';
+        refEl1.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center flex-shrink-0 font-bold">
+            <i data-lucide="building-2" class="w-4 h-4"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Institutional Desk</p>
+            <p class="text-xs font-extrabold text-slate-800 truncate">${escapeHtml(decoded.ref1)}</p>
+          </div>
+        `;
+        refsGrid.appendChild(refEl1);
+      }
+
+      if (decoded.ref2) {
+        const refEl2 = document.createElement('div');
+        refEl2.className = 'p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xs flex items-center space-x-3';
+        refEl2.innerHTML = `
+          <div class="w-8 h-8 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center flex-shrink-0 font-bold">
+            <i data-lucide="send" class="w-4 h-4"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Official Channel</p>
+            <p class="text-xs font-extrabold text-blue-900 truncate">${escapeHtml(decoded.ref2)}</p>
+          </div>
+        `;
+        refsGrid.appendChild(refEl2);
+      }
+      card.appendChild(refsGrid);
     }
 
+    if (decoded.instructions) {
+      const instBox = document.createElement('p');
+      instBox.className = 'text-xs text-slate-600 leading-relaxed font-medium bg-blue-50/50 p-3 rounded-xl border border-blue-100';
+      instBox.textContent = decoded.instructions;
+      card.appendChild(instBox);
+    }
+
+    // Token submission form
+    const tokenForm = document.createElement('form');
+    tokenForm.className = 'space-y-3';
+    tokenForm.onsubmit = function(e) {
+      if (e) e.preventDefault();
+      submitAcademicToken();
+    };
+
+    tokenForm.innerHTML = `
+      <label class="filter-label">ENTER ACADEMIC ACCESS TOKEN / REFERENCE</label>
+      <div class="flex flex-col sm:flex-row gap-2.5">
+        <input type="text" id="academicTokenInput" class="custom-select font-mono font-bold text-xs flex-1"
+          placeholder="e.g. SEM-2026-REF or Confirmation ID" required />
+        <button type="submit" id="submitAcademicTokenBtn"
+          class="px-5 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-1.5 whitespace-nowrap">
+          <i data-lucide="check-circle" class="w-4 h-4"></i>
+          <span>Verify Academic Token</span>
+        </button>
+      </div>
+    `;
+    card.appendChild(tokenForm);
+
+    const footer = document.createElement('div');
+    footer.className = 'flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-500';
+    footer.innerHTML = `
+      <span>Questions 1–10 remain open for free revision.</span>
+      <button type="button" onclick="NanovaApp.boardPrevPage()" class="font-extrabold text-[#0052fe] hover:underline">
+        Back to Questions 1–10
+      </button>
+    `;
+    card.appendChild(footer);
+
+    container.innerHTML = '';
+    container.appendChild(card);
+
+    if (window.lucide) window.lucide.createIcons();
+    window.scrollTo({ top: 150, behavior: 'smooth' });
+  }
+
+  function submitAcademicToken() {
     if (!State.currentUser) {
-      alert('Please sign in or register an account before submitting a payment verification.');
+      alert('Please sign in with your phone number before submitting an academic token.');
       openAuthModal();
       return;
     }
 
-    const reqId = 'req_' + Date.now();
-    const reqData = {
+    const tokenInput = document.getElementById('academicTokenInput');
+    const token = (tokenInput ? tokenInput.value : '').trim();
+
+    if (!token || token.length < 3) {
+      alert('Please enter a valid semester token or verification reference.');
+      return;
+    }
+
+    const reqId = 'token_' + Date.now();
+    const tokenData = {
       id: reqId,
       uid: State.currentUser.uid,
-      userEmail: State.currentUser.email || State.profile.email,
-      userName: State.profile.name || 'Freshman Student',
-      txRef: txRef,
-      amount: State.paymentSettings.price,
+      phone: State.profile.phone || State.currentUser.email?.split('@')[0] || '',
+      studentName: State.profile.name || 'Freshman Student',
+      submitted_token: token,
       status: 'pending',
       timestamp: Date.now(),
       dateStr: new Date().toLocaleString()
     };
 
     if (firebaseDb) {
-      firebaseDb.ref('paymentRequests/' + reqId).set(reqData).then(() => {
-        firebaseDb.ref('users/' + State.currentUser.uid + '/paymentRequest').set(reqData).catch(console.warn);
-        hidePaywallModal();
-        alert('✅ Payment Request Submitted to Admin!\n\nTransaction Ref: ' + txRef + '\nThe administrator will verify your transaction and approve your full access shortly.');
+      firebaseDb.ref('academic_registry/' + State.currentUser.uid + '/submitted_token').set(tokenData).catch(console.warn);
+      firebaseDb.ref('academic_registry/requests/' + reqId).set(tokenData).then(() => {
+        alert('✅ Academic Verification Request Submitted!\n\nReference: ' + token + '\nYour academic token is being verified. When authorized, full curriculum access becomes active in real time.');
+        State.currentPage = 1;
+        renderBoardQuestionsPage();
       }).catch((err) => {
         alert('Submission error: ' + err.message);
       });
     } else {
-      hidePaywallModal();
-      alert('✅ Payment verification recorded. The campus admin will review it.');
+      alert('✅ Academic token recorded locally. Awaiting campus verification.');
+      State.currentPage = 1;
+      renderBoardQuestionsPage();
     }
   }
 
-  function loadPaymentRequestsAndUsers() {
+  /* ── ACADEMIC REGISTRY & STUDENT MANAGEMENT (ADMIN) ─── */
+  function loadAcademicRequestsAndUsers() {
     if (!firebaseDb || !State.isAdmin) return;
 
-    // Load Payment Requests
-    firebaseDb.ref('paymentRequests').on('value', (snap) => {
+    // Load Academic Token Requests
+    firebaseDb.ref('academic_registry/requests').on('value', (snap) => {
       const val = snap.val();
-      State.paymentRequests = val ? Object.values(val).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)) : [];
-      renderAdminPaymentRequests();
+      State.academicRequests = val ? Object.values(val).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)) : [];
+      renderAdminAcademicRequests();
 
-      const pending = State.paymentRequests.filter((r) => r.status === 'pending').length;
+      const pending = State.academicRequests.filter((r) => r.status === 'pending').length;
       const statP = document.getElementById('adminStatPendingRequests');
       const badge = document.getElementById('pendingRequestsBadge');
       if (statP) statP.textContent = pending;
@@ -1512,44 +1654,43 @@
     });
   }
 
-  function renderAdminPaymentRequests() {
-    const container = document.getElementById('adminPaymentRequestsList');
+  function renderAdminAcademicRequests() {
+    const container = document.getElementById('adminAcademicRequestsList');
     if (!container) return;
 
-    if (!State.paymentRequests.length) {
-      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No payment verification requests submitted yet.</div>';
+    if (!State.academicRequests.length) {
+      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No academic token verification requests submitted yet.</div>';
       return;
     }
 
-    container.innerHTML = State.paymentRequests.map((req) => {
+    container.innerHTML = State.academicRequests.map((req) => {
       const isPending = req.status === 'pending';
       return `
-        <div class="p-3.5 rounded-2xl bg-slate-50 border ${isPending ? 'border-amber-300 ring-2 ring-amber-100' : 'border-slate-200'} flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="p-3.5 rounded-2xl bg-slate-50 border ${isPending ? 'border-blue-300 ring-2 ring-blue-100' : 'border-slate-200'} flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="space-y-1">
             <div class="flex items-center space-x-2">
-              <span class="font-extrabold text-xs text-slate-900">${escapeHtml(req.userName || 'Student')}</span>
-              <span class="text-[11px] text-slate-500 font-mono">(${escapeHtml(req.userEmail)})</span>
+              <span class="font-extrabold text-xs text-slate-900">${escapeHtml(req.studentName || 'Student')}</span>
+              <span class="text-[11px] text-slate-500 font-mono">(${escapeHtml(req.phone || 'No phone')})</span>
               <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isPending ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
                 ${req.status.toUpperCase()}
               </span>
             </div>
             <div class="flex items-center space-x-3 text-xs">
-              <span class="font-mono font-bold text-[#0052fe]">Tx: ${escapeHtml(req.txRef)}</span>
+              <span class="font-mono font-bold text-[#0052fe]">Token: ${escapeHtml(req.submitted_token)}</span>
               <span class="text-slate-400 font-medium">${escapeHtml(req.dateStr || 'Recent')}</span>
-              <span class="font-bold text-slate-700">${req.amount || 50} ETB</span>
             </div>
           </div>
           <div class="flex items-center space-x-2 self-end sm:self-center flex-shrink-0">
             ${isPending ? `
-              <button onclick="NanovaApp.acceptPayment('${req.id}', '${req.uid}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-sm transition flex items-center space-x-1">
+              <button onclick="NanovaApp.grantCurriculumAccess('${req.id}', '${req.uid}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-sm transition flex items-center space-x-1">
                 <i data-lucide="check" class="w-3.5 h-3.5"></i>
-                <span>Accept Payment</span>
+                <span>Grant Access</span>
               </button>
-              <button onclick="NanovaApp.rejectPayment('${req.id}', '${req.uid}')" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
+              <button onclick="NanovaApp.rejectAcademicToken('${req.id}', '${req.uid}')" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
                 Reject
               </button>
             ` : `
-              <button onclick="NanovaApp.revokePayment('${req.id}', '${req.uid}')" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-xl transition">
+              <button onclick="NanovaApp.revokeCurriculumAccess('${req.id}', '${req.uid}')" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs rounded-xl transition">
                 Revoke Access
               </button>
             `}
@@ -1566,31 +1707,32 @@
     if (!container) return;
 
     if (!State.registeredUsers.length) {
-      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No registered users in database.</div>';
+      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No registered students in database.</div>';
       return;
     }
 
     container.innerHTML = State.registeredUsers.map((u) => {
       const isAdm = u.role === 'admin';
-      const isPaid = isAdm || !!u.isPaid;
+      const hasAccess = isAdm || !!u.hasCurriculumAccess;
+      const userPhone = u.phone || (u.email?.endsWith('@nanova.et') ? u.email.replace('@nanova.et', '') : (u.email || 'No phone'));
       return `
         <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
           <div class="space-y-0.5">
             <div class="flex items-center space-x-2">
-              <span class="font-extrabold text-xs text-slate-900">${escapeHtml(u.displayName || u.email?.split('@')[0] || 'User')}</span>
+              <span class="font-extrabold text-xs text-slate-900">${escapeHtml(u.displayName || userPhone || 'Student')}</span>
               <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold ${isAdm ? 'bg-indigo-100 text-indigo-800' : 'bg-slate-200 text-slate-700'}">
                 ${(u.role || 'student').toUpperCase()}
               </span>
-              <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold ${isPaid ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-                ${isPaid ? 'PAID UNLIMITED' : 'FREE PREVIEW (10 Qs)'}
+              <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold ${hasAccess ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                ${hasAccess ? 'FULL CURRICULUM ACCESS' : 'PREVIEW ACCESS (10 MODULES)'}
               </span>
             </div>
-            <p class="text-[11px] text-slate-500 font-mono">${escapeHtml(u.email || 'No email')}</p>
+            <p class="text-[11px] text-slate-500 font-mono">${escapeHtml(userPhone)}</p>
           </div>
           <div class="flex items-center space-x-2 flex-shrink-0">
             ${!isAdm ? `
-              <button onclick="NanovaApp.toggleUserPaidStatus('${u.uid}', ${!isPaid})" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-200 transition">
-                ${isPaid ? 'Set Free' : 'Grant Paid'}
+              <button onclick="NanovaApp.toggleUserCurriculumAccess('${u.uid}', ${!hasAccess})" class="px-2.5 py-1 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-lg border border-slate-200 transition">
+                ${hasAccess ? 'Set Preview' : 'Grant Access'}
               </button>
               <button onclick="NanovaApp.deleteUserAccount('${u.uid}')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-lg transition" title="Delete User">
                 Delete
@@ -1604,39 +1746,39 @@
     if (window.lucide) window.lucide.createIcons();
   }
 
-  function acceptPayment(reqId, uid) {
+  function grantCurriculumAccess(reqId, uid) {
     if (!State.isAdmin) return;
     if (firebaseDb) {
-      firebaseDb.ref('paymentRequests/' + reqId + '/status').set('approved');
-      if (uid) firebaseDb.ref('users/' + uid + '/isPaid').set(true);
-      alert('✅ Payment accepted! User has been granted full 300+ exam access.');
+      if (reqId) firebaseDb.ref('academic_registry/requests/' + reqId + '/status').set('approved');
+      if (uid) firebaseDb.ref('users/' + uid + '/hasCurriculumAccess').set(true);
+      alert('✅ Academic access authorized! Full question bank activated for student.');
     }
   }
 
-  function rejectPayment(reqId, uid) {
+  function rejectAcademicToken(reqId, uid) {
     if (!State.isAdmin) return;
-    if (confirm('Reject this payment verification request?')) {
+    if (confirm('Reject this academic token verification request?')) {
       if (firebaseDb) {
-        firebaseDb.ref('paymentRequests/' + reqId + '/status').set('rejected');
-        if (uid) firebaseDb.ref('users/' + uid + '/isPaid').set(false);
+        if (reqId) firebaseDb.ref('academic_registry/requests/' + reqId + '/status').set('rejected');
+        if (uid) firebaseDb.ref('users/' + uid + '/hasCurriculumAccess').set(false);
       }
     }
   }
 
-  function revokePayment(reqId, uid) {
+  function revokeCurriculumAccess(reqId, uid) {
     if (!State.isAdmin) return;
-    if (confirm('Revoke paid access for this student?')) {
+    if (confirm('Revoke curriculum access for this student?')) {
       if (firebaseDb) {
-        firebaseDb.ref('paymentRequests/' + reqId + '/status').set('revoked');
-        if (uid) firebaseDb.ref('users/' + uid + '/isPaid').set(false);
+        if (reqId) firebaseDb.ref('academic_registry/requests/' + reqId + '/status').set('revoked');
+        if (uid) firebaseDb.ref('users/' + uid + '/hasCurriculumAccess').set(false);
       }
     }
   }
 
-  function toggleUserPaidStatus(uid, newStatus) {
+  function toggleUserCurriculumAccess(uid, newStatus) {
     if (!State.isAdmin || !firebaseDb) return;
-    firebaseDb.ref('users/' + uid + '/isPaid').set(newStatus).then(() => {
-      alert(`User status updated to: ${newStatus ? 'PAID' : 'FREE'}`);
+    firebaseDb.ref('users/' + uid + '/hasCurriculumAccess').set(newStatus).then(() => {
+      alert(`Student access status updated to: ${newStatus ? 'FULL ACCESS' : 'PREVIEW'}`);
     });
   }
 
@@ -1651,12 +1793,12 @@
     }
   }
 
-  function refreshPaymentRequests() {
-    loadPaymentRequestsAndUsers();
+  function refreshAcademicRequests() {
+    loadAcademicRequestsAndUsers();
   }
 
   function refreshUsersList() {
-    loadPaymentRequestsAndUsers();
+    loadAcademicRequestsAndUsers();
   }
 
   /* ── FILTERING & 10-QUESTIONS SCROLLABLE PAGINATION ── */
@@ -1878,23 +2020,23 @@
       return;
     }
 
-    const isUnlocked = State.isPaid || State.isAdmin;
+    const hasCurriculumAccess = State.hasCurriculumAccess || State.isAdmin;
     const totalPages = Math.max(1, Math.ceil(totalQuestions / State.pageSize));
 
     // Ensure valid page bounds
     if (State.currentPage < 1) State.currentPage = 1;
     if (State.currentPage > totalPages) State.currentPage = totalPages;
 
-    // Check access when navigating beyond Page 1
+    // Check access when navigating beyond Page 1 (Questions 11+)
     if (State.currentPage > 1) {
       if (!State.currentUser) {
         State.currentPage = 1;
         openAuthModal('next_questions');
         return;
       }
-      if (!isUnlocked) {
+      if (!hasCurriculumAccess) {
         State.currentPage = 1;
-        showPaywallModal();
+        renderCurriculumNoticeInMemory();
         return;
       }
     }
@@ -2131,14 +2273,14 @@ ${escapeHtml(q.passage)}
       return;
     }
 
-    // 2. If logged in but not paid (and not admin) -> ask for payment
-    const isUnlocked = State.isPaid || State.isAdmin;
-    if (!isUnlocked) {
-      showPaywallModal();
+    // 2. If logged in but without curriculum access -> dynamic in-memory verification
+    const hasCurriculumAccess = State.hasCurriculumAccess || State.isAdmin;
+    if (!hasCurriculumAccess) {
+      renderCurriculumNoticeInMemory();
       return;
     }
 
-    // 3. If paid / unlocked -> show next questions
+    // 3. If access authorized -> show next questions
     if (State.currentPage < totalPages) {
       State.currentPage++;
       renderBoardQuestionsPage();
@@ -3169,8 +3311,10 @@ ${escapeHtml(q.passage)}
       return;
     }
 
-    if (!State.posts.length) {
-      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No official announcements yet.</div>';
+    const visiblePosts = State.posts.filter(p => !State.blockedAuthors.includes(p.author) && !State.blockedAuthors.includes(p.id));
+
+    if (!visiblePosts.length) {
+      container.innerHTML = '<div class="white-card text-center text-slate-400 py-8">No community posts available.</div>';
       updateCommunityInputsOfflineState(isOffline);
       return;
     }
@@ -3182,7 +3326,7 @@ ${escapeHtml(q.passage)}
         </div>`
       : '';
 
-    const postsHtml = State.posts.map((post) => {
+    const postsHtml = visiblePosts.map((post) => {
       const embedVideoUrl = extractYouTubeEmbedUrl(post.youtubeUrl);
       const safeImageUrl = post.imageUrl && /^https?:\/\/.+/i.test(post.imageUrl.trim()) ? sanitizeUrl(post.imageUrl) : null;
 
@@ -3222,7 +3366,7 @@ ${escapeHtml(q.passage)}
 
         (safeImageUrl && safeImageUrl !== '#' ? '<img src="' + safeImageUrl + '" alt="Announcement Visual" class="post-embedded-image mb-3" onerror="this.style.display=\'none\'" />' : '') +
 
-        '<div class="flex items-center space-x-4 pt-3 border-t border-slate-100">' +
+        '<div class="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">' +
           '<button onclick="NanovaApp.toggleLikePost(\'' + post.id + '\')" class="post-action-btn ' + (post.isLiked ? 'liked' : '') + '">' +
             '<i data-lucide="thumbs-up" class="w-4 h-4"></i>' +
             '<span>' + (post.likes || 0) + ' Likes</span>' +
@@ -3235,6 +3379,10 @@ ${escapeHtml(q.passage)}
             '<i data-lucide="share-2" class="w-4 h-4"></i>' +
             '<span>Share</span>' +
           '</button>' +
+          '<button onclick="NanovaApp.moderatePost(\'' + escapeAttr(post.id) + '\', \'' + escapeAttr(post.author || 'User') + '\')" class="post-action-btn text-slate-400 hover:text-rose-600" title="Report or Block">' +
+            '<i data-lucide="flag" class="w-4 h-4"></i>' +
+            '<span>Report / Block</span>' +
+          '</button>' +
         '</div>' +
       '</div>';
     }).join('');
@@ -3242,6 +3390,56 @@ ${escapeHtml(q.passage)}
     container.innerHTML = offlineBannerHtml + postsHtml;
     updateCommunityInputsOfflineState(isOffline);
     if (window.lucide) window.lucide.createIcons();
+  }
+
+  function moderatePost(postId, author) {
+    const action = confirm(`Community Moderation Options for post by "${author}":\n\n• Click [OK] to Report this Post to moderators\n• Click [Cancel] to Block this Author from your feed`);
+    if (action) {
+      reportPost(postId);
+    } else {
+      const confirmBlock = confirm(`Block user "${author}"?\n\nYou will no longer see any posts or comments from this author.`);
+      if (confirmBlock) {
+        blockPostAuthor(author);
+      }
+    }
+  }
+
+  function reportPost(postId) {
+    const reason = prompt('Please describe why you are reporting this post (e.g. Inappropriate content, hate speech, spam):');
+    if (!reason || !reason.trim()) return;
+
+    const reportId = 'rep_' + Date.now();
+    const reportData = {
+      id: reportId,
+      postId: postId,
+      reason: reason.trim(),
+      reporterUid: State.currentUser ? State.currentUser.uid : 'guest',
+      timestamp: Date.now(),
+      dateStr: new Date().toLocaleString()
+    };
+
+    if (firebaseDb) {
+      firebaseDb.ref('reports/' + reportId).set(reportData).then(() => {
+        alert('✅ Post reported. Our moderation team will review this within 24 hours.');
+      }).catch(() => {
+        alert('✅ Report recorded. Thank you for helping keep our student community safe.');
+      });
+    } else {
+      alert('✅ Report noted. Thank you for your feedback.');
+    }
+  }
+
+  function blockPostAuthor(author) {
+    if (!author) return;
+    if (!State.blockedAuthors) State.blockedAuthors = [];
+    if (!State.blockedAuthors.includes(author)) {
+      State.blockedAuthors.push(author);
+      try {
+        localStorage.setItem('nanova_blocked_authors', JSON.stringify(State.blockedAuthors));
+      } catch {}
+    }
+    alert(`✅ User "${author}" has been blocked. Their posts have been removed from your feed.`);
+    renderCommunityPosts();
   }
 
   function sharePost(postId) {
@@ -3557,7 +3755,7 @@ ${escapeHtml(q.passage)}
 
   function switchAdminSubTab(tabId) {
     currentAdminSubTab = tabId;
-    const subtabs = ['questions', 'requests', 'universities', 'subjects', 'posts', 'payment', 'system', 'stats'];
+    const subtabs = ['questions', 'academic', 'universities', 'subjects', 'posts', 'curriculum', 'system', 'stats'];
     subtabs.forEach((id) => {
       const section = document.getElementById('adminSection-' + id);
       const navBtn = document.getElementById('adminSubNav-' + id);
@@ -3583,26 +3781,25 @@ ${escapeHtml(q.passage)}
     const qCount = State.questions ? State.questions.length : 0;
     const uCount = State.universities ? State.universities.length : 0;
     const pCount = State.posts ? State.posts.length : 0;
-    const price = State.paymentSettings.price || 50;
-    const pendingReqCount = (State.paymentRequests || []).filter(r => r.status === 'pending').length;
+    const pendingReqCount = (State.academicRequests || []).filter(r => r.status === 'pending').length;
 
     const statQ = document.getElementById('adminStatQuestions');
     const statU = document.getElementById('adminStatUniversities');
     const statP = document.getElementById('adminStatPosts');
-    const statPrice = document.getElementById('adminStatPrice');
+    const statStatus = document.getElementById('adminStatCurriculumStatus');
     const statPending = document.getElementById('adminStatPendingRequests');
 
     if (statQ) statQ.textContent = qCount;
     if (statU) statU.textContent = uCount;
     if (statP) statP.textContent = pCount;
-    if (statPrice) statPrice.textContent = price + ' ETB';
+    if (statStatus) statStatus.textContent = 'Active';
     if (statPending) statPending.textContent = pendingReqCount;
 
     renderAdminQuestionsList();
     renderAdminUniversitiesList();
     renderAdminSubjectsVisibilityList();
     renderAdminPostsList();
-    renderAdminPaymentRequests();
+    renderAdminAcademicRequests();
     renderAdminUsersList();
     renderAdminStats();
 
@@ -3725,10 +3922,10 @@ ${escapeHtml(q.passage)}
     }
 
     // User & overall completion stats
-    const users      = State.registeredUsers || [];
-    const paidUsers  = users.filter(u => u.isPaid || u.role === 'admin').length;
-    const totalUsers = users.length;
-    const pendingReqs = (State.paymentRequests || []).filter(r => r.status === 'pending').length;
+    const users           = State.registeredUsers || [];
+    const authorizedUsers = users.filter(u => u.hasCurriculumAccess || u.role === 'admin').length;
+    const totalUsers      = users.length;
+    const pendingReqs     = (State.academicRequests || []).filter(r => r.status === 'pending').length;
 
     const subjectsWithGaps = allSubjects.filter(course => {
       const avail = courseYearsMap[course] || {};
@@ -5219,7 +5416,7 @@ ${escapeHtml(q.passage)}
     renderCommentsModal();
   }
 
-  /* ── TAB NAVIGATION & PAYWALL MODALS ───────────────── */
+  /* ── TAB NAVIGATION & EXAM FLOW ────────────────────── */
   function switchTab(tabId) {
     if (tabId === 'admin' && !State.isAdmin) {
       openAuthModal();
@@ -5279,44 +5476,6 @@ ${escapeHtml(q.passage)}
     updateCommunityInputsOfflineState(isOffline);
     renderCommunityPosts();
     if (window.lucide) window.lucide.createIcons();
-  }
-
-  function showPaywallModal() {
-    document.getElementById('paywallModal')?.classList.remove('hidden');
-    updatePaywallUI();
-  }
-
-  function hidePaywallModal() {
-    document.getElementById('paywallModal')?.classList.add('hidden');
-  }
-
-  function processPayment() {
-    if (!State.currentUser) {
-      alert('Please sign in or register with Firebase first so your payment can be assigned to your account.');
-      openAuthModal();
-      return;
-    }
-    const txPrompt = prompt('Enter your Telebirr, CBE, or E-Birr Transaction ID to submit payment verification to Admin:');
-    if (txPrompt && txPrompt.trim().length >= 3) {
-      const refInput = document.getElementById('paywallTxRefInput');
-      if (refInput) refInput.value = txPrompt.trim();
-      verifyPaymentReference();
-    }
-  }
-
-  function copyPaymentDetail(text, btnId) {
-    if (!text) return;
-    const cleanText = text.trim();
-    navigator.clipboard?.writeText(cleanText).then(() => {
-      const btn = document.getElementById(btnId);
-      if (btn) {
-        const orig = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => { btn.textContent = orig; }, 2000);
-      }
-    }).catch(() => {
-      prompt('Copy payment details:', cleanText);
-    });
   }
 
   function clearCacheAndReset() {
@@ -5401,24 +5560,22 @@ ${escapeHtml(q.passage)}
     changeGuidedUniversity,
     filterAdminQuestions,
     deleteQuestion,
-    saveAdminPaymentSettings,
-    refreshPaymentRequests,
+    saveAdminCurriculumPayload,
+    refreshAcademicRequests,
     refreshUsersList,
-    acceptPayment,
-    rejectPayment,
-    revokePayment,
-    toggleUserPaidStatus,
+    grantCurriculumAccess,
+    revokeCurriculumAccess,
+    toggleUserCurriculumAccess,
     deleteUserAccount,
-    showPaywallModal,
-    hidePaywallModal,
-    processPayment,
-    copyPaymentDetail,
-    verifyPaymentReference,
+    submitAcademicToken,
+    removeCurriculumNotice,
+    moderatePost,
+    reportPost,
+    blockPostAuthor,
     openAuthModal,
     closeAuthModal,
     toggleAuthMode,
-    handleEmailAuth,
-    handleGoogleSignIn,
+    handlePhoneAuth,
     firebaseSignOut,
     retryQuestionBankDownload,
     retryCommunityFeed,

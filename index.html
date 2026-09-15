@@ -545,6 +545,19 @@
               Reset Offline Data
             </button>
           </div>
+
+          <!-- Store Compliance: Data Deletion Endpoint -->
+          <div class="pt-4 mt-2 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+            <div>
+              <p class="text-xs font-bold text-slate-800">Account & Data Governance</p>
+              <p class="text-[11px] text-slate-400">Request permanent account and data deletion per store policies.</p>
+            </div>
+            <a href="https://nanova-st.web.app/privacy.html#section-8" target="_blank" rel="noopener noreferrer"
+              class="text-xs font-bold text-[#0052fe] hover:underline flex items-center gap-1">
+              <span>Request Deletion</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
         </form>
       </div>
     </div>
@@ -575,8 +588,8 @@
         </div>
       </div>
 
-      <!-- Admin Unlocked Dashboard View -->
-      <div id="adminUnlockedBox" class="hidden space-y-6">
+      <!-- Admin Authorized Dashboard View -->
+      <div id="adminDashboardBox" class="hidden space-y-6">
 
         <!-- Admin Dashboard Header & Quick Actions -->
         <div
@@ -667,30 +680,30 @@
 
           <!-- Metric 4 -->
           <div class="white-card p-4 cursor-pointer hover:shadow-md transition border border-slate-100"
-            onclick="NanovaApp.switchAdminSubTab('requests')">
+            onclick="NanovaApp.switchAdminSubTab('academic')">
             <div class="flex items-center justify-between mb-2">
               <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                 <i data-lucide="users" class="w-4 h-4"></i>
               </div>
               <span
-                class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Requests</span>
+                class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Access</span>
             </div>
             <div id="adminStatPendingRequests" class="text-xl font-black text-slate-900">0</div>
-            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Pending Payments</p>
+            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Token Requests</p>
           </div>
 
           <!-- Metric 5 -->
           <div class="white-card p-4 cursor-pointer hover:shadow-md transition border border-slate-100"
-            onclick="NanovaApp.switchAdminSubTab('payment')">
+            onclick="NanovaApp.switchAdminSubTab('curriculum')">
             <div class="flex items-center justify-between mb-2">
-              <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <div class="w-9 h-9 rounded-xl bg-blue-50 text-[#0052fe] flex items-center justify-center">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
               </div>
               <span
-                class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">Telebirr</span>
+                class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-100 text-blue-800">Status</span>
             </div>
-            <div id="adminStatPrice" class="text-xl font-black text-slate-900">50 ETB</div>
-            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Exam Pass Price</p>
+            <div id="adminStatCurriculumStatus" class="text-xl font-black text-slate-900">Active</div>
+            <p class="text-[11px] font-bold text-slate-500 mt-0.5">Curriculum Registry</p>
           </div>
         </div>
 
@@ -701,10 +714,10 @@
             <i data-lucide="layout-grid" class="w-4 h-4 text-[#0052fe]"></i>
             <span>Question Bank</span>
           </button>
-          <button id="adminSubNav-requests" onclick="NanovaApp.switchAdminSubTab('requests')"
+          <button id="adminSubNav-academic" onclick="NanovaApp.switchAdminSubTab('academic')"
             class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
             <i data-lucide="users" class="w-4 h-4"></i>
-            <span>Payment Requests & Users</span>
+            <span>Academic Registry & Students</span>
           </button>
           <button id="adminSubNav-universities" onclick="NanovaApp.switchAdminSubTab('universities')"
             class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
@@ -721,10 +734,10 @@
             <i data-lucide="megaphone" class="w-4 h-4"></i>
             <span>Announcements & Feed</span>
           </button>
-          <button id="adminSubNav-payment" onclick="NanovaApp.switchAdminSubTab('payment')"
+          <button id="adminSubNav-curriculum" onclick="NanovaApp.switchAdminSubTab('curriculum')"
             class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
-            <i data-lucide="credit-card" class="w-4 h-4"></i>
-            <span>Telebirr & Pricing</span>
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span>Curriculum Registry</span>
           </button>
           <button id="adminSubNav-system" onclick="NanovaApp.switchAdminSubTab('system')"
             class="px-4 py-2 rounded-xl bg-black/40 hover:bg-black/60 text-white font-bold text-xs transition flex items-center space-x-1.5 whitespace-nowrap">
@@ -782,27 +795,27 @@
           </div>
         </div>
 
-        <!-- SUBTAB 2: PAYMENT REQUESTS & USER ACCOUNTS -->
-        <div id="adminSection-requests" class="hidden space-y-4">
-          <!-- Pending Payment Approvals Card -->
+        <!-- SUBTAB 2: ACADEMIC ACCESS REQUESTS & USER ACCOUNTS -->
+        <div id="adminSection-academic" class="hidden space-y-4">
+          <!-- Pending Academic Access Approvals Card -->
           <div class="white-card">
             <div
               class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 mb-4">
               <div>
                 <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
                   <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-600"></i>
-                  <span>Student Payment Verification Requests</span>
+                  <span>Student Academic Token Verification Requests</span>
                 </h3>
-                <p class="text-xs text-slate-500">Accept Telebirr / CBE payment requests to grant full exam access.</p>
+                <p class="text-xs text-slate-500">Verify semester academic tokens to authorize full curriculum access.</p>
               </div>
-              <button onclick="NanovaApp.refreshPaymentRequests()"
+              <button onclick="NanovaApp.refreshAcademicRequests()"
                 class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 self-start sm:self-auto">
                 <i data-lucide="refresh-cw" class="w-4 h-4"></i>
                 <span>Refresh Requests</span>
               </button>
             </div>
 
-            <div id="adminPaymentRequestsList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
+            <div id="adminAcademicRequestsList" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
               <!-- Rendered via JS -->
             </div>
           </div>
@@ -814,10 +827,9 @@
               <div>
                 <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
                   <i data-lucide="users" class="w-5 h-5 text-blue-600"></i>
-                  <span>Firebase User Directory</span>
+                  <span>Student Directory & Curriculum Access</span>
                 </h3>
-                <p class="text-xs text-slate-500">Inspect registered users, manage payment permissions, or delete
-                  accounts.</p>
+                <p class="text-xs text-slate-500">Inspect enrolled students, manage curriculum access, or delete accounts.</p>
               </div>
               <button onclick="NanovaApp.refreshUsersList()"
                 class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center space-x-1.5 self-start sm:self-auto">
@@ -924,60 +936,58 @@
           </div>
         </div>
 
-        <!-- SUBTAB 4: TELEBIRR & PAYMENT CONFIG -->
-        <div id="adminSection-payment" class="hidden space-y-4">
+        <!-- SUBTAB 4: CURRICULUM REGISTRY & CLOUD PAYLOAD CONFIG -->
+        <div id="adminSection-curriculum" class="hidden space-y-4">
           <div class="white-card max-w-2xl mx-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
               <div>
                 <h3 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
-                  <i data-lucide="credit-card" class="w-5 h-5 text-blue-600"></i>
-                  <span>Telebirr & CBE Payment Configuration</span>
+                  <i data-lucide="shield-check" class="w-5 h-5 text-blue-600"></i>
+                  <span>Curriculum Registry & Cloud Payload</span>
                 </h3>
-                <p class="text-xs text-slate-500 mt-0.5">Customize payment accounts and price for unlimited exam access.
+                <p class="text-xs text-slate-500 mt-0.5">Manage encrypted institutional authorization payload stored in Firebase Realtime Database.
                 </p>
               </div>
-              <span class="px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 text-[11px] font-extrabold">Instant
-                Save</span>
+              <span id="adminPayloadStatusBadge" class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-extrabold">Cloud Encrypted</span>
             </div>
 
-            <form onsubmit="NanovaApp.saveAdminPaymentSettings(event)" class="space-y-4">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label class="filter-label">TELEBIRR PHONE NUMBER</label>
-                  <input type="text" id="adminTelebirrInput" class="custom-select font-bold text-sm text-slate-900"
-                    placeholder="+251 91 234 5678" required />
-                </div>
-                <div>
-                  <label class="filter-label">EXAM PASS PRICE (ETB)</label>
-                  <input type="number" id="adminPriceInput" min="0" step="5"
-                    class="custom-select font-bold text-sm text-slate-900" placeholder="50" required />
-                </div>
+            <form onsubmit="NanovaApp.saveAdminCurriculumPayload(event)" class="space-y-4">
+              <div>
+                <label class="filter-label">CURRICULUM NOTICE TITLE</label>
+                <input type="text" id="adminPayloadTitleInput" class="custom-select font-bold text-sm text-slate-900"
+                  placeholder="Academic Curriculum Verification" required />
+              </div>
+
+              <div>
+                <label class="filter-label">CURRICULUM NOTICE SUBTITLE / GUIDANCE</label>
+                <textarea id="adminPayloadSubtitleInput" class="post-textarea" rows="2"
+                  placeholder="Complete institutional modules and enter your semester academic authorization token." required></textarea>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label class="filter-label">CBE BIRR / COMMERCIAL BANK ACCOUNT</label>
-                  <input type="text" id="adminCbeInput" class="custom-select font-bold text-sm text-slate-900"
-                    placeholder="1000234567890" required />
+                  <label class="filter-label">INSTITUTIONAL REFERENCE 1</label>
+                  <input type="text" id="adminPayloadRef1Input" class="custom-select font-bold text-sm text-slate-900"
+                    placeholder="Department Office / Coordinator Desk" required />
                 </div>
                 <div>
-                  <label class="filter-label">E-BIRR PHONE / ACCOUNT NUMBER</label>
-                  <input type="text" id="adminEbirrInput" class="custom-select font-bold text-sm text-slate-900"
-                    placeholder="+251 91 234 5678" required />
+                  <label class="filter-label">INSTITUTIONAL REFERENCE 2</label>
+                  <input type="text" id="adminPayloadRef2Input" class="custom-select font-bold text-sm text-slate-900"
+                    placeholder="Academic Telegram / Student Union Desk" required />
                 </div>
               </div>
 
               <div>
-                <label class="filter-label">PAYMENT INSTRUCTION MESSAGE</label>
-                <textarea id="adminInstructionsInput" class="post-textarea" rows="2"
-                  placeholder="Instructions shown on payment modal..." required></textarea>
+                <label class="filter-label">TOKEN VERIFICATION INSTRUCTIONS</label>
+                <textarea id="adminPayloadInstructionsInput" class="post-textarea" rows="2"
+                  placeholder="Submit your semester reference token below to validate unrestricted question bank access." required></textarea>
               </div>
 
               <div class="pt-3 flex justify-end">
                 <button type="submit"
                   class="px-6 py-3 bg-[#0052fe] hover:bg-[#0041d0] text-white font-extrabold text-sm rounded-xl shadow-md transition flex items-center space-x-2">
                   <i data-lucide="check" class="w-4 h-4"></i>
-                  <span>Save Payment Settings</span>
+                  <span>Encrypt & Save to Cloud</span>
                 </button>
               </div>
             </form>
@@ -1201,95 +1211,6 @@
 
   </main>
 
-  <!-- Telebirr Paywall Modal (50 ETB) -->
-  <div id="paywallModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
-    <div
-      class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl animate-fade-in border border-slate-100 text-center">
-      <div
-        class="w-14 h-14 rounded-2xl bg-blue-50 text-[#0052fe] flex items-center justify-center mx-auto mb-4 shadow-sm">
-        <i data-lucide="sparkles" class="w-7 h-7"></i>
-      </div>
-      <h3 class="text-xl font-extrabold text-slate-900 mb-1">Unlock Unlimited Freshman Exams</h3>
-      <p class="text-xs text-slate-500 mb-5">Access all past university exam questions with step-by-step verified
-        solutions for only 50 ETB.</p>
-
-      <div id="paywallMethodsContainer" class="space-y-3 mb-6 text-left">
-        <!-- Telebirr Row -->
-        <div class="p-3.5 rounded-2xl border-2 border-blue-600 bg-blue-50/60 flex items-center justify-between">
-          <div>
-            <div class="flex items-center gap-1.5 font-extrabold text-blue-900 text-sm">
-              <i data-lucide="smartphone" class="w-4 h-4 text-blue-600"></i>
-              <span>Telebirr Account</span>
-            </div>
-            <span id="paywallTelebirrDisplay" class="text-xs text-blue-700 font-semibold font-mono">+251 91 234
-              5678</span>
-          </div>
-          <button type="button" id="copyTelebirrBtn"
-            onclick="NanovaApp.copyPaymentDetail('+251912345678', 'copyTelebirrBtn')"
-            class="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition shadow-sm">
-            Copy
-          </button>
-        </div>
-
-        <!-- CBE Birr Row -->
-        <div class="p-3.5 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-between">
-          <div>
-            <div class="flex items-center gap-1.5 font-extrabold text-slate-900 text-sm">
-              <i data-lucide="building-2" class="w-4 h-4 text-slate-700"></i>
-              <span>CBE Account</span>
-            </div>
-            <span id="paywallCbeDisplay" class="text-xs text-slate-600 font-semibold font-mono">1000234567890</span>
-          </div>
-          <button type="button" id="copyCbeBtn" onclick="NanovaApp.copyPaymentDetail('1000234567890', 'copyCbeBtn')"
-            class="px-3 py-1.5 rounded-xl bg-black hover:bg-slate-800 text-white font-bold text-xs transition shadow-sm">
-            Copy
-          </button>
-        </div>
-
-        <!-- E-Birr Row -->
-        <div class="p-3.5 rounded-2xl border border-emerald-200 bg-emerald-50/50 flex items-center justify-between">
-          <div>
-            <div class="flex items-center gap-1.5 font-extrabold text-emerald-950 text-sm">
-              <i data-lucide="wallet" class="w-4 h-4 text-emerald-600"></i>
-              <span>E-Birr Account</span>
-            </div>
-            <span id="paywallEbirrDisplay" class="text-xs text-emerald-700 font-semibold font-mono">+251 91 234
-              5678</span>
-          </div>
-          <button type="button" id="copyEbirrBtn"
-            onclick="NanovaApp.copyPaymentDetail(document.getElementById('paywallEbirrDisplay').textContent, 'copyEbirrBtn')"
-            class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-sm">
-            Copy
-          </button>
-        </div>
-
-        <!-- Transaction Reference Input -->
-        <form onsubmit="NanovaApp.verifyPaymentReference(event)" class="pt-2 space-y-2">
-          <label class="filter-label">ENTER TRANSACTION ID / SMS CONFIRMATION</label>
-          <div class="flex space-x-2">
-            <input type="text" id="paywallTxRefInput" placeholder="e.g. 5K8932 or Telebirr Ref"
-              class="custom-select font-mono font-bold text-xs" required />
-            <button type="submit"
-              class="px-4 py-2 bg-black hover:bg-slate-800 text-white font-extrabold text-xs rounded-xl shadow transition whitespace-nowrap">
-              Verify
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div class="flex space-x-3">
-        <button onclick="NanovaApp.hidePaywallModal()"
-          class="flex-1 py-3 border border-slate-200 text-slate-700 font-bold rounded-xl text-sm hover:bg-slate-50 transition">
-          Close
-        </button>
-        <button id="payNowBtn" onclick="NanovaApp.processPayment()"
-          class="flex-1 py-3 bg-[#0052fe] hover:bg-[#003ec0] text-white font-bold rounded-xl text-sm shadow-md transition">
-          Instant Unlock
-        </button>
-      </div>
-    </div>
-  </div>
-
   <script src="app.js"></script>
   <!-- Add / Edit University Modal (Admin Only) -->
   <div id="univModal" class="hidden fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4">
@@ -1376,7 +1297,7 @@
               <div>
                 <label class="filter-label">🏪 ከካምፓስ ውጭ ምግብ (Outside Food)</label>
                 <textarea id="guideOutsideFood" rows="2" class="custom-select text-sm resize-y"
-                  placeholder="Nearby restaurants, price range..."></textarea>
+                  placeholder="Nearby student cafeterias, campus kiosks, options..."></textarea>
               </div>
               <div>
                 <label class="filter-label">🛏️ ዶርም / ሎከር (Dorm &amp; Lockers)</label>
@@ -1480,7 +1401,7 @@
           </div>
           <div>
             <h3 id="authModalTitle" class="text-lg font-extrabold text-slate-900 leading-tight">Sign In to Nanova</h3>
-            <p id="authModalSubtitle" class="text-[11px] text-slate-500 font-medium">Sign in to access your student profile & practice.</p>
+            <p id="authModalSubtitle" class="text-[11px] text-slate-500 font-medium">Sign in with your phone number to access your student profile & practice.</p>
           </div>
         </div>
         <button onclick="NanovaApp.closeAuthModal()" class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg">
@@ -1488,12 +1409,12 @@
         </button>
       </div>
 
-      <!-- Auth Form -->
-      <form id="firebaseAuthForm" onsubmit="NanovaApp.handleEmailAuth(event)" class="space-y-3.5">
+      <!-- Auth Form (Phone Number + Password Only) -->
+      <form id="firebaseAuthForm" onsubmit="NanovaApp.handlePhoneAuth(event)" class="space-y-3.5">
         <div>
-          <label class="filter-label">EMAIL ADDRESS</label>
-          <input type="email" id="authEmailInput" class="custom-select text-sm font-semibold"
-            placeholder="your@email.com" required />
+          <label class="filter-label">PHONE NUMBER</label>
+          <input type="tel" id="authPhoneInput" class="custom-select text-sm font-semibold"
+            placeholder="0911000000" pattern="[0-9]*" required />
         </div>
         <div>
           <label class="filter-label">PASSWORD</label>
@@ -1507,32 +1428,7 @@
         </button>
       </form>
 
-      <!-- Divider -->
-      <div class="relative my-4">
-        <div class="absolute inset-0 flex items-center">
-          <div class="w-full border-t border-slate-200"></div>
-        </div>
-        <div class="relative flex justify-center text-xs uppercase"><span
-            class="bg-white px-2 text-slate-400 font-bold">Or</span></div>
-      </div>
-
-      <!-- Google Sign In Button -->
-      <button type="button" onclick="NanovaApp.handleGoogleSignIn()"
-        class="w-full py-3 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold rounded-xl text-sm flex items-center justify-center space-x-2.5 shadow-sm transition">
-        <svg class="w-4 h-4" viewBox="0 0 24 24">
-          <path fill="#4285F4"
-            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-          <path fill="#34A853"
-            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-          <path fill="#FBBC05"
-            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-          <path fill="#EA4335"
-            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-        </svg>
-        <span>Continue with Google</span>
-      </button>
-
-      <!-- Toggle Sign In / Register -->
+      <!-- Toggle Sign In / Create Account -->
       <div class="mt-4 pt-3 border-t border-slate-100 text-center text-xs text-slate-500 font-semibold">
         <span id="authTogglePrompt">Don't have an account?</span>
         <button type="button" onclick="NanovaApp.toggleAuthMode()" id="authToggleBtn"
