@@ -8,7 +8,7 @@
           ".validate": "newData.val() === 'student' || root.child('users').child(auth.uid).child('role').val() === 'admin'"
         },
         "hasCurriculumAccess": {
-          ".validate": "root.child('users').child(auth.uid).child('role').val() === 'admin' || (data.val() === newData.val())"
+          ".validate": "root.child('users').child(auth.uid).child('role').val() === 'admin' || (!data.exists() && newData.val() === false) || (data.val() === newData.val())"
         }
       },
       ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'admin'"

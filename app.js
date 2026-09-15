@@ -605,12 +605,12 @@
     const btn = document.getElementById('profileAvatarBtn');
     if (btn) {
       if (State.currentUser) {
-        const studentLabel = State.profile.phone || State.profile.name || State.currentUser.email?.split('@')[0] || 'Student';
-        const init = studentLabel ? studentLabel[0].toUpperCase() : 'S';
+        const studentLabel = State.profile.name || State.profile.phone || State.currentUser.displayName || State.currentUser.email?.split('@')[0] || 'Student';
+        const init = (State.profile.name ? State.profile.name.trim()[0] : (studentLabel ? studentLabel[0] : 'S')).toUpperCase();
         btn.className = 'px-3 py-1.5 rounded-2xl bg-white text-slate-900 font-extrabold text-xs flex items-center space-x-2 border-2 border-white/80 hover:bg-blue-50 transition shadow-lg shadow-blue-900/30';
         btn.innerHTML = `
           <span class="w-6 h-6 rounded-xl bg-blue-100 text-[#0052fe] font-black text-xs flex items-center justify-center">${init}</span>
-          <span class="hidden sm:inline font-extrabold text-xs text-slate-800 max-w-[100px] truncate">${escapeHtml(studentLabel)}</span>
+          <span class="hidden sm:inline font-extrabold text-xs text-slate-800 max-w-[120px] truncate">${escapeHtml(studentLabel)}</span>
         `;
       } else {
         btn.className = 'px-3.5 py-1.5 rounded-2xl bg-white text-[#0052fe] font-black text-xs flex items-center space-x-1.5 border-2 border-white hover:bg-blue-50 transition shadow-lg shadow-blue-900/30';
@@ -690,6 +690,7 @@
                 State.isAdmin = false;
                 State.hasCurriculumAccess = isPreApproved;
               }
+              updateProfileUI();
               updateAdminUI();
               renderBoardQuestionsPage();
             });
@@ -720,7 +721,7 @@
     });
   }
 
-  function openAuthModal(reason = '') {
+  function openAuthModal(reason = '', initialMode = null) {
     if (State.currentUser) {
       const label = State.profile.phone || State.currentUser.email || 'Student';
       const confirmed = confirm('Signed in with phone: ' + label + '\n\nWould you like to Sign Out?');
@@ -728,10 +729,17 @@
         firebaseSignOut();
       }
     } else {
+      if (initialMode) {
+        setAuthMode(initialMode);
+      } else {
+        setAuthMode(authMode || 'signin');
+      }
       const subtitle = document.getElementById('authModalSubtitle');
       if (subtitle) {
         if (reason === 'next_questions') {
-          subtitle.textContent = 'Please sign in with your phone number to access the next questions.';
+          subtitle.textContent = 'Please sign in or create an account to access the next questions.';
+        } else if (authMode === 'signup') {
+          subtitle.textContent = 'Register with your name, academic year, phone number & password.';
         } else {
           subtitle.textContent = 'Sign in with your phone number to access your student profile & practice.';
         }
@@ -744,8 +752,8 @@
     document.getElementById('authModal')?.classList.add('hidden');
   }
 
-  function toggleAuthMode() {
-    authMode = authMode === 'signin' ? 'signup' : 'signin';
+  function setAuthMode(mode) {
+    authMode = mode;
     const title = document.getElementById('authModalTitle');
     const subtitle = document.getElementById('authModalSubtitle');
     const submitBtn = document.getElementById('authSubmitBtn');
@@ -755,20 +763,29 @@
     const confirmPassContainer = document.getElementById('authConfirmPassContainer');
     const nameInput = document.getElementById('authNameInput');
     const confirmPassInput = document.getElementById('authConfirmPasswordInput');
+    const tabSignIn = document.getElementById('authTabSignIn');
+    const tabSignUp = document.getElementById('authTabSignUp');
 
     if (authMode === 'signup') {
       if (title) title.textContent = 'Create Student Account';
-      if (subtitle) subtitle.textContent = 'Enter your details to register your student profile & practice.';
-      if (submitBtn) submitBtn.textContent = 'Create Account';
+      if (subtitle) subtitle.textContent = 'Register with your name, academic year, phone number & password.';
+      if (submitBtn) submitBtn.textContent = 'Create Student Account';
       if (togglePrompt) togglePrompt.textContent = 'Already have an account?';
       if (toggleBtn) toggleBtn.textContent = 'Sign In';
       if (signupFields) signupFields.classList.remove('hidden');
       if (confirmPassContainer) confirmPassContainer.classList.remove('hidden');
       if (nameInput) nameInput.required = true;
       if (confirmPassInput) confirmPassInput.required = true;
+
+      if (tabSignIn) {
+        tabSignIn.className = 'py-2.5 rounded-xl font-bold text-xs text-slate-500 hover:text-slate-900 transition flex items-center justify-center space-x-1.5';
+      }
+      if (tabSignUp) {
+        tabSignUp.className = 'py-2.5 rounded-xl font-extrabold text-xs transition bg-[#0052fe] text-white shadow-sm flex items-center justify-center space-x-1.5';
+      }
     } else {
       if (title) title.textContent = 'Sign In to Nanova';
-      if (subtitle) subtitle.textContent = 'Sign in with your phone number to access your student profile & practice.';
+      if (subtitle) subtitle.textContent = 'Sign in with your phone number and password to continue.';
       if (submitBtn) submitBtn.textContent = 'Sign In';
       if (togglePrompt) togglePrompt.textContent = "Don't have an account?";
       if (toggleBtn) toggleBtn.textContent = 'Create Account';
@@ -776,8 +793,34 @@
       if (confirmPassContainer) confirmPassContainer.classList.add('hidden');
       if (nameInput) nameInput.required = false;
       if (confirmPassInput) confirmPassInput.required = false;
+
+      if (tabSignIn) {
+        tabSignIn.className = 'py-2.5 rounded-xl font-extrabold text-xs transition bg-[#0052fe] text-white shadow-sm flex items-center justify-center space-x-1.5';
+      }
+      if (tabSignUp) {
+        tabSignUp.className = 'py-2.5 rounded-xl font-bold text-xs text-slate-500 hover:text-slate-900 transition flex items-center justify-center space-x-1.5';
+      }
     }
+    if (window.lucide) window.lucide.createIcons();
   }
+
+  function toggleAuthMode() {
+    setAuthMode(authMode === 'signin' ? 'signup' : 'signin');
+  }
+
+  function normalizePhone(raw) {
+    let n = (raw || '').replace(/[\s\-\(\)]+/g, '');
+    if (n.startsWith('+251')) n = n.slice(4);
+    else if (n.startsWith('251')) n = n.slice(3);
+    else if (n.startsWith('0')) n = n.slice(1);
+    
+    // Check if it is a valid 9-digit Ethiopian mobile number starting with 9 or 7
+    if (!/^[97]\d{8}$/.test(n)) {
+      return null;
+    }
+    return '+251' + n;
+  }
+
 
   async function handlePhoneAuth(e) {
     if (e && e.preventDefault) e.preventDefault();
@@ -801,8 +844,8 @@
         document.getElementById('authNameInput')?.focus();
         return;
       }
-      if (!phone || phone.length < 9) {
-        alert('Please enter a valid phone number (e.g. 0911000000).');
+      if (!phone) {
+        alert('Please enter a valid Ethiopian mobile number (e.g., 0911000000 or 0711000000).');
         document.getElementById('authPhoneInput')?.focus();
         return;
       }
@@ -863,8 +906,8 @@
     }
 
     // SIGN IN FLOW
-    if (!phone || phone.length < 9) {
-      alert('Please enter a valid phone number (e.g. 0911000000).');
+    if (!phone) {
+      alert('Please enter a valid Ethiopian mobile number (e.g., 0911000000 or 0711000000).');
       return;
     }
     if (!pass || pass.length < 6) {
@@ -5664,6 +5707,7 @@ ${escapeHtml(q.passage)}
     blockPostAuthor,
     openAuthModal,
     closeAuthModal,
+    setAuthMode,
     toggleAuthMode,
     handlePhoneAuth,
     firebaseSignOut,
