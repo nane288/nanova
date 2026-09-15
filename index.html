@@ -493,6 +493,22 @@
         <p class="section-subtitle">Manage your university details and offline exam cache.</p>
       </div>
 
+      <!-- Semester Academic Registration Card (loaded from Firebase) -->
+      <div id="semesterRegistrationCard" class="hidden white-card max-w-2xl mx-auto mb-6 border-2 border-blue-500/20 bg-gradient-to-b from-blue-50/60 to-white">
+        <div class="flex items-center space-x-3 pb-4 border-b border-blue-100 mb-4">
+          <div class="w-10 h-10 rounded-2xl bg-blue-100 text-[#0052fe] flex items-center justify-center flex-shrink-0">
+            <i data-lucide="university" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900">የተማሪዎች ምዝገባ</h3>
+            <p class="text-[11px] text-slate-500 font-medium">Semester Academic Registration</p>
+          </div>
+        </div>
+        <div id="registrationInfoBody" class="space-y-3 text-sm text-slate-700">
+          <!-- Loaded dynamically from Firebase system_config/registration_info -->
+        </div>
+      </div>
+
       <div class="white-card max-w-2xl mx-auto">
         <div class="flex items-center space-x-4 pb-6 border-b border-slate-100 mb-6">
           <div
@@ -546,19 +562,23 @@
             </button>
           </div>
 
-          <!-- Store Compliance: Data Deletion Endpoint -->
-          <div class="pt-4 mt-2 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-            <div>
-              <p class="text-xs font-bold text-slate-800">Account & Data Governance</p>
-              <p class="text-[11px] text-slate-400">Request permanent account and data deletion per store policies.</p>
+          <!-- Account Deletion -->
+          <div class="pt-4 mt-2 border-t border-slate-100">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+              <div>
+                <p class="text-xs font-bold text-slate-800">Account &amp; Data Governance</p>
+                <p class="text-[11px] text-slate-400">Permanently delete your account and all associated data from Nanova servers.</p>
+              </div>
+              <button type="button" id="deleteAccountBtn" onclick="NanovaApp.deleteUserAccount()"
+                class="px-4 py-2 text-xs font-extrabold text-red-600 border border-red-200 hover:bg-red-50 rounded-xl flex items-center gap-1.5 transition">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                <span>Delete Account</span>
+              </button>
             </div>
-            <a href="https://nanova-st.web.app/privacy.html#section-8" target="_blank" rel="noopener noreferrer"
-              class="text-xs font-bold text-[#0052fe] hover:underline flex items-center gap-1">
-              <span>Request Deletion</span>
-              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-            </a>
           </div>
+
         </form>
+
       </div>
     </div>
 

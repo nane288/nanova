@@ -721,7 +721,93 @@
     });
   }
 
+  /* ── DELETE USER ACCOUNT ───────────────────── */
+  async function deleteUserAccount() {
+    if (!State.currentUser) {
+      alert('You are not signed in.');
+      return;
+    }
+    const confirmed = confirm(
+      'Are you sure you want to permanently delete your account?\n\nThis will erase all your data from Nanova servers and cannot be undone.'
+    );
+    if (!confirmed) return;
+
+    const btn = document.getElementById('deleteAccountBtn');
+    if (btn) { btn.textContent = 'Deleting...'; btn.disabled = true; }
+
+    try {
+      const uid = State.currentUser.uid;
+      // Remove from RTDB
+      if (firebaseDb) {
+        await firebaseDb.ref('users/' + uid).remove().catch(() => {});
+        await firebaseDb.ref('academic_registry/' + uid).remove().catch(() => {});
+      }
+      // Delete Firebase Auth account
+      await State.currentUser.delete();
+      alert('✅ Your account and all associated data have been permanently deleted.');
+      State.currentUser = null;
+      State.hasCurriculumAccess = false;
+      updateProfileUI();
+    } catch (err) {
+      if (err.code === 'auth/requires-recent-login') {
+        alert('For security, please sign out and sign back in before deleting your account.');
+      } else {
+        alert('❌ ' + (err.message || 'Unable to delete account.'));
+      }
+      if (btn) { btn.textContent = 'Delete Account'; btn.disabled = false; }
+    }
+  }
+
+  /* ── SEMESTER ACADEMIC REGISTRATION (from Firebase) ─── */
+  function syncCurriculumRegistry() {
+    if (!firebaseDb) return;
+    firebaseDb.ref('system_config/registration_info').once('value', (snap) => {
+      const info = snap.val();
+      const card = document.getElementById('semesterRegistrationCard');
+      const body = document.getElementById('registrationInfoBody');
+      if (!card || !body) return;
+      if (!info) return; // hide if admin hasn't set it yet
+      card.classList.remove('hidden');
+      const lines = [];
+      if (info.instruction_am) {
+        lines.push(`<p class="text-sm font-medium text-slate-700 leading-relaxed">${escapeHtml(info.instruction_am)}</p>`);
+      }
+      if (info.telebirr) {
+        lines.push(`
+          <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-blue-100 shadow-xs">
+            <div>
+              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Telebirr</p>
+              <p class="text-base font-extrabold text-slate-900 tracking-wider">${escapeHtml(info.telebirr)}</p>
+              ${info.telebirr_name ? `<p class="text-[11px] text-slate-500">${escapeHtml(info.telebirr_name)}</p>` : ''}
+            </div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Telebirr_logo.svg/320px-Telebirr_logo.svg.png"
+              class="h-8 object-contain opacity-80" alt="Telebirr" onerror="this.style.display='none'" />
+          </div>`);
+      }
+      if (info.cbe) {
+        lines.push(`
+          <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-blue-100 shadow-xs">
+            <div>
+              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">CBE Birr</p>
+              <p class="text-base font-extrabold text-slate-900 tracking-wider">${escapeHtml(info.cbe)}</p>
+              ${info.cbe_name ? `<p class="text-[11px] text-slate-500">${escapeHtml(info.cbe_name)}</p>` : ''}
+            </div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Commercial_Bank_of_Ethiopia_Logo.svg/320px-Commercial_Bank_of_Ethiopia_Logo.svg.png"
+              class="h-8 object-contain opacity-80" alt="CBE" onerror="this.style.display='none'" />
+          </div>`);
+      }
+      if (info.amount_am) {
+        lines.push(`<p class="text-xs font-bold text-blue-700 bg-blue-50 p-2.5 rounded-xl border border-blue-100">${escapeHtml(info.amount_am)}</p>`);
+      }
+      if (info.note_am) {
+        lines.push(`<p class="text-[11px] text-slate-500 leading-relaxed">${escapeHtml(info.note_am)}</p>`);
+      }
+      body.innerHTML = lines.join('');
+    });
+  }
+
   function openAuthModal(reason = '', initialMode = null) {
+
     if (State.currentUser) {
       const label = State.profile.phone || State.currentUser.email || 'Student';
       const confirmed = confirm('Signed in with phone: ' + label + '\n\nWould you like to Sign Out?');
@@ -1626,7 +1712,7 @@
 
     const badge = document.createElement('span');
     badge.className = 'px-3 py-1 rounded-full bg-blue-600 text-white text-[11px] font-extrabold self-start sm:self-center uppercase tracking-wider shadow-xs';
-    badge.textContent = 'Module 2+ Authorization';
+    badge.textContent = 'የምዝገባ ማረጋገጫ';
     header.appendChild(badge);
     card.appendChild(header);
 
@@ -5569,6 +5655,8 @@ ${escapeHtml(q.passage)}
       onOpenExamScreen();
     } else if (tabId === 'feed') {
       onOpenCommunityFeed();
+    } else if (tabId === 'profile') {
+      syncCurriculumRegistry();
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -5700,6 +5788,7 @@ ${escapeHtml(q.passage)}
     revokeCurriculumAccess,
     toggleUserCurriculumAccess,
     deleteUserAccount,
+    syncCurriculumRegistry,
     submitAcademicToken,
     removeCurriculumNotice,
     moderatePost,
