@@ -4,7 +4,8 @@
     "namespace": "android_app",
     "package_name": "app.web.nanova_st.twa",
     "sha256_cert_fingerprints": [
-      "ED:29:D3:90:50:21:0F:CD:9D:75:E2:67:89:4D:8D:4B:92:9B:62:80:71:67:00:41:A1:E3:0B:9D:1F:B9:FA:84"
+      "ED:29:D3:90:50:21:0F:CD:9D:75:E2:67:89:4D:8D:4B:92:9B:62:80:71:67:00:41:A1:E3:0B:9D:1F:B9:FA:84",
+      "A5:1C:DA:6C:16:68:98:67:CF:14:B4:2B:19:25:D2:6F:A5:00:49:7A:82:C1:9A:A2:09:50:71:27:EF:B0:E6:0B"
     ]
   }
 }]
