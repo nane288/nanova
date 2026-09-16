@@ -434,6 +434,7 @@
     currentPage: 1,
     curriculumPayload: null,
     registrationInfo: null,
+    myIdVerification: null,
     exams: [],
     questions: [],
     filteredQuestions: [],
@@ -603,6 +604,20 @@
   }
 
   function updateProfileUI() {
+    const landing = document.getElementById('landingPage');
+    const mainApp = document.getElementById('mainAppContainer');
+    const mainNav = document.getElementById('mainNavTabs');
+
+    if (State.currentUser) {
+      if (landing) landing.classList.add('hidden');
+      if (mainApp) mainApp.classList.remove('hidden');
+      if (mainNav) mainNav.classList.remove('hidden');
+    } else {
+      if (landing) landing.classList.remove('hidden');
+      if (mainApp) mainApp.classList.add('hidden');
+      if (mainNav) mainNav.classList.add('hidden');
+    }
+
     const btn = document.getElementById('profileAvatarBtn');
     if (btn) {
       if (State.currentUser) {
@@ -617,7 +632,7 @@
         btn.className = 'px-3.5 py-1.5 rounded-2xl bg-white text-[#0052fe] font-black text-xs flex items-center space-x-1.5 border-2 border-white hover:bg-blue-50 transition shadow-lg shadow-blue-900/30';
         btn.innerHTML = `
           <i data-lucide="user" class="w-4 h-4 text-[#0052fe]"></i>
-          <span>Login</span>
+          <span>Login / Sign Up</span>
         `;
       }
     }
@@ -703,6 +718,15 @@
           State.hasCurriculumAccess = isPreApproved;
         }
 
+        if (firebaseDb) {
+          firebaseDb.ref('academic_registry/' + user.uid + '/submitted_token').on('value', (snap) => {
+            State.myIdVerification = snap.val();
+            if (document.getElementById('curriculumNoticeCard')) {
+              renderBoardQuestionsPage();
+            }
+          });
+        }
+
         localStorage.setItem('nanova_profile', JSON.stringify(State.profile));
         updateProfileUI();
         updateAdminUI();
@@ -714,6 +738,7 @@
         State.currentUser = null;
         State.isAdmin = false;
         State.hasCurriculumAccess = false;
+        State.myIdVerification = null;
         updateProfileUI();
         updateAdminUI();
         renderBoardQuestionsPage();
@@ -760,10 +785,11 @@
     }
   }
 
-  /* ── SEMESTER ACADEMIC REGISTRATION (from Firebase) ─── */
-  function syncCurriculumRegistry() {
+  /* ── STUDENT ID VERIFICATION INFO (from Firebase) ─── */
+  function syncIdVerificationInfo() {
     if (!firebaseDb) return;
-    firebaseDb.ref('system_config/registration_info').once('value', (snap) => {
+    // Load student ID verification instructions set by admin
+    firebaseDb.ref('system_config/id_verification_info').once('value', (snap) => {
       const info = snap.val();
       if (info) State.registrationInfo = info;
       const card = document.getElementById('semesterRegistrationCard');
@@ -775,32 +801,12 @@
       if (info.instruction_am) {
         lines.push(`<p class="text-sm font-medium text-slate-700 leading-relaxed">${escapeHtml(info.instruction_am)}</p>`);
       }
-      if (info.telebirr) {
+      if (info.how_to_get_id) {
         lines.push(`
-          <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-blue-100 shadow-xs">
-            <div>
-              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Telebirr</p>
-              <p class="text-base font-extrabold text-slate-900 tracking-wider">${escapeHtml(info.telebirr)}</p>
-              ${info.telebirr_name ? `<p class="text-[11px] text-slate-500">${escapeHtml(info.telebirr_name)}</p>` : ''}
-            </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Telebirr_logo.svg/320px-Telebirr_logo.svg.png"
-              class="h-8 object-contain opacity-80" alt="Telebirr" onerror="this.style.display='none'" />
+          <div class="p-3.5 rounded-xl bg-blue-50 border border-blue-100">
+            <p class="text-[10px] uppercase font-bold text-blue-700 tracking-wider mb-1">How to get your Student ID</p>
+            <p class="text-xs text-slate-700 leading-relaxed font-medium">${escapeHtml(info.how_to_get_id)}</p>
           </div>`);
-      }
-      if (info.cbe) {
-        lines.push(`
-          <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-blue-100 shadow-xs">
-            <div>
-              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">CBE Birr</p>
-              <p class="text-base font-extrabold text-slate-900 tracking-wider">${escapeHtml(info.cbe)}</p>
-              ${info.cbe_name ? `<p class="text-[11px] text-slate-500">${escapeHtml(info.cbe_name)}</p>` : ''}
-            </div>
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Commercial_Bank_of_Ethiopia_Logo.svg/320px-Commercial_Bank_of_Ethiopia_Logo.svg.png"
-              class="h-8 object-contain opacity-80" alt="CBE" onerror="this.style.display='none'" />
-          </div>`);
-      }
-      if (info.amount_am) {
-        lines.push(`<p class="text-xs font-bold text-blue-700 bg-blue-50 p-2.5 rounded-xl border border-blue-100">${escapeHtml(info.amount_am)}</p>`);
       }
       if (info.note_am) {
         lines.push(`<p class="text-[11px] text-slate-500 leading-relaxed">${escapeHtml(info.note_am)}</p>`);
@@ -826,8 +832,11 @@
       const title = document.getElementById('authModalTitle');
       const subtitle = document.getElementById('authModalSubtitle');
       if (reason === 'next_questions') {
-        if (title) title.textContent = 'Unlock Next Questions';
-        if (subtitle) subtitle.textContent = 'Please sign in or create an account to unlock questions 11+ and access all exams.';
+        if (title) title.textContent = 'Verify Student ID';
+        if (subtitle) subtitle.textContent = 'Please sign in or create an account to submit your student ID and access all exams.';
+      } else if (reason === 'access_app' || reason === 'landing') {
+        if (title) title.textContent = authMode === 'signup' ? 'Create Free Student Account' : 'Sign In to Enter Nanova';
+        if (subtitle) subtitle.textContent = authMode === 'signup' ? 'Register with your phone number to access freshman exams, solutions, and community discussions.' : 'Sign in with your phone number to enter the platform and start practicing.';
       } else if (subtitle) {
         if (authMode === 'signup') {
           subtitle.textContent = 'Register with your name, academic year, phone number & password.';
@@ -1041,6 +1050,7 @@
     State.currentUser = null;
     State.isAdmin = false;
     State.hasCurriculumAccess = false;
+    updateProfileUI();
     updateAdminUI();
     renderBoardQuestionsPage();
     alert('Logged out.');
@@ -1608,6 +1618,7 @@
         console.warn('[Firebase RTDB Curriculum Registry]', e);
       }
     }
+    syncIdVerificationInfo();
     updateAdminCurriculumUI();
   }
 
@@ -1620,21 +1631,23 @@
 
     const title = document.getElementById('adminPayloadTitleInput')?.value.trim();
     const subtitle = document.getElementById('adminPayloadSubtitleInput')?.value.trim();
+    const howToGetId = document.getElementById('adminPayloadHowToGetIdInput')?.value.trim();
     const ref1 = document.getElementById('adminPayloadRef1Input')?.value.trim();
     const ref2 = document.getElementById('adminPayloadRef2Input')?.value.trim();
     const instructions = document.getElementById('adminPayloadInstructionsInput')?.value.trim();
 
     if (!title) {
-      alert('Please provide a curriculum notice title.');
+      alert('Please provide a verification notice title.');
       return;
     }
 
     const payloadObj = {
-      title: title || 'Academic Curriculum Verification',
-      subtitle: subtitle || 'Complete verified curriculum modules and enter your semester academic authorization token.',
-      ref1: ref1 || 'Department Office / Coordinator Desk',
-      ref2: ref2 || 'Academic Telegram / Student Union Desk',
-      instructions: instructions || 'Submit your semester reference token below to validate unrestricted question bank access.',
+      title: title || 'Verify Your Student ID to Access All Questions',
+      subtitle: subtitle || 'Questions 1 through 10 are free for everyone. Submit your university student ID to unlock all past exams.',
+      howToGetId: howToGetId || '',
+      ref1: ref1 || 'Campus Registrar Office',
+      ref2: ref2 || 'Your university student card or ID document',
+      instructions: instructions || 'Enter your university student ID number below. Your request will be reviewed and approved by the administrator.',
       updatedAt: Date.now()
     };
 
@@ -1644,12 +1657,18 @@
 
     if (firebaseDb) {
       firebaseDb.ref('curriculum_registry/notice_payload').set(encoded).then(() => {
-        alert('✅ Encrypted curriculum registry notice saved to Firebase RTDB!');
+        // Also sync how_to_get_id to system_config/id_verification_info
+        firebaseDb.ref('system_config/id_verification_info').update({
+          how_to_get_id: howToGetId,
+          instruction_am: instructions,
+          updatedAt: Date.now()
+        }).catch(() => {});
+        alert('✅ Student ID verification settings saved!');
       }).catch((err) => {
         alert('Saved locally. Firebase error: ' + err.message);
       });
     } else {
-      alert('✅ Curriculum payload saved locally.');
+      alert('✅ Verification settings saved locally.');
     }
 
     updateAdminCurriculumUI();
@@ -1663,21 +1682,17 @@
 
     const tInput = document.getElementById('adminPayloadTitleInput');
     const subInput = document.getElementById('adminPayloadSubtitleInput');
+    const howInput = document.getElementById('adminPayloadHowToGetIdInput');
     const ref1Input = document.getElementById('adminPayloadRef1Input');
     const ref2Input = document.getElementById('adminPayloadRef2Input');
     const instInput = document.getElementById('adminPayloadInstructionsInput');
 
     if (tInput && !tInput.value) tInput.value = decoded.title || '';
     if (subInput && !subInput.value) subInput.value = decoded.subtitle || '';
+    if (howInput && !howInput.value) howInput.value = decoded.howToGetId || '';
     if (ref1Input && !ref1Input.value) ref1Input.value = decoded.ref1 || '';
     if (ref2Input && !ref2Input.value) ref2Input.value = decoded.ref2 || '';
     if (instInput && !instInput.value) instInput.value = decoded.instructions || '';
-  }
-
-  /* ── DYNAMIC IN-MEMORY CURRICULUM NOTICE CARD ──────── */
-  function removeCurriculumNotice() {
-    const existing = document.getElementById('curriculumNoticeCard');
-    if (existing) existing.remove();
   }
 
   /* ── DYNAMIC IN-MEMORY CURRICULUM NOTICE CARD ──────── */
@@ -1692,13 +1707,17 @@
 
     removeCurriculumNotice();
 
+    // Do not render if student already has curriculum access
+    if (State.hasCurriculumAccess || State.isAdmin) return;
+
     const rawPayload = State.curriculumPayload || localStorage.getItem('nanova_curriculum_payload');
     const decoded = decodePayload(rawPayload) || {
-      title: 'Unlock All Exam Questions',
-      subtitle: 'Questions 1 through 10 are open for free practice. Unlock questions 11+ to access all past exams across AAU, Haramaya, Jimma, and ASTU.',
-      ref1: 'Campus Department Office',
-      ref2: 'Official Academic Telegram Desk',
-      instructions: 'Enter your verification token or payment reference into the field below to unlock full access.'
+      title: 'Verify Your Student ID to Access All Questions',
+      subtitle: 'Questions 1 through 10 are free for everyone. Submit your university student ID to unlock all past exams across AAU, Haramaya, Jimma, ASTU, and more.',
+      howToGetId: 'Check your physical student ID card, your university portal login dashboard, or visit your campus registrar / department office.',
+      ref1: 'Campus Registrar Office',
+      ref2: 'Your university student card or ID document',
+      instructions: 'Enter your university student ID number below. Your request will be reviewed and approved by the administrator.'
     };
 
     const card = document.createElement('div');
@@ -1711,74 +1730,39 @@
     const titleBox = document.createElement('div');
     titleBox.className = 'flex items-center space-x-3';
     titleBox.innerHTML = `
-      <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200/80 flex items-center justify-center flex-shrink-0 shadow-xs">
-        <i data-lucide="lock" class="w-6 h-6"></i>
+      <div class="w-12 h-12 rounded-2xl bg-blue-50 text-[#0052fe] border border-blue-200/80 flex items-center justify-center flex-shrink-0 shadow-xs">
+        <i data-lucide="id-card" class="w-6 h-6"></i>
       </div>
       <div>
-        <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">${escapeHtml(decoded.title || 'Unlock All Exam Questions')}</h3>
-        <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(decoded.subtitle || 'Questions 1 through 10 are open for free practice. Unlock questions 11+ to access all past exams.')}</p>
+        <h3 class="text-lg sm:text-xl font-extrabold text-slate-900 leading-tight">${escapeHtml(decoded.title || 'Verify Your Student ID to Access All Questions')}</h3>
+        <p class="text-xs text-slate-500 mt-0.5">${escapeHtml(decoded.subtitle || 'Questions 1–10 are free. Submit your university student ID to unlock all past exams.')}</p>
       </div>
     `;
     header.appendChild(titleBox);
 
     const badge = document.createElement('span');
-    badge.className = 'px-3 py-1.5 rounded-full bg-amber-500 text-white text-[11px] font-extrabold self-start sm:self-center uppercase tracking-wider shadow-xs flex items-center gap-1.5';
-    badge.innerHTML = '<i data-lucide="lock" class="w-3.5 h-3.5"></i> <span>Unlock Required</span>';
+    badge.className = 'px-3 py-1.5 rounded-full bg-[#0052fe] text-white text-[11px] font-extrabold self-start sm:self-center uppercase tracking-wider shadow-xs flex items-center gap-1.5';
+    badge.innerHTML = '<i data-lucide="shield-check" class="w-3.5 h-3.5"></i> <span>Free ID Verification</span>';
     header.appendChild(badge);
     card.appendChild(header);
 
-    // Dynamic Payment details from Firebase system_config/registration_info
-    const regInfo = State.registrationInfo;
-    if (regInfo && (regInfo.telebirr || regInfo.cbe || regInfo.amount_am)) {
-      const regSection = document.createElement('div');
-      regSection.className = 'p-4 rounded-2xl bg-white border border-blue-100 shadow-xs space-y-3';
-
-      let payHtml = `
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-black uppercase text-slate-800 tracking-wider flex items-center gap-1.5">
-            <i data-lucide="credit-card" class="w-4 h-4 text-[#0052fe]"></i>
-            <span>Payment & Registration Options</span>
-          </span>
-          ${regInfo.amount_am ? `<span class="text-xs font-black text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">${escapeHtml(regInfo.amount_am)}</span>` : ''}
+    // How to get ID instructions box (Admin writes instructions on where/how students get their ID)
+    const howToGetIdText = decoded.howToGetId || State.registrationInfo?.how_to_get_id || 'Check your physical student ID card, admission letter, university portal dashboard, or visit your campus registrar / department office.';
+    const idHelpBox = document.createElement('div');
+    idHelpBox.className = 'p-4 rounded-2xl bg-blue-50 border border-blue-200/80 space-y-2';
+    idHelpBox.innerHTML = `
+      <div class="flex items-center space-x-2">
+        <div class="w-7 h-7 rounded-lg bg-[#0052fe] text-white flex items-center justify-center flex-shrink-0">
+          <i data-lucide="help-circle" class="w-4 h-4"></i>
         </div>
-      `;
+        <h4 class="text-xs font-black uppercase text-blue-900 tracking-wider">Don't know your Student ID? (የተማሪ መታወቂያ እንዴት ማግኘት ይቻላል?)</h4>
+      </div>
+      <p class="text-xs text-slate-700 leading-relaxed pl-9 font-medium">${escapeHtml(howToGetIdText)}</p>
+    `;
+    card.appendChild(idHelpBox);
 
-      payHtml += `<div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">`;
-      if (regInfo.telebirr) {
-        payHtml += `
-          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
-            <div>
-              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Telebirr</p>
-              <p class="text-sm font-black text-slate-900 tracking-wider font-mono">${escapeHtml(regInfo.telebirr)}</p>
-              ${regInfo.telebirr_name ? `<p class="text-[11px] text-slate-500 font-medium">${escapeHtml(regInfo.telebirr_name)}</p>` : ''}
-            </div>
-            <span class="text-[11px] font-bold px-2 py-0.5 bg-blue-100 text-blue-800 rounded-md">Telebirr</span>
-          </div>`;
-      }
-      if (regInfo.cbe) {
-        payHtml += `
-          <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200">
-            <div>
-              <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">CBE Birr</p>
-              <p class="text-sm font-black text-slate-900 tracking-wider font-mono">${escapeHtml(regInfo.cbe)}</p>
-              ${regInfo.cbe_name ? `<p class="text-[11px] text-slate-500 font-medium">${escapeHtml(regInfo.cbe_name)}</p>` : ''}
-            </div>
-            <span class="text-[11px] font-bold px-2 py-0.5 bg-purple-100 text-purple-800 rounded-md">CBE Birr</span>
-          </div>`;
-      }
-      payHtml += `</div>`;
-
-      if (regInfo.instruction_am) {
-        payHtml += `<p class="text-xs text-slate-600 leading-relaxed font-medium bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">${escapeHtml(regInfo.instruction_am)}</p>`;
-      }
-      if (regInfo.note_am) {
-        payHtml += `<p class="text-[11px] text-slate-500 leading-relaxed">${escapeHtml(regInfo.note_am)}</p>`;
-      }
-
-      regSection.innerHTML = payHtml;
-      card.appendChild(regSection);
-    } else if (decoded.ref1 || decoded.ref2) {
-      // Reference desks fallback
+    // Reference desks
+    if (decoded.ref1 || decoded.ref2) {
       const refsGrid = document.createElement('div');
       refsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3';
 
@@ -1790,7 +1774,7 @@
             <i data-lucide="building-2" class="w-4 h-4"></i>
           </div>
           <div class="min-w-0 flex-1">
-            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Institutional Desk</p>
+            <p class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Campus Office</p>
             <p class="text-xs font-extrabold text-slate-800 truncate">${escapeHtml(decoded.ref1)}</p>
           </div>
         `;
@@ -1814,9 +1798,9 @@
       card.appendChild(refsGrid);
     }
 
-    if (decoded.instructions && (!regInfo || !regInfo.instruction_am)) {
+    if (decoded.instructions) {
       const instBox = document.createElement('p');
-      instBox.className = 'text-xs text-slate-600 leading-relaxed font-medium bg-blue-50/50 p-3 rounded-xl border border-blue-100';
+      instBox.className = 'text-xs text-slate-600 leading-relaxed font-medium bg-slate-50 p-3 rounded-xl border border-slate-200';
       instBox.textContent = decoded.instructions;
       card.appendChild(instBox);
     }
@@ -1831,8 +1815,8 @@
             <i data-lucide="user-check" class="w-4 h-4"></i>
           </div>
           <div>
-            <p class="text-xs font-extrabold text-slate-900">Sign in to unlock questions</p>
-            <p class="text-[11px] text-slate-600">Register or sign in with your phone to submit your unlock reference.</p>
+            <p class="text-xs font-extrabold text-slate-900">Step 1: Sign in with your phone</p>
+            <p class="text-[11px] text-slate-600">Register or sign in with your phone number, then submit your student ID for approval.</p>
           </div>
         </div>
         <button type="button" onclick="NanovaApp.openAuthModal('next_questions')"
@@ -1842,32 +1826,52 @@
         </button>
       `;
       card.appendChild(authCard);
+    } else {
+      // User is logged in: Check if they already have a pending verification request
+      const myReq = State.myIdVerification;
+      if (myReq && myReq.status === 'pending') {
+        const pendingBox = document.createElement('div');
+        pendingBox.className = 'p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-2';
+        pendingBox.innerHTML = `
+          <div class="flex items-center space-x-2.5">
+            <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold">
+              <i data-lucide="clock" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-black text-slate-900">Student ID Verification Pending</h4>
+              <p class="text-[11px] text-slate-600">Submitted ID: <span class="font-mono font-bold text-blue-700">${escapeHtml(myReq.submitted_token || myReq.submitted_id || '')}</span></p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">Your student ID is under review by the administrator. All questions will automatically unlock as soon as your ID is approved.</p>
+        `;
+        card.appendChild(pendingBox);
+      } else {
+        // ID submission form
+        const tokenForm = document.createElement('form');
+        tokenForm.className = 'space-y-3';
+        tokenForm.onsubmit = function(e) {
+          if (e) e.preventDefault();
+          submitAcademicToken();
+        };
+
+        tokenForm.innerHTML = `
+          <label class="filter-label flex items-center justify-between">
+            <span>ENTER YOUR UNIVERSITY STUDENT ID</span>
+            <span class="text-[10px] text-emerald-600 font-bold">100% Free • No Payment</span>
+          </label>
+          <div class="flex flex-col sm:flex-row gap-2.5">
+            <input type="text" id="academicTokenInput" class="custom-select font-mono font-bold text-xs flex-1"
+              placeholder="e.g. ETS0123/14, UGR/25678/14, or AAU/9876/15" required />
+            <button type="submit" id="submitAcademicTokenBtn"
+              class="px-6 py-3 bg-gradient-to-r from-blue-600 to-[#0052fe] hover:from-blue-700 hover:to-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer active:scale-95">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Submit ID for Approval</span>
+            </button>
+          </div>
+        `;
+        card.appendChild(tokenForm);
+      }
     }
-
-    // Token submission form
-    const tokenForm = document.createElement('form');
-    tokenForm.className = 'space-y-3';
-    tokenForm.onsubmit = function(e) {
-      if (e) e.preventDefault();
-      submitAcademicToken();
-    };
-
-    tokenForm.innerHTML = `
-      <label class="filter-label flex items-center justify-between">
-        <span>ENTER UNLOCK TOKEN / PAYMENT REFERENCE</span>
-        <span class="text-[10px] text-slate-400 font-normal">Instant Authorization</span>
-      </label>
-      <div class="flex flex-col sm:flex-row gap-2.5">
-        <input type="text" id="academicTokenInput" class="custom-select font-mono font-bold text-xs flex-1"
-          placeholder="e.g. SEM-2026-REF or Telebirr Transaction ID" required />
-        <button type="submit" id="submitAcademicTokenBtn"
-          class="px-6 py-3 bg-gradient-to-r from-blue-600 to-[#0052fe] hover:from-blue-700 hover:to-[#0041d0] text-white font-extrabold text-xs rounded-xl shadow-md transition flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer active:scale-95">
-          <i data-lucide="unlock" class="w-4 h-4"></i>
-          <span>Unlock Questions</span>
-        </button>
-      </div>
-    `;
-    card.appendChild(tokenForm);
 
     const footer = document.createElement('div');
     footer.className = 'flex items-center justify-between pt-3 border-t border-slate-100 text-xs text-slate-500';
@@ -1895,16 +1899,16 @@
 
   function submitAcademicToken() {
     if (!State.currentUser) {
-      alert('Please sign in with your phone number before submitting an academic token.');
+      alert('Please sign in with your phone number before submitting your student ID.');
       openAuthModal();
       return;
     }
 
     const tokenInput = document.getElementById('academicTokenInput');
-    const token = (tokenInput ? tokenInput.value : '').trim();
+    const studentId = (tokenInput ? tokenInput.value : '').trim();
 
-    if (!token || token.length < 3) {
-      alert('Please enter a valid semester token or verification reference.');
+    if (!studentId || studentId.length < 3) {
+      alert('Please enter a valid university student ID (e.g. ETS0123/14).');
       return;
     }
 
@@ -1914,7 +1918,7 @@
       uid: State.currentUser.uid,
       phone: State.profile.phone || State.currentUser.email?.split('@')[0] || '',
       studentName: State.profile.name || 'Freshman Student',
-      submitted_token: token,
+      submitted_token: studentId,
       status: 'pending',
       timestamp: Date.now(),
       dateStr: new Date().toLocaleString()
@@ -1923,14 +1927,14 @@
     if (firebaseDb) {
       firebaseDb.ref('academic_registry/' + State.currentUser.uid + '/submitted_token').set(tokenData).catch(console.warn);
       firebaseDb.ref('academic_registry/requests/' + reqId).set(tokenData).then(() => {
-        alert('✅ Academic Verification Request Submitted!\n\nReference: ' + token + '\nYour academic token is being verified. When authorized, full curriculum access becomes active in real time.');
+        alert('✅ Student ID Submitted!\n\nID: ' + studentId + '\n\nThe admin will review and approve your access. Full access will become active automatically once approved.');
         State.currentPage = 1;
         renderBoardQuestionsPage();
       }).catch((err) => {
         alert('Submission error: ' + err.message);
       });
     } else {
-      alert('✅ Academic token recorded locally. Awaiting campus verification.');
+      alert('✅ Student ID recorded locally. Awaiting admin approval.');
       State.currentPage = 1;
       renderBoardQuestionsPage();
     }
@@ -1940,7 +1944,7 @@
   function loadAcademicRequestsAndUsers() {
     if (!firebaseDb || !State.isAdmin) return;
 
-    // Load Academic Token Requests
+    // Load Student ID Verification Requests
     firebaseDb.ref('academic_registry/requests').on('value', (snap) => {
       const val = snap.val();
       State.academicRequests = val ? Object.values(val).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)) : [];
@@ -1972,7 +1976,7 @@
     if (!container) return;
 
     if (!State.academicRequests.length) {
-      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No academic token verification requests submitted yet.</div>';
+      container.innerHTML = '<div class="p-6 text-center text-xs text-slate-400 font-medium">No student ID verification requests submitted yet.</div>';
       return;
     }
 
@@ -1989,7 +1993,7 @@
               </span>
             </div>
             <div class="flex items-center space-x-3 text-xs">
-              <span class="font-mono font-bold text-[#0052fe]">Token: ${escapeHtml(req.submitted_token)}</span>
+              <span class="font-mono font-bold text-[#0052fe]">Student ID: ${escapeHtml(req.submitted_token || req.student_id || 'N/A')}</span>
               <span class="text-slate-400 font-medium">${escapeHtml(req.dateStr || 'Recent')}</span>
             </div>
           </div>
@@ -1997,7 +2001,7 @@
             ${isPending ? `
               <button onclick="NanovaApp.grantCurriculumAccess('${req.id}', '${req.uid}')" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-sm transition flex items-center space-x-1">
                 <i data-lucide="check" class="w-3.5 h-3.5"></i>
-                <span>Grant Access</span>
+                <span>Approve ID & Grant Access</span>
               </button>
               <button onclick="NanovaApp.rejectAcademicToken('${req.id}', '${req.uid}')" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded-xl transition">
                 Reject
@@ -2037,7 +2041,7 @@
                 ${(u.role || 'student').toUpperCase()}
               </span>
               <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold ${hasAccess ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-                ${hasAccess ? 'FULL CURRICULUM ACCESS' : 'PREVIEW ACCESS (10 MODULES)'}
+                ${hasAccess ? 'FULL ACCESS (ALL EXAMS)' : 'PREVIEW ACCESS (10 QUESTIONS)'}
               </span>
             </div>
             <p class="text-[11px] text-slate-500 font-mono">${escapeHtml(userPhone)}</p>
@@ -2064,13 +2068,13 @@
     if (firebaseDb) {
       if (reqId) firebaseDb.ref('academic_registry/requests/' + reqId + '/status').set('approved');
       if (uid) firebaseDb.ref('users/' + uid + '/hasCurriculumAccess').set(true);
-      alert('✅ Academic access authorized! Full question bank activated for student.');
+      alert('✅ Student ID approved! Full exam access activated for student.');
     }
   }
 
   function rejectAcademicToken(reqId, uid) {
     if (!State.isAdmin) return;
-    if (confirm('Reject this academic token verification request?')) {
+    if (confirm('Reject this student ID verification request?')) {
       if (firebaseDb) {
         if (reqId) firebaseDb.ref('academic_registry/requests/' + reqId + '/status').set('rejected');
         if (uid) firebaseDb.ref('users/' + uid + '/hasCurriculumAccess').set(false);
@@ -2080,7 +2084,7 @@
 
   function revokeCurriculumAccess(reqId, uid) {
     if (!State.isAdmin) return;
-    if (confirm('Revoke curriculum access for this student?')) {
+    if (confirm('Revoke exam access for this student?')) {
       if (firebaseDb) {
         if (reqId) firebaseDb.ref('academic_registry/requests/' + reqId + '/status').set('revoked');
         if (uid) firebaseDb.ref('users/' + uid + '/hasCurriculumAccess').set(false);
@@ -2569,7 +2573,7 @@ ${escapeHtml(q.passage)}
     if (prevBtn) prevBtn.disabled = State.currentPage <= 1;
     if (nextBtn) {
       if (!hasCurriculumAccess && totalPages > 1 && State.currentPage === 1) {
-        nextBtn.innerHTML = '<i data-lucide="lock" class="w-4 h-4 text-amber-300"></i><span>Unlock Next Questions</span>';
+        nextBtn.innerHTML = '<i data-lucide="id-card" class="w-4 h-4 text-blue-200"></i><span>Verify Student ID for More Questions</span>';
         nextBtn.className = 'px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-xs shadow-md transition flex items-center space-x-2 cursor-pointer';
         nextBtn.disabled = false;
       } else {
@@ -5729,6 +5733,11 @@ ${escapeHtml(q.passage)}
 
   /* ── TAB NAVIGATION & EXAM FLOW ────────────────────── */
   function switchTab(tabId) {
+    if (!State.currentUser) {
+      openAuthModal('access_app');
+      return;
+    }
+
     if (tabId === 'admin' && !State.isAdmin) {
       openAuthModal();
       return;
