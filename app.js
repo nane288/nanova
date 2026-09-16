@@ -835,7 +835,7 @@
         if (title) title.textContent = 'Verify Student ID';
         if (subtitle) subtitle.textContent = 'Please sign in or create an account to submit your student ID and access all exams.';
       } else if (reason === 'access_app' || reason === 'landing') {
-        if (title) title.textContent = authMode === 'signup' ? 'Create Free Student Account' : 'Sign In to Enter Nanova';
+        if (title) title.textContent = authMode === 'signup' ? 'Create Student Account' : 'Sign In to Enter Nanova';
         if (subtitle) subtitle.textContent = authMode === 'signup' ? 'Register with your phone number to access freshman exams, solutions, and community discussions.' : 'Sign in with your phone number to enter the platform and start practicing.';
       } else if (subtitle) {
         if (authMode === 'signup') {

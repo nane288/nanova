@@ -2,40 +2,35 @@ const fs = require('fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const appJs = fs.readFileSync('app.js', 'utf8');
 
-console.log('--- HTML Structure Verification ---');
-console.log('1. landingPage exists:', html.includes('id="landingPage"'));
-console.log('2. mainAppContainer exists:', html.includes('id="mainAppContainer"'));
-console.log('3. tab-exams exists:', html.includes('id="tab-exams"'));
-console.log('4. tab-universities exists:', html.includes('id="tab-universities"'));
-console.log('5. tab-feed exists:', html.includes('id="tab-feed"'));
-console.log('6. tab-profile exists:', html.includes('id="tab-profile"'));
-console.log('7. tab-admin exists:', html.includes('id="tab-admin"'));
-console.log('8. mainNavTabs starts hidden:', html.includes('id="mainNavTabs" class="hidden'));
+console.log('=== LANDING PAGE UI VERIFICATION ===');
 
-// Verify tabs nesting inside mainAppContainer
-const mainAppStart = html.indexOf('id="mainAppContainer"');
-const mainAppEnd = html.indexOf('<!-- END mainAppContainer -->');
-const examsPos = html.indexOf('id="tab-exams"');
-const univPos = html.indexOf('id="tab-universities"');
-const feedPos = html.indexOf('id="tab-feed"');
-const profPos = html.indexOf('id="tab-profile"');
-const adminPos = html.indexOf('id="tab-admin"');
-const landingPos = html.indexOf('id="landingPage"');
+const landingStart = html.indexOf('id="landingPage"');
+const landingEnd = html.indexOf('id="mainAppContainer"');
+const landing = html.substring(landingStart, landingEnd);
 
-console.log('9. Landing is before mainAppContainer:', landingPos < mainAppStart);
-console.log('10. All 5 tabs are strictly inside mainAppContainer:',
-  examsPos > mainAppStart && examsPos < mainAppEnd &&
-  univPos > mainAppStart && univPos < mainAppEnd &&
-  feedPos > mainAppStart && feedPos < mainAppEnd &&
-  profPos > mainAppStart && profPos < mainAppEnd &&
-  adminPos > mainAppStart && adminPos < mainAppEnd
-);
+// 1. Check for ANY mention of 'free' in landing page
+const freeMatches = landing.match(/free/gi) || [];
+console.log('1. Mentions of "free" in landing page:', freeMatches.length === 0 ? 'ZERO (PASSED)' : freeMatches);
 
-console.log('\n--- JS Logic Verification ---');
-console.log('11. app.js manages landingPage:', appJs.includes("document.getElementById('landingPage')"));
-console.log('12. app.js manages mainAppContainer:', appJs.includes("document.getElementById('mainAppContainer')"));
-console.log('13. app.js manages mainNavTabs:', appJs.includes("document.getElementById('mainNavTabs')"));
-console.log('14. switchTab blocks unauthenticated users:', appJs.includes("if (!State.currentUser) {\n      openAuthModal('access_app');\n      return;\n    }"));
-console.log('15. firebaseSignOut calls updateProfileUI:', appJs.includes("updateProfileUI();\n    updateAdminUI();\n    renderBoardQuestionsPage();\n    alert('Logged out.');"));
+// 2. Color Palette checks
+console.log('2. Has cyan accents:', landing.includes('cyan'));
+console.log('3. Has violet touches:', landing.includes('violet'));
+console.log('4. Has deep navy colors:', landing.includes('#091124') && landing.includes('#0b162c'));
 
-console.log('\n✅ All checks evaluated.');
+// 3. Hero Section checks
+console.log('5. Has institutional badge:', landing.includes('Freshman Examination Archives'));
+console.log('6. Has polished dashboard preview:', landing.includes('Examination Suite'));
+console.log('7. Has floating elements:', landing.includes('2024–2025 Exam Papers Added') && landing.includes('Verified Step-by-Step Keys'));
+
+// 4. Structure checks
+console.log('8. Has metrics section (10+ Universities, 5,000+ Questions):', landing.includes('10+') && landing.includes('5,000+'));
+console.log('9. Has features grid:', landing.includes('Genuine Semester Exams') && landing.includes('Step-by-Step Solutions') && landing.includes('Student Community Feed'));
+console.log('10. Has course pills:', landing.includes('Applied Mathematics I & II') && landing.includes('Logic & Critical Thinking'));
+console.log('11. Has bottom CTA banner:', landing.includes('Ready to Start Practicing?'));
+console.log('12. Has footer with Privacy Policy and Sign In:', landing.includes('Privacy Policy') && landing.includes('Nanova - Ethiopia Campus Board'));
+
+// 5. App.js check
+console.log('13. app.js authModal doesn\'t say "Create Free Student Account":', !appJs.includes('Create Free Student Account'));
+
+console.log('\n=== SYNTAX & VALIDITY ===');
+console.log('HTML valid structure:', landingStart !== -1 && landingEnd > landingStart);
