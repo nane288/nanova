@@ -717,13 +717,13 @@
           </div>
         </div>
 
-        <form id="profileForm" class="space-y-4">
+        <form id="profileForm" onsubmit="NanovaApp.saveStudentProfile(event)" class="space-y-4">
           <div>
             <label class="filter-label">FULL NAME</label>
             <input type="text" id="profileFullNameInput" class="custom-select" placeholder="Enter your name..." />
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label class="filter-label">UNIVERSITY</label>
               <select id="profileUniversitySelect" class="custom-select">
@@ -743,6 +743,19 @@
                 <option value="Social Science">Social Science</option>
                 <option value="Engineering & Tech">Engineering & Tech</option>
                 <option value="Health Sciences">Health Sciences</option>
+              </select>
+            </div>
+            <div>
+              <label class="filter-label">ACADEMIC YEAR</label>
+              <select id="profileYearSelect" class="custom-select">
+                <option value="2019 E.C. (2026/2027)">2019 E.C. (2026/2027)</option>
+                <option value="2018 E.C. (2025/2026)">2018 E.C. (2025/2026)</option>
+                <option value="2017 E.C. (2024/2025)">2017 E.C. (2024/2025)</option>
+                <option value="2016 E.C. (2023/2024)">2016 E.C. (2023/2024)</option>
+                <option value="2015 E.C. (2022/2023)">2015 E.C. (2022/2023)</option>
+                <option value="2014 E.C. (2021/2022)">2014 E.C. (2021/2022)</option>
+                <option value="Remedial / Pre-Engineering">Remedial / Pre-Engineering</option>
+                <option value="Senior / Other">Senior / Other</option>
               </select>
             </div>
           </div>
@@ -1662,9 +1675,12 @@
           <div>
             <label class="filter-label">ACADEMIC YEAR</label>
             <select id="authYearInput" class="custom-select text-sm font-semibold">
-              <option value="2017 E.C. (2025/2026)">2017 E.C. (2025/2026)</option>
-              <option value="2016 E.C. (2024/2025)">2016 E.C. (2024/2025)</option>
-              <option value="2015 E.C. (2023/2024)">2015 E.C. (2023/2024)</option>
+              <option value="2019 E.C. (2026/2027)">2019 E.C. (2026/2027)</option>
+              <option value="2018 E.C. (2025/2026)">2018 E.C. (2025/2026)</option>
+              <option value="2017 E.C. (2024/2025)">2017 E.C. (2024/2025)</option>
+              <option value="2016 E.C. (2023/2024)">2016 E.C. (2023/2024)</option>
+              <option value="2015 E.C. (2022/2023)">2015 E.C. (2022/2023)</option>
+              <option value="2014 E.C. (2021/2022)">2014 E.C. (2021/2022)</option>
               <option value="Remedial / Pre-Engineering">Remedial / Pre-Engineering</option>
               <option value="Senior / Other">Senior / Other</option>
             </select>

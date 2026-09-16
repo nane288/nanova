@@ -426,7 +426,7 @@
 
   /* ── APPLICATION STATE ─────────────────────────────── */
   const State = {
-    profile: { name: 'Student', university: 'Haramaya University', stream: 'Natural Science', email: '', phone: '' },
+    profile: { name: 'Student', university: 'Haramaya University', stream: 'Natural Science', academicYear: '2019 E.C. (2026/2027)', email: '', phone: '' },
     currentUser: null,
     isAdmin: false,
     hasCurriculumAccess: false,
@@ -643,7 +643,16 @@
     const displayPhone = State.profile.phone || (State.currentUser?.email?.endsWith('@nanova.et') ? State.currentUser.email.replace('@nanova.et', '') : '');
     if (profInit) profInit.textContent = State.profile.name ? State.profile.name[0].toUpperCase() : (displayPhone ? displayPhone[0] : 'S');
     if (pName) pName.textContent = State.currentUser ? (displayPhone ? `${State.profile.name || 'Student'} (${displayPhone})` : (State.profile.name || 'Student Account')) : 'Guest Student';
-    if (pUniv) pUniv.textContent = State.profile.university || 'Haramaya University';
+    if (pUniv) pUniv.textContent = (State.profile.university || 'Haramaya University') + (State.profile.academicYear ? ` • ${State.profile.academicYear}` : '');
+
+    const nameInp = document.getElementById('profileFullNameInput');
+    if (nameInp && State.profile.name && !nameInp.value) nameInp.value = State.profile.name;
+    const uSelect = document.getElementById('profileUniversitySelect');
+    if (uSelect && State.profile.university) uSelect.value = State.profile.university;
+    const sSelect = document.getElementById('profileStreamSelect');
+    if (sSelect && State.profile.stream) sSelect.value = State.profile.stream;
+    const ySelect = document.getElementById('profileYearSelect');
+    if (ySelect && State.profile.academicYear) ySelect.value = State.profile.academicYear;
 
     if (window.lucide) window.lucide.createIcons();
   }
@@ -698,7 +707,7 @@
                   phone: phone,
                   email: user.email || '',
                   displayName: State.profile.name || 'Student',
-                  academicYear: State.profile.academicYear || '2017 E.C. (2025/2026)',
+                  academicYear: State.profile.academicYear || '2019 E.C. (2026/2027)',
                   role: 'student',
                   hasCurriculumAccess: isPreApproved,
                   createdAt: Date.now()
@@ -936,7 +945,7 @@
 
     if (authMode === 'signup') {
       const name = document.getElementById('authNameInput')?.value.trim();
-      const academicYear = document.getElementById('authYearInput')?.value || '2017 E.C. (2025/2026)';
+      const academicYear = document.getElementById('authYearInput')?.value || '2019 E.C. (2026/2027)';
       const confirmPass = document.getElementById('authConfirmPasswordInput')?.value;
 
       if (!name) {
@@ -5817,8 +5826,34 @@ ${escapeHtml(q.passage)}
       .replace(/'/g, '&#039;');
   }
 
+  function saveStudentProfile(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const nameInp = document.getElementById('profileFullNameInput');
+    const uSelect = document.getElementById('profileUniversitySelect');
+    const sSelect = document.getElementById('profileStreamSelect');
+    const ySelect = document.getElementById('profileYearSelect');
+
+    if (nameInp && nameInp.value.trim()) State.profile.name = nameInp.value.trim();
+    if (uSelect) State.profile.university = uSelect.value;
+    if (sSelect) State.profile.stream = sSelect.value;
+    if (ySelect) State.profile.academicYear = ySelect.value;
+
+    localStorage.setItem('nanova_profile', JSON.stringify(State.profile));
+    if (firebaseDb && State.currentUser) {
+      firebaseDb.ref('users/' + State.currentUser.uid).update({
+        displayName: State.profile.name,
+        university: State.profile.university,
+        stream: State.profile.stream,
+        academicYear: State.profile.academicYear
+      }).catch(console.warn);
+    }
+    updateProfileUI();
+    alert('✅ Profile updated successfully!');
+  }
+
   /* ── PUBLIC EXPORTS ────────────────────────────────── */
   window.NanovaApp = {
+    saveStudentProfile,
     switchTab,
     onFilterChange,
     applyFiltersWithFeedback,

@@ -2,35 +2,22 @@ const fs = require('fs');
 const html = fs.readFileSync('index.html', 'utf8');
 const appJs = fs.readFileSync('app.js', 'utf8');
 
-console.log('=== LANDING PAGE UI VERIFICATION ===');
+console.log('=== ACADEMIC YEAR VERIFICATION ===');
 
-const landingStart = html.indexOf('id="landingPage"');
-const landingEnd = html.indexOf('id="mainAppContainer"');
-const landing = html.substring(landingStart, landingEnd);
+const authMatch = html.match(/<select id="authYearInput"[\s\S]*?<\/select>/);
+console.log('1. authYearInput includes 2019 E.C. (2026/2027):', authMatch && authMatch[0].includes('2019 E.C. (2026/2027)'));
+console.log('2. authYearInput includes 2018 E.C. (2025/2026):', authMatch && authMatch[0].includes('2018 E.C. (2025/2026)'));
+console.log('3. authYearInput includes 2017 E.C. (2024/2025):', authMatch && authMatch[0].includes('2017 E.C. (2024/2025)'));
+console.log('4. authYearInput includes 2016 E.C. (2023/2024):', authMatch && authMatch[0].includes('2016 E.C. (2023/2024)'));
+console.log('5. authYearInput includes 2015 E.C. (2022/2023):', authMatch && authMatch[0].includes('2015 E.C. (2022/2023)'));
+console.log('6. authYearInput includes 2014 E.C. (2021/2022):', authMatch && authMatch[0].includes('2014 E.C. (2021/2022)'));
 
-// 1. Check for ANY mention of 'free' in landing page
-const freeMatches = landing.match(/free/gi) || [];
-console.log('1. Mentions of "free" in landing page:', freeMatches.length === 0 ? 'ZERO (PASSED)' : freeMatches);
+const profMatch = html.match(/<select id="profileYearSelect"[\s\S]*?<\/select>/);
+console.log('7. profileYearSelect exists and includes 2019 E.C.:', profMatch && profMatch[0].includes('2019 E.C. (2026/2027)'));
 
-// 2. Color Palette checks
-console.log('2. Has cyan accents:', landing.includes('cyan'));
-console.log('3. Has violet touches:', landing.includes('violet'));
-console.log('4. Has deep navy colors:', landing.includes('#091124') && landing.includes('#0b162c'));
+console.log('8. Old mismatched "2017 E.C. (2025/2026)" in index.html:', html.includes('2017 E.C. (2025/2026)'));
+console.log('9. Old mismatched "2017 E.C. (2025/2026)" in app.js:', appJs.includes('2017 E.C. (2025/2026)'));
+console.log('10. app.js default state academicYear set to 2019 E.C.:', appJs.includes("academicYear: '2019 E.C. (2026/2027)'"));
+console.log('11. NanovaApp exports saveStudentProfile:', appJs.includes('saveStudentProfile,'));
 
-// 3. Hero Section checks
-console.log('5. Has institutional badge:', landing.includes('Freshman Examination Archives'));
-console.log('6. Has polished dashboard preview:', landing.includes('Examination Suite'));
-console.log('7. Has floating elements:', landing.includes('2024–2025 Exam Papers Added') && landing.includes('Verified Step-by-Step Keys'));
-
-// 4. Structure checks
-console.log('8. Has metrics section (10+ Universities, 5,000+ Questions):', landing.includes('10+') && landing.includes('5,000+'));
-console.log('9. Has features grid:', landing.includes('Genuine Semester Exams') && landing.includes('Step-by-Step Solutions') && landing.includes('Student Community Feed'));
-console.log('10. Has course pills:', landing.includes('Applied Mathematics I & II') && landing.includes('Logic & Critical Thinking'));
-console.log('11. Has bottom CTA banner:', landing.includes('Ready to Start Practicing?'));
-console.log('12. Has footer with Privacy Policy and Sign In:', landing.includes('Privacy Policy') && landing.includes('Nanova - Ethiopia Campus Board'));
-
-// 5. App.js check
-console.log('13. app.js authModal doesn\'t say "Create Free Student Account":', !appJs.includes('Create Free Student Account'));
-
-console.log('\n=== SYNTAX & VALIDITY ===');
-console.log('HTML valid structure:', landingStart !== -1 && landingEnd > landingStart);
+console.log('\n✅ All checks evaluated successfully.');
